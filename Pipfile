@@ -11,6 +11,7 @@ pillow = "*"
 cloudinary = "*"
 whitenoise = "*"
 django-cloudinary-storage = "*"
+coverage = "*"
 
 [dev-packages]
 
