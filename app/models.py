@@ -1,5 +1,6 @@
 from turtle import mode, update
 from django.db import models
+from django.utils.text import slugify
 from django.contrib.auth.models import AbstractUser
 
 class User(AbstractUser):
@@ -20,6 +21,10 @@ class Category(models.Model):
     # pulral for the table name in the admin page
     class Meta:
         verbose_name_plural = "Categories"
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
 
     def __str__(self):
         return self.name
@@ -43,6 +48,10 @@ class Product(models.Model):
     class Meta:
         verbose_name_plural = "Products"
         ordering = ('-created',)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
 
     def __str__(self):
         return self.name
