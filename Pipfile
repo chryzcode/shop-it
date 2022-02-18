@@ -8,6 +8,9 @@ django = "*"
 python-decouple = "*"
 psycopg2 = "*"
 pillow = "*"
+cloudinary = "*"
+whitenoise = "*"
+django-cloudinary-storage = "*"
 
 [dev-packages]
 
