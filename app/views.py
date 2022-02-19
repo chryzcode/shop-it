@@ -1,6 +1,6 @@
-from django.shortcuts import render, get_object_or_404
-from .models import Product, User, Category
+from django.shortcuts import get_object_or_404, render
 
+from .models import Category, Product, User
 
 # Create your views here.
 
@@ -8,14 +8,16 @@ from .models import Product, User, Category
 def a_user_all_products(request, slugified_username):
     user = get_object_or_404(User, slugified_username=slugified_username)
     all_products = Product.objects.filter(created_by=user.id)
-    return render(request, "app/all-products.html", {"all_products": all_products})
+    return render(
+        request, "app/a-user-all-products.html", {"all_products": all_products}
+    )
 
 
 def a_user_all_categories(request, slugified_username):
     user = get_object_or_404(User, slugified_username=slugified_username)
     all_categories = Category.objects.filter(created_by=user.id)
     return render(
-        request, "app/all-categories.html", {"all_categories": all_categories}
+        request, "app/a-user-all-categories.html", {"all_categories": all_categories}
     )
 
 
