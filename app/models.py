@@ -3,6 +3,7 @@ from django.db import models
 from django.utils.text import slugify
 from django.contrib.auth.models import AbstractUser
 
+
 class User(AbstractUser):
     full_name = models.CharField(max_length=300, null=True, blank=True)
     username = models.CharField(max_length=150, unique=True)
@@ -22,16 +23,15 @@ class User(AbstractUser):
         if not self.slugified_username:
             self.slugified_username = slugify(self.username)
         super().save(*args, **kwargs)
-        
-
-        
 
     def __str__(self):
         return self.username
 
 
 class Category(models.Model):
-    created_by = models.ForeignKey(User, related_name='category_creator', on_delete=models.CASCADE)
+    created_by = models.ForeignKey(
+        User, related_name="category_creator", on_delete=models.CASCADE
+    )
     name = models.CharField(max_length=255, db_index=True)
     slug = models.SlugField(max_length=255, unique=True)
 
@@ -46,10 +46,15 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+
 class Product(models.Model):
-    category = models.ForeignKey(Category, related_name='product', on_delete=models.CASCADE)
-    created_by = models.ForeignKey(User, related_name='product_creator', on_delete=models.CASCADE)
-    name = models.CharField(max_length= 255)
+    category = models.ForeignKey(
+        Category, related_name="product", on_delete=models.CASCADE
+    )
+    created_by = models.ForeignKey(
+        User, related_name="product_creator", on_delete=models.CASCADE
+    )
+    name = models.CharField(max_length=255)
     description = models.TextField()
     image_1 = models.ImageField(upload_to="product-images/", null=True)
     image_2 = models.ImageField(upload_to="product-images/")
@@ -64,7 +69,7 @@ class Product(models.Model):
     # pulral for the table name in the admin page
     class Meta:
         verbose_name_plural = "Products"
-        ordering = ('-created',)
+        ordering = ("-created",)
 
     def save(self, *args, **kwargs):
         if not self.slug:

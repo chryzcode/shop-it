@@ -40,10 +40,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-
     "cloudinary_storage",
     "cloudinary",
-
     "app",
 ]
 
@@ -70,9 +68,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-
-                #loading views context(data) into all templates
-               
+                # loading views context(data) into all templates
             ],
         },
     },
@@ -80,7 +76,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "core.wsgi.application"
 
-AUTH_USER_MODEL= 'app.User'
+AUTH_USER_MODEL = "app.User"
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
