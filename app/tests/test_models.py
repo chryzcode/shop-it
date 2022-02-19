@@ -16,6 +16,7 @@ class TestCategoryModel(TestCase):
 
         self.category = Category.objects.create(
             name='Test Category',
+            created_by=self.user            
         )
 
         self.product = Product.objects.create(
@@ -35,6 +36,7 @@ class TestCategoryModel(TestCase):
 
 
     def test_category_model(self):
+        self.assertEqual(self.created_by, self.user)
         self.assertEqual(self.category.name, 'Test Category')
         self.assertEqual(self.category.slug, slugify(self.category.name))
 
@@ -56,6 +58,7 @@ class TestCategoryModel(TestCase):
         self.assertEqual(self.user.full_name, 'Test User Full Name')
         self.assertEqual(self.user.email, 'testuser@gmail.com')
         self.assertEqual(self.user.avatar, 'avatar.jpg')
+        self.assertEqual(self.slugified_username, slugify(self.user.username))
         self.assertEqual(self.user.check_password('testuserpassword'), True)
 
 
