@@ -19,3 +19,9 @@ def product_detail(request, slugified_username, slug):
     product = get_object_or_404(Product, slug=slug, created_by=user.id, in_stock=True)
     return render(request, 'app/product-details.html', {'product': product})
 
+def category_products(request, slugified_username, slug):
+    user = get_object_or_404(User, slugified_username=slugified_username)
+    category = get_object_or_404(Category, slug=slug, created_by=user.id)
+    category_products = Product.objects.filter(category=category, created_by=user.id, in_stock=True)
+    return render(request, 'app/category-products.html', {'category_products': category_products, 'category': category})
+
