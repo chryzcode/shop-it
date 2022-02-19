@@ -72,8 +72,7 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
 
                 #loading views context(data) into all templates
-                'app.views.all_products',
-                'app.views.all_categories',
+               
             ],
         },
     },

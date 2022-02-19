@@ -1,14 +1,17 @@
-from http.client import PROCESSING
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import Product, User, Category
 
 
 # Create your views here.
 
-def all_products(request):
-    all_products = Product.objects.all()
-    return render(request, 'app/all_products.html', {'all_products': all_products})
+def all_products(request, slugified_username):
+    user = get_object_or_404(User, slugified_username=slugified_username)
+    all_products = Product.objects.filter(created_by=user.id)
+    return render(request, 'app/all-products.html', {'all_products': all_products})
 
-def all_categories(request):
-    all_categories = Category.objects.all()
-    return render(request, 'app/all_categories.html', {'all_categories': all_categories})
+def all_categories(request, slugified_username):
+    user = get_object_or_404(User, slugified_username=slugified_username)
+    all_categories = Category.objects.filter(created_by=user.id)
+    return render(request, 'app/all-categories.html', {'all_categories': all_categories})
+
+
