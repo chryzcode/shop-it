@@ -6,6 +6,11 @@
 }
 
 nav {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 10;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -22,7 +27,7 @@ nav > ul {
 
 ul > li {
   list-style: none;
-  margin: 0 10px;
+  margin: 0 15px;
   font-size: 18px;
 }
 
@@ -34,4 +39,8 @@ nav > ul > li > a {
 nav > ul > li > a:hover {
   text-decoration: none;
   color: #6b69f8;
+}
+
+#toogle {
+    display: none;
 }
