@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="{% static 'css/styles.css'%}" />
     <link rel="stylesheet" href="{% static 'css/mobile-view.css'%}" />
+    <link rel="stylesheet" href="{% static 'css/desktop-view.css'%}" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
     {% block title %}
     <title>Shop !t</title>
@@ -14,11 +15,10 @@
   </head>
   <body>
     <nav>
-      <div id="toogle"></div>
+      <span id="toogle"></span>
 
-      <span>
-        <h3><a href="/">Shop !t</a></h3>
-      </span>
+        <a href="/" class="main-logo" >Shop !t</a>
+  
 
       <ul id="nav-links">
         <li><a href="" id="a-nav-link">Discover</a></li>
