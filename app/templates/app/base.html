@@ -9,16 +9,12 @@
     <link rel="stylesheet" href="{% static 'css/mobile-view.css'%}" />
     <link rel="stylesheet" href="{% static 'css/desktop-view.css'%}" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
-    {% block title %}
-    <title>Shop !t</title>
-    {% endblock %}
   </head>
   <body>
-    <nav>
-      <span id="toogle"></span>
-
-        <a href="/" class="main-logo" >Shop !t</a>
-  
+    <nav class="nav">
+      <span>
+        <a href="/" class="main-logo">Shop !t</a>
+      </span>
 
       <ul id="nav-links">
         <li><a href="" id="a-nav-link">Discover</a></li>
@@ -27,8 +23,10 @@
         <li><a href="" id="a-nav-link">Login</a></li>
         <li><a href="" id="a-nav-link">SignUp</a></li>
       </ul>
+
+      <span id="toogle"></span>
     </nav>
-    {% block content %} {% endblock %}
+    <div class="main-container">{% block content %} {% endblock %}</div>
     <script src="{% static 'js/script.js' %}"></script>
   </body>
 </html>

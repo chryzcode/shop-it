@@ -8,6 +8,12 @@
     height: 100px;
   }
 
+  nav:after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+
   .main-logo {
     position: relative;
     top: 35px;
