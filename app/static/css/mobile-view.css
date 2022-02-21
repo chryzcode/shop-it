@@ -114,3 +114,22 @@
     transform: translateY(0px) rotate(-45deg);
   }
 }
+
+@media all and (max-width: 850px) {
+  .illustration-sec-1 {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    width: 70%;
+    align-items: center;
+    margin: 0 auto;
+  }
+
+  .illustration-grid-sec {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    grid-gap: 30px;
+    width: 70%;
+    margin: 0 auto;
+  }
+}

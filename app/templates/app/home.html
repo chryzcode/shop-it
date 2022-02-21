@@ -1,17 +1,64 @@
-{% extends 'app/base.html' %}
-{% load static %}
-{% block title %}<title>Shop !t - HomePage</title> {% endblock %}
+{% extends 'app/base.html' %} {% load static %} {% block title %}<title>Shop !t - HomePage</title> {% endblock %} 
 {% block content %}
-  <div class="intro">
-    <p>Run business at your comfort with <br>Shop !t</p>
-    <div>
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas neque ipsa minus ut at, est explicabo minima consectetur cupiditate nesciunt.
-    </div>
-    <a href="" class="get-started-btn">Get Started</a>
+<div class="intro">
+  <p>Run business at your comfort with <br />Shop !t</p>
+  <div>
+    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas neque ipsa minus ut at, est explicabo minima
+    consectetur cupiditate nesciunt.
   </div>
-  <span class="illustration-sec-1">
-    <img src="{% static 'images/illustrations/illustration-1.png' %}" alt="">
-    <img src="{% static 'images/illustrations/illustration-2.png' %}" alt="">
-  </span>
+  <a href="" class="get-started-btn">Get Started</a>
+</div>
+<span class="illustration-sec-1">
+  <img src="{% static 'images/illustrations/illustration-1.png' %}" alt="" />
+  <img src="{% static 'images/illustrations/illustration-2.png' %}" alt="" />
+</span>
+
+<div class="illustration-grid-sec">
+  <div class="an-illustration-grid">
+    <p>Accesible and easy to use</p>
+    <div class="illustration-container">
+      <img src="{% static 'images/illustrations/illustration-3.png' %}" alt="" />
+    </div>
+
+    <div class="illustration-grid-content">
+      Lorem ipsum dolor, sit amet consectetur adipisicing elit. Doloremque distinctio eaque consectetur dignissimos
+      dolore corrupti ut beatae veritatis fuga qui?
+    </div>
+  </div>
+
+  <div class="an-illustration-grid">
+    <p>For Both Sellers and Consumers</p>
+    <div class="illustration-container">
+      <img src="{% static 'images/illustrations/illustration-4.png' %}" alt="" />
+    </div>
+
+    <div class="illustration-grid-content">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui magni beatae enim assumenda corrupti ullam odio
+      corporis perspiciatis asperiores quisquam.
+    </div>
+  </div>
+
+  <div class="an-illustration-grid">
+    <p>Personalized store</p>
+    <div class="illustration-container">
+      <img src="{% static 'images/illustrations/illustration-5.png' %}" alt="" />
+    </div>
+    <div class="illustration-grid-content">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui magni beatae enim assumenda corrupti ullam odio
+      corporis perspiciatis asperiores quisquam.
+    </div>
+  </div>
+
+  <div class="an-illustration-grid">
+    <p>Inventory and Product Tracking</p>
+    <div class="illustration-container">
+      <img src="{% static 'images/illustrations/illustration-6.png' %}" alt="" />
+    </div>
+    <div class="illustration-grid-content">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui magni beatae enim assumenda corrupti ullam odio
+      corporis perspiciatis asperiores quisquam.
+    </div>
+  </div>
+</div>
 
 {% endblock %}
