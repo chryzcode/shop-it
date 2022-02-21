@@ -54,4 +54,14 @@
     width: 90%;
     margin: 0 auto;
   }
+
+  .payment-illustration-sec {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 50%;
+    margin: 20px auto;
+    border: 1px solid #ccc;
+    align-items: center;
+  }
 }
