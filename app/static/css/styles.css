@@ -93,3 +93,14 @@
   width: 50%;
   font-size: 25px;
 }
+
+ footer {
+    background-color: #6b69f8;
+  }
+
+.footer-illustration {
+  height: 300px;
+  width: 400px;
+  margin: 0 auto;
+  display: block;
+}
