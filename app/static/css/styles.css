@@ -47,7 +47,7 @@
 }
 
 .an-illustration-grid {
-  border: 1px solid #ccc;
+  box-shadow: 0px 20px 30px 0px #ccc;
   border-radius: 8px;
   margin: 30px 0;
 }
