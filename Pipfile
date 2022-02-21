@@ -12,6 +12,8 @@ cloudinary = "*"
 whitenoise = "*"
 django-cloudinary-storage = "*"
 coverage = "*"
+django-heroku = "*"
+dj-database-url = "*"
 
 [dev-packages]
 
