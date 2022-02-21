@@ -45,6 +45,7 @@
   .illustration-sec-1 {
     display: flex;
     justify-content: space-around;
+    margin: 40px 0;
   }
 
   .illustration-grid-sec {
@@ -62,6 +63,7 @@
     width: 50%;
     margin: 20px auto;
     box-shadow: 0px 20px 30px 0px #ccc;
+    
     align-items: center;
   }
 

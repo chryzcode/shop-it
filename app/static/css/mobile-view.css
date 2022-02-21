@@ -122,11 +122,7 @@
     flex-direction: column;
     width: 60%;
     align-items: center;
-    margin: 0 auto;
-  }
-
-  .illustration-sec-1 > img {
-    width: 100%;
+    margin: 40px auto;
   }
 
   .illustration-grid-sec {
