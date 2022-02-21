@@ -8,3 +8,45 @@
 .main-container {
   margin-top: 100px;
 }
+
+.intro {
+  padding-top: 70px;
+  text-align: center;
+  width: 70%;
+  margin: 0 auto;
+}
+
+.intro > p {
+  font-size: 40px;
+  font-weight: 500;
+}
+
+.intro > div {
+  margin-top: 25px;
+  font-size: 25px;
+}
+
+.get-started-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  border-radius: 40px;
+  background-color: #6d7d89;
+  font-size: 20px;
+  text-decoration: none;
+  width: 250px;
+  margin-top: 40px;
+  margin-left: auto;
+  margin-right: auto;
+  color: #ffffff;
+}
+
+.get-started-btn:hover {
+  background-color: #6b69f8;
+}
+
+.illustration-sec-1 {
+  display: flex;
+  justify-content: space-around;
+}
