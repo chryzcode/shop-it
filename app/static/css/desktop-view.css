@@ -71,4 +71,31 @@
     grid-gap: 30px;
     padding: 50px;
   }
+
+  .company-socials > span > a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ccc;
+    background-color: #6b69f8;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 1px solid #ccc;
+    text-decoration: none;
+  }
+
+  .illustration-container {
+    width: 300px;
+    height: 300px;
+    margin: 0 auto;
+  }
+
+  .illustration-container > img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
 }

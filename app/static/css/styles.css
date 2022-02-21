@@ -30,12 +30,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  padding: 15px;
   border-radius: 40px;
   background-color: #6d7d89;
   font-size: 20px;
   text-decoration: none;
-  width: 250px;
+  width: 180px;
   margin-top: 40px;
   margin-left: auto;
   margin-right: auto;
@@ -58,19 +58,7 @@
   margin: 20px 0;
 }
 
-.illustration-container {
-  width: 300px;
-  height: 300px;
-  margin: 0 auto;
-}
 
-.illustration-container > img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-}
 
 .illustration-grid-content {
   padding: 50px;
@@ -78,9 +66,9 @@
 }
 
 .payment-illustration-sec > p {
-    font-size: 25px;
-    margin: 20px 0;
-  }
+  font-size: 25px;
+  margin: 20px 0;
+}
 
 .payment-illustration-content {
   padding: 50px;
@@ -94,102 +82,89 @@
   font-size: 25px;
 }
 
- footer {
-    background-color: #6b69f8;
-  }
+footer {
+  background-color: #6b69f8;
+}
 
 .footer-illustration {
   height: 300px;
-  width: 400px;
+  width: 60%;
   margin: 0 auto;
   display: block;
 }
 
- .footer-info-shopit > a {
-    font-size: 60px;
-  }
+.footer-info-shopit > a {
+  font-size: 60px;
+}
 
-  .footer-info-shopit > div {
-    margin-top: 30px;
-    font-size: 20px;
-    color: #ccc;
-  }
+.footer-info-shopit > div {
+  margin-top: 30px;
+  font-size: 20px;
+  color: #ccc;
+}
 
-  .footer-info-shopit > div > p {
-    margin-top: 10px;
-  }
+.footer-info-shopit > div > p {
+  margin-top: 10px;
+}
 
-  .company-socials {
-    display: flex;
-    align-items: center;
-  }
+.company-socials {
+  display: flex;
+  align-items: center;
+}
 
-  .company-socials > span {
-    margin-right: 50px;
-  }
+.company-socials > span {
+  margin-right: 50px;
+}
 
-  .company-socials > span > a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #ccc;
-    background-color: #6b69f8;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    border: 1px solid #ccc;
-    text-decoration: none;
-  }
+.company-socials > span > a:hover {
+  color: #6b69f8;
+  background-color: #ccc;
+}
 
-   .company-socials > span > a:hover{
-     color:#6b69f8;
-     background-color: #ccc;
-   }
+.footer-info-company > p {
+  font-size: 30px;
+  color: #ccc;
+}
 
-  .footer-info-company > p {
-    font-size: 30px;
-    color: #ccc;
-  }
+.footer-info-company > ul {
+  margin-top: 20px;
+}
 
-  .footer-info-company > ul {
-    margin-top: 20px;
-  }
+.footer-info-company > ul > li {
+  margin: 0 !important;
+  list-style: none;
+}
 
-  .footer-info-company > ul > li {
-    margin: 0 !important;
-    list-style: none;
-  }
+.footer-info-company > ul > li > a {
+  text-decoration: none;
+  color: #ccc;
+}
 
-  .footer-info-company > ul > li > a {
-    text-decoration: none;
-    color: #ccc;
-  }
+.footer-info-company > ul > li > a:hover {
+  text-decoration: none;
+  color: #fff;
+}
 
-  .footer-info-company > ul > li > a:hover {
-    text-decoration: none;
-    color: #fff;
-  }
+.footer-info-account > p {
+  font-size: 30px;
+  color: #ccc;
+}
 
-  .footer-info-account > p {
-    font-size: 30px;
-    color: #ccc;
-  }
+.footer-info-account > ul {
+  margin-top: 20px;
+}
 
-  .footer-info-account > ul {
-    margin-top: 20px;
-  }
+.footer-info-account > ul > li {
+  margin: 0 !important;
+  list-style: none;
+}
 
-  .footer-info-account > ul > li {
-    margin: 0 !important;
-    list-style: none;
-  }
+.footer-info-account > ul > li > a {
+  text-decoration: none;
+  color: #ccc;
+}
 
-  .footer-info-account > ul > li > a {
-    text-decoration: none;
-    color: #ccc;
-  }
-
-  .footer-info-account > ul > li > a:hover {
-    text-decoration: none;
-    color: #fff;
-  }
+.footer-info-account > ul > li > a:hover {
+  text-decoration: none;
+  color: #fff;
+}
