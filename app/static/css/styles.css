@@ -157,6 +157,7 @@
 
   .footer-info-company > ul > li {
     margin: 0 !important;
+    list-style: none;
   }
 
   .footer-info-company > ul > li > a {
@@ -180,6 +181,7 @@
 
   .footer-info-account > ul > li {
     margin: 0 !important;
+    list-style: none;
   }
 
   .footer-info-account > ul > li > a {
