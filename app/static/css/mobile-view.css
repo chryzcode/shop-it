@@ -111,7 +111,7 @@
   }
 
   .illustration-grid-sec {
-    width: 80%;
+    width: 70%;
     margin: 0 auto;
   }
 
@@ -137,5 +137,35 @@
     width: 100%;
     object-fit: contain;
     object-position: center;
+  }
+}
+
+@media all and (max-width: 500px) {
+  .intro > p {
+    font-size: 30px;
+    font-weight: 500;
+  }
+
+  .intro > div {
+    font-size: 20px;
+  }
+
+  .illustration-grid-content {
+    padding: 30px;
+    font-size: 18px;
+  }
+
+  .payment-illustration-content {
+    padding: 30px;
+    font-size: 18px;
+  }
+
+  .outro {
+    width: 70%;
+    font-size: 25px;
+  }
+
+  .footer-info-shopit > a {
+    font-size: 40px;
   }
 }

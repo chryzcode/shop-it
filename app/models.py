@@ -5,10 +5,10 @@ from django.utils.text import slugify
 
 class User(AbstractUser):
     full_name = models.CharField(max_length=300, null=True, blank=True)
-    username = models.CharField(max_length=150, unique=True)
+    store_name = models.CharField(max_length=150, unique=True)
     email = models.EmailField(unique=True)
     avatar = models.ImageField(upload_to="user-profile-images/", null=True)
-    slugified_username = models.SlugField(max_length=255, unique=True)
+    slugified_store_name = models.SlugField(max_length=255, unique=True)
 
     USERNAME_FIELD = "email"
 
@@ -16,15 +16,15 @@ class User(AbstractUser):
 
     def save(self, *args, **kwargs):
         full_name = self.full_name
-        username = self.username
+        store_name = self.store_name
         email = self.email
         avatar = self.avatar
-        if not self.slugified_username:
-            self.slugified_username = slugify(self.username)
+        if not self.slugified_store_name:
+            self.slugified_store_name = slugify(self.store_name)
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.username
+        return self.store_name
 
 
 class Category(models.Model):
