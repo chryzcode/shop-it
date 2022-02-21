@@ -5,6 +5,8 @@ from . import views
 app_name = "app"
 
 urlpatterns = [
+
+    path('', views.home_page, name='home_page'),
     path(
         "<slugified_username>/all-products/",
         views.a_user_all_products,

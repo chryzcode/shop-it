@@ -3,7 +3,8 @@ from django.shortcuts import get_object_or_404, render
 from .models import Category, Product, User
 
 # Create your views here.
-
+def home_page(request):
+    return render(request, "app/home.html")
 
 def a_user_all_products(request, slugified_username):
     user = get_object_or_404(User, slugified_username=slugified_username)

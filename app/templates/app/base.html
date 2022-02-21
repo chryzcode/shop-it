@@ -5,9 +5,24 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/styles.css'%}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
     {% block title %}<title> Shop !t </title>{% endblock %}
 </head>
 <body>
+    <nav>
+        <span>
+            <h3><a href="/">Shop !t</a></h3>
+        </span>
+
+        <ul>
+            <li><a href="">Discover</a></li>
+            <li><a href="">MarketPlace</a></li>
+            <li><a href="">Pricing</a></li>
+            <li><a href="">Login</a></li>
+            <li><a href="">SignUp</a></li>
+        </ul>
+    </nav>
     {% block content %}
     
     {% endblock %}
