@@ -9,16 +9,19 @@
     <link rel="stylesheet" href="{% static 'css/mobile-view.css'%}" />
     <link rel="stylesheet" href="{% static 'css/desktop-view.css'%}" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     <link
       rel="stylesheet"
       href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
       integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
       crossorigin="anonymous"
     />
-    {% block title %}<title>Shop !t</title> {% endblock %}
+    {% block title %}
+    <title>Shop !t</title>
+    {% endblock %}
   </head>
   <body>
-    <nav class="nav">
+    <nav data-aos="fade-down"  data-aos-duration="1500"  class="nav">
       <span>
         <a href="/" class="main-logo">Shop !t</a>
       </span>
@@ -35,5 +38,9 @@
     </nav>
     <div class="main-container">{% block content %} {% endblock %}</div>
     <script src="{% static 'js/script.js' %}"></script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+      AOS.init();
+    </script>
   </body>
 </html>
