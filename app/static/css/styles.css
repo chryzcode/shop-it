@@ -51,6 +51,11 @@
   box-shadow: 0px 20px 30px 0px #ccc;
   border-radius: 8px;
   margin: 30px 0;
+  transition: transform 0.2s;
+}
+
+.an-illustration-grid:hover {
+  transform: scale(1.05);
 }
 
 .an-illustration-grid > p {
