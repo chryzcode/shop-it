@@ -64,8 +64,12 @@
     width: 50%;
     margin: 20px auto;
     box-shadow: 0px 20px 30px 0px #ccc;
-
     align-items: center;
+    transition: transform 2s;
+  }
+
+  .payment-illustration-sec:hover {
+    transform: scale(1.05);
   }
 
   footer > div {

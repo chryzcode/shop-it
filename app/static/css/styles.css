@@ -57,7 +57,7 @@ body {
   box-shadow: 0px 20px 30px 0px #ccc;
   border-radius: 8px;
   margin: 30px 0;
-  transition: transform 0.2s;
+  transition: transform 2s;
 }
 
 .an-illustration-grid:hover {
@@ -73,6 +73,33 @@ body {
 .illustration-grid-content {
   padding: 50px;
   font-size: 20px;
+}
+
+.illustration-image {
+  position: relative;
+  animation: moving-image-animation 13s linear infinite;
+}
+
+@keyframes moving-image-animation {
+  0% {
+    transform: translateZ(0);
+  }
+
+  25% {
+    transform: translateZ(-10px);
+  }
+
+  50% {
+    transform: translateZ(0px);
+  }
+
+  75% {
+    transform: translateZ(10px);
+  }
+
+  100% {
+    transform: translateZ(0);
+  }
 }
 
 .payment-illustration-sec > p {
