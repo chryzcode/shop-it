@@ -29,6 +29,7 @@
   nav > ul > li > a {
     text-decoration: none;
     color: #6d7d89;
+    transition: all 1.5s ease-in-out;
   }
 
   nav > ul > li > a:hover {

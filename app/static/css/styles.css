@@ -44,6 +44,7 @@
 
 .get-started-btn:hover {
   background-color: #6b69f8;
+  transition: all 1.5s ease-in;
 }
 
 .an-illustration-grid {
@@ -125,6 +126,7 @@ footer {
 .company-socials > span > a:hover {
   color: #6b69f8;
   background-color: #ccc;
+  transition: all 1.5s ease-in-out;
 }
 
 .footer-info-company > p {
@@ -149,6 +151,7 @@ footer {
 .footer-info-company > ul > li > a:hover {
   text-decoration: none;
   color: #fff;
+  transition: all 1.5s ease-in-out;
 }
 
 .footer-info-account > p {
@@ -173,4 +176,5 @@ footer {
 .footer-info-account > ul > li > a:hover {
   text-decoration: none;
   color: #fff;
+  transition: all 1.5s ease-in-out;
 }
