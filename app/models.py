@@ -15,16 +15,12 @@ class User(AbstractUser):
     REQUIRED_FIELDS = ["username"]
 
     def save(self, *args, **kwargs):
-        full_name = self.full_name
-        store_name = self.store_name
-        email = self.email
-        avatar = self.avatar
-        if not self.slugified_store_name:
+        if not self.slug:
             self.slugified_store_name = slugify(self.store_name)
-        super().save(*args, **kwargs)
+        return super(Category, self).save(*args, **kwargs)
 
     def __str__(self):
-        return self.store_name
+        return self.email
 
 
 class Category(models.Model):
@@ -41,6 +37,7 @@ class Category(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.name)
+        return super(Category, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.name
@@ -55,11 +52,11 @@ class Product(models.Model):
     )
     name = models.CharField(max_length=255)
     description = models.TextField()
-    image_1 = models.ImageField(upload_to="product-images/", null=True)
-    image_2 = models.ImageField(upload_to="product-images/")
-    image_3 = models.ImageField(upload_to="product-images/")
+    image_1 = models.ImageField(upload_to="product-images/")
+    image_2 = models.ImageField(upload_to="product-images/", null=True, blank=True)
+    image_3 = models.ImageField(upload_to="product-images/", null=True, blank=True)
     slug = models.SlugField(max_length=255, unique=True)
-    price = models.DecimalField(max_digits=4, decimal_places=2)
+    price = models.DecimalField(max_digits=6, decimal_places=2)
     in_stock = models.BooleanField(default=True)
     is_active = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -73,6 +70,7 @@ class Product(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.name)
+        return super(Product, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.name

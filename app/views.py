@@ -25,7 +25,7 @@ def a_user_all_categories(request, slugified_store_name):
 def product_detail(request, slugified_store_name, slug):
     user = get_object_or_404(User, slugified_store_name=slugified_store_name)
     product = get_object_or_404(Product, slug=slug, created_by=user.id, in_stock=True)
-    return render(request, "app/product-details.html", {"product": product})
+    return render(request, "app/product-detail.html", {"product": product})
 
 
 def a_user_category_products(request, slugified_store_name, slug):

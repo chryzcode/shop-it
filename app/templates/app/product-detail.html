@@ -1,8 +1,46 @@
-{% extends 'app/base.html' %}
-{% load static %}
-{% block content %}
-<div style="margin-top: 60px;">
-    <h1>{{ product.name }}</h1>
+{% extends 'app/base.html' %} {% load static %} {% block content %}
+
+<div style="margin-top: 130px">
+  <div class="carousel">
+    <button class="carousel__button carousel__button--left is-hidden">
+      <img src="{% static 'images/icons/arrow-left-solid.svg' %}" alt="" />
+    </button>
+    <div class="carousel__track-container">
+      <ul class="carousel__track">
+        {% if product.image_1 %}
+        <li class="carousel__slide currentSlide">
+          <img class="carousel__image" src="{{product.image_1.url}}" alt="" />
+        </li>
+        {% endif %}
+        {% if product.image_2 %}
+        <li class="carousel__slide ">
+          <img class="carousel__image" src="{{product.image_2.url}}" alt="" />
+        </li>
+        {% endif %}
+        {% if product.image_3 %}
+        <li class="carousel__slide ">
+          <img class="carousel__image" src="{{product.image_3.url}}" alt="" />
+        </li>
+        {% endif %}
+      </ul>
+    </div>
+    <button class="carousel__button carousel__button--right">
+      <img src="{% static 'images/icons/arrow-right-solid.svg' %}" alt="" />
+    </button>
+
+    <div class="carousel__nav">
+      {% if product.image_1 %}
+      <button class="carousel__indicator current-slide"></button>
+      {% endif %}
+      {% if product.image_2 %}
+      <button class="carousel__indicator"></button>
+      {% endif %}
+      {% if product.image_3 %}
+      <button class="carousel__indicator"></button>
+      {% endif %}
+    </div>
+  </div>
+
+  <h1>{{ product.name }}</h1>
 </div>
-{%include 'app/footer.html' %}
-{% endblock %}
+{%include 'app/footer.html' %} {% endblock %}

@@ -20,7 +20,7 @@
     flex-direction: row;
   }
 
-  ul > li {
+  nav > ul > li {
     list-style: none;
     margin: 0 15px;
     font-size: 18px;

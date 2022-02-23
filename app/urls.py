@@ -18,7 +18,7 @@ urlpatterns = [
         name="a_user_all_categories",
     ),
     path(
-        "<slugified_store_name>/product-detail/<slug:slug>/",
+        "<slugified_store_name>/product/<slug:slug>/",
         views.product_detail,
         name="product_detail",
     ),
