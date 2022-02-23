@@ -1,4 +1,7 @@
-{% extends 'app/base.html' %} {% load static %} {% block content %}
+{% extends 'app/base.html' %} {% load static %}{% block title %}<title>
+  Shop !t - {{product.created_by}} {{product.name}}
+</title>
+{% endblock %} {% block content %}
 
 <div class="product-container">
   <div class="carousel">
@@ -65,7 +68,5 @@
     </div>
   </div>
 </div>
-<div>
-  You might also like
-</div>
+<div>You might also like</div>
 {%include 'app/footer.html' %} {% endblock %}
