@@ -1,3 +1,4 @@
+from email.policy import default
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.text import slugify
@@ -20,7 +21,7 @@ class User(AbstractUser):
         return super(Category, self).save(*args, **kwargs)
 
     def __str__(self):
-        return self.email
+        return self.store_name
 
 
 class Category(models.Model):
@@ -43,6 +44,7 @@ class Category(models.Model):
         return self.name
 
 
+
 class Product(models.Model):
     category = models.ForeignKey(
         Category, related_name="product", on_delete=models.CASCADE
@@ -53,8 +55,9 @@ class Product(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
     image_1 = models.ImageField(upload_to="product-images/")
-    image_2 = models.ImageField(upload_to="product-images/", null=True, blank=True)
+    image_2 = models.ImageField(upload_to="product-images/", default='default.jpg')
     image_3 = models.ImageField(upload_to="product-images/", null=True, blank=True)
+    image_4 = models.ImageField(upload_to="product-images/", null=True, blank=True)
     slug = models.SlugField(max_length=255, unique=True)
     price = models.DecimalField(max_digits=6, decimal_places=2)
     in_stock = models.BooleanField(default=True)
@@ -74,3 +77,5 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+

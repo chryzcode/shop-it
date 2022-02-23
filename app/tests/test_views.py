@@ -6,6 +6,7 @@ from app.models import Category, Product, User
 
 class TestViews(TestCase):
     def setUp(self):
+
         self.client = Client()
         self.user = User.objects.create_user(
             username="testuser",
@@ -39,9 +40,11 @@ class TestViews(TestCase):
     def test_a_user_all_products(self):
         response = self.client.get(
             reverse(
-                "app:a_user_all_products",
+                "a_user_all_products",
                 kwargs={"slugified_username": self.user.slugified_username},
             )
         )
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "app/a-user-all-products.html")
+
+ 

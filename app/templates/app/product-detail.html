@@ -1,6 +1,6 @@
 {% extends 'app/base.html' %} {% load static %} {% block content %}
 
-<div class="product-container" >
+<div class="product-container">
   <div class="carousel">
     <button class="carousel__button carousel__button--left is-hidden">
       <img src="{% static 'images/icons/arrow-left-solid.svg' %}" alt="" />
@@ -11,15 +11,17 @@
         <li class="carousel__slide currentSlide">
           <img class="carousel__image" src="{{product.image_1.url}}" alt="" />
         </li>
-        {% endif %}
-        {% if product.image_2 %}
-        <li class="carousel__slide ">
+        {% endif %} {% if product.image_2 %}
+        <li class="carousel__slide">
           <img class="carousel__image" src="{{product.image_2.url}}" alt="" />
         </li>
-        {% endif %}
-        {% if product.image_3 %}
-        <li class="carousel__slide ">
+        {% endif %} {% if product.image_3 %}
+        <li class="carousel__slide">
           <img class="carousel__image" src="{{product.image_3.url}}" alt="" />
+        </li>
+        {% endif %} {% if product.image_4 %}
+        <li class="carousel__slide">
+          <img class="carousel__image" src="{{product.image_4.url}}" alt="" />
         </li>
         {% endif %}
       </ul>
@@ -31,26 +33,39 @@
     <div class="carousel__nav">
       {% if product.image_1 %}
       <button class="carousel__indicator current-slide"></button>
-      {% endif %}
-      {% if product.image_2 %}
+      {% endif %} {% if product.image_2 %}
       <button class="carousel__indicator"></button>
-      {% endif %}
-      {% if product.image_3 %}
+      {% endif %} {% if product.image_3 %}
+      <button class="carousel__indicator"></button>
+      {% endif %} {% if product.image_4 %}
       <button class="carousel__indicator"></button>
       {% endif %}
     </div>
   </div>
 
- <div class="product-info">
+  <div class="product-info">
     <div>
       <h1>{{ product.name }}</h1>
+      <h3>{{product.created_by}}</h3>
       <p>{{product.price}}</p>
-      <div>
-        {{product.description}}
-      </div>
+      <div>{{product.description}}</div>
       <p>{{product.category}}</p>
-    </div>
+      <select id="select">
+        <div class="list">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </div>
+      </select>
 
- </div>
+      <a href="">Add to Basket</a>
+      <p>Review</p>
+    </div>
+  </div>
+</div>
+<div>
+  You might also like
 </div>
 {%include 'app/footer.html' %} {% endblock %}
