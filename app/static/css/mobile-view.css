@@ -144,8 +144,18 @@
     object-fit: contain;
     object-position: center;
   }
+
+  .product-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 100px;
+    margin: 150px auto;
+    padding: 8%;
+    width: 100%;
+  } 
 }
 
+/* text */
 @media all and (max-width: 500px) {
   .intro > p {
     font-size: 30px;
