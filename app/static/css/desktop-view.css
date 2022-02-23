@@ -92,4 +92,13 @@
     object-fit: cover;
     object-position: center;
   }
+
+  .product-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 100px;
+    margin: 150px auto;
+    padding: 8%;
+  }
+  
 }

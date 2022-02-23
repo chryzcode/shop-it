@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="{% static 'css/styles.css'%}" />
+    <link rel="stylesheet" href="{% static 'css/carousel.css'%}" />
     <link rel="stylesheet" href="{% static 'css/mobile-view.css'%}" />
     <link rel="stylesheet" href="{% static 'css/desktop-view.css'%}" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
@@ -38,6 +39,7 @@
     </nav>
     <div class="main-container">{% block content %} {% endblock %}</div>
     <script src="{% static 'js/script.js' %}"></script>
+    <script src="{% static 'js/carousel.js' %}"></script>
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
       AOS.init();

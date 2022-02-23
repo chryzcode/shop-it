@@ -1,6 +1,6 @@
 {% extends 'app/base.html' %} {% load static %} {% block content %}
 
-<div style="margin-top: 130px">
+<div class="product-container" >
   <div class="carousel">
     <button class="carousel__button carousel__button--left is-hidden">
       <img src="{% static 'images/icons/arrow-left-solid.svg' %}" alt="" />
@@ -41,6 +41,16 @@
     </div>
   </div>
 
-  <h1>{{ product.name }}</h1>
+ <div class="product-info">
+    <div>
+      <h1>{{ product.name }}</h1>
+      <p>{{product.price}}</p>
+      <div>
+        {{product.description}}
+      </div>
+      <p>{{product.category}}</p>
+    </div>
+
+ </div>
 </div>
 {%include 'app/footer.html' %} {% endblock %}
