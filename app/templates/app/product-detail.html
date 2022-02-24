@@ -63,10 +63,29 @@
         </div>
       </select>
 
-      <a href="">Add to Basket</a>
+      <a href="" id="add-to-cart-btn" value="{{product.id}}">Add to Basket</a>
       <p>Review</p>
     </div>
   </div>
 </div>
 <div>You might also like</div>
-{%include 'app/footer.html' %} {% endblock %}
+{% include 'app/footer.html' %}
+<script>
+  $(document).on('click', '#add-to-cart-btn', function (e) {
+    e.preventDefault();
+    $.ajax({
+      type:'POST',
+      url: "{% url 'add_to_cart' %}",
+      data: {
+        productid: $('#add-to-cart-btn').val(),
+        csrfmiddlewaretoken: "{{ csrf_token }}",
+        action: 'post'
+      },
+      success: function (json) {
+
+      },
+      error: function (xhr, errmsg, err) {}
+    });
+  })
+</script> 
+{% endblock %}

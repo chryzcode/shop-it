@@ -40,7 +40,7 @@ class TestViews(TestCase):
     def test_a_user_all_products(self):
         response = self.client.get(
             reverse(
-                "a_user_all_products",
+                "app:a_user_all_products",
                 kwargs={"slugified_username": self.user.slugified_username},
             )
         )
