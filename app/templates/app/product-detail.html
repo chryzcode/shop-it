@@ -1,4 +1,4 @@
-{% extends 'app/base.html' %} {% load static %}{% block title %}<title>
+{% extends 'app/store-nav.html' %} {% load static %}{% block title %}<title>
   Shop !t - {{product.created_by}} {{product.name}}
 </title>
 {% endblock %} {% block content %}
@@ -47,7 +47,6 @@
   </div>
 
   <div class="product-info">
-    <div>
       <h1>{{ product.name }}</h1>
       <h3>{{product.created_by}}</h3>
       <p>{{product.price}}</p>
@@ -63,7 +62,9 @@
         </div>
       </select>
 
-      <a href="{% url 'cart:add_to_cart' %}" id="add-to-cart-btn" value="{{product.id}}">Add to Basket</a>
+
+  
+<button type="button" id="add-to-cart-btn" value="{{product.id}}" >Add to cart</button>
       <p>Review</p>
     </div>
   </div>
@@ -71,22 +72,22 @@
 <div>You might also like</div>
 {% include 'app/footer.html' %}
 <script>
-  $(document).on('click', '#add-to-cart-btn', function (e) {
-    e.preventDefault();
+  $(document).on("click", "#add-to-cart-btn", function (e) {
     $.ajax({
-      type:'POST',
+      type: "POST",
       url: "{% url 'cart:add_to_cart' %}",
       data: {
-        productid: $('#add-to-cart-btn').val(),
-        productqty: $('#select option:selected').text(),
+        productid: $("#add-to-cart-btn").val(),
+        productqty: $("#select option:selected").text(),
         csrfmiddlewaretoken: "{{ csrf_token }}",
-        action: 'post'
+        action: "post",
       },
       success: function (json) {
         console.log(json)
+        document.getElementById("product-cart-qty").innerHTML = json.qty
       },
-      error: function (xhr, errmsg, err) {}
+      error: function (xhr, errmsg, err) {},
     });
-  })
-</script> 
+  });
+</script>
 {% endblock %}

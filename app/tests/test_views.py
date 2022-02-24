@@ -32,8 +32,6 @@ class TestViews(TestCase):
             price=1000.00,
             in_stock= True,
             is_active=True,
-            created= datetime.date.today(),
-            updated= datetime.date.today(),
             image_1="image_1.jpg",
             image_2="image_2.jpg",
             image_3="image_3.jpg",
