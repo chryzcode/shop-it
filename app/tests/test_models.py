@@ -1,6 +1,7 @@
+import datetime
+
 from django.test import TestCase
 from django.utils.text import slugify
-import datetime
 
 from app.models import Category, Product, User
 

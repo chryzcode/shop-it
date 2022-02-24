@@ -13,3 +13,6 @@ class Cart():
         if product_id not in self.cart:
             self.cart[product_id] = {'price': float(product.price), 'qty':int(qty)}
         self.session.modified = True
+
+    def __len__(self):
+        return sum(item['qty'] for item in self.cart.values())

@@ -33,7 +33,14 @@
       </span>
 
       <div>
-         <span id="product-cart-qty">1</span> Cart
+           <a href="{% url 'cart:cart_summary' %}">
+               {% with total_qty=cart|length %}
+        <span id="product-cart-qty">
+          {% if total_qty > 0 %} {{ total_qty }} {% else %} 0 {% endif %} 
+        </span>
+        {% endwith %}
+        Cart
+           </a>
       </div>
       <div id="toogle"></div>
     </nav>

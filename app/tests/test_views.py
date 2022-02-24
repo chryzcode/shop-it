@@ -1,6 +1,7 @@
+import datetime
+
 from django.test import Client, TestCase
 from django.urls import reverse
-import datetime
 
 from app.models import Category, Product, User
 
