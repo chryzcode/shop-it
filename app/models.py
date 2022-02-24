@@ -1,4 +1,5 @@
 from email.policy import default
+
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.text import slugify
@@ -16,9 +17,9 @@ class User(AbstractUser):
     REQUIRED_FIELDS = ["username"]
 
     def save(self, *args, **kwargs):
-        if not self.slug:
+        if not self.slugified_store_name:
             self.slugified_store_name = slugify(self.store_name)
-        return super(Category, self).save(*args, **kwargs)
+        return super(User, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.store_name

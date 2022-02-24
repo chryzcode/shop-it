@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.utils.text import slugify
+import datetime
 
 from app.models import Category, Product, User
 
@@ -27,11 +28,10 @@ class TestCategoryModel(TestCase):
             image_1="image_1.jpg",
             image_2="image_2.jpg",
             image_3="image_3.jpg",
+            image_4="image_4.jpg",
             price=1000.00,
             in_stock=True,
             is_active=True,
-            created="2020-01-01",
-            updated="2020-01-01",
         )
 
     def test_category_model(self):
@@ -46,16 +46,14 @@ class TestCategoryModel(TestCase):
         self.assertEqual(self.product.image_1, "image_1.jpg")
         self.assertEqual(self.product.image_2, "image_2.jpg")
         self.assertEqual(self.product.image_3, "image_3.jpg")
+        self.assertEqual(self.product.image_4, "image_4.jpg")
         self.assertEqual(self.product.price, 1000.00)
-        self.assertEqual(self.product.in_stock, True)
         self.assertEqual(self.product.is_active, True)
-        self.assertEqual(self.product.created, "2020-01-01")
-        self.assertEqual(self.product.updated, "2020-01-01")
 
     def test_user_model(self):
         self.assertEqual(self.user.username, "testuser")
         self.assertEqual(self.user.full_name, "Test User Full Name")
         self.assertEqual(self.user.email, "testuser@gmail.com")
         self.assertEqual(self.user.avatar, "avatar.jpg")
-        self.assertEqual(self.user.slugified_username, slugify(self.user.username))
+        self.assertEqual(self.user.slugified_store_name, slugify(self.user.store_name))
         self.assertEqual(self.user.check_password("testuserpassword"), True)

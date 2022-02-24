@@ -2,13 +2,14 @@ from django.shortcuts import get_object_or_404, render
 
 from .models import Category, Product, User
 
+
 # Create your views here.
 def home_page(request):
     return render(request, "app/home.html")
 
 def a_user_all_products(request, slugified_store_name):
     user = get_object_or_404(User, slugified_store_name=slugified_store_name)
-    all_products = Product.objects.filter(created_by=user.id, is_stock=True)
+    all_products = Product.objects.filter(created_by=user.id, in_stock=True)
     return render(
         request, "app/a-user-all-products.html", {"all_products": all_products}
     )

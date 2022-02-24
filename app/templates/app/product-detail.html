@@ -63,7 +63,7 @@
         </div>
       </select>
 
-      <a href="" id="add-to-cart-btn" value="{{product.id}}">Add to Basket</a>
+      <a href="{% url 'cart:add_to_cart' %}" id="add-to-cart-btn" value="{{product.id}}">Add to Basket</a>
       <p>Review</p>
     </div>
   </div>
@@ -75,14 +75,15 @@
     e.preventDefault();
     $.ajax({
       type:'POST',
-      url: "{% url 'add_to_cart' %}",
+      url: "{% url 'cart:add_to_cart' %}",
       data: {
         productid: $('#add-to-cart-btn').val(),
+        productqty: $('#select option:selected').text(),
         csrfmiddlewaretoken: "{{ csrf_token }}",
         action: 'post'
       },
       success: function (json) {
-
+        console.log(json)
       },
       error: function (xhr, errmsg, err) {}
     });
