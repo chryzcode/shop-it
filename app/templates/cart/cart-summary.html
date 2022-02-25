@@ -1,12 +1,12 @@
-{% extends 'app/base.html' %} {% load static %} {% block title %}<title>Shop !t - Cart</title>{% endblock %} {% block content %}
-<div style="margin-top: 150px">
-  <h1>My Cart</h1>
+{% extends 'app/store-nav.html' %} {% load static %} {% block title %}<title>Shop !t - Cart</title>{% endblock %} {% block content %}
+<div class="shopping-cart-container">
+  <h1>My Shopping Cart</h1>
   {% for item in cart %} {% with product=item.product %}
   <div data-index="{{product.id}}" class="product-item">
-      <img class="product-image" src="{{ product.image_1.url }}" alt="" />
-      <span>{{ product.name }}</span>
-      <span>{{product.price}}</span>
-  
+    <img class="product-image" src="{{ product.image_1.url }}" alt="" />
+    <span>{{ product.name }}</span>
+    <span>{{product.price}}</span>
+
     <span>
       <select id="select{{product.id}}">
         <option selected>{{item.qty}}</option>
@@ -19,57 +19,62 @@
         </div>
       </select>
 
-
-      <button type="button" id="update-cart-btn" data-index=""="{{product.id}}" class="update-cart-btn" >Update</button>
-      <button type="button" id="delete-from-cart-btn" data-index=""="{{product.id}}" class="delete-from-cart-btn" >Delete</button>
+      <span>
+        <button type="button" id="update-cart-btn" data-index="" ="{{product.id}}" class="update-cart-btn">
+          Update
+        </button>
+        <button type="button" id="delete-from-cart-btn" data-index="" ="{{product.id}}" class="delete-from-cart-btn">
+          Delete
+        </button>
+      </span>
     </span>
+
+    <span>{{item.total_price}}</span>
   </div>
 
   {% endwith %} {% endfor %}
-  <div>
-      Sub Total: <span id="subtotal">{{cart.get_total_price  }}</span>
-  </div>
+  <div>Sub Total: <span id="subtotal">{{cart.get_total_price }}</span></div>
 </div>
 <script>
-    //add item
+  //add item
 
   $(document).on("click", ".delete-from-cart-btn", function (e) {
-      e.preventDefault()
-      var prodid = $(this).data('index');
+    e.preventDefault();
+    var prodid = $(this).data("index");
     $.ajax({
       type: "POST",
       url: "{% url 'cart:delete_form_cart' %}",
       data: {
-        productid: $(this).data('index'),
+        productid: $(this).data("index"),
         csrfmiddlewaretoken: "{{ csrf_token }}",
         action: "post",
       },
       success: function (json) {
-        $('.product-item[data-index="'+ prodid +'"]').remove()
-        document.getElementById("subtotal").innerHTML = json.subtotal
-        document.getElementById("product-cart-qty").innerHTML = json.qty
+        $('.product-item[data-index="' + prodid + '"]').remove();
+        document.getElementById("subtotal").innerHTML = json.subtotal;
+        document.getElementById("product-cart-qty").innerHTML = json.qty;
       },
       error: function (xhr, errmsg, err) {},
     });
   });
 
-  //update item 
+  //update item
 
   $(document).on("click", ".update-cart-btn", function (e) {
-      e.preventDefault()
-      var prodid = $(this).data('index');
+    e.preventDefault();
+    var prodid = $(this).data("index");
     $.ajax({
       type: "POST",
       url: "{% url 'cart:update_cart' %}",
       data: {
-        productid: $(this).data('index'),
-        productqty: $('#select'+ prodid +' option:selected').text(),
+        productid: $(this).data("index"),
+        productqty: $("#select" + prodid + " option:selected").text(),
         csrfmiddlewaretoken: "{{ csrf_token }}",
         action: "post",
       },
       success: function (json) {
-       document.getElementById("product-cart-qty").innerHTML = json.qty
-       document.getElementById("subtotal").innerHTML = json.subtotal
+        document.getElementById("product-cart-qty").innerHTML = json.qty;
+        document.getElementById("subtotal").innerHTML = json.subtotal;
       },
       error: function (xhr, errmsg, err) {},
     });

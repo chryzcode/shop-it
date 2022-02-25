@@ -216,13 +216,21 @@ footer {
   transition: all 1.5s ease-in-out;
 }
 
+.shopping-cart-container {
+  margin: 130px 5%;
+}
+
+.shopping-cart-container > h1 {
+  text-align: center;
+}
+
 .product-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-direction: row;
   height: auto;
-  margin: 20px 5%;
+  margin: 20px 0;
   box-shadow: 0px 20px 30px 0px #ccc;
   transition: transform 2s;
   padding: 25px 25px;
@@ -231,6 +239,10 @@ footer {
 
 .product-item:hover{
   transform: scale(1.05);
+}
+
+.product-item > * {
+  margin: 15px 20px;
 }
 
 

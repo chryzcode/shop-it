@@ -43,3 +43,12 @@ def update_cart(request):
         carttotal = cart.get_total_price()
         response = JsonResponse({'qty':cartqty, 'subtotal':carttotal})
         return response
+
+# clear all cart
+def clear_all_cart(request):
+    cart = Cart(request)
+    cart.clear()
+    cartqty = cart.__len__()
+    carttotal = cart.get_total_price()
+    response = JsonResponse({'qty':cartqty, 'subtotal':carttotal})
+    return response
