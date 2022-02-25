@@ -252,3 +252,22 @@ footer {
   height: 150px;
   object-fit: cover;
 }
+
+.empty-cart-stylings {
+  margin: 0 auto;
+}
+
+.empty-cart-stylings > p {
+  font-size: 35px;
+  text-align: center;
+  margin: 15px 0;
+  font-weight: 590;
+}
+
+.empty-cart-stylings > img {
+  width: 300px;
+  height: 300px;
+  margin: 0 auto;
+  object-fit: contain;
+  display: block;
+}

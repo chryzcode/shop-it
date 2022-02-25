@@ -1,5 +1,6 @@
 {% extends 'app/store-nav.html' %} {% load static %} {% block title %}<title>Shop !t - Cart</title>{% endblock %} {% block content %}
 <div class="shopping-cart-container">
+  {% if cart %}
   <h1>My Shopping Cart</h1>
   {% for item in cart %} {% with product=item.product %}
   <div data-index="{{product.id}}" class="product-item">
@@ -33,7 +34,25 @@
   </div>
 
   {% endwith %} {% endfor %}
-  <div>Sub Total: <span id="subtotal">{{cart.get_total_price }}</span></div>
+  <div>
+    <span><a href="">Continue Shopping</a></span>
+    <span><a href="{% url 'cart:clear_all_cart' %}">Clear all cart</a></span>
+  </div>
+  
+  <div>
+    <div>Sub Total: <span id="subtotal">{{cart.get_total_price }}</span></div>
+    <div>Grand Total: </div>
+  </div>
+  
+  {% else %}
+
+  <div class="empty-cart-stylings">
+    <p>Your Shopping Cart Is Empty</p>
+    <img src="{% static 'images/illustrations/cart-illustration.png' %}" alt="">
+    <a class="get-started-btn" href="">Let's Shop</a>
+  </div>
+
+  {% endif %}
 </div>
 <script>
   //add item

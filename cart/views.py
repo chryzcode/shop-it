@@ -1,5 +1,5 @@
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 
 from app.models import *
 
@@ -51,4 +51,4 @@ def clear_all_cart(request):
     cartqty = cart.__len__()
     carttotal = cart.get_total_price()
     response = JsonResponse({'qty':cartqty, 'subtotal':carttotal})
-    return response
+    return redirect('/cart/', response)
