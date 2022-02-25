@@ -271,3 +271,113 @@ footer {
   object-fit: contain;
   display: block;
 }
+
+.cart-table-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 50px 50px;
+  flex-wrap: wrap;
+}
+
+.update-cart-btn {
+  background-color: #fff;
+  color: #6b69f8;
+  border: 1px solid #6b69f8;
+  padding: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 1.5s ease-in-out;
+}
+
+.update-cart-btn:hover {
+  background-color: #6b69f8;
+  color: #ffffff;
+  transition: all 1.5s ease-in-out; 
+}
+
+.delete-from-cart-btn {
+  background-color: #fff;
+  color: red;
+  border: 1px solid red;
+  padding: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 1.5s ease-in-out;
+}
+
+.delete-from-cart-btn:hover{
+  background-color: red;
+  color: #ffffff;
+  transition: all 1.5s ease-in-out; 
+}
+
+.cart-table-bottom-contents {
+  color: #6d7d89;
+  font-size: 19px;
+  text-decoration: none;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.cart-table-bottom-contents:hover{
+  color: #6b69f8;
+  transition: all 1.5s ease-in-out; 
+}
+
+.cart-table-bottom-contents > i {
+  padding-left: 5px;
+}
+
+.note-checkout-section {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin: 30px 0;
+}
+
+.cart-expenses {
+  padding: 20px 30px;
+  width: 500px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+div.cart-expenses > div:nth-child(1) {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 22px;
+  flex-wrap: wrap;
+  margin: 20px 0;
+}
+
+div.cart-expenses > div:nth-child(2) {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 24px;
+  flex-wrap: wrap;
+  margin: 20px 0;
+}
+
+.checkout-btn {
+  display:block;
+  padding: 6px;
+  background-color: #6d7d89;
+  color: #ffffff;
+  border: 1px solid #6d7d89;
+  border-radius: 5px;
+  text-decoration: none;
+  text-align: center;
+  width: 100px;
+  margin: 50px auto 4px auto;
+}
+
+.checkout-btn:hover {
+  background-color: #6b69f8;
+  color: #ffffff;
+  transition: all 1.5s ease-in-out; 
+}
+

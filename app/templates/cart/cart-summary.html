@@ -20,35 +20,49 @@
         </div>
       </select>
 
-      <span>
-        <button type="button" id="update-cart-btn" data-index="" ="{{product.id}}" class="update-cart-btn">
-          Update
-        </button>
-        <button type="button" id="delete-from-cart-btn" data-index="" ="{{product.id}}" class="delete-from-cart-btn">
-          Delete
-        </button>
-      </span>
+      <button type="button" id="update-cart-btn" data-index="" ="{{product.id}}" class="update-cart-btn">
+        <i class="far fa-edit"></i>Update
+      </button>
     </span>
 
     <span>{{item.total_price}}</span>
+    <button type="button" id="delete-from-cart-btn" data-index="" ="{{product.id}}" class="delete-from-cart-btn">
+      <i class="fas fa-trash-alt"></i>Delete
+    </button>
   </div>
 
   {% endwith %} {% endfor %}
-  <div>
-    <span><a href="">Continue Shopping</a></span>
-    <span><a href="{% url 'cart:clear_all_cart' %}">Clear all cart</a></span>
+  <div class="cart-table-bottom">
+    <span
+      ><a href="" class="cart-table-bottom-contents">Continue Shopping<i class="far fa-angle-double-right"></i></a
+    ></span>
+    <span
+      ><a href="{% url 'cart:clear_all_cart' %}" class="cart-table-bottom-contents"
+        >Clear cart<i class="fas fa-trash-alt"></i></a
+    ></span>
   </div>
-  
-  <div>
-    <div>Sub Total: <span id="subtotal">{{cart.get_total_price }}</span></div>
-    <div>Grand Total: </div>
+
+  <div class="note-checkout-section">
+    <div>
+      <h3>Note</h3>
+    </div>
+
+    <div class="cart-expenses">
+      <div>
+        <span>Sub Total:</span>
+        <span id="subtotal">{{cart.get_total_price }}</span>
+      </div>
+      <div>Grand Total:</div>
+      <span> </span>
+      <a href="" class="checkout-btn">CheckOut</a>
+    </div>
   </div>
-  
+
   {% else %}
 
   <div class="empty-cart-stylings">
     <p>Your Shopping Cart Is Empty</p>
-    <img src="{% static 'images/illustrations/cart-illustration.png' %}" alt="">
+    <img src="{% static 'images/illustrations/cart-illustration.png' %}" alt="" />
     <a class="get-started-btn" href="">Let's Shop</a>
   </div>
 
