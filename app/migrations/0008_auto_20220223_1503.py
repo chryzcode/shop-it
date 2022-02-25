@@ -6,16 +6,16 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('app', '0007_alter_product_order_count_options'),
+        ("app", "0007_alter_product_order_count_options"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='product',
-            name='order_count',
+            model_name="product",
+            name="order_count",
             field=models.IntegerField(default=1),
         ),
         migrations.DeleteModel(
-            name='Product_Order_Count',
+            name="Product_Order_Count",
         ),
     ]

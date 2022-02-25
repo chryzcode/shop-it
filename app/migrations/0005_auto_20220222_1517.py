@@ -7,29 +7,31 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('app', '0004_user_username'),
+        ("app", "0004_user_username"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='product',
-            name='image_1',
-            field=models.ImageField(default=django.utils.timezone.now, upload_to='product-images/'),
+            model_name="product",
+            name="image_1",
+            field=models.ImageField(
+                default=django.utils.timezone.now, upload_to="product-images/"
+            ),
             preserve_default=False,
         ),
         migrations.AlterField(
-            model_name='product',
-            name='image_2',
-            field=models.ImageField(blank=True, null=True, upload_to='product-images/'),
+            model_name="product",
+            name="image_2",
+            field=models.ImageField(blank=True, null=True, upload_to="product-images/"),
         ),
         migrations.AlterField(
-            model_name='product',
-            name='image_3',
-            field=models.ImageField(blank=True, null=True, upload_to='product-images/'),
+            model_name="product",
+            name="image_3",
+            field=models.ImageField(blank=True, null=True, upload_to="product-images/"),
         ),
         migrations.AlterField(
-            model_name='product',
-            name='price',
+            model_name="product",
+            name="price",
             field=models.DecimalField(decimal_places=2, max_digits=6),
         ),
     ]

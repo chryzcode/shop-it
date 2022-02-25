@@ -5,8 +5,7 @@ from . import views
 app_name = "app"
 
 urlpatterns = [
-
-    path('', views.home_page, name='home_page'),
+    path("", views.home_page, name="home_page"),
     path(
         "<slugified_store_name>/all-products/",
         views.a_user_all_products,

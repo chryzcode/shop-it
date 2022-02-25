@@ -27,7 +27,6 @@ class TestTemplates(TestCase):
         print(html)
         self.assertTrue(response.status_code, 200)
 
-
     def test_view_function(self):
         request = self.factory.get(
             reverse(

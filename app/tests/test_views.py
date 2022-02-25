@@ -31,7 +31,7 @@ class TestViews(TestCase):
             name="Test Product",
             description="Test Product Description",
             price=1000.00,
-            in_stock= True,
+            in_stock=True,
             is_active=True,
             image_1="image_1.jpg",
             image_2="image_2.jpg",
@@ -48,5 +48,3 @@ class TestViews(TestCase):
         )
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "app/a-user-all-products.html")
-
- 

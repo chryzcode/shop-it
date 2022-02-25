@@ -6,12 +6,15 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('app', '0006_product_order_count'),
+        ("app", "0006_product_order_count"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='product_order_count',
-            options={'ordering': ('-order_count',), 'verbose_name_plural': 'Product Order Counts'},
+            name="product_order_count",
+            options={
+                "ordering": ("-order_count",),
+                "verbose_name_plural": "Product Order Counts",
+            },
         ),
     ]

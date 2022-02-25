@@ -6,18 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('app', '0009_remove_product_order_count'),
+        ("app", "0009_remove_product_order_count"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='product',
-            name='image_4',
-            field=models.ImageField(blank=True, null=True, upload_to='product-images/'),
+            model_name="product",
+            name="image_4",
+            field=models.ImageField(blank=True, null=True, upload_to="product-images/"),
         ),
         migrations.AlterField(
-            model_name='product',
-            name='image_2',
-            field=models.ImageField(default='default.jpg', upload_to='product-images/'),
+            model_name="product",
+            name="image_2",
+            field=models.ImageField(default="default.jpg", upload_to="product-images/"),
         ),
     ]
