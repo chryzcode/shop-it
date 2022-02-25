@@ -2,13 +2,12 @@
 <div style="margin-top: 150px">
   <h1>My Cart</h1>
   {% for item in cart %} {% with product=item.product %}
-  <a href="" data-index="{{product.id}}" class="product-item">
-    <div>
-      <img src="{{ product.image_1.url }}" alt="" />
-      <p>{{ product.name }}</p>
-      <p>{{product.price}}</p>
-    </div>
-    <div>
+  <div data-index="{{product.id}}" class="product-item">
+      <img class="product-image" src="{{ product.image_1.url }}" alt="" />
+      <span>{{ product.name }}</span>
+      <span>{{product.price}}</span>
+  
+    <span>
       <select id="select{{product.id}}">
         <option selected>{{item.qty}}</option>
         <div class="list">
@@ -23,8 +22,8 @@
 
       <button type="button" id="update-cart-btn" data-index=""="{{product.id}}" class="update-cart-btn" >Update</button>
       <button type="button" id="delete-from-cart-btn" data-index=""="{{product.id}}" class="delete-from-cart-btn" >Delete</button>
-    </div>
-  </a>
+    </span>
+  </div>
 
   {% endwith %} {% endfor %}
   <div>

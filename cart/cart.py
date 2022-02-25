@@ -13,14 +13,14 @@ class Cart:
 
     def add(self, product, qty):
         product_id = str(product.id)
-        if product_id not in self.cart:
+        if product_id in self.cart:
             self.cart[product_id]['qty'] = qty
         else:
             self.cart[product_id] = {"price": str(product.price), "qty": int(qty)}
         self.save()
         
 
-    def __itr__(self):
+    def __iter__(self):
         product_ids = self.cart.keys()
         products = Product.objects.filter(id__in=product_ids, in_stock=True)
         cart = self.cart.copy()
@@ -30,7 +30,7 @@ class Cart:
 
         for item in cart.values():
             item['price'] = Decimal(item['price'])
-            item['total_price'] = item['price'] *item['qty']
+            item['total_price'] = item['price'] * item['qty']
             yield item           
 
     def __len__(self):
