@@ -1,5 +1,7 @@
-from app.models import Product
 from decimal import Decimal
+
+from app.models import Product
+
 
 class Cart:
     def __init__(self, request):
