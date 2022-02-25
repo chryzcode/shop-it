@@ -1,5 +1,4 @@
-from email.policy import default
-
+from django.urls import reverse
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.text import slugify
@@ -44,6 +43,8 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+    
+
 
 class Product(models.Model):
     category = models.ForeignKey(
@@ -74,6 +75,9 @@ class Product(models.Model):
         if not self.slug:
             self.slug = slugify(self.name)
         return super(Product, self).save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse("app:product_detail", kwargs={"slug": self.slug, "slugified_store_name": self.created_by.slugified_store_name})
 
     def __str__(self):
         return self.name

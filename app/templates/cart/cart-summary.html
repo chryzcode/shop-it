@@ -5,7 +5,7 @@
   {% for item in cart %} {% with product=item.product %}
   <div data-index="{{product.id}}" class="product-item">
     <img class="product-image" src="{{ product.image_1.url }}" alt="" />
-    <span>{{ product.name }}</span>
+    <span><a href="{{product.get_absolute_url}}">{{ product.name }}</a></span>
     <span>{{product.price}}</span>
 
     <span>
