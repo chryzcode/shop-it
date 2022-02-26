@@ -112,7 +112,7 @@
       success: function (json) {
         document.getElementById("product-cart-qty").innerHTML = json.qty;
         document.getElementById("subtotal").innerHTML = json.subtotal;
-        document.getElementById("item_total_price").innerHTML = json.productprice;
+        document.getElementById("item_total_price").innerHTML = json.cartproqty;
       },
       error: function (xhr, errmsg, err) {},
     });
