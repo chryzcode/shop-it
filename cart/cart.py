@@ -43,8 +43,8 @@ class Cart:
     #return the sum of an item quantity 
     def get_product_qty(self, product):
         product_id = str(product)
-        if product_id in self.cart:
-          return self.cart[product_id]['qty'] * Decimal(self.cart[product_id]['price'])
+        if product_id in self.item:
+          return self.item[product_id]['qty'] * Decimal(self.item[product_id]['price'])
 
 
  

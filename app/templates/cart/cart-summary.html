@@ -25,7 +25,9 @@
       </button>
     </span>
 
-    <span id="item_total_price" data-index="{{product.id}}">{{item.total_price}}</span>
+
+    <span id="item_total_price">{{item.total_price}}</span>
+
     <button type="button" id="delete-from-cart-btn" data-index="{{product.id}}" class="delete-from-cart-btn">
       <i class="fas fa-trash-alt"></i>Delete
     </button>
@@ -104,15 +106,15 @@
       data: {
         productid: $(this).data("index"),
         productqty: $("#select" + prodid + " option:selected").text(),
-        itemqty: $("#select" + prodid + " option:selected").text(),
         csrfmiddlewaretoken: "{{ csrf_token }}",
         action: "post",
-        item_total_price: $("#item_total_price").text(),
       },
       success: function (json) {
         document.getElementById("product-cart-qty").innerHTML = json.qty;
         document.getElementById("subtotal").innerHTML = json.subtotal;
         document.getElementById("item_total_price").innerHTML = json.cartproqty;
+        console.log(json.cartproqty)
+        console.log(prodid)
       },
       error: function (xhr, errmsg, err) {},
     });
