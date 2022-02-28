@@ -1,3 +1,5 @@
+from importlib import import_module
+from django.conf import settings
 from django.http import HttpRequest
 from django.test import RequestFactory, TestCase
 from django.urls import reverse
@@ -27,14 +29,22 @@ class TestTemplates(TestCase):
         print(html)
         self.assertTrue(response.status_code, 200)
 
-    def test_view_function(self):
-        request = self.factory.get(
-            reverse(
-                "app:a_user_all_products",
-                kwargs={"slugified_store_name": slugify(self.user.store_name)},
-            )
-        )
-        response = a_user_all_products(request, slugify(self.user.store_name))
-        html = response.content.decode("utf8")
-        print(html)
+    # def test_a_user_all_products(self):
+    #     request = self.factory.get(
+    #         reverse(
+    #             "app:a_user_all_products",
+    #             kwargs={"slugified_store_name": slugify(self.user.store_name)},
+    #         )
+    #     )
+    #     response = a_user_all_products(request, slugify(self.user.store_name))
+    #     html = response.content.decode("utf8")
+    #     print(html)
+    #     self.assertTrue(response.status_code, 200)
+
+    def test_homepage(self):
+        request = self.factory.get(reverse("app:home_page"))
+        engine = import_module(settings.SESSION_ENGINE)
+        request.session = engine.SessionStore()
+        response = home_page(request)
         self.assertTrue(response.status_code, 200)
+

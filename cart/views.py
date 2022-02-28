@@ -1,10 +1,12 @@
+from decimal import Decimal
+
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404, render, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 
 from app.models import *
 
 from .cart import *
-from decimal import Decimal
+
 
 # Create your views here.
 def cart_summary(request):
