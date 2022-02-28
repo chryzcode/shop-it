@@ -26,7 +26,7 @@
     </span>
 
 
-    <span id="item_total_price">{{item.total_price}}</span>
+    <span id="item_total_price{{product.id}}">{{item.total_price}}</span>
 
     <button type="button" id="delete-from-cart-btn" data-index="{{product.id}}" class="delete-from-cart-btn">
       <i class="fas fa-trash-alt"></i>Delete
@@ -112,7 +112,7 @@
       success: function (json) {
         document.getElementById("product-cart-qty").innerHTML = json.qty;
         document.getElementById("subtotal").innerHTML = json.subtotal;
-        document.getElementById("item_total_price").innerHTML = json.cartproqty;
+        document.getElementById("item_total_price"+prodid).innerHTML = json.cartproqty;
         console.log(json.cartproqty)
         console.log(prodid)
       },
