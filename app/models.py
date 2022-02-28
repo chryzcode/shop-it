@@ -61,11 +61,10 @@ class Product(models.Model):
     slug = models.SlugField(max_length=255, unique=True)
     price = models.DecimalField(max_digits=6, decimal_places=2)
     in_stock = models.BooleanField(default=True)
-    is_active = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now_add=True)
     category = models.ForeignKey(Category, related_name="categoty", on_delete=models.CASCADE)
-
+    availability = models.IntegerField(default=1)
     # pulral for the table name in the admin page
     class Meta:
         verbose_name_plural = "Products"
@@ -74,6 +73,8 @@ class Product(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.name)
+        if self.availability < 1:
+            self.in_stock= False
         return super(Product, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
