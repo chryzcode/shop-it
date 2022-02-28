@@ -409,3 +409,16 @@ select {
 .cart-btn > * {
   padding: 6px;
 }
+
+.out-of-stock {
+  cursor: not-allowed;
+  background-color: #ffffff;
+  color: red;
+  border: 1px solid red;
+}
+
+.out-of-stock:hover {
+  background-color: red;
+  color: #ffffff;
+  transition: all 1.5s ease-in-out;
+}

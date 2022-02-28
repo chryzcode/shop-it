@@ -52,26 +52,42 @@
       <p>{{product.category}}</p>
       <a href="">{{product.created_by}}</a>
       <p>{{product.price}}</p>
+      <p>Availability: {{product.availability}}</p>
       <div>{{product.description}}</div>
+      {% if product.availability > 0 %}
       <select id="select">
         <div class="list">
           <option value="0">0</option>
           <option value="1">1</option>
+           {% if product.availability > 2 %}
           <option value="2">2</option>
+          {% endif %} {% if product.availability > 3 %}
           <option value="3">3</option>
+          {% endif %} {% if product.availability > 4 %}
           <option value="4">4</option>
+          {% endif %} {% if product.availability > 5 %}
           <option value="5">5</option>
+          {% endif %}
         </div>
       </select>
-
-
   
-<button type="button" id="add-to-cart-btn" value="{{product.id}}" class="update-cart-btn">Add to cart</button>
+    <button type="button" id="add-to-cart-btn" value="{{product.id}}" class="update-cart-btn">Add to cart</button>
+    {% else %}
+    <button type="button" id="add-to-cart-btn" value="{{product.id}}" class="update-cart-btn out-of-stock">Out of stock</button>
+    {% endif %}
       <p>Review</p>
     </div>
   </div>
 </div>
+{% if category_product %}
 <div>You might also like</div>
+{% for product in category_product %}
+  <div>
+    {{ product.name }}
+  </div>
+  {% endfor %}
+{% endif %}
+
 {% include 'app/footer.html' %}
 <script>
   $(document).on("click", "#add-to-cart-btn", function (e) {
