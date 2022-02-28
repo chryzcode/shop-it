@@ -44,14 +44,9 @@ def update_cart(request):
         carttotal = cart.get_total_price()   
         a_product_price = Product.objects.get(id=product_id).price
         cartproductqty = item_qty * Decimal(a_product_price )
-        print(cartproductqty)
-        print(product_id)
-        print(a_product_price)
-        print(item_qty)
         response = JsonResponse({'qty':cartqty, 'subtotal':carttotal, 'cartproqty':cartproductqty, 'productprice':a_product_price})
         return response
 
-# clear all cart
 def clear_all_cart(request):
     cart = Cart(request)
     cart.clear()
