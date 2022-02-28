@@ -97,7 +97,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: 100px;
-    margin: 150px auto;
-    padding: 8%;
+    margin: 0px auto;
+    padding: 5% 8% 5% 8%;
   } 
 }

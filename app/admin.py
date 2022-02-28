@@ -26,7 +26,6 @@ class ProductAdmin(admin.ModelAdmin):
         "image_1",
         "image_2",
         "image_3",
-        "description",
     ]
     list_filter = ["in_stock", "is_active"]
     list_editable = ["price", "in_stock"]

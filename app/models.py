@@ -1,3 +1,4 @@
+from unicodedata import category
 from django.urls import reverse
 from django.contrib.auth.models import AbstractUser
 from django.db import models
@@ -47,9 +48,6 @@ class Category(models.Model):
 
 
 class Product(models.Model):
-    category = models.ForeignKey(
-        Category, related_name="product", on_delete=models.CASCADE
-    )
     created_by = models.ForeignKey(
         User, related_name="product_creator", on_delete=models.CASCADE
     )
@@ -65,6 +63,7 @@ class Product(models.Model):
     is_active = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now_add=True)
+    category = models.ForeignKey(Category, related_name="categoty", on_delete=models.CASCADE)
 
     # pulral for the table name in the admin page
     class Meta:

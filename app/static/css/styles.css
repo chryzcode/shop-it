@@ -381,3 +381,16 @@ div.cart-expenses > div:nth-child(2) {
   transition: all 1.5s ease-in-out; 
 }
 
+.product-info > * {
+  margin: 6px 0;
+}
+
+.product-info > p {
+  font-size: 20px;
+}
+
+select {
+  outline: none;
+  border: 1px solid #6d7d89;
+  padding: 5px;
+}
