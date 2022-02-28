@@ -32,16 +32,7 @@
         <a href="/" class="main-logo">Shop !t</a>
       </span>
 
-      <div>
-           <a href="{% url 'cart:cart_summary' %}">
-               {% with total_qty=cart|length %}
-        <span id="product-cart-qty">
-          {% if total_qty > 0 %} {{ total_qty }} {% else %} 0 {% endif %} 
-        </span>
-        {% endwith %}
-        Cart
-           </a>
-      </div>
+      
       <div id="toogle"></div>
     </nav>
     <div class="main-container">{% block content %} {% endblock %}</div>
