@@ -1,11 +1,9 @@
-from itertools import product
-from unicodedata import category
-
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
 
+from ckeditor.fields import RichTextField
 
 class User(AbstractUser):
     full_name = models.CharField(max_length=300, null=True, blank=True)
@@ -70,7 +68,10 @@ class Product(models.Model):
     updated = models.DateTimeField(auto_now_add=True)
     category = models.ForeignKey(Category, related_name="category", on_delete=models.CASCADE)
     availability = models.IntegerField(default=1)
-    product_details = models.TextField(null=True, blank=True)
+    product_details =  RichTextField(null=True, blank=True)
+    product_unit = models.ForeignKey(ProductUnit, related_name="product_unit", on_delete=models.CASCADE, null=True, blank=True)
+    discount_price = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
+
     # pulral for the table name in the admin page
     class Meta:
         verbose_name_plural = "Products"

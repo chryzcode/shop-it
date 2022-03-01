@@ -1,8 +1,8 @@
-from unicodedata import category
+
 from django.shortcuts import get_object_or_404, redirect, render
 from .forms import *
 
-from .models import Category, Product, User
+from .models import *
 
 
 # Create your views here.
@@ -48,6 +48,7 @@ def a_user_category_products(request, slugified_store_name, slug):
 def create_product(request):
     form = ProductForm
     categories = Category.objects.filter(created_by=request.user.id)
+    product_unit = ProductUnit.objects.all()
     if request.method == "POST":
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
