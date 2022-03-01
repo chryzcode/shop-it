@@ -32,12 +32,11 @@
         <a href="/" class="main-logo">Shop !t</a>
       </span>
 
-      <span >
-  <a href="{% url 'cart:cart_summary' %}" class="cart-btn">
-    {% with total_qty=cart|length %}
-  <span id="product-cart-qty">
-  {% if total_qty > 0 %} {{ total_qty }} {% else %} 0 {% endif %} 
-</span>{% endwith %}<i class="fas fa-shopping-cart"></i></a></span>
+      <span>
+        <a href="{% url 'cart:cart_summary' %}" class="cart-btn">
+          {% with total_qty=cart|length %}
+          <span id="product-cart-qty"> {% if total_qty > 0 %} {{ total_qty }} {% else %} 0 {% endif %} </span>{% endwith %}
+          <i class="fas fa-shopping-cart"></i></a></span>
 
       <div id="toogle"></div>
     </nav>

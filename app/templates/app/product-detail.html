@@ -47,48 +47,57 @@
   </div>
 
   <div class="product-info">
-    
-      <h1>{{ product.name }}</h1>
-      <p>{{product.category}}</p>
-      <a href="">{{product.created_by}}</a>
-      <p>{{product.price}}</p>
-      <p>Availability: {{product.availability}}</p>
-      <div>{{product.description}}</div>
-      {% if product.availability > 0 %}
-      <select id="select">
-        <div class="list">
-          <option value="0">0</option>
-          <option value="1">1</option>
-           {% if product.availability >=  2 %}
-          <option value="2">2</option>
-          {% endif %} {% if product.availability >= 3 %}
-          <option value="3">3</option>
-          {% endif %} {% if product.availability >= 4 %}
-          <option value="4">4</option>
-          {% endif %} {% if product.availability >= 5 %}
-          <option value="5">5</option>
-          {% endif %}
-        </div>
-      </select>
-  
+    <h1>{{ product.name }}</h1>
+    <p>{{product.category}}</p>
+    <a href="">{{product.created_by}}</a>
+    <p>{{product.price}}</p>
+    <p>Availability: {{product.availability}}</p>
+    <div>{{product.description}}</div>
+    {% if product.availability > 0 %}
+    <select id="select">
+      <div class="list">
+        <option value="0">0</option>
+        <option value="1">1</option>
+        {% if product.availability >= 2 %}
+        <option value="2">2</option>
+        {% endif %} {% if product.availability >= 3 %}
+        <option value="3">3</option>
+        {% endif %} {% if product.availability >= 4 %}
+        <option value="4">4</option>
+        {% endif %} {% if product.availability >= 5 %}
+        <option value="5">5</option>
+        {% endif %}
+      </div>
+    </select>
+
     <button type="button" id="add-to-cart-btn" value="{{product.id}}" class="update-cart-btn">Add to cart</button>
     {% else %}
-    <button type="button" id="add-to-cart-btn" value="{{product.id}}" class="update-cart-btn out-of-stock">Out of stock</button>
+    <button type="button" id="add-to-cart-btn" value="{{product.id}}" class="update-cart-btn out-of-stock">
+      Out of stock
+    </button>
     {% endif %}
-      <p>Review</p>
-    </div>
+    <p>Review</p>
   </div>
 </div>
-{% if category_product %}
-<div>You might also like</div>
-{% for product in category_product %}
-  <div class="">
-    {{ product.name }}
-  </div>
-  {% endfor %}
-{% endif %}
 
-{% include 'app/footer.html' %}
+{% if category_product %}
+<div class="related-product-sec">
+  <p>You might also like</p>
+  <div class="related-products-container">
+    {% for product in category_product %}
+    <a class="a-related-container" href="{{product.get_absolute_url}}">
+      <span class="product-image-container">
+        <img src="{{product.image_1.url}}" alt="" />
+      </span>
+      <div class="product-info-container">
+        <p>{{ product.name }}</p>
+        <p>{{ product.price }}</p>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+</div>
+{% endif %} {% include 'app/footer.html' %}
 <script>
   $(document).on("click", "#add-to-cart-btn", function (e) {
     $.ajax({
@@ -101,8 +110,8 @@
         action: "post",
       },
       success: function (json) {
-        console.log(json)
-        document.getElementById("product-cart-qty").innerHTML = json.qty
+        console.log(json);
+        document.getElementById("product-cart-qty").innerHTML = json.qty;
       },
       error: function (xhr, errmsg, err) {},
     });
