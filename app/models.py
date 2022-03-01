@@ -1,3 +1,4 @@
+from itertools import product
 from unicodedata import category
 
 from django.contrib.auth.models import AbstractUser
@@ -45,7 +46,11 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
-    
+class ProductUnit(models.Model):
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
 
 
 class Product(models.Model):
@@ -63,8 +68,9 @@ class Product(models.Model):
     in_stock = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now_add=True)
-    category = models.ForeignKey(Category, related_name="categoty", on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, related_name="category", on_delete=models.CASCADE)
     availability = models.IntegerField(default=1)
+    product_details = models.TextField(null=True, blank=True)
     # pulral for the table name in the admin page
     class Meta:
         verbose_name_plural = "Products"

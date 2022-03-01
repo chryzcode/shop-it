@@ -15,6 +15,7 @@ coverage = "*"
 django-heroku = "*"
 dj-database-url = "*"
 gunicorn = "*"
+django-richtextfield = "*"
 
 [dev-packages]
 

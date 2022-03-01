@@ -1,5 +1,6 @@
 from unicodedata import category
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
+from .forms import *
 
 from .models import Category, Product, User
 
@@ -43,3 +44,16 @@ def a_user_category_products(request, slugified_store_name, slug):
         "app/category-products.html",
         {"category_products": category_products, "category": category},
     )
+
+def create_product(request):
+    form = ProductForm
+    categories = Category.objects.filter(created_by=request.user.id)
+    if request.method == "POST":
+        form = ProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            product = form.save(commit=False)
+            product.created_by = request.user
+            product.save()
+            return redirect('product_detail', slug= product.slug, slugified_store_name=product.created_by.slugified_store_name)
+    context = {'form':form, 'categories':categories}    
+    return render(request, "app/create-product.html", context)
