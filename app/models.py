@@ -69,7 +69,7 @@ class Product(models.Model):
     category = models.ForeignKey(Category, related_name="category", on_delete=models.CASCADE)
     availability = models.IntegerField(default=1)
     product_details =  RichTextField(null=True, blank=True)
-    product_unit = models.ForeignKey(ProductUnit, related_name="product_unit", on_delete=models.CASCADE, null=True, blank=True)
+    product_unit = models.ForeignKey(ProductUnit, related_name="product_unit", on_delete=models.CASCADE)
     discount_price = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
 
     # pulral for the table name in the admin page
