@@ -95,7 +95,7 @@
 
   .product-container {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
     grid-gap: 100px;
     margin: 0px auto;
     padding: 5% 8% 5% 8%;

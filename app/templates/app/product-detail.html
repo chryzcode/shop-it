@@ -49,10 +49,9 @@
   <div class="product-info">
     <h1>{{ product.name }}</h1>
     <p>{{product.category}}</p>
-    <a href="">{{product.created_by}}</a>
-    <p>{{product.price}}</p>
-    <p>Availability: {{product.availability}}</p>
     <div>{{product.description}}</div>
+    <div>Availability: {{product.availability}}</div>
+    <p>{{product.price}}</p>
     {% if product.availability > 0 %}
     <select id="select">
       <div class="list">
