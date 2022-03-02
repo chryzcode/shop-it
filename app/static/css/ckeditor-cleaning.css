@@ -33,3 +33,7 @@ a#cke_25.cke_button.cke_button__anchor.cke_button_off{
 span#cke_31.cke_toolbar,#cke_26.cke_toolbar,#cke_22.cke_toolbar {
   display: none !important;; 
 }
+
+#cke_id_product_details{
+  width: 100% !important;
+}

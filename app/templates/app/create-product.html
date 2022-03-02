@@ -35,17 +35,17 @@
     </span>
   </div>
 
-  <div>
-    <form action="" method="post" enctype="multipart/form-data">
+  <div class="create-product-form-container">
+    <form action="" method="post" enctype="multipart/form-data" class="create-product-form">
       {% csrf_token %}
-      <div>
+      <div class="input-container">
         <label for="name">Product Name</label>
-        <input type="text" name="name" id="name" />
+        <input class="form-control" type="text" name="name" id="name" placeholder="Name of Product"/>
       </div>
 
-      <div>
+      <div class="input-container">
         <label for="category">Product Category</label>
-        <select name="category" id="category">
+        <select class="form-control" name="category" id="category">
           <option value="">Select Category</option>
           {% for category in categories %}
           <option value="{{ category.id }}">{{ category.name }}</option>
@@ -53,12 +53,12 @@
         </select>
       </div>
 
-      <div>
+      <div class="input-container">
         <label for="description">Short Description</label>
-        <textarea name="description" id="description"></textarea>
+        <textarea class="form-control" name="description" id="description" placeholder="Short Description on Project"></textarea>
       </div>
 
-      <div>
+      <div class="input-container">
         {{ form.media }}
         <label for="">{{ form.product_details.label_tag }}</label>
         {{ form.product_details }}
@@ -99,12 +99,12 @@
           <div>
             <p>Product Images</p>
             <div>
-              <label for="image_1">Image 1<span>*</span></label>
+              <label for="image_1">Image 1<span class="form-required">*</span></label>
               <input type="file" name="image_1" id="image_1" />
             </div>
 
             <div>
-              <label for="image_2">Image 2<span>*</span></label>
+              <label for="image_2">Image 2<span class="form-required">*</span></label>
               <input type="file" name="image_2" id="image_2" />
             </div>
 
