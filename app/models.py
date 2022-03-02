@@ -60,7 +60,7 @@ class Product(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
     image_1 = models.ImageField(upload_to="product-images/")
-    image_2 = models.ImageField(upload_to="product-images/", default="default.jpg")
+    image_2 = models.ImageField(upload_to="product-images/")
     image_3 = models.ImageField(upload_to="product-images/", null=True, blank=True)
     image_4 = models.ImageField(upload_to="product-images/", null=True, blank=True)
     slug = models.SlugField(max_length=255, unique=True)

@@ -628,6 +628,18 @@ div.product-info > p:nth-child(2) {
 }
 
 input[type="file" i] {
-  text-indent: -999em;
-  outline: none;
+  padding-top: 8px;
 }
+
+.errorlist > li {
+  color: red;
+  padding: 0;
+  list-style: none;
+
+}
+
+.submit-btn {
+  outline: none;
+  border: 1px ;
+}
+
