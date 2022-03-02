@@ -1,4 +1,4 @@
-{% extends 'app/store-nav.html' %} {% load static %} {% block title %}<title>Shop !t - Cart</title>{% endblock %} {% block content %}
+{% extends 'app/consumer-nav.html' %} {% load static %} {% block title %}<title>Shop !t - Cart</title>{% endblock %} {% block content %}
 <div class="shopping-cart-container">
   {% if cart %}
   <h1>My Shopping Cart</h1>
@@ -6,7 +6,13 @@
   <div data-index="{{product.id}}" class="product-item">
     <img class="product-image" src="{{ product.image_1.url }}" alt="" />
     <span><a href="{{product.get_absolute_url}}">{{ product.name }}</a></span>
-    <span>{{product.price}}</span>
+    <span>
+      {% if product.discount_percentage %}
+      <span>${{product.discount_price}}</span>
+      {% else %}
+      <span>{{product.price}}</span>
+      {% endif %} 
+    </span>
 
     <span>
       <select id="select{{product.id}}">

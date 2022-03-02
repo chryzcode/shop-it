@@ -428,7 +428,6 @@ select {
   margin: 40px 60px;
 }
  .related-product-sec > p {
-  font-size: 30px;
   text-align: center;
   margin: 30px 0;
   color: #6b69f8;
@@ -485,7 +484,19 @@ select {
   color: #6b69f8;
 }
 
-
 div.product-info > p:nth-child(2) {
   color: #6b69f8;
+}
+
+.discount-precentage {
+  background-color: #6b69f84a;
+  color: #6b69f8;
+  padding: 0px 15px;
+  font-size: 15px;
+  border-radius: 5px;
+}
+
+.price-with-discount {
+  font-size: 14px !important;
+  text-decoration: line-through;
 }

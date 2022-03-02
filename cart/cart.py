@@ -46,9 +46,6 @@ class Cart:
         if product_id in self.item:
           return self.item[product_id]['qty'] * Decimal(self.item[product_id]['price'])
 
-
- 
-
     def delete(self, product):
         product_id = str(product)
         if product_id in self.cart:

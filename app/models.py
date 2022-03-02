@@ -87,8 +87,11 @@ class Product(models.Model):
         return super(Product, self).save(*args, **kwargs)
 
     def discount_price(self):
-        price =  Decimal(self.price - (self.price * self.discount_percentage / 100))
-        return price
+        if not self.discount_percentage:
+            return self.price
+        if self.discount_percentage:
+            price =  Decimal(self.price - (self.price * self.discount_percentage / 100))
+            return price
 
     def get_absolute_url(self):
         return reverse("app:product_detail", kwargs={"slug": self.slug, "slugified_store_name": self.created_by.slugified_store_name})
