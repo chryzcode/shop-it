@@ -1,4 +1,4 @@
-{% extends 'app/base.html' %} {% load static %} {% block content %}
+{% extends 'app/users-nav.html' %} {% load static %} {% block content %}
 <div class="create-product-container">
   <div class="store-sidenav">
     <span class="store-sidenav-seg">
@@ -140,7 +140,7 @@
           <p>{{ form.image_4.errors }}</p>
           <input class="form-control" type="file" name="images" id="image_4" placeholder="Click to add image" />
         </div>
-          <button type="submit">Submit</button>
+          <button class="form-btn" type="submit">Create Product</button>
       </div>
       </div>
     </form>

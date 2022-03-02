@@ -638,8 +638,19 @@ input[type="file" i] {
 
 }
 
-.submit-btn {
+.form-btn {
   outline: none;
-  border: 1px ;
+  border: 1px solid #3d5170;
+  border-radius: 8px;
+  padding: 10px 20px;
+  margin-top: 30px;
+  cursor: pointer;
+}
+
+.form-btn:hover {
+  background-color: #6b69f8;
+  color: #fff;
+  border: 0;
+  transition: all 1.5s ease-in-out;
 }
 
