@@ -500,3 +500,23 @@ div.product-info > p:nth-child(2) {
   font-size: 14px !important;
   text-decoration: line-through;
 }
+
+.create-product-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.store-sidenav {
+  border: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
+  overflow: scroll;
+}
+
+.store-sidenav-seg {
+  padding: 25px 20px;
+  border-top: 1px solid #ccc;
+
+}
