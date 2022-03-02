@@ -4,7 +4,7 @@ from django.urls import reverse
 from app.models import Category, Product, User, ProductUnit
 
 
-class TestBasketView(TestCase):
+class TestCartView(TestCase):
     def setUp(self):
         self.client = Client()
         self.user = User.objects.create_user(
