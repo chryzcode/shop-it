@@ -1,7 +1,91 @@
-{% extends 'app/base.html' %}
-{% load static %}
-{% block content %}
+{% extends 'app/base.html' %} {% load static %} {% block content %}
 <div>
-    {{ form }}
+  <form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div>
+      <label for="name">Product Name</label>
+      <input type="text" name="name" id="name" />
+    </div>
+
+    <div>
+      <label for="category">Product Category</label>
+      <select name="category" id="category">
+        <option value="">Select Category</option>
+        {% for category in categories %}
+        <option value="{{ category.id }}">{{ category.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div>
+      <label for="description">Short Description</label>
+      <textarea name="description" id="description"></textarea>
+    </div>
+
+    <div>
+      {{ form.media }}
+      <label for="">{{ form.product_details.label_tag }}</label>
+      {{ form.product_details }}
+    </div>
+
+    <div>
+      <p>Product pricing and quantity</p>
+      <div>
+        <div>
+          <span>
+            <label for="price">Price</label>
+            <input type="number" name="price" id="price" />
+          </span>
+
+          <span>
+            <label for="discount_percentage">Discount Percentage</label>
+            <input type="number" name="discount_percentage" id="discount_percentage" />
+          </span>
+        </div>
+
+        <div>
+          <span>
+            <label for="availability">Product Count</label>
+            <input type="number" name="availability" id="availability" />
+          </span>
+
+          <span>
+            <label for="product_unit">Product Unit</label>
+            <select id="product_unit" name="product_unit">
+              <option value="">Select Unit</option>
+              {% for unit in product_units %}
+              <option value="{{ unit.id }}">{{ unit.name }}</option>
+              {% endfor %}
+            </select>
+          </span>
+        </div>
+
+        <div>
+          <p>Product Images</p>
+          <div>
+            <label for="image_1">Image 1<span>*</span></label>
+            <input type="file" name="image_1" id="image_1" />
+          </div>
+
+          <div>
+            <label for="image_2">Image 2<span>*</span></label>
+            <input type="file" name="image_2" id="image_2" />
+          </div>
+
+          <div>
+            <label for="image_3">Image 3</label>
+            <input type="file" name="image_3" id="image_3" />
+          </div>
+
+          <div>
+            <label for="image_4">Image 4</label>
+            <input type="file" name="image_4" id="image_4" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <button type="submit">Submit</button>
+  </form>
 </div>
+
 {% endblock %}

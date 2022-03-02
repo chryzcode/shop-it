@@ -48,13 +48,13 @@ def a_user_category_products(request, slugified_store_name, slug):
 def create_product(request):
     form = ProductForm
     categories = Category.objects.filter(created_by=request.user.id)
-    product_unit = ProductUnit.objects.all()
+    product_units = ProductUnit.objects.all()
     if request.method == "POST":
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
             product = form.save(commit=False)
             product.created_by = request.user
             product.save()
-            return redirect('product_detail', slug= product.slug, slugified_store_name=product.created_by.slugified_store_name)
-    context = {'form':form, 'categories':categories, 'product_unit':product_unit}    
+            return redirect('app:product_detail', slug= product.slug, slugified_store_name=product.created_by.slugified_store_name)
+    context = {'form':form, 'categories':categories, 'product_units':product_units}    
     return render(request, "app/create-product.html", context)
