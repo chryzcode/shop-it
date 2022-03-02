@@ -1,7 +1,7 @@
 from django.test import TestCase, Client
 from django.urls import reverse
 
-from app.models import Category, Product, User
+from app.models import Category, Product, User, ProductUnit
 
 
 class TestBasketView(TestCase):
@@ -20,6 +20,10 @@ class TestBasketView(TestCase):
             name="Test Category",
             created_by=self.user,
         )
+
+        self.product_unit = ProductUnit.objects.create(
+            name= "pc"
+        )
         
         self.product = Product.objects.create(
             category=self.category,
@@ -28,11 +32,11 @@ class TestBasketView(TestCase):
             description="Test Product Description",
             price=20.00,
             in_stock=True,
-            is_active=True,
             image_1="image_1.jpg",
             image_2="image_2.jpg",
             image_3="image_3.jpg",
             image_4="image_4.jpg",
+            product_unit = self.product_unit
         )
 
         self.product = Product.objects.create(
@@ -42,11 +46,11 @@ class TestBasketView(TestCase):
             description="Test Product Description",
             price=20.00,
             in_stock=True,
-            is_active=True,
             image_1="image_1.jpg",
             image_2="image_2.jpg",
             image_3="image_3.jpg",
             image_4="image_4.jpg",
+            product_unit = self.product_unit
         )
 
         self.product = Product.objects.create(
@@ -56,11 +60,11 @@ class TestBasketView(TestCase):
             description="Test Product Description",
             price=20.00,
             in_stock=True,
-            is_active=True,
             image_1="image_1.jpg",
             image_2="image_2.jpg",
             image_3="image_3.jpg",
             image_4="image_4.jpg",
+            product_unit = self.product_unit
         )
 
         self.client.post(reverse("cart:add_to_cart"), 

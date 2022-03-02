@@ -1,9 +1,10 @@
 import datetime
+from itertools import product
 
 from django.test import TestCase
 from django.utils.text import slugify
 
-from app.models import Category, Product, User
+from app.models import Category, Product, User, ProductUnit
 
 
 class TestCategoryModel(TestCase):
@@ -21,6 +22,10 @@ class TestCategoryModel(TestCase):
             created_by=self.user,
         )
 
+        self.product_unit = ProductUnit.objects.create(
+            name= "pc"
+        )
+
         self.product = Product.objects.create(
             category=self.category,
             created_by=self.user,
@@ -32,7 +37,7 @@ class TestCategoryModel(TestCase):
             image_4="image_4.jpg",
             price=1000.00,
             in_stock=True,
-            is_active=True,
+            product_unit = self.product_unit
         )
 
     def test_category_model(self):
@@ -49,7 +54,6 @@ class TestCategoryModel(TestCase):
         self.assertEqual(self.product.image_3, "image_3.jpg")
         self.assertEqual(self.product.image_4, "image_4.jpg")
         self.assertEqual(self.product.price, 1000.00)
-        self.assertEqual(self.product.is_active, True)
 
     def test_user_model(self):
         self.assertEqual(self.user.username, "testuser")

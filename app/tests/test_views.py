@@ -1,9 +1,10 @@
 import datetime
+from itertools import product
 
 from django.test import Client, TestCase
 from django.urls import reverse
 
-from app.models import Category, Product, User
+from app.models import Category, Product, User, ProductUnit
 
 
 class TestViews(TestCase):
@@ -25,6 +26,10 @@ class TestViews(TestCase):
             created_by=self.user,
         )
 
+        self.product_unit = ProductUnit.objects.create(
+            name= "pc"
+        )
+
         self.product = Product.objects.create(
             category=self.category,
             created_by=self.user,
@@ -32,11 +37,11 @@ class TestViews(TestCase):
             description="Test Product Description",
             price=1000.00,
             in_stock=True,
-            is_active=True,
             image_1="image_1.jpg",
             image_2="image_2.jpg",
             image_3="image_3.jpg",
             image_4="image_4.jpg",
+            product_unit = self.product_unit
         )
 
     def test_a_user_all_products(self):
