@@ -51,7 +51,13 @@
     <p>{{product.category}}</p>
     <div>{{product.description}}</div>
     <div>Availability: {{product.availability}}</div>
-    <p>{{product.price}}</p>
+    <p class="">
+      <span>${{product.discount_price}}</span>
+      {% if product.discount_percentage %}
+      <span class="discount-precentage">{{product.discount_percentage}}%</span>
+      <p class="price-with-discount">{{product.price}}</p>
+      {% endif %}
+    </p>
     {% if product.availability > 0 %}
     <select id="select">
       <div class="list">

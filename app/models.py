@@ -2,6 +2,8 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
+from decimal import Decimal
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 from ckeditor.fields import RichTextField
 
@@ -70,7 +72,7 @@ class Product(models.Model):
     availability = models.IntegerField(default=1)
     product_details =  RichTextField(null=True, blank=True)
     product_unit = models.ForeignKey(ProductUnit, related_name="product_unit", on_delete=models.CASCADE)
-    discount_price = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
+    discount_percentage = models.IntegerField(default=0, null=True, blank=True, validators=[MinValueValidator(0), MaxValueValidator(100)])
 
     # pulral for the table name in the admin page
     class Meta:
@@ -83,6 +85,10 @@ class Product(models.Model):
         if self.availability < 1:
             self.in_stock= False
         return super(Product, self).save(*args, **kwargs)
+
+    def discount_price(self):
+        price =  Decimal(self.price - (self.price * self.discount_percentage / 100))
+        return price
 
     def get_absolute_url(self):
         return reverse("app:product_detail", kwargs={"slug": self.slug, "slugified_store_name": self.created_by.slugified_store_name})
