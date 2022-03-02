@@ -70,7 +70,7 @@ class Product(models.Model):
     updated = models.DateTimeField(auto_now_add=True)
     category = models.ForeignKey(Category, related_name="category", on_delete=models.CASCADE)
     availability = models.IntegerField(default=1)
-    product_details =  RichTextField(null=True, blank=True)
+    product_details =  RichTextField(null=True, blank=True, max_length=300)
     product_unit = models.ForeignKey(ProductUnit, related_name="product_unit", on_delete=models.CASCADE)
     discount_percentage = models.IntegerField(default=0, null=True, blank=True, validators=[MinValueValidator(0), MaxValueValidator(100)])
 

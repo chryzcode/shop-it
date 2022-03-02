@@ -50,7 +50,11 @@
     <h1>{{ product.name }}</h1>
     <p>{{product.category}}</p>
     <div>{{product.description}}</div>
-    <div>Availability: {{product.availability}}</div>
+    {% if product.availability > 1 %}
+    <div>Availability: {{product.availability}} {{product.product_unit}}s</div>
+    {% else %}
+    <div>Availability: {{product.availability}} {{product.product_unit}}</div>
+    {% endif %}
     <p class="">
       {% if product.discount_percentage %}
       <span>${{product.discount_price}}</span>
@@ -83,7 +87,15 @@
       Out of stock
     </button>
     {% endif %}
+    {% if product.product_details %}
+    <div>
+      <h3>Product Details</h3>
+        <p>{{product.product_details|safe}}</p>
+    </div>
+    {% endif %}
     <p>Review</p>
+    </div>
+  
   </div>
 </div>
 
