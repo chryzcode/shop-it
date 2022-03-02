@@ -1,5 +1,6 @@
 from decimal import Decimal
 from itertools import product
+from webbrowser import get
 
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -45,8 +46,8 @@ def update_cart(request):
         cart.update(product=product_id, qty=product_qty, cartitemqty=item_qty)
         cartqty = cart.__len__()
         carttotal = cart.get_total_price()   
-        a_product_price = Product.objects.get(id=product_id).price
-        a_discount_price = Product.objects.get(id=product_id).discount_price()
+        a_product_price = get_object_or_404(Product, id=product_id).price
+        a_discount_price = get_object_or_404(Product, id=product_id).discount_price()
         if Product.objects.get(id=product_id).discount_price() < a_product_price:
             cartproductqty =  item_qty * a_discount_price
         else:

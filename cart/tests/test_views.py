@@ -102,7 +102,7 @@ class TestCartView(TestCase):
 
     def test_cart_update(self):
         response = self.client.post(
-            reverse('cart:update_cart'), {"productid": 2, "productqty": 1, "action": "post"}, xhr=True)
+            reverse('cart:update_cart'), {"productid": 2, "productqty": 1, "cartitemqty": 1, "action": "post"}, xhr=True)
         self.assertEqual(response.json(), {'qty': 2, 'subtotal': '40.00'})
 
     def test_cart_delete(self):
