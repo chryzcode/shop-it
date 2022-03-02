@@ -37,14 +37,17 @@
 
   <div class="create-product-form-container">
     <form action="" method="post" enctype="multipart/form-data" class="create-product-form">
+      <div class="above-create-form">
+        <p>Create Product</p>
+      </div>
       {% csrf_token %}
       <div class="input-container">
-        <label for="name">Product Name</label>
-        <input class="form-control" type="text" name="name" id="name" placeholder="Name of Product"/>
+        <label for="name">Product Name<span class="form-required">*</span></label>
+        <input class="form-control" type="text" name="name" id="name" placeholder="Name of Product" />
       </div>
 
       <div class="input-container">
-        <label for="category">Product Category</label>
+        <label for="category">Product Category<span class="form-required">*</span></label>
         <select class="form-control" name="category" id="category">
           <option value="">Select Category</option>
           {% for category in categories %}
@@ -54,40 +57,45 @@
       </div>
 
       <div class="input-container">
-        <label for="description">Short Description</label>
-        <textarea class="form-control" name="description" id="description" placeholder="Short Description on Project"></textarea>
+        <label for="description">Short Description<span class="form-required">*</span></label>
+        <textarea
+          class="form-control"
+          name="description"
+          id="description"
+          placeholder="Short Description on Project"
+        ></textarea>
       </div>
 
       <div class="input-container">
         {{ form.media }}
-        <label for="">{{ form.product_details.label_tag }}</label>
-        {{ form.product_details }}
+        <label for="">Product Details</label>
+        <div class="product-detail-input">{{ form.product_details }}</div>
       </div>
 
-      <div>
+      <div class="pricing-quantity-seg">
         <p>Product pricing and quantity</p>
         <div>
-          <div>
-            <span>
-              <label for="price">Price</label>
-              <input type="number" name="price" id="price" />
+          <div class="price-section">
+            <span class="input-container">
+              <label for="price">Price<span class="form-required">*</span></label>
+              <input class="form-control" type="number" name="price" id="price" />
             </span>
 
-            <span>
+            <span class="input-container">
               <label for="discount_percentage">Discount Percentage</label>
-              <input type="number" name="discount_percentage" id="discount_percentage" />
+              <input class="form-control" type="number" name="discount_percentage" id="discount_percentage" />
             </span>
           </div>
 
-          <div>
-            <span>
-              <label for="availability">Product Count</label>
-              <input type="number" name="availability" id="availability" />
+          <div class="quantity-section">
+            <span class="input-container">
+              <label for="availability">Product Count<span class="form-required">*</span></label>
+              <input class="form-control" type="number" name="availability" id="availability" />
             </span>
 
-            <span>
-              <label for="product_unit">Product Unit</label>
-              <select id="product_unit" name="product_unit">
+            <span class="input-container">
+              <label for="product_unit">Product Unit<span class="form-required">*</span></label>
+              <select class="form-control" id="product_unit" name="product_unit">
                 <option value="">Select Unit</option>
                 {% for unit in product_units %}
                 <option value="{{ unit.id }}">{{ unit.name }}</option>

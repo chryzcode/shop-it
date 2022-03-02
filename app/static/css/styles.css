@@ -562,6 +562,7 @@ div.product-info > p:nth-child(2) {
 
 .input-container > input {
   height: 40px;
+  display: block;
 }
 
 .input-container > select {
@@ -582,3 +583,45 @@ div.product-info > p:nth-child(2) {
   margin: 10px 0;
   width: 100%;
 }
+
+.product-detail-input {
+  margin: 10px 0;
+}
+
+.form-required{
+  color: red;
+  padding-left: 3px;
+}
+
+.pricing-quantity-seg{
+  box-shadow: 0px 20px 30px 0px #ccc;
+  padding: 30px;
+}
+
+.pricing-quantity-seg > p {
+  margin-bottom: 20px;
+  font-size: 20px;
+  color: #3d5170;
+}
+
+.above-create-form > p {
+  font-size: 25px;
+  color: #3d5170;
+}
+
+.price-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-column-gap: 50px;
+  grid-row-gap: 10px;
+}
+
+
+.quantity-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-column-gap: 50px;
+  grid-row-gap: 10px;
+}
+
+
