@@ -626,8 +626,6 @@ input[type="file" i] {
 }
 
 .form-btn:hover {
-  background-color: #6b69f8;
-  color: #fff;
-  border: 0;
+  color: #6b69f8;
   transition: all 1.5s ease-in-out;
 }
