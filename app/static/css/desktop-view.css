@@ -125,4 +125,10 @@
     display: block;
     margin-right: 10%;
   }
+
+  .cart-icon-container > a > i {
+    color: #6d7d89;
+    font-size: 30px;
+    text-decoration: none;
+  }
 }

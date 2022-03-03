@@ -100,7 +100,7 @@
     transform: translateY(0px) rotate(-45deg);
   }
 
-  .cart-icon-container{
+  .cart-icon-container {
     position: absolute;
     top: 0;
     right: 60px;
@@ -183,6 +183,12 @@
     width: 100%;
     margin: 0 auto;
     display: block;
+  }
+
+  .cart-icon-container > a > i {
+    color: #6d7d89;
+    font-size: 25px;
+    text-decoration: none;
   }
 }
 
