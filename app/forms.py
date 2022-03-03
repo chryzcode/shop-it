@@ -1,6 +1,8 @@
-from django.forms import ModelForm
 from django import forms
-from .models import Product, Category
+from django.forms import ModelForm
+
+from .models import Category, Product
+
 
 class ProductForm(ModelForm):
     class Meta:

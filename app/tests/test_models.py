@@ -4,7 +4,7 @@ from itertools import product
 from django.test import TestCase
 from django.utils.text import slugify
 
-from app.models import Category, Product, User, ProductUnit
+from app.models import Category, Product, ProductUnit, User
 
 
 class TestCategoryModel(TestCase):

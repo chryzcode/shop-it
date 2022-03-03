@@ -1,11 +1,12 @@
+from decimal import Decimal
+
+from ckeditor.fields import RichTextField
 from django.contrib.auth.models import AbstractUser
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
-from decimal import Decimal
-from django.core.validators import MinValueValidator, MaxValueValidator
 
-from ckeditor.fields import RichTextField
 
 class User(AbstractUser):
     full_name = models.CharField(max_length=300, null=True, blank=True)
