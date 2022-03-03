@@ -99,6 +99,19 @@
   #toogle.active::after {
     transform: translateY(0px) rotate(-45deg);
   }
+
+  .cart-icon-container{
+    position: absolute;
+    top: 0;
+    right: 60px;
+    width: 60px;
+    height: 100%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.2s;
+  }
 }
 
 @media all and (max-width: 850px) {

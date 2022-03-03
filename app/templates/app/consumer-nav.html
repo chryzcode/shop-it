@@ -33,11 +33,19 @@
         <a href="/" class="main-logo">{{product.created_by}}</a>
       </span>
 
-      <span>
+      <span class="cart-icon-container">
         <a href="{% url 'cart:cart_summary' %}" class="cart-btn">
           {% with total_qty=cart|length %}
-          <span id="product-cart-qty"> {% if total_qty > 0 %} {{ total_qty }} {% else %} 0 {% endif %} </span>{% endwith %}
-          <i class="fas fa-shopping-cart"></i></a></span>
+          <span id="product-cart-qty">
+            <span class="cart-qty-num">
+              {% if total_qty > 0 %} <div class="cart-qty-num">{{ total_qty }}</div> {% else %} <div class="cart-qty-num">0</div>{% endif %}
+            </span>
+        
+            {% endwith %}
+            </span>
+             <i class="fas fa-shopping-cart"></i>
+          </a>   
+      </span>
 
       <div id="toogle"></div>
     </nav>
