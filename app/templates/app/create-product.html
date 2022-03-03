@@ -1,6 +1,6 @@
 {% extends 'app/users-nav.html' %} {% load static %} {% block content %}
 <div class="create-product-container">
-  <div class="store-sidenav">
+  <div class="store-sidenav" id="store-sidenav">
     <span class="store-sidenav-seg">
       <p>{{request.user.store_name}}</p>
       <ul>
@@ -146,5 +146,4 @@
     </form>
   </div>
 </div>
-
 {% endblock %}

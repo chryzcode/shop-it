@@ -99,5 +99,30 @@
     grid-gap: 100px;
     margin: 0px auto;
     padding: 5% 8% 5% 8%;
-  } 
+  }
+
+  .store-sidenav {
+    display: flex;
+    flex-direction: column;
+    border-radius: 8px;
+    position: fixed;
+    overflow: scroll;
+    height: calc(100vh);
+    background: #fff;
+    will-change: transform;
+    margin-left: 20px;
+    box-shadow: 0 0.125rem 9.375rem rgb(90 97 105 / 10%), 0 0.25rem 0.5rem rgb(90 97 105 / 12%),
+      0 0.9375rem 1.375rem rgb(90 97 105 / 10%), 0 0.4375rem 2.1875rem rgb(165 182 201 / 10%);
+    z-index: 1070;
+    padding-bottom: 90px;
+    min-width: 20%;
+  }
+
+  .create-product-form-container {
+    box-shadow: 0px 20px 30px 0px #ccc;
+    width: calc(70% - 40px);
+    margin-left: auto;
+    display: block;
+    margin-right: 10%;
+  }
 }

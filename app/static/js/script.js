@@ -1,6 +1,9 @@
 const navbar = document.getElementsByTagName("nav");
 const toogle = document.getElementById("toogle");
 const nav_links = document.getElementById("nav-links");
+const here = document.getElementById("test");
+console.log(nav_links);
+console.log(here);
 
 document.onclick = function (e) {
   if (e.target.id == "a-nav-link") {
