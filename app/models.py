@@ -1,31 +1,11 @@
 from decimal import Decimal
 
 from ckeditor.fields import RichTextField
-from django.contrib.auth.models import AbstractUser
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
-
-
-class User(AbstractUser):
-    full_name = models.CharField(max_length=300, null=True, blank=True)
-    store_name = models.CharField(max_length=150, unique=True)
-    email = models.EmailField(unique=True)
-    avatar = models.ImageField(upload_to="user-profile-images/", null=True)
-    slugified_store_name = models.SlugField(max_length=255, unique=True)
-
-    USERNAME_FIELD = "email"
-
-    REQUIRED_FIELDS = ["username"]
-
-    def save(self, *args, **kwargs):
-        if not self.slugified_store_name:
-            self.slugified_store_name = slugify(self.store_name)
-        return super(User, self).save(*args, **kwargs)
-
-    def __str__(self):
-        return self.store_name
+from account.models import User
 
 
 class Category(models.Model):

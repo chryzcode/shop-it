@@ -17,6 +17,7 @@ dj-database-url = "*"
 gunicorn = "*"
 django-richtextfield = "*"
 django-ckeditor = "*"
+django-countries = "*"
 
 [dev-packages]
 
