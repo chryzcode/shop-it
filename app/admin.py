@@ -1,7 +1,6 @@
 from django.contrib import admin
 
-from .models import Category, Product, ProductUnit, User
-
+from .models import Category, Product, ProductUnit
 # Register your models here.
 
 
@@ -30,6 +29,4 @@ class ProductAdmin(admin.ModelAdmin):
     list_editable = ["price", "in_stock"]
     prepopulated_fields = {"slug": ("name",)}
 
-
-admin.site.register(User)
 admin.site.register(ProductUnit)
