@@ -36,3 +36,6 @@ def account_register(request):
                 'token': account_activation_token.make_token(user),
             })
             user.email_user(subject=subject, message=message)
+    else:
+        registerform = RegistrationForm()
+    return render(request, 'account/registration/register.html', {'form':registerform})
