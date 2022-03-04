@@ -1,8 +1,15 @@
-from atexit import register
 from base64 import urlsafe_b64encode
-from email import message
 from django.shortcuts import render, redirect
 from .forms import RegistrationForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.sites.shortcuts import get_current_site
+from django.http import HttpResponse
+from django.template.loader import render_to_string
+from django.utils.encoding import force_bytes, force_text
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from .forms import RegistrationForm
+from .models import User
+from .tokens import account_activation_token
 
 # Create your views here.
 
@@ -25,7 +32,7 @@ def account_register(request):
             message = render_to_string('account/registration/account_activation_email.html', {
                 'user': user,
                 'domain': current_site.domain,
-                'uid': urlsafe_b64encode((force_bytes(user.pk)))
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                 'token': account_activation_token.make_token(user),
             })
             user.email_user(subject=subject, message=message)
