@@ -162,3 +162,6 @@ django_heroku.settings(locals())
 
 LOGIN_REDIRECT_URL = "home_page"
 LOGOUT_REDIRECT_URL = "home_page"
+
+
+PASSWORD_RESET_TIMEOUT = 1800 #30 Mins in Seconds

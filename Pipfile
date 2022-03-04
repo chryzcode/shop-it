@@ -18,6 +18,7 @@ gunicorn = "*"
 django-richtextfield = "*"
 django-ckeditor = "*"
 django-countries = "*"
+six = "*"
 
 [dev-packages]
 
