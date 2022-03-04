@@ -1,13 +1,15 @@
 from base64 import urlsafe_b64encode
+
+from django.conf import settings
 from django.contrib.auth import login
-from django.shortcuts import render, redirect, get_object_or_404
-from .forms import RegistrationForm
-from .models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import EmailMessage
+from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+
 from .forms import RegistrationForm
 from .models import User
 from .tokens import account_activation_token
@@ -36,7 +38,14 @@ def account_register(request):
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                 'token': account_activation_token.make_token(user),
             })
-            user.email_user(subject, message)
+            email =  EmailMessage(
+            subject = subject,
+            message = message,
+            from_email = settings.SENDER_EMAIL,
+            recipient_list=[user.email,],
+            reply_to = user.email,
+        )
+            sent = email.send (fail_silently=False)
             return render(request, 'account/registration/success-page.html')
     return render(request, 'account/registration/register.html', {'form':registerform})
 

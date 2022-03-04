@@ -4,7 +4,6 @@ from django.shortcuts import get_object_or_404, redirect, render
 from .forms import *
 from .models import *
 
-
 # Create your views here.
 
 def custom_error_404(request, exception):

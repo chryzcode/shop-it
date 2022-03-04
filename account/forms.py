@@ -1,8 +1,9 @@
-from django.forms import ModelForm
-from .models import User
 from django import forms
-from .models import User
+from django.forms import ModelForm
 from django.utils.text import slugify
+
+from .models import User
+
 
 class RegistrationForm(ModelForm):
     check = forms.BooleanField(required=True)

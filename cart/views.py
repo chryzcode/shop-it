@@ -1,8 +1,10 @@
 from decimal import Decimal
+
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 
 from app.models import *
+
 from .cart import *
 
 
