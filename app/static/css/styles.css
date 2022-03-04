@@ -670,3 +670,9 @@ button {
 .form-bottom:hover > a {
   color: #6b69f8;
 }
+
+.error-image {
+  width: 100px !important;
+  height: 100px;
+  object-fit: cover;
+}
