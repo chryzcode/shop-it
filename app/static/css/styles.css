@@ -545,6 +545,7 @@ div.product-info > p:nth-child(2) {
 .create-product-form {
   padding: 30px 40px 0 40px;
   width: 100%;
+  margin-bottom: 40px;
 }
 
 .input-container {
@@ -623,20 +624,33 @@ input[type="file" i] {
 
 .errorlist > li {
   color: red;
-  padding: 0;
+  padding: 5px 0;
   list-style: none;
+  font-size: 13px;
+}
+
+.form-btn-container {
+  padding: 20px;
 }
 
 .form-btn {
+  color: #ccc;
   outline: none;
-  border: 1px solid #3d5170;
   border-radius: 8px;
-  padding: 10px 20px;
-  margin-top: 30px;
+  padding: 10px 15px;
   cursor: pointer;
+  text-decoration: none;
+  background-color: #6b69f8;
+}
+
+button{
+  outline: 0;
+  border: 0;
 }
 
 .form-btn:hover {
   color: #6b69f8;
-  transition: all 1.5s ease-in-out;
+  transition: all 1.01s ease-in-out;
+  background-color: #ccc;
 }
+

@@ -1,7 +1,50 @@
-{% extends 'navs/base.html' %}
-{% load static %}
-<div>
-
-</div>
+{% extends 'navs/base.html' %} {% load static %} 
+{% block title %} <title>Shop!t - Sign Up</title> {% endblock %}
 {% block content %}
+<div class="auth-form-contaner">
+  <form action="" method="post">
+    {% csrf_token %}
+    <div class="above-create-form">
+        <p>Sign Up</p>
+      </div>
+
+    <div class="input-container">
+      <label for="store_name">Store Name<span class="form-required">*</span></label>
+      <p>{{ form.store_name.errors }}</p>
+      <input class="form-control" type="text" name="store_name" id="store_name" placeholder="Shop!t Store" />
+    </div>
+
+    <div class="input-container">
+      <label for="full_name">Full Name<span class="form-required">*</span></label>
+      <p>{{ form.full_name.errors }}</p>
+      <input class="form-control" type="text" name="full_name" id="full_name" placeholder="John Doe" />
+    </div>
+
+    <div class="input-container">
+      <label for="email">Email<span class="form-required">*</span></label>
+      <p>{{ form.email.errors }}</p>
+      <input class="form-control" type="text" name="email" id="email" placeholder="johndoe@gmail.com" />
+    </div>
+
+    <div class="input-container">
+      <label for="password">Password<span class="form-required">*</span></label>
+      <p>{{ form.password.errors }}</p>
+      <input class="form-control" type="password" name="password" id="password" placeholder="********" />
+    </div>
+
+    <div class="input-container">
+      <label for="password2">Confirm Password<span class="form-required">*</span></label>
+      <p>{{ form.password2.errors }}</p>
+      <input class="form-control" type="password" name="password2" id="password2" placeholder="********" />
+    </div>
+
+    <div class="input-container">
+      <label for="check">I agree with Terms & Condition<span class="form-required">*</span></label>
+      <p>{{ form.check.errors }}</p>
+      <input type="checkbox" name="check" id="check" />
+    </div>
+
+    <button class="form-btn" type="submit">Sign Up</button>
+  </form>
+</div>
 {% endblock %}

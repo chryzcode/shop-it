@@ -1,4 +1,6 @@
-{% extends 'navs/users-nav.html' %} {% load static %} {% block content %}
+{% extends 'navs/users-nav.html' %} {% load static %} 
+{% block title %} <title>Shop!t - Create Product</title> {% endblock %}
+{% block content %}
 <div class="create-product-container">
   <div class="store-sidenav" id="store-sidenav">
     <span class="store-sidenav-seg">
@@ -140,9 +142,13 @@
           <p>{{ form.image_4.errors }}</p>
           <input class="form-control" type="file" name="images" id="image_4" placeholder="Click to add image" />
         </div>
-          <button class="form-btn" type="submit">Create Product</button>
+        
       </div>
-      </div>
+
+      <div class="form-btn-container">
+        <button class="form-btn" type="submit">Create</button>
+      </div>     
+      </div>      
     </form>
   </div>
 </div>
