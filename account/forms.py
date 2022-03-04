@@ -2,7 +2,7 @@ from django.forms import ModelForm
 from .models import User
 from django import forms
 from .models import User
-
+from django.utils.text import slugify
 
 class RegistrationForm(ModelForm):
     check = forms.BooleanField(required=True)
@@ -33,6 +33,13 @@ class RegistrationForm(ModelForm):
                 'Email is already taken')
         return email
 
+    def clean_store_name(self):
+        store_name = self.cleaned_data['store_name']
+        slugified_store_name = slugify(store_name) 
+        if User.objects.filter(store_name=store_name).exists() or User.objects.filter(slugified_store_name=slugified_store_name).exists():
+            raise forms.ValidationError(
+                'Store name is already taken')
+        return store_name
         
     def __init__(self, *args, **kwargs):
             super(RegistrationForm, self).__init__(*args, **kwargs)

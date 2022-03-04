@@ -643,7 +643,7 @@ input[type="file" i] {
   background-color: #6b69f8;
 }
 
-button{
+button {
   outline: 0;
   border: 0;
 }
@@ -654,3 +654,19 @@ button{
   background-color: #ccc;
 }
 
+.form-bottom {
+  display: block;
+  margin: 20px auto 5px auto;
+}
+
+.form-bottom > a {
+  text-align: center;
+  color: #3d5170;
+  display: flex;
+  justify-content: center;
+  font-size: 13px;
+}
+
+.form-bottom:hover > a {
+  color: #6b69f8;
+}

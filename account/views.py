@@ -1,11 +1,12 @@
 from base64 import urlsafe_b64encode
-from django.shortcuts import render, redirect
+from django.contrib.auth import login
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import RegistrationForm
+from .models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.sites.shortcuts import get_current_site
-from django.http import HttpResponse
 from django.template.loader import render_to_string
-from django.utils.encoding import force_bytes
+from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from .forms import RegistrationForm
 from .models import User
@@ -36,4 +37,21 @@ def account_register(request):
                 'token': account_activation_token.make_token(user),
             })
             user.email_user(subject=subject, message=message)
+            return render(request, 'account/registration/success-page.html')
     return render(request, 'account/registration/register.html', {'form':registerform})
+
+def account_activate(request, uidb64, token):
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = get_object_or_404(User, pk=uid)
+    except:
+        return render(request, 'app/404-page.html')
+
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+        login(request, user)
+    else:
+        return render(request, 'app/404-page.html')
+
+        

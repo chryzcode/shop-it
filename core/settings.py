@@ -165,3 +165,5 @@ LOGOUT_REDIRECT_URL = "home_page"
 
 
 PASSWORD_RESET_TIMEOUT = 1800 #30 Mins in Seconds
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
