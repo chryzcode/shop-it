@@ -1,1 +1,11 @@
-<h1>Yeh!! Your account has been created. check your email, the activation link will be invalud in the next 30 mins</h1>
+{% extends 'navs/base.html' %} {% load static %} {% block title %}<title>Shop !t - Account Created</title> {% endblock %} {% block content %}
+<div class="success-page-container">
+  <div class="success-page-content-container">
+    <p>Your Shop!t account has been created</p>
+    <div class="success-image-container">
+      <img class="success-image" src="{% static 'images/illustrations/success-illustration.png' %}" alt="" />
+    </div>
+    <div>Check your email to activate your account, the activation link will be invalid in the next 30 mins</div>
+  </div>
+</div>
+{% endblock %}

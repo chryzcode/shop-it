@@ -1,9 +1,14 @@
-{% load static %}
-<div>
-  <div>
+{% extends 'navs/base.html' %} {% load static %} {% block title %}<title>Shop !t - 500 Error</title> {% endblock %} {% block content %}
+<div class="error-page-container">
+  <div class="error-page-content-container">
     <p>500</p>
-     <img class="error-image" src="{% static 'images/error_images/500.jpg' %}" alt="">
-    <p>It looks like you are lost</p>
+    <div class="success-image-container">
+      <img class="error-image" src="{% static 'images/error_images/500.png' %}" alt="" />
+    </div>
+    <div class="error-page-content">
+      <p>Ooops... Somthing went wrong</p>
+      <a href="/">Return to Hompage</a>
+    </div>
   </div>
-  <p><a href="/">Return to Hompage</a></p>
 </div>
+{% endblock %}

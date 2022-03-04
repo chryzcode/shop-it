@@ -190,6 +190,16 @@
     font-size: 25px;
     text-decoration: none;
   }
+
+  .error-page-container {
+    width: 80%;
+    margin: 0 auto;
+  }
+  .error-image-container, .success-page-container{
+    width: 90%;
+    height: 90%;
+    margin: 0 auto;
+  }
 }
 
 /* text */
