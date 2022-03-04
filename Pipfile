@@ -19,6 +19,7 @@ django-richtextfield = "*"
 django-ckeditor = "*"
 django-countries = "*"
 six = "*"
+sendgrid-python = "*"
 
 [dev-packages]
 

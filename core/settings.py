@@ -160,10 +160,19 @@ import django_heroku
 
 django_heroku.settings(locals())
 
-LOGIN_REDIRECT_URL = "home_page"
-LOGOUT_REDIRECT_URL = "home_page"
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
 
 
 PASSWORD_RESET_TIMEOUT = 1800 #30 Mins in Seconds
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# EMAIL_HOST = 'smtp.sendgrid.net'
+# EMAIL_HOST_USER = 'apikey'
+# EMAIL_HOST_PASSWORD = config("SENDGRID_API_KEY")
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+
+SENDER_EMAIL =  config("SENDER_EMAIL")
+

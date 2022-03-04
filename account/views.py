@@ -36,7 +36,7 @@ def account_register(request):
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                 'token': account_activation_token.make_token(user),
             })
-            user.email_user(subject=subject, message=message)
+            user.email_user(subject, message)
             return render(request, 'account/registration/success-page.html')
     return render(request, 'account/registration/register.html', {'form':registerform})
 
@@ -51,6 +51,7 @@ def account_activate(request, uidb64, token):
         user.is_active = True
         user.save()
         login(request, user)
+        return redirect('/')
     else:
         return render(request, 'app/404-page.html')
 

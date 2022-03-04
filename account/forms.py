@@ -36,7 +36,7 @@ class RegistrationForm(ModelForm):
     def clean_store_name(self):
         store_name = self.cleaned_data['store_name']
         slugified_store_name = slugify(store_name) 
-        if User.objects.filter(store_name=store_name).exists() or User.objects.filter(slugified_store_name=slugified_store_name).exists():
+        if User.objects.filter(slugified_store_name=slugified_store_name).exists():
             raise forms.ValidationError(
                 'Store name is already taken')
         return store_name

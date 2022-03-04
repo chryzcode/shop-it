@@ -5,6 +5,9 @@ from django.utils.text import slugify
 from django_countries.fields import CountryField
 from django.utils.translation import gettext_lazy as _
 
+from django.core.mail import send_mail
+from django.conf import settings
+
 
 class CustomAccountManager(BaseUserManager):
 
@@ -74,6 +77,15 @@ class User(AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name = 'Accounts'
         verbose_name_plural = 'Accounts'
+
+    def email_user(self, subject, message):
+        send_mail(
+            subject,
+            message,
+            settings.SENDER_EMAIL,
+            [self.email],
+            fail_silently=False,
+        )
 
     def __str__(self):
         return self.store_name
