@@ -1,7 +1,9 @@
 from unittest.mock import AsyncMagicMixin
 
+from django.conf import settings
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
                                         PermissionsMixin)
+from django.core.mail import send_mail
 from django.db import models
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
@@ -76,6 +78,15 @@ class User(AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name = 'Accounts'
         verbose_name_plural = 'Accounts'
+
+    def email_user(self, subject, message):
+        send_mail(
+            subject,
+            message,
+            settings.SENDER_EMAIL,
+            [self.email],
+            fail_silently=False,
+        )
 
 
     def __str__(self):

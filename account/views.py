@@ -38,14 +38,7 @@ def account_register(request):
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                 'token': account_activation_token.make_token(user),
             })
-            email =  EmailMessage(
-            subject = subject,
-            message = message,
-            from_email = settings.SENDER_EMAIL,
-            recipient_list=[user.email,],
-            reply_to = user.email,
-        )
-            sent = email.send (fail_silently=False)
+            user.email_user(subject=subject, message=message)
             return render(request, 'account/registration/success-page.html')
     return render(request, 'account/registration/register.html', {'form':registerform})
 
