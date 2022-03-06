@@ -673,7 +673,7 @@ button {
 
 .error-page-container, .success-page-container {
   width: 500px;
-  margin: 0 auto;
+  margin: 30px auto 0 auto;
   text-align: center;
   position: absolute;
   top: 50%;
@@ -737,8 +737,4 @@ button {
 .success-page-content-container > div {
   font-size: 25px;
   margin-top: 60px;
-}
-
-.success-page-container{
-  margin-top: 100px;
 }
