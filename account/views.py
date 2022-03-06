@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django import forms
 
 from .forms import RegistrationForm
 from .models import User
@@ -25,8 +26,8 @@ def account_login(request):
         try:
             user = User.objects.get(email=email_or_store_name) or User.objects.get(store_name=email_or_store_name)
         except:
-            messages.error(request, 'Invalid email or store name')
-
+            raise forms.ValidationError("Email or store name is not correct")
+        
         user = authenticate(request, email=user.email, password=password) or authenticate(request, store_name=user.store_name, password=password)
 
         if user is not None:
@@ -35,9 +36,9 @@ def account_login(request):
 
     return render(request, 'account/registration/login.html', context)
 
-def logoutPage(request):
+def account_logout(request):
     logout(request)
-    return redirect("home")
+    return redirect("/")
 
 def account_register(request):
     if request.user.is_authenticated:
