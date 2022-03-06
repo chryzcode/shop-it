@@ -622,11 +622,12 @@ input[type="file" i] {
   padding-top: 8px;
 }
 
-.errorlist > li {
+.errorlist > li, .login-errors {
   color: red;
   padding: 5px 0;
   list-style: none;
   font-size: 13px;
+  margin: 0;
 }
 
 .form-btn-container {

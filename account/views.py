@@ -1,3 +1,4 @@
+from ast import Store
 import email
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
@@ -7,35 +8,36 @@ from django.contrib import messages
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
-from django import forms
 
 from .forms import RegistrationForm
 from .models import User
 from .tokens import account_activation_token
 
-# Create your views here.
-
 def account_login(request):
     context = {}
     if request.user.is_authenticated:
-        return redirect('/')
+        return redirect("/")
+
     if request.method == "POST":
-        email_or_store_name = request.POST['email_or_store_name']
-        password = request.POST['password']
-
+        email = request.POST.get("email")
+        password = request.POST.get("password")
         try:
-            user = User.objects.get(email=email_or_store_name) or User.objects.get(store_name=email_or_store_name)
+            user = get_object_or_404(User, email=email)
+            if user:
+                user = authenticate(request, email=email, password=password)
+                if user:
+                    if user is not None:
+                        login(request, user)
+                        return redirect("/")
+                else:
+                    messages.error(request, "Password is incorrect")
+            else:
+                messages.error(request, "Email is incorrect")
         except:
-            raise forms.ValidationError("Email or store name is not correct")
-        
-        user = authenticate(request, email=user.email, password=password) or authenticate(request, store_name=user.store_name, password=password)
-
-        if user is not None:
-            login(request, user)
-            return redirect('/')
-
-    return render(request, 'account/registration/login.html', context)
-
+            messages.error(request, "Email is incorrect")
+    
+    return render(request, "account/registration/login.html", context)
+  
 def account_logout(request):
     logout(request)
     return redirect("/")

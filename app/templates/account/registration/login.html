@@ -1,25 +1,27 @@
-{% extends 'navs/base.html' %} {% load static %} {% block title %} <title>Shop!t - Sign In</title> {% endblock %} {% block content %}
+{% extends 'navs/base.html' %} {% load static %} {% block title %} <title>Shop!t - Sign In</title> {% endblock %} {%block content %}
 <div class="auth-form-contaner">
-  <form action="" method="post">
+  <form action="{% url 'account:login' %}" method="post">
     {% csrf_token %}
     <div class="above-create-form">
       <p>Sign In</p>
     </div>
-
+    {% if messages %} {% for message in messages %}
+    <p class="login-errors">{{message}}</p>
+    {% endfor %} {% endif %}
     <div class="input-container">
-      <label for="email_or_store_name">Email or Store Name<span class="form-required">*</span></label>
-      <input class="form-control" type="text" name="email_or_store_name" id="email_or_store_name" placeholder="johndoe@gmail.com or John Doe store" />
+      <label for="email">Email<span class="form-required">*</span></label>
+      <input class="form-control" type="text" name="email" id="email" placeholder="johndoe@gmail.com" />
     </div>
 
     <div class="input-container">
       <label for="password">Password<span class="form-required">*</span></label>
-      <p>{{ form.password.errors }}</p>
+      <p>{{ password_error }}</p>
       <input class="form-control" type="password" name="password" id="password" placeholder="********" />
     </div>
 
     <button class="form-btn" type="submit">Sign In</button>
   </form>
- 
+
   <div class="form-bottom">
     <a href="">Forgot Password?</a>
   </div>

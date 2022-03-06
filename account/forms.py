@@ -1,9 +1,11 @@
+import email
 from django import forms
 from django.forms import ModelForm
 from django.utils.text import slugify
-from django.contrib.auth.forms import AuthenticationForm
+
 
 from .models import User
+
 
 
 
@@ -13,7 +15,6 @@ class RegistrationForm(ModelForm):
     password2 = forms.CharField()
     class Meta:
         model = User
-        # exclude = ['avatar', 'slugified_store_name', 'country', 'post_code', 'address_line_1', 'address_line_2', 'town_city', 'is_active', 'is_staff', 'created', 'updated', 'facebook', 'instagram', 'twitter', 'phone_number' ]
         fields = ['email', 'full_name', 'store_name', "check"]
 
     def clean_username(self):
