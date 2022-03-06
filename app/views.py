@@ -10,7 +10,7 @@ def custom_error_404(request, exception):
     return render(request, "app/404-page.html")
 
 def custom_error_500(request):
-    return render(request, "app/500-page.html")
+    return render(request, "app/404-page.html")
 
 def home_page(request):
     return render(request, "app/home.html")
