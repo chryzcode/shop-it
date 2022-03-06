@@ -1,8 +1,10 @@
 from django import forms
 from django.forms import ModelForm
 from django.utils.text import slugify
+from django.contrib.auth.forms import AuthenticationForm
 
 from .models import User
+
 
 
 class RegistrationForm(ModelForm):
@@ -44,3 +46,4 @@ class RegistrationForm(ModelForm):
         
     def __init__(self, *args, **kwargs):
             super(RegistrationForm, self).__init__(*args, **kwargs)
+
