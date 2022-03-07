@@ -1,3 +1,4 @@
+from os import name
 from django.urls import path
 from django.contrib.auth import views as auth_views
 from . import views
@@ -9,5 +10,6 @@ urlpatterns = [
     path('register/', views.account_register, name='register'),
     path('login/', views.account_login, name='login'),
     path('logout/', views.account_logout, name='logout'),
-    path('<slugified_store_name>/edit/', views.edit_account, name='edit_account')
+    path('<slugified_store_name>/edit/', views.edit_account, name='edit_account'),
+    path('delete/', views.account_delete, name='delete_account'),
 ]

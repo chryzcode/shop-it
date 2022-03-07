@@ -1,5 +1,5 @@
-{% extends 'navs/users-nav.html' %} {% load static %} {% block title %} <title>Shop!t - Edit Account</title> {% endblock %}
- {% block content %}
+{% extends 'navs/users-nav.html' %} {% load static %} {% block title %} <title>Shop!t - Edit Account</title>
+{% endblock %} {% block content %}
 <div class="account-form-container">
   <form
     action="{% url 'account:edit_account' account.slugified_store_name %}"
@@ -14,16 +14,16 @@
     <div class="edit-acc-form-seg">
       <p>Basic Info</p>
       <div class="input-container">
-      <label for="avatar">Avatar<span class="form-required">*</span></label>
-      <p>{{ form.avatar.errors }}</p>
-      <div>{{ form.avatar }}</div>
-    </div>
+        <label for="avatar">Avatar<span class="form-required">*</span></label>
+        <p>{{ form.avatar.errors }}</p>
+        <div>{{ form.avatar }}</div>
+      </div>
 
-    <div class="input-container">
-      <label for="name">Full Name<span class="form-required">*</span></label>
-      <p>{{ form.full_name.errors }}</p>
-      <div>{{ form.full_name }}</div>
-    </div>
+      <div class="input-container">
+        <label for="name">Full Name<span class="form-required">*</span></label>
+        <p>{{ form.full_name.errors }}</p>
+        <div>{{ form.full_name }}</div>
+      </div>
     </div>
 
     <div class="edit-acc-form-seg">
@@ -32,6 +32,12 @@
         <label for="country">Country</label>
         <p>{{ form.country.errors }}</p>
         <div>{{ form.country }}</div>
+      </div>
+
+      <div class="input-container">
+        <label for="post_code">Post Code</label>
+        <p>{{ form.post_code.errors }}</p>
+        <div>{{form.post_code}}</div>
       </div>
 
       <div class="input-container">
@@ -84,6 +90,10 @@
       <button class="form-btn" type="submit">Update</button>
     </div>
   </form>
+
+  <div class="delete-btn-container">
+    <a class="delete-btn" href="{% url 'account:delete_account' %}">Delete Account</a>
+  </div>
 </div>
 
 {% endblock %}

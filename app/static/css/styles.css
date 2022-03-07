@@ -295,7 +295,7 @@ footer {
   transition: all 1.5s ease-in-out;
 }
 
-.delete-from-cart-btn {
+.delete-from-cart-btn, .delete-btn {
   background-color: #fff;
   color: red;
   border: 1px solid red;
@@ -303,9 +303,10 @@ footer {
   border-radius: 5px;
   cursor: pointer;
   transition: all 1.5s ease-in-out;
+  text-decoration: none;
 }
 
-.delete-from-cart-btn:hover {
+.delete-from-cart-btn:hover, .delete-btn:hover  {
   background-color: red;
   color: #ffffff;
   transition: all 1.5s ease-in-out;
@@ -739,4 +740,10 @@ button {
 .success-page-content-container > div {
   font-size: 25px;
   margin-top: 60px;
+}
+
+.delete-btn-container {
+  display: flex;
+  justify-content: right;
+  margin-top: 20px;
 }

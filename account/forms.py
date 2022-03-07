@@ -50,12 +50,13 @@ class RegistrationForm(ModelForm):
 class EditAccountForm(ModelForm):
     class Meta:
         model = User
-        fields = ['full_name', 'avatar', 'country', 'phone_number', 'address_line_1', 'address_line_2', 'town_city', 'instagram', 'twitter', 'facebook']
+        fields = ['full_name', 'avatar', 'country', 'phone_number', 'address_line_1', 'address_line_2', 'town_city', 'instagram', 'twitter', 'facebook', 'post_code']
 
         widgets = {
             'full_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder':'John Doe'}),
             'avatar': forms.FileInput(attrs={'class': 'form-control'}),
             'country': forms.Select(attrs={'class': 'form-control'}),
+            'post_code': forms.TextInput(attrs={'class': 'form-control', 'placeholder':'256785'}),
             'phone_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder':'+1 97904095'}),
             'address_line_1': forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Block 235 Washington DC'}),
             'address_line_2': forms.TextInput(attrs={'class': 'form-control', 'placeholder':''}),

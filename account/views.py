@@ -42,6 +42,10 @@ def account_logout(request):
     logout(request)
     return redirect("/")
 
+def account_delete(request):
+    request.user.delete()
+    return redirect('/')
+
 def account_register(request):
     if request.user.is_authenticated:
         return redirect('/')

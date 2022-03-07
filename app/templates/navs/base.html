@@ -37,8 +37,12 @@
         <li><a href="" id="a-nav-link">Discover</a></li>
         <li><a href="" id="a-nav-link">MarketPlace</a></li>
         <li><a href="" id="a-nav-link">Pricing</a></li>
-        <li><a href="" id="a-nav-link">Login</a></li>
-        <li><a href="" id="a-nav-link">SignUp</a></li>
+        {% if request.user.is_authenticated %}
+        <li><a href="{% url 'account:logout' %}"" id="a-nav-link">Sign Out</a></li>
+        {% else %}
+        <li><a href="{% url 'account:login' %}"" id="a-nav-link">Sign In</a></li>
+        <li><a href="{% url 'account:register' %}" id="a-nav-link">Sign Up</a></li>
+        {% endif %}
       </ul>
 
       <div id="toogle"></div>
