@@ -53,16 +53,16 @@ class EditAccountForm(ModelForm):
         fields = ['full_name', 'avatar', 'country', 'phone_number', 'address_line_1', 'address_line_2', 'town_city', 'instagram', 'twitter', 'facebook']
 
         widgets = {
-            'full_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'full_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder':'John Doe'}),
             'avatar': forms.FileInput(attrs={'class': 'form-control'}),
             'country': forms.Select(attrs={'class': 'form-control'}),
-            'phone_number': forms.TextInput(attrs={'class': 'form-control'}),
-            'address_line_1': forms.TextInput(attrs={'class': 'form-control'}),
-            'address_line_2': forms.TextInput(attrs={'class': 'form-control'}),
-            'town_city': forms.TextInput(attrs={'class': 'form-control'}),
-            'instagram': forms.TextInput(attrs={'class': 'form-control'}),
-            'twitter': forms.TextInput(attrs={'class': 'form-control'}),
-            'facebook': forms.TextInput(attrs={'class': 'form-control'}),
+            'phone_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder':'+1 97904095'}),
+            'address_line_1': forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Block 235 Washington DC'}),
+            'address_line_2': forms.TextInput(attrs={'class': 'form-control', 'placeholder':''}),
+            'town_city': forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Texas'}),
+            'instagram': forms.TextInput(attrs={'class': 'form-control', 'placeholder':'https://instagram.com/*******'}),
+            'twitter': forms.TextInput(attrs={'class': 'form-control', 'placeholder':'https://twitter.com/*******'}),
+            'facebook': forms.TextInput(attrs={'class': 'form-control', 'placeholder':'https://facebook.com/*******'}),
         }
 
     def __init__(self, *args, **kwargs):
