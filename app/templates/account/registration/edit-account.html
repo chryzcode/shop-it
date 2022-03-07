@@ -1,114 +1,74 @@
 {% extends 'navs/users-nav.html' %} {% load static %} 
-{% block title %} <title>Shop!t - Create Product</title> {% endblock %}
+{% block title %} <title>Shop!t - Edit Account</title> {% endblock %}
 {% block content %}
 <div class="auth-form-container">
-   
-    <form action="" method="post" enctype="multipart/form-data">
-       <div class="above-create-form">
+    <form action="account:edit_account" method="post" enctype="multipart/form-data">
+    <div class="above-create-form">
         <p>Create Product</p>
-      </div>
-      {% csrf_token %}
-      <div class="input-container">       
-        <label for="name">Product Name<span class="form-required">*</span></label>
-        <p>{{ form.name.errors }}</p>
-        <input class="form-control" type="text" name="name" id="name" placeholder="Name of Product" />
-      </div>
+    </div>
+    {% csrf_token %}
+    <div class="input-container">
+        <label for="avatar">Avatar<span class="form-required">*</span></label>
+        <p>{{ form.avatar.errors }}</p>
+        <input class="form-control" type="file" name="avatar" id="avatar" placeholder="Click to add image" />
+    </div>
 
-      <div class="input-container">
-        <label for="category">Product Category<span class="form-required">*</span></label>
-        <p>{{ form.category.errors }}</p>
-        <select class="form-control" name="category" id="category">
-          <option value="">Select Category</option>
-          {% for category in categories %}
-          <option value="{{ category.id }}">{{ category.name }}</option>
-          {% endfor %}
-        </select>
-      </div>
+    <div class="input-container">       
+        <label for="name">Full Name<span class="form-required">*</span></label>
+        <p>{{ form.full_name.errors }}</p>
+        <input class="form-control" type="text" name="full_name" id="full_name" placeholder="John Doe" />
+    </div>
 
-      <div class="input-container">
-        <label for="description">Short Description<span class="form-required">*</span></label>
-        <p>{{ form.description.errors }}</p>
-        <textarea
-          class="form-control"
-          name="description"
-          id="description"
-          placeholder="Short Description on Project"
-        ></textarea>
-      </div>
+    <div class="input-container">
+        <label for="">Country</label>
+        <p>{{ form.country.errors }}</p>
+        <div class="product-detail-input">{{ form.country }}</div>
+    </div>
 
-      <div class="input-container">
-        {{ form.media }}
-        <label for="">Product Details</label>
-        <p>{{ form.product_details.errors }}</p>
-        <div class="product-detail-input">{{ form.product_details }}</div>
-      </div>
 
-      <div class="pricing-quantity-seg">
-        <p>Product pricing and quantity</p>
-        <div>
-          <div class="price-section">
-            <span class="input-container">
-              <label for="price">Price<span class="form-required">*</span></label>
-              <p>{{ form.price.errors }}</p>
-              <input class="form-control" type="number" name="price" id="price" />
-            </span>
+    <div class="input-container">
+        <label for="town_city">Town City</label>
+        <p>{{ form.town_city.errors }}</p>
+        <input class="form-control" type="text" name="town_city" id="town_city" placeholder="Paris, Texas" />
+    </div>
 
-            <span class="input-container">
-              <label for="discount_percentage">Discount Percentage</label>
-              <p>{{ form.discount_percentage.errors }}</p>
-              <input class="form-control" type="number" name="discount_percentage" id="discount_percentage" />
-            </span>
-          </div>
+    <div class="input-container">
+        <label for="address_line_1">Address Line</label>
+        <p>{{ form.address_line_1.errors }}</p>
+        <input class="form-control" type="text" name="address_line_1" id="address_line_1" placeholder="Block 234, Washignton DC" />
+    </div>
 
-          <div class="quantity-section">
-            <span class="input-container">
-              <label for="availability">Product Count<span class="form-required">*</span></label>
-              <p>{{ form.availability.errors }}</p>
-              <input class="form-control" type="number" name="availability" id="availability" />
-            </span>
+    <div class="input-container">
+        <label for="address_line_2">Address Line 2</label>
+        <p>{{ form.address_line_2.errors }}</p>
+        <input class="form-control" type="text" name="address_line_2" id="address_line_2" placeholder="Office address or any related address" />
+    </div>
 
-            <span class="input-container">
-              <label for="product_unit">Product Unit<span class="form-required">*</span></label>
-              <p>{{ form.product_unit.errors }}</p>
-              <select class="form-control" id="product_unit" name="product_unit">
-                <option value="">Select Unit</option>
-                {% for unit in product_units %}
-                <option value="{{ unit.id }}">{{ unit.name }}</option>
-                {% endfor %}
-              </select>
-            </span>
-          </div>
-        </div>
-      </div>
+    <div class="input-container">
+        <label for="phone_number">Phone Number</label>
+        <p>{{ form.town_city.errors }}</p>
+        <input class="form-control" type="tel" name="phone_number" id="phone_number" placeholder="+1 3478947" />
+    </div>
 
-      <div class="images-seg">
-        <p>Product Images</p>
-        <div class="input-container">
-          <label for="image_1">Image 1<span class="form-required">*</span></label>
-          <p>{{ form.image_1.errors }}</p>
-          <input class="form-control" type="file" name="images" id="image_1" placeholder="Click to add image" />
-        </div>
+    <div class="input-container">
+        <label for="twitter">Twitter</label>
+        <p>{{ form.twitter.errors }}</p>
+        <input class="form-control" type="text" name="twitter" id="twitter" placeholder="https://twitter.com/******" />
+    </div>
 
-        <div class="input-container">
-          <label for="image_2">Image 2<span class="form-required">*</span></label>
-          <p>{{ form.image_2.errors }}</p>
-          <input class="form-control" type="file" name="images" id="image_2" placeholder="Click to add image" />
-        </div>
+    <div class="input-container">
+        <label for="instagram">Twitter</label>
+        <p>{{ form.instagram.errors }}</p>
+        <input class="form-control" type="text" name="instagram" id="instagram" placeholder="https://instagram.com/******" />
+    </div>
 
-        <div class="input-container">
-          <label for="image_3">Image 3</label>
-          <p>{{ form.image_3.errors }}</p>
-          <input class="form-control" type="file" name="images" id="image_3" placeholder="Click to add image" />
-        </div>
-
-        <div class="input-container">
-          <label for="image_4">Image 4</label>
-          <p>{{ form.image_4.errors }}</p>
-          <input class="form-control" type="file" name="images" id="image_4" placeholder="Click to add image" />
-        </div>
-        
-      </div>
-
+    <div class="input-container">
+        <label for="facebook">Twitter</label>
+        <p>{{ form.facebook.errors }}</p>
+        <input class="form-control" type="text" name="facebook" id="facebook" placeholder="https://instagram.com/******" />
+    </div>
+    
+    
       <div class="form-btn-container">
         <button class="form-btn" type="submit">Create</button>
       </div>     

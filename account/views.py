@@ -85,12 +85,12 @@ def account_activate(request, uidb64, token):
 
     
 def edit_account(request):
-        if request.method =='POST':
-            account_form = EditAccountForm(instance=request.user, data=request.post)
-            if account_form.is_valid():
-                account_form.save()
-
+    account_form = EditAccountForm
+    if request.method =='POST':
+        account_form = EditAccountForm(instance=request.user, data=request.post)
+        if account_form.is_valid():
+            account_form.save()
         else:
-            user_form = EditAccountForm(instance=request.user)
+            account_form = EditAccountForm(instance=request.user)
 
-        return render(request, 'sccount/registration/edit-account.html', {'user_form':user_form})
+    return render(request, 'account/registration/edit-account.html', {'form':account_form})
