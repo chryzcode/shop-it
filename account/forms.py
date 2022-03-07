@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import ModelForm
 from django.utils.text import slugify
-
+from django.contrib.auth.forms import PasswordResetForm, SetPasswordForm
 
 from .models import User
 
@@ -76,3 +76,13 @@ class PasswordResetForm(PasswordResetForm):
         if not user:
             raise forms.ValidationError('Account not found')
             return email
+
+class PasswordResetConfirmForm(SetPasswordForm):
+    new_password1 = forms.CharField()
+    new_password2 = forms.CharField()
+
+    def clean_password2(self):
+        cd = self.cleaned_data
+        if cd['new_password1'] != cd['new_password2']:
+            raise forms.ValidationError('Passwords do not match.')
+        return cd['new_password2']
