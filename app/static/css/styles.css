@@ -553,7 +553,7 @@ div.product-info > p:nth-child(2) {
 }
 
 .input-container > input {
-  height: 40px;
+  
   display: block;
 }
 
@@ -574,6 +574,7 @@ div.product-info > p:nth-child(2) {
   padding: 0 15px;
   margin: 10px 0;
   width: 100%;
+  height: 40px;
 }
 
 .product-detail-input {

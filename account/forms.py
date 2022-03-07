@@ -52,5 +52,18 @@ class EditAccountForm(ModelForm):
         model = User
         fields = ['full_name', 'avatar', 'country', 'phone_number', 'address_line_1', 'address_line_2', 'town_city', 'instagram', 'twitter', 'facebook']
 
+        widgets = {
+            'full_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'avatar': forms.FileInput(attrs={'class': 'form-control'}),
+            'country': forms.Select(attrs={'class': 'form-control'}),
+            'phone_number': forms.TextInput(attrs={'class': 'form-control'}),
+            'address_line_1': forms.TextInput(attrs={'class': 'form-control'}),
+            'address_line_2': forms.TextInput(attrs={'class': 'form-control'}),
+            'town_city': forms.TextInput(attrs={'class': 'form-control'}),
+            'instagram': forms.TextInput(attrs={'class': 'form-control'}),
+            'twitter': forms.TextInput(attrs={'class': 'form-control'}),
+            'facebook': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
     def __init__(self, *args, **kwargs):
             super(EditAccountForm, self).__init__(*args, **kwargs)

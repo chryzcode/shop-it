@@ -84,13 +84,16 @@ def account_activate(request, uidb64, token):
         return render(request, 'app/404-page.html')
 
     
-def edit_account(request):
-    account_form = EditAccountForm
-    if request.method =='POST':
-        account_form = EditAccountForm(instance=request.user, data=request.post)
-        if account_form.is_valid():
-            account_form.save()
-        else:
-            account_form = EditAccountForm(instance=request.user)
+def edit_account(request, slugified_store_name):
+    account = get_object_or_404(User, slugified_store_name=slugified_store_name)
+    if request.user == account:
+        form = EditAccountForm(instance=account)
+        if request.method =='POST':
+            form = EditAccountForm(request.POST, request.FILES, instance=account)
+            if form.is_valid():
+                form.save()
+                return redirect('/')
 
-    return render(request, 'account/registration/edit-account.html', {'form':account_form})
+        return render(request, 'account/registration/edit-account.html', {'form':form, 'account':account})
+    return redirect('/')
+

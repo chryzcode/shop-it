@@ -1,79 +1,76 @@
-{% extends 'navs/users-nav.html' %} {% load static %} 
-{% block title %} <title>Shop!t - Edit Account</title> {% endblock %}
+{% extends 'navs/users-nav.html' %} {% load static %} {% block title %} <title>Shop!t - Edit Account</title> {% endblock %} 
 {% block content %}
-<div class="auth-form-container">
-    <form action="account:edit_account" method="post" enctype="multipart/form-data">
-    <div class="above-create-form">
-        <p>Create Product</p>
-    </div>
+<div class="account-form-container">
+  <form action="{% url 'account:edit_account' account.slugified_store_name %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    <div class="input-container">
-        <label for="avatar">Avatar<span class="form-required">*</span></label>
-        <p>{{ form.avatar.errors }}</p>
-        <input class="form-control" type="file" name="avatar" id="avatar" placeholder="Click to add image" />
-    </div>
-
-    <div class="input-container">       
-        <label for="name">Full Name<span class="form-required">*</span></label>
-        <p>{{ form.full_name.errors }}</p>
-        <input class="form-control" type="text" name="full_name" id="full_name" placeholder="John Doe" />
-    </div>
-
-    <div class="input-container">
-        <label for="">Country</label>
-        <p>{{ form.country.errors }}</p>
-        <div class="product-detail-input">{{ form.country }}</div>
-    </div>
-
-
-    <div class="input-container">
-        <label for="town_city">Town City</label>
-        <p>{{ form.town_city.errors }}</p>
-        <input class="form-control" type="text" name="town_city" id="town_city" placeholder="Paris, Texas" />
-    </div>
-
-    <div class="input-container">
-        <label for="address_line_1">Address Line</label>
-        <p>{{ form.address_line_1.errors }}</p>
-        <input class="form-control" type="text" name="address_line_1" id="address_line_1" placeholder="Block 234, Washignton DC" />
-    </div>
-
-    <div class="input-container">
-        <label for="address_line_2">Address Line 2</label>
-        <p>{{ form.address_line_2.errors }}</p>
-        <input class="form-control" type="text" name="address_line_2" id="address_line_2" placeholder="Office address or any related address" />
-    </div>
-
-    <div class="input-container">
-        <label for="phone_number">Phone Number</label>
-        <p>{{ form.town_city.errors }}</p>
-        <input class="form-control" type="tel" name="phone_number" id="phone_number" placeholder="+1 3478947" />
-    </div>
-
-    <div class="input-container">
-        <label for="twitter">Twitter</label>
-        <p>{{ form.twitter.errors }}</p>
-        <input class="form-control" type="text" name="twitter" id="twitter" placeholder="https://twitter.com/******" />
-    </div>
-
-    <div class="input-container">
-        <label for="instagram">Twitter</label>
-        <p>{{ form.instagram.errors }}</p>
-        <input class="form-control" type="text" name="instagram" id="instagram" placeholder="https://instagram.com/******" />
-    </div>
-
-    <div class="input-container">
-        <label for="facebook">Twitter</label>
-        <p>{{ form.facebook.errors }}</p>
-        <input class="form-control" type="text" name="facebook" id="facebook" placeholder="https://instagram.com/******" />
+    <div class="above-create-form">
+      <p>Edit Account</p>
     </div>
     
-    
-      <div class="form-btn-container">
-        <button class="form-btn" type="submit">Create</button>
-      </div>     
-      </div>      
-    </form>
-  </div>
+    <div class="input-container">
+      <label for="avatar">Avatar<span class="form-required">*</span></label>
+      <p>{{ form.avatar.errors }}</p>
+      <div>{{ form.avatar }}</div>
+    </div>
+
+    <div class="input-container">
+      <label for="name">Full Name<span class="form-required">*</span></label>
+      <p>{{ form.full_name.errors }}</p>
+      <div>{{ form.full_name }}</div>
+    </div>
+
+    <div class="input-container">
+      <label for="country">Country</label>
+      <p>{{ form.country.errors }}</p>
+      <div>{{ form.country }}</div>
+    </div>
+
+    <div class="input-container">
+      <label for="town_city">Town City</label>
+      <p>{{ form.town_city.errors }}</p>
+      <div>{{form.town_city}}</div>
+    </div>
+
+    <div class="input-container">
+      <label for="address_line_1">Address Line</label>
+      <p>{{ form.address_line_1.errors }}</p>
+      <div>{{ form.address_line_1 }}</div>
+    </div>
+
+    <div class="input-container">
+      <label for="address_line_2">Address Line 2</label>
+      <p>{{ form.address_line_2.errors }}</p>
+      <div>{{ form.address_line_2 }}</div>
+    </div>
+
+    <div class="input-container">
+      <label for="phone_number">Phone Number</label>
+      <p>{{ form.phone_number.errors }}</p>
+      {{form.phone_number}}
+    </div>
+
+    <div class="input-container">
+      <label for="twitter">Twitter</label>
+      <p>{{ form.twitter.errors }}</p>
+      <div>{{ form.twitter }}</div>
+    </div>
+
+    <div class="input-container">
+      <label for="instagram">Instagram</label>
+      <p>{{ form.instagram.errors }}</p>
+      <div>{{ form.instagram }}</div>
+    </div>
+
+    <div class="input-container">
+      <label for="facebook">Facebook</label>
+      <p>{{ form.facebook.errors }}</p>
+      <div>{{ form.facebook }}</div>
+    </div>
+
+    <div class="form-btn-container">
+      <button class="form-btn" type="submit">Update</button>
+    </div>
+  </form>
 </div>
+
 {% endblock %}
