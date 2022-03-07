@@ -1,13 +1,19 @@
-{% extends 'navs/users-nav.html' %} {% load static %} {% block title %} <title>Shop!t - Edit Account</title> {% endblock %} 
-{% block content %}
+{% extends 'navs/users-nav.html' %} {% load static %} {% block title %} <title>Shop!t - Edit Account</title> {% endblock %}
+ {% block content %}
 <div class="account-form-container">
-  <form action="{% url 'account:edit_account' account.slugified_store_name %}" method="post" enctype="multipart/form-data">
+  <form
+    action="{% url 'account:edit_account' account.slugified_store_name %}"
+    method="post"
+    enctype="multipart/form-data"
+  >
     {% csrf_token %}
     <div class="above-create-form">
       <p>Edit Account</p>
     </div>
-    
-    <div class="input-container">
+
+    <div class="edit-acc-form-seg">
+      <p>Basic Info</p>
+      <div class="input-container">
       <label for="avatar">Avatar<span class="form-required">*</span></label>
       <p>{{ form.avatar.errors }}</p>
       <div>{{ form.avatar }}</div>
@@ -18,53 +24,60 @@
       <p>{{ form.full_name.errors }}</p>
       <div>{{ form.full_name }}</div>
     </div>
-
-    <div class="input-container">
-      <label for="country">Country</label>
-      <p>{{ form.country.errors }}</p>
-      <div>{{ form.country }}</div>
     </div>
 
-    <div class="input-container">
-      <label for="town_city">Town City</label>
-      <p>{{ form.town_city.errors }}</p>
-      <div>{{form.town_city}}</div>
+    <div class="edit-acc-form-seg">
+      <p>Location and Contact</p>
+      <div class="input-container">
+        <label for="country">Country</label>
+        <p>{{ form.country.errors }}</p>
+        <div>{{ form.country }}</div>
+      </div>
+
+      <div class="input-container">
+        <label for="town_city">Town City</label>
+        <p>{{ form.town_city.errors }}</p>
+        <div>{{form.town_city}}</div>
+      </div>
+
+      <div class="input-container">
+        <label for="address_line_1">Address Line</label>
+        <p>{{ form.address_line_1.errors }}</p>
+        <div>{{ form.address_line_1 }}</div>
+      </div>
+
+      <div class="input-container">
+        <label for="address_line_2">Address Line 2</label>
+        <p>{{ form.address_line_2.errors }}</p>
+        <div>{{ form.address_line_2 }}</div>
+      </div>
+
+      <div class="input-container">
+        <label for="phone_number">Phone Number</label>
+        <p>{{ form.phone_number.errors }}</p>
+        {{form.phone_number}}
+      </div>
     </div>
 
-    <div class="input-container">
-      <label for="address_line_1">Address Line</label>
-      <p>{{ form.address_line_1.errors }}</p>
-      <div>{{ form.address_line_1 }}</div>
-    </div>
+    <div class="edit-acc-form-seg">
+      <p>Socials</p>
+      <div class="input-container">
+        <label for="twitter">Twitter</label>
+        <p>{{ form.twitter.errors }}</p>
+        <div>{{ form.twitter }}</div>
+      </div>
 
-    <div class="input-container">
-      <label for="address_line_2">Address Line 2</label>
-      <p>{{ form.address_line_2.errors }}</p>
-      <div>{{ form.address_line_2 }}</div>
-    </div>
+      <div class="input-container">
+        <label for="instagram">Instagram</label>
+        <p>{{ form.instagram.errors }}</p>
+        <div>{{ form.instagram }}</div>
+      </div>
 
-    <div class="input-container">
-      <label for="phone_number">Phone Number</label>
-      <p>{{ form.phone_number.errors }}</p>
-      {{form.phone_number}}
-    </div>
-
-    <div class="input-container">
-      <label for="twitter">Twitter</label>
-      <p>{{ form.twitter.errors }}</p>
-      <div>{{ form.twitter }}</div>
-    </div>
-
-    <div class="input-container">
-      <label for="instagram">Instagram</label>
-      <p>{{ form.instagram.errors }}</p>
-      <div>{{ form.instagram }}</div>
-    </div>
-
-    <div class="input-container">
-      <label for="facebook">Facebook</label>
-      <p>{{ form.facebook.errors }}</p>
-      <div>{{ form.facebook }}</div>
+      <div class="input-container">
+        <label for="facebook">Facebook</label>
+        <p>{{ form.facebook.errors }}</p>
+        <div>{{ form.facebook }}</div>
+      </div>
     </div>
 
     <div class="form-btn-container">
