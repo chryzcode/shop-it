@@ -1,5 +1,5 @@
 {% extends 'navs/base.html' %} {% load static %} {% block title %} <title>Shop!t - Sign In</title> {% endblock %} {%block content %}
-<div class="auth-form-contaner">
+<div class="auth-form-container">
   <form action="{% url 'account:login' %}" method="post">
     {% csrf_token %}
     <div class="above-create-form">

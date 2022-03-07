@@ -1,4 +1,3 @@
-import email
 from django import forms
 from django.forms import ModelForm
 from django.utils.text import slugify
@@ -48,3 +47,10 @@ class RegistrationForm(ModelForm):
     def __init__(self, *args, **kwargs):
             super(RegistrationForm, self).__init__(*args, **kwargs)
 
+class EditAccountForm(ModelForm):
+    class Meta:
+        model = User
+        fields = ['full_name', 'avatar', 'country', 'phone_number', 'address_line_1', 'address_line_2', 'town_city', 'instagram', 'twitter', 'facebook']
+
+    def __init__(self, *args, **kwargs):
+            super(EditAccountForm, self).__init__(*args, **kwargs)

@@ -1,0 +1,119 @@
+{% extends 'navs/users-nav.html' %} {% load static %} 
+{% block title %} <title>Shop!t - Create Product</title> {% endblock %}
+{% block content %}
+<div class="auth-form-container">
+   
+    <form action="" method="post" enctype="multipart/form-data">
+       <div class="above-create-form">
+        <p>Create Product</p>
+      </div>
+      {% csrf_token %}
+      <div class="input-container">       
+        <label for="name">Product Name<span class="form-required">*</span></label>
+        <p>{{ form.name.errors }}</p>
+        <input class="form-control" type="text" name="name" id="name" placeholder="Name of Product" />
+      </div>
+
+      <div class="input-container">
+        <label for="category">Product Category<span class="form-required">*</span></label>
+        <p>{{ form.category.errors }}</p>
+        <select class="form-control" name="category" id="category">
+          <option value="">Select Category</option>
+          {% for category in categories %}
+          <option value="{{ category.id }}">{{ category.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="input-container">
+        <label for="description">Short Description<span class="form-required">*</span></label>
+        <p>{{ form.description.errors }}</p>
+        <textarea
+          class="form-control"
+          name="description"
+          id="description"
+          placeholder="Short Description on Project"
+        ></textarea>
+      </div>
+
+      <div class="input-container">
+        {{ form.media }}
+        <label for="">Product Details</label>
+        <p>{{ form.product_details.errors }}</p>
+        <div class="product-detail-input">{{ form.product_details }}</div>
+      </div>
+
+      <div class="pricing-quantity-seg">
+        <p>Product pricing and quantity</p>
+        <div>
+          <div class="price-section">
+            <span class="input-container">
+              <label for="price">Price<span class="form-required">*</span></label>
+              <p>{{ form.price.errors }}</p>
+              <input class="form-control" type="number" name="price" id="price" />
+            </span>
+
+            <span class="input-container">
+              <label for="discount_percentage">Discount Percentage</label>
+              <p>{{ form.discount_percentage.errors }}</p>
+              <input class="form-control" type="number" name="discount_percentage" id="discount_percentage" />
+            </span>
+          </div>
+
+          <div class="quantity-section">
+            <span class="input-container">
+              <label for="availability">Product Count<span class="form-required">*</span></label>
+              <p>{{ form.availability.errors }}</p>
+              <input class="form-control" type="number" name="availability" id="availability" />
+            </span>
+
+            <span class="input-container">
+              <label for="product_unit">Product Unit<span class="form-required">*</span></label>
+              <p>{{ form.product_unit.errors }}</p>
+              <select class="form-control" id="product_unit" name="product_unit">
+                <option value="">Select Unit</option>
+                {% for unit in product_units %}
+                <option value="{{ unit.id }}">{{ unit.name }}</option>
+                {% endfor %}
+              </select>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="images-seg">
+        <p>Product Images</p>
+        <div class="input-container">
+          <label for="image_1">Image 1<span class="form-required">*</span></label>
+          <p>{{ form.image_1.errors }}</p>
+          <input class="form-control" type="file" name="images" id="image_1" placeholder="Click to add image" />
+        </div>
+
+        <div class="input-container">
+          <label for="image_2">Image 2<span class="form-required">*</span></label>
+          <p>{{ form.image_2.errors }}</p>
+          <input class="form-control" type="file" name="images" id="image_2" placeholder="Click to add image" />
+        </div>
+
+        <div class="input-container">
+          <label for="image_3">Image 3</label>
+          <p>{{ form.image_3.errors }}</p>
+          <input class="form-control" type="file" name="images" id="image_3" placeholder="Click to add image" />
+        </div>
+
+        <div class="input-container">
+          <label for="image_4">Image 4</label>
+          <p>{{ form.image_4.errors }}</p>
+          <input class="form-control" type="file" name="images" id="image_4" placeholder="Click to add image" />
+        </div>
+        
+      </div>
+
+      <div class="form-btn-container">
+        <button class="form-btn" type="submit">Create</button>
+      </div>     
+      </div>      
+    </form>
+  </div>
+</div>
+{% endblock %}
