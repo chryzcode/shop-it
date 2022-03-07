@@ -69,7 +69,7 @@ def account_register(request):
                 'token': account_activation_token.make_token(user),
             })
             user.email_user(subject=subject, message=message)
-            return render(request, 'account/registration/success-page.html')
+            return render(request, 'account/registration/registration-success.html')
     return render(request, 'account/registration/register.html', {'form':registerform})
 
 def account_activate(request, uidb64, token):
@@ -85,7 +85,7 @@ def account_activate(request, uidb64, token):
         login(request, user)
         return redirect('/')
     else:
-        return render(request, 'app/404-page.html')
+        return render(request, 'error-pages/404-page.html')
 
     
 def edit_account(request, slugified_store_name):
@@ -98,6 +98,6 @@ def edit_account(request, slugified_store_name):
                 form.save()
                 return redirect('/')
 
-        return render(request, 'account/registration/edit-account.html', {'form':form, 'account':account})
+        return render(request, 'account/user/edit-account.html', {'form':form, 'account':account})
     return redirect('/')
 

@@ -6,8 +6,6 @@ from django.utils.text import slugify
 from .models import User
 
 
-
-
 class RegistrationForm(ModelForm):
     check = forms.BooleanField(required=True)
     password = forms.CharField()
@@ -68,3 +66,13 @@ class EditAccountForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
             super(EditAccountForm, self).__init__(*args, **kwargs)
+
+class PasswordResetForm(PasswordResetForm):
+    email = forms.CharField()
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        user = User.objects.filter(email=email)
+        if not user:
+            raise forms.ValidationError('Account not found')
+            return email
