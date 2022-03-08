@@ -2,6 +2,7 @@ from django.urls import path
 from django.contrib.auth import views as auth_views
 from . import views
 from .forms import PasswordResetForm, PasswordResetConfirmForm
+from django.views.generic import TemplateView
 
 app_name = "account"
 
@@ -13,9 +14,13 @@ urlpatterns = [
     path('<slugified_store_name>/edit/', views.edit_account, name='edit_account'),
     path('delete/', views.account_delete, name='delete_account'),
 
-    path('password-reset/psddword-reset-email-confirm/', TemplateView.as_view(template_name='account/user/password-reset-success.html'), name='password-reset-email-confirm'),
+    path('password-reset/', auth_views.PasswordResetView.as_view(template_name="account/user/password-reset-form.html", success_url='password-reset-email-confirm', email_template_name='account/user/password-reset-email.html', form_class=PasswordResetForm), name='password_reset'),
 
-    path('password-reset/', auth_views.PasswordResetView.as_view(template_name='account/user/password-reset-form.html', success_url='password-reset-email-confirm', email_template_name='account/user/password-reset-email.html', form_class=PasswordResetForm),name='password_reset'),
 
-    path('password-reset-confirm/<uidb64>/<token>)/', auth_views.PasswordResetConfirmView.as_view(template_name='account/user/password-reset-confirm.html', success_url='password_reset_complete', form_class=PasswordResetConfirmForm), name='password_reset_confirm'),
+    path('password-reset-confirm/<uidb64>/<token>', auth_views.PasswordResetConfirmView.as_view(template_name='account/user/password-reset-confirm.html', success_url='/account/password-reset-complete/', form_class=PasswordResetConfirmForm),
+    name="password_reset_confirm"),
+
+    path('password-reset/password-reset-email-confirm/', TemplateView.as_view(template_name="account/user/password-reset-success.html"), name='password_reset_done'),
+
+    path('password-reset-complete/', TemplateView.as_view(template_name="account/user/password-reset-success.html"), name='password_reset_complete'),
 ]
