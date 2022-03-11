@@ -91,19 +91,3 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.store_name
 
 
-class BankAccount(models.Model):
-
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    bank_account = models.CharField(max_length=100)
-    account_number = models.CharField(max_length=100)
-    account_name = models.CharField(max_length=100)
-    country = models.Choices(
-        ('NG', 'Nigeria'),
-        ('GH', 'Ghana'),
-        ('KE', 'Kenya'),
-        ('UG', 'Uganda'),
-        ('TZ', 'Tanzania'),
-        ('ZA', 'South Africa'),
-    )
-    def __str__(self):
-        return self.bank_name
