@@ -84,5 +84,5 @@ def create_product(request):
 
 def store_overview(request, slugified_store_name):
     user = get_object_or_404(User, slugified_store_name=slugified_store_name)
-    return render(request, '')
+    return render(request, 'store/store-overview.html')
 
