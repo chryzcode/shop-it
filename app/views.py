@@ -15,7 +15,7 @@ def custom_error_500(request):
 
 
 def home_page(request):
-    return render(request, "app/home.html")
+    return render(request, "app/product-templates/index.html")
 
 
 def a_user_all_products(request, slugified_store_name):
