@@ -1,5 +1,3 @@
-from cgitb import handler
-
 from django.urls import path
 
 from . import views
@@ -8,7 +6,7 @@ app_name = "app"
 
 
 urlpatterns = [
-    path("", views.home_page, name="home_page"),
+    path("", views.home_page, name="base"),
     path("create-product/", views.create_product, name="create_product"),
     path(
         "<slugified_store_name>/all-products/",
@@ -30,4 +28,6 @@ urlpatterns = [
         views.a_user_category_products,
         name="a_user_category_products",
     ),
+
+    path("home/", views.store_overview, name="store_overview"),
 ]

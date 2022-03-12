@@ -82,7 +82,6 @@ def create_product(request):
     context = {"form": form, "categories": categories, "product_units": product_units}
     return render(request, "store/create-product.html", context)
 
-def store_overview(request, slugified_store_name):
-    user = get_object_or_404(User, slugified_store_name=slugified_store_name)
+def store_overview(request):
     return render(request, 'store/store-overview.html')
 
