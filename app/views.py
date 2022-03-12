@@ -15,7 +15,7 @@ def custom_error_500(request):
 
 
 def home_page(request):
-    return render(request, "product/index.html")
+    return render(request, "base/index.html")
 
 
 def a_user_all_products(request, slugified_store_name):
@@ -23,7 +23,7 @@ def a_user_all_products(request, slugified_store_name):
     all_products = Product.objects.filter(created_by=user.id, in_stock=True)
     return render(
         request,
-        "product/a-user-all-products.html",
+        "store/a-store-products.html",
         {"all_products": all_products},
     )
 
@@ -33,7 +33,7 @@ def a_user_all_categories(request, slugified_store_name):
     all_categories = Category.objects.filter(created_by=user.id)
     return render(
         request,
-        "product/a-user-all-categories.html",
+        "store/a-store-categories.html",
         {"all_categories": all_categories},
     )
 
@@ -80,7 +80,7 @@ def create_product(request):
                 slugified_store_name=product.created_by.slugified_store_name,
             )
     context = {"form": form, "categories": categories, "product_units": product_units}
-    return render(request, "product/create-product.html", context)
+    return render(request, "store/create-product.html", context)
 
 def store_overview(request, slugified_store_name):
     user = get_object_or_404(User, slugified_store_name=slugified_store_name)
