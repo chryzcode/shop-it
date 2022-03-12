@@ -48,4 +48,3 @@ class TestTemplates(TestCase):
         request.session = engine.SessionStore()
         response = home_page(request)
         self.assertTrue(response.status_code, 200)
-

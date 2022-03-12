@@ -28,6 +28,7 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+
 class ProductUnit(models.Model):
     name = models.CharField(max_length=255)
 
@@ -50,11 +51,20 @@ class Product(models.Model):
     in_stock = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now_add=True)
-    category = models.ForeignKey(Category, related_name="category", on_delete=models.CASCADE)
+    category = models.ForeignKey(
+        Category, related_name="category", on_delete=models.CASCADE
+    )
     availability = models.IntegerField(default=1)
-    product_details =  RichTextField(null=True, blank=True, max_length=300)
-    product_unit = models.ForeignKey(ProductUnit, related_name="product_unit", on_delete=models.CASCADE)
-    discount_percentage = models.IntegerField(default=0, null=True, blank=True, validators=[MinValueValidator(0), MaxValueValidator(100)])
+    product_details = RichTextField(null=True, blank=True, max_length=300)
+    product_unit = models.ForeignKey(
+        ProductUnit, related_name="product_unit", on_delete=models.CASCADE
+    )
+    discount_percentage = models.IntegerField(
+        default=0,
+        null=True,
+        blank=True,
+        validators=[MinValueValidator(0), MaxValueValidator(100)],
+    )
 
     # pulral for the table name in the admin page
     class Meta:
@@ -65,18 +75,24 @@ class Product(models.Model):
         if not self.slug:
             self.slug = slugify(self.name)
         if self.availability < 1:
-            self.in_stock= False
+            self.in_stock = False
         return super(Product, self).save(*args, **kwargs)
 
     def discount_price(self):
         if not self.discount_percentage:
             return self.price
         if self.discount_percentage:
-            price =  Decimal(self.price - (self.price * self.discount_percentage / 100))
+            price = Decimal(self.price - (self.price * self.discount_percentage / 100))
             return price
 
     def get_absolute_url(self):
-        return reverse("app:product_detail", kwargs={"slug": self.slug, "slugified_store_name": self.created_by.slugified_store_name})
+        return reverse(
+            "app:product_detail",
+            kwargs={
+                "slug": self.slug,
+                "slugified_store_name": self.created_by.slugified_store_name,
+            },
+        )
 
     def __str__(self):
         return self.name

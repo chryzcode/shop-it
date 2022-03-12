@@ -9,30 +9,23 @@ from django_countries.fields import CountryField
 
 
 class CustomAccountManager(BaseUserManager):
-
     def create_superuser(self, email, store_name, password, **other_fields):
-        
 
-        other_fields.setdefault('is_staff', True)
-        other_fields.setdefault('is_superuser', True)
-        other_fields.setdefault('is_active', True)
+        other_fields.setdefault("is_staff", True)
+        other_fields.setdefault("is_superuser", True)
+        other_fields.setdefault("is_active", True)
 
-        if other_fields.get('is_staff') is not True:
-            raise ValueError(
-                'Superuser must be assigned to is_staff=True.')
-        if other_fields.get('is_superuser') is not True:
-            raise ValueError(
-                'Superuser must be assigned to is_superuser=True.')
+        if other_fields.get("is_staff") is not True:
+            raise ValueError("Superuser must be assigned to is_staff=True.")
+        if other_fields.get("is_superuser") is not True:
+            raise ValueError("Superuser must be assigned to is_superuser=True.")
 
         return self.create_user(email, store_name, password, **other_fields)
 
-    
     def create_user(self, email, store_name, password, **other_fields):
 
         if not email:
-            raise ValueError(
-                _('The email field is required')
-            )
+            raise ValueError(_("The email field is required"))
 
         email = self.normalize_email(email)
         user = self.model(email=email, store_name=store_name, **other_fields)
@@ -40,9 +33,10 @@ class CustomAccountManager(BaseUserManager):
         user.save()
         return user
 
+
 # Create your models here.
 class User(AbstractBaseUser, PermissionsMixin):
-    email = models.EmailField(_('email address'), unique=True)
+    email = models.EmailField(_("email address"), unique=True)
     full_name = models.CharField(max_length=300)
     store_name = models.CharField(max_length=150, unique=True)
     avatar = models.ImageField(upload_to="user-profile-images/", null=True)
@@ -63,10 +57,9 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     objects = CustomAccountManager()
 
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = "email"
 
-    REQUIRED_FIELDS = ['store_name']
-
+    REQUIRED_FIELDS = ["store_name"]
 
     def save(self, *args, **kwargs):
         if not self.slugified_store_name:
@@ -74,8 +67,8 @@ class User(AbstractBaseUser, PermissionsMixin):
         return super(User, self).save(*args, **kwargs)
 
     class Meta:
-        verbose_name = 'Accounts'
-        verbose_name_plural = 'Accounts'
+        verbose_name = "Accounts"
+        verbose_name_plural = "Accounts"
 
     def email_user(self, subject, message):
         send_mail(
@@ -86,8 +79,5 @@ class User(AbstractBaseUser, PermissionsMixin):
             fail_silently=False,
         )
 
-
     def __str__(self):
         return self.store_name
-
-

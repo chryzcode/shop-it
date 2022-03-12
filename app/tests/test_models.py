@@ -22,9 +22,7 @@ class TestCategoryModel(TestCase):
             created_by=self.user,
         )
 
-        self.product_unit = ProductUnit.objects.create(
-            name= "pc"
-        )
+        self.product_unit = ProductUnit.objects.create(name="pc")
 
         self.product = Product.objects.create(
             category=self.category,
@@ -37,7 +35,7 @@ class TestCategoryModel(TestCase):
             image_4="image_4.jpg",
             price=1000.00,
             in_stock=True,
-            product_unit = self.product_unit
+            product_unit=self.product_unit,
         )
 
     def test_category_model(self):

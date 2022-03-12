@@ -30,4 +30,5 @@ class ProductAdmin(admin.ModelAdmin):
     list_editable = ["price", "in_stock"]
     prepopulated_fields = {"slug": ("name",)}
 
+
 admin.site.register(ProductUnit)

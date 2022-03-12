@@ -15,16 +15,14 @@ class TestCartView(TestCase):
             email="testuser@gmail.com",
             password="testuserpassword",
         )
-        
+
         self.category = Category.objects.create(
             name="Test Category",
             created_by=self.user,
         )
 
-        self.product_unit = ProductUnit.objects.create(
-            name= "pc"
-        )
-        
+        self.product_unit = ProductUnit.objects.create(name="pc")
+
         self.product = Product.objects.create(
             category=self.category,
             created_by=self.user,
@@ -36,7 +34,7 @@ class TestCartView(TestCase):
             image_2="image_2.jpg",
             image_3="image_3.jpg",
             image_4="image_4.jpg",
-            product_unit = self.product_unit
+            product_unit=self.product_unit,
         )
 
         self.product = Product.objects.create(
@@ -50,7 +48,7 @@ class TestCartView(TestCase):
             image_2="image_2.jpg",
             image_3="image_3.jpg",
             image_4="image_4.jpg",
-            product_unit = self.product_unit
+            product_unit=self.product_unit,
         )
 
         self.product = Product.objects.create(
@@ -64,48 +62,57 @@ class TestCartView(TestCase):
             image_2="image_2.jpg",
             image_3="image_3.jpg",
             image_4="image_4.jpg",
-            product_unit = self.product_unit
+            product_unit=self.product_unit,
         )
 
-        self.client.post(reverse("cart:add_to_cart"), 
-        {
-            "productid": 1,
-            "productqty": 1,
-            "action": 'post'
-        }, xhr=True)
+        self.client.post(
+            reverse("cart:add_to_cart"),
+            {"productid": 1, "productqty": 1, "action": "post"},
+            xhr=True,
+        )
 
-        self.client.post(reverse("cart:add_to_cart"), 
-        {
-            "productid": 2,
-            "productqty": 2,
-            "action": 'post'
-        }, xhr=True)
+        self.client.post(
+            reverse("cart:add_to_cart"),
+            {"productid": 2, "productqty": 2, "action": "post"},
+            xhr=True,
+        )
 
-        self.client.post(reverse("cart:add_to_cart"), 
-        {
-            "productid": 3,
-            "productqty": 2,
-            "action": 'post'
-        }, xhr=True)
+        self.client.post(
+            reverse("cart:add_to_cart"),
+            {"productid": 3, "productqty": 2, "action": "post"},
+            xhr=True,
+        )
 
     def test_cart_url(self):
-        response = self.client.get(reverse('cart:cart_summary'))
+        response = self.client.get(reverse("cart:cart_summary"))
         self.assertEqual(response.status_code, 200)
 
     def test_cart_add(self):
         response = self.client.post(
-            reverse('cart:add_to_cart'), {"productid": 3, "productqty": 1, "action": "post"}, xhr=True)
-        self.assertEqual(response.json(), {'qty': 4})
+            reverse("cart:add_to_cart"),
+            {"productid": 3, "productqty": 1, "action": "post"},
+            xhr=True,
+        )
+        self.assertEqual(response.json(), {"qty": 4})
         response = self.client.post(
-            reverse('cart:add_to_cart'), {"productid": 2, "productqty": 1, "action": "post"}, xhr=True)
-        self.assertEqual(response.json(), {'qty': 3})
+            reverse("cart:add_to_cart"),
+            {"productid": 2, "productqty": 1, "action": "post"},
+            xhr=True,
+        )
+        self.assertEqual(response.json(), {"qty": 3})
 
     def test_cart_update(self):
         response = self.client.post(
-            reverse('cart:update_cart'), {"productid": 2, "productqty": 1, "cartitemqty": 1, "action": "post"}, xhr=True)
-        self.assertEqual(response.json(), {'qty': 2, 'subtotal': '40.00'})
+            reverse("cart:update_cart"),
+            {"productid": 2, "productqty": 1, "cartitemqty": 1, "action": "post"},
+            xhr=True,
+        )
+        self.assertEqual(response.json(), {"qty": 2, "subtotal": "40.00"})
 
     def test_cart_delete(self):
         response = self.client.post(
-            reverse('cart:delete_form_cart'), {"productid": 3, "action": "post"}, xhr=True)
-        self.assertEqual(response.json(), {'qty': 0, 'subtotal': 0})
+            reverse("cart:delete_form_cart"),
+            {"productid": 3, "action": "post"},
+            xhr=True,
+        )
+        self.assertEqual(response.json(), {"qty": 0, "subtotal": 0})

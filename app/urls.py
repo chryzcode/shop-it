@@ -7,10 +7,9 @@ from . import views
 app_name = "app"
 
 
-
 urlpatterns = [
     path("", views.home_page, name="home_page"),
-    path('create-product/', views.create_product, name='create_product'),
+    path("create-product/", views.create_product, name="create_product"),
     path(
         "<slugified_store_name>/all-products/",
         views.a_user_all_products,
@@ -32,5 +31,3 @@ urlpatterns = [
         name="a_user_category_products",
     ),
 ]
-
-

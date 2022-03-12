@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     "cloudinary",
     "ckeditor",
     "django_countries",
-
     "app",
     "cart",
     "account",
@@ -65,7 +64,7 @@ ROOT_URLCONF = "core.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR, 'templates')],
+        "DIRS": [os.path.join(BASE_DIR, "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -163,9 +162,8 @@ LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 
 
-PASSWORD_RESET_TIMEOUT = 1800 #30 Mins in Seconds
+PASSWORD_RESET_TIMEOUT = 1800  # 30 Mins in Seconds
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
-SENDER_EMAIL =  config("SENDER_EMAIL")
-
+SENDER_EMAIL = config("SENDER_EMAIL")

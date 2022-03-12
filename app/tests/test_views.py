@@ -26,9 +26,7 @@ class TestViews(TestCase):
             created_by=self.user,
         )
 
-        self.product_unit = ProductUnit.objects.create(
-            name= "pc"
-        )
+        self.product_unit = ProductUnit.objects.create(name="pc")
 
         self.product = Product.objects.create(
             category=self.category,
@@ -41,7 +39,7 @@ class TestViews(TestCase):
             image_2="image_2.jpg",
             image_3="image_3.jpg",
             image_4="image_4.jpg",
-            product_unit = self.product_unit
+            product_unit=self.product_unit,
         )
 
     def test_a_user_all_products(self):
