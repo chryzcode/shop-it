@@ -28,19 +28,31 @@
     {% endblock %}
   </head>
   <body>
-    <nav data-aos="fade-down" data-aos-duration="1500">
+    <nav data-aos="fade-down" data-aos-duration="1500" class="store-nav">
       <span>
-        <span>
-          <a href="">Shop !t</a>
-        </span>
-
-        <input type="search" name="" id="" />
+        <a href="">Shop !t</a>
       </span>
       <span>
-        <span>Notification</span>
-
-        <span> Profile </span>
+        <input type="search" name="" id="" class="side-nav-search-bar" />
       </span>
+
+      <span><i class="fas fa-bell notification-bell"></i>Notification</span>
+
+      <span>
+        <span id="user-account">
+          {% if request.user.avatar %}
+          <img src="" alt="" />
+          {% else %}
+          <i class="fas fa-user-circle default-avatar"></i>
+          {% endif %}
+          <span>{{request.user.full_name}}</span> <i class="fas fa-caret-down"></i
+        ></span>
+        <ul id="acc-store-nav-links">
+          <li><a href="" id="a-nav-link">Profile</a></li>
+          <li><a href="{% url 'account:logout' %}" id="a-nav-link">Sign Out</a></li>
+        </ul>
+      </span>
+
       <div id="toogle"></div>
     </nav>
     <div class="main-container">{% block content %} {% endblock %}</div>

@@ -295,7 +295,8 @@ footer {
   transition: all 1.5s ease-in-out;
 }
 
-.delete-from-cart-btn, .delete-btn {
+.delete-from-cart-btn,
+.delete-btn {
   background-color: #fff;
   color: red;
   border: 1px solid red;
@@ -306,7 +307,8 @@ footer {
   text-decoration: none;
 }
 
-.delete-from-cart-btn:hover, .delete-btn:hover  {
+.delete-from-cart-btn:hover,
+.delete-btn:hover {
   background-color: red;
   color: #ffffff;
   transition: all 1.5s ease-in-out;
@@ -554,7 +556,6 @@ div.product-info > p:nth-child(2) {
 }
 
 .input-container > input {
-  
   display: block;
 }
 
@@ -588,14 +589,16 @@ div.product-info > p:nth-child(2) {
 }
 
 .pricing-quantity-seg,
-.images-seg, .edit-acc-form-seg  {
+.images-seg,
+.edit-acc-form-seg {
   box-shadow: 0px 20px 30px 0px #ccc;
   padding: 30px;
   margin-top: 30px;
 }
 
 .pricing-quantity-seg > p,
-.images-seg > p, .edit-acc-form-seg > p {
+.images-seg > p,
+.edit-acc-form-seg > p {
   margin-bottom: 20px;
   font-size: 20px;
   color: #3d5170;
@@ -624,7 +627,8 @@ input[type="file" i] {
   padding-top: 8px;
 }
 
-.errorlist > li, .login-errors {
+.errorlist > li,
+.login-errors {
   color: red;
   padding: 5px 0;
   list-style: none;
@@ -674,7 +678,8 @@ button {
   color: #6b69f8;
 }
 
-.error-page-container, .success-page-container {
+.error-page-container,
+.success-page-container {
   width: 500px;
   margin: 30px auto 0 auto;
   text-align: center;
@@ -690,7 +695,8 @@ button {
   margin: 20px auto;
 }
 
-.error-image, .success-image{
+.error-image,
+.success-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -746,4 +752,62 @@ button {
   display: flex;
   justify-content: right;
   margin-top: 20px;
+}
+
+#acc-store-nav-links {
+  padding: 0 30px 0 0;
+  display: block;
+  position: absolute;
+  list-style: none;
+  z-index: 1070;
+  background-color: #fff;
+  margin-top: 10px;
+  box-shadow: 0px 20px 30px 0px #ccc;
+  right: 0;
+  margin-right: 20px;
+  border-radius: 10px;
+}
+
+#user-account {
+  padding: 0 0 0 40px;
+  display: flex;
+  align-items: center;
+}
+
+#user-account > span {
+  padding: 0 5px;
+}
+
+#acc-store-nav-links > li > a {
+  padding: 10px 30px;
+  display: block;
+  color: #3d5170;
+  text-decoration: none;
+}
+
+#acc-store-nav-links > li > a:hover {
+  color: #6b69f8;
+}
+
+.default-avatar {
+  font-size: 35px;
+}
+
+.notification-bell {
+  margin: 0 !important;
+  font-size: 25px !important;
+  padding: 0 !important;
+}
+
+.store-nav {
+
+}
+.side-nav-search-bar {
+width: 700px;
+height: 35px;
+padding: 10px 15px;
+outline: none;
+border: 1px solid #3d5170;
+border-radius: 8px;
+margin-right: 200px;
 }
