@@ -15,7 +15,7 @@ def custom_error_500(request):
 
 
 def home_page(request):
-    return render(request, "app/product-templates/index.html")
+    return render(request, "product-templates/index.html")
 
 
 def a_user_all_products(request, slugified_store_name):
@@ -23,7 +23,7 @@ def a_user_all_products(request, slugified_store_name):
     all_products = Product.objects.filter(created_by=user.id, in_stock=True)
     return render(
         request,
-        "app/product-templates/a-user-all-products.html",
+        "product-templates/a-user-all-products.html",
         {"all_products": all_products},
     )
 
@@ -33,7 +33,7 @@ def a_user_all_categories(request, slugified_store_name):
     all_categories = Category.objects.filter(created_by=user.id)
     return render(
         request,
-        "app/product-templates/a-user-all-categories.html",
+        "product-templates/a-user-all-categories.html",
         {"all_categories": all_categories},
     )
 
@@ -46,7 +46,7 @@ def product_detail(request, slug, slugified_store_name):
     ).exclude(id=product.id)[:6]
     return render(
         request,
-        "app/product-templates/product-detail.html",
+        "product-templates/product-detail.html",
         {"product": product, "category_product": category_product},
     )
 
@@ -59,7 +59,7 @@ def a_user_category_products(request, slugified_store_name, slug):
     )
     return render(
         request,
-        "app/product-templates/category-products.html",
+        "product-templates/category-products.html",
         {"category_products": category_products, "category": category},
     )
 
@@ -80,4 +80,8 @@ def create_product(request):
                 slugified_store_name=product.created_by.slugified_store_name,
             )
     context = {"form": form, "categories": categories, "product_units": product_units}
-    return render(request, "app/product-templates/create-product.html", context)
+    return render(request, "product-templates/create-product.html", context)
+
+def store_overview(request, slugified_store_name):
+    user = get_object_or_404(User, slugified_store_name=slugified_store_name)
+

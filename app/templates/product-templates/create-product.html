@@ -2,40 +2,7 @@
 {% block title %} <title>Shop!t - Create Product</title> {% endblock %}
 {% block content %}
 <div class="create-product-container">
-  <div class="store-sidenav" id="store-sidenav">
-    <span class="store-sidenav-seg">
-      <p>{{request.user.store_name}}</p>
-      <ul>
-        <li><a href="">Customers</a></li>
-        <li><a href="">Orders</a></li>
-        <li><a href="">Transanction History</a></li>
-      </ul>
-    </span>
-    <span class="store-sidenav-seg">
-      <p>Catalog</p>
-      <ul>
-        <li><a href="">Products</a></li>
-        <li><a href="">Reviews</a></li>
-      </ul>
-    </span>
-    <span class="store-sidenav-seg">
-      <p>Marketing</p>
-      <ul>
-        <li><a href="">Discount</a></li>
-      </ul>
-    </span>
-    <span class="store-sidenav-seg">
-      <p>Store Settings</p>
-      <ul>
-        <li><a href="">Store Settings</a></li>
-        <li><a href="">Subscription</a></li>
-        <li><a href="">Store Custmization</a></li>
-        <li><a href="">User Account</a></li>
-        <li><a href="">Staff Account</a></li>
-        <li><a href="">Import Products</a></li>
-      </ul>
-    </span>
-  </div>
+  {% include 'navs/store-side-nav.html' %}
 
   <div class="create-product-form-container">
    
