@@ -36,21 +36,23 @@
         <input type="search" name="" id="" class="side-nav-search-bar" />
       </span>
 
-      <span class="notification"><i class="fas fa-bell notification-bell"></i>Notification</span>
+      <span class="nav-not-acc-sec">
+        <span class="notification"><i class="fas fa-bell notification-bell"></i>Notification</span>
 
-      <span>
-        <span id="user-account">
-          {% if request.user.avatar %}
-          <img class="nav-avatar" src="{{request.user.avatar.url}}" alt="" />
-          {% else %}
-          <i class="fas fa-user-circle default-avatar"></i>
-          {% endif %}
-          <span>{{request.user.full_name}}</span> <i class="fas fa-caret-down"></i
-        ></span>
-        <ul id="acc-store-nav-links">
-          <li><a href="" id="a-nav-link">Profile</a></li>
-          <li><a href="{% url 'account:logout' %}" id="a-nav-link">Sign Out</a></li>
-        </ul>
+        <span class="nav-user-profile">
+          <span id="user-account">
+            {% if request.user.avatar %}
+            <img class="nav-avatar" src="{{request.user.avatar.url}}" alt="" />
+            {% else %}
+            <i class="fas fa-user-circle default-avatar"></i>
+            {% endif %}
+            <span>{{request.user.full_name}}</span> <i class="fas fa-caret-down"></i
+          ></span>
+          <ul id="acc-store-nav-links">
+            <li><a href="" id="a-nav-link">Profile</a></li>
+            <li><a href="{% url 'account:logout' %}" id="a-nav-link">Sign Out</a></li>
+          </ul>
+        </span>
       </span>
 
       <div id="toogle"></div>

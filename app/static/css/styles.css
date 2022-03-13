@@ -768,8 +768,11 @@ button {
   border-radius: 10px;
 }
 
+.nav-not-acc-sec{
+   display: flex;
+}
 #user-account {
-  padding: 0 0 0 40px;
+  padding: 0 0 0 10px;
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -802,21 +805,16 @@ button {
 .notification-bell {
   margin: 0 !important;
   font-size: 25px !important;
-  padding: 0 5px 0 0 !important;
+  padding: 0 0px 0 0 !important;
 }
 
-.store-nav {
- 
-
-}
 .side-nav-search-bar {
-width: 150%;
-height: 40px;
-padding: 10px 15px;
-outline: none;
-border: 1px solid #3d5170;
-border-radius: 8px;
-margin: 0 30px;
+  width: 50vw;
+  height: 40px;
+  padding: 10px 15px;
+  outline: none;
+  border: 1px solid #3d5170;
+  border-radius: 8px;
 }
 
 .nav-avatar {
@@ -825,13 +823,12 @@ margin: 0 30px;
 }
 
 .notification {
-  padding-left: 10%;
   display: flex;
   align-items: center;
   color: #3d5170;
   cursor: pointer;
 }
 
-.notification:hover{
+.notification:hover {
   color: #6b69f8;
 }
