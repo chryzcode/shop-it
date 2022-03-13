@@ -36,14 +36,12 @@
         <input type="search" name="" id="" class="side-nav-search-bar" />
       </span>
 
-      <span><i class="fas fa-bell notification-bell"></i>Notification</span>
+      <span class="notification"><i class="fas fa-bell notification-bell"></i>Notification</span>
 
       <span>
         <span id="user-account">
           {% if request.user.avatar %}
-         <span 
-            <img class="nav-avatar" src="{{request.user.avatar.url}}" alt="" />
-         </span>
+          <img class="nav-avatar" src="{{request.user.avatar.url}}" alt="" />
           {% else %}
           <i class="fas fa-user-circle default-avatar"></i>
           {% endif %}

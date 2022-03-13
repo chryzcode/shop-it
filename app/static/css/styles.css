@@ -772,6 +772,12 @@ button {
   padding: 0 0 0 40px;
   display: flex;
   align-items: center;
+  cursor: pointer;
+  color: #3d5170;
+}
+
+#user-account:hover {
+  color: #6b69f8;
 }
 
 #user-account > span {
@@ -796,22 +802,36 @@ button {
 .notification-bell {
   margin: 0 !important;
   font-size: 25px !important;
-  padding: 0 !important;
+  padding: 0 5px 0 0 !important;
 }
 
 .store-nav {
+ 
 
 }
 .side-nav-search-bar {
-width: 700px;
-height: 35px;
+width: 150%;
+height: 40px;
 padding: 10px 15px;
 outline: none;
 border: 1px solid #3d5170;
 border-radius: 8px;
+margin: 0 30px;
 }
 
 .nav-avatar {
   width: 50px;
   border-radius: 50%;
+}
+
+.notification {
+  padding-left: 10%;
+  display: flex;
+  align-items: center;
+  color: #3d5170;
+  cursor: pointer;
+}
+
+.notification:hover{
+  color: #6b69f8;
 }
