@@ -41,7 +41,9 @@
       <span>
         <span id="user-account">
           {% if request.user.avatar %}
-          <img src="" alt="" />
+         <span 
+            <img class="nav-avatar" src="{{request.user.avatar.url}}" alt="" />
+         </span>
           {% else %}
           <i class="fas fa-user-circle default-avatar"></i>
           {% endif %}

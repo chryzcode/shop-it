@@ -809,5 +809,9 @@ padding: 10px 15px;
 outline: none;
 border: 1px solid #3d5170;
 border-radius: 8px;
-margin-right: 200px;
+}
+
+.nav-avatar {
+  width: 50px;
+  border-radius: 50%;
 }
