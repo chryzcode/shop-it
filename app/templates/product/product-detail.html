@@ -49,7 +49,7 @@
   <div class="product-info">
     <h1>{{ product.name }}</h1>
     <p>{{product.category}}</p>
-    <div>{{product.description}}</div>
+    <p>{{product.description}}</p>
     {% if product.availability > 1 %}
     <div>Availability: {{product.availability}} {{product.product_unit}}s</div>
     {% else %}
@@ -87,6 +87,9 @@
       Out of stock
     </button>
     {% endif %}
+    <div>
+       <button type="button" class="update-cart-btn">Add to WishList</button>
+    </div>
     {% if product.product_details %}
     <div>
       <h3>Product Details</h3>

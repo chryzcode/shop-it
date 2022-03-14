@@ -99,16 +99,16 @@ def account_activate(request, uidb64, token):
 
 def user_profile(request):
     account = request.user
-    form = UserProfileForm(instance=account)
+    userprofileform = UserProfileForm(instance=account)
     if request.method == "POST":
-        form = UserProfileForm(request.POST, request.FILES, instance=account)
-        if form.is_valid():
-            form.save()
+        userprofileform = UserProfileForm(request.POST, request.FILES, instance=account)
+        if userprofileform.is_valid():
+            userprofileform.save()
             return redirect("/")
 
     return render(
         request,
         "account/user/user-profile.html",
-        {"userprofileform": form, "account": account},
+        {"userprofileform": userprofileform, "account": account},
     )
 

@@ -1,0 +1,19 @@
+{% extends 'navs/store-nav.html' %} {% load static %}{% block title %}<title>
+  Shop !t - {{request.user }} Products
+</title>
+{% endblock %} {% block content %}
+<div class="store-page-container">
+  {% include 'navs/store-side-nav.html' %}
+  <div class="store-content-container">
+    <span class="products-container">
+       <p>All Products</p>
+      {% for product in all_products %}    
+      <a class="products-table" href="{{product.get_absolute_url}}">
+        <span>{{ product.name }}</span>
+        <span>{{ product.price }}</span>
+      </a>
+      {% endfor %}
+    </span>
+  </div>
+  {% endblock %}
+</div>

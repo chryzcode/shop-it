@@ -6,6 +6,8 @@ from django.db import models
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 from django_countries.fields import CountryField
+import uuid
+
 
 
 class CustomAccountManager(BaseUserManager):
@@ -38,15 +40,8 @@ class CustomAccountManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_("email address"), unique=True)
     full_name = models.CharField(max_length=300)
-    store_name = models.CharField(max_length=150, unique=True)
     avatar = models.ImageField(upload_to="user-profile-images/", null=True)
-    slugified_store_name = models.SlugField(max_length=255, unique=True)
-    # country = CountryField()
     phone_number = models.CharField(max_length=15, blank= True)
-    # post_code = models.CharField(max_length=13, blank= True)
-    # address_line_1 = models.CharField(max_length=200, blank=True)
-    # address_line_2 = models.CharField(max_length=200, blank=True)
-    # town_city = models.CharField(max_length=150, blank=True)
     is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
@@ -54,6 +49,13 @@ class User(AbstractBaseUser, PermissionsMixin):
     facebook = models.CharField(max_length=100, blank=True)
     instagram = models.CharField(max_length=100, blank=True)
     twitter = models.CharField(max_length=100, blank=True)
+
+    #for store
+    store_name = models.CharField(max_length=150, unique=True)
+    slugified_store_name = models.SlugField(max_length=255, unique=True)
+    store_description = models.TextField(max_length=500, blank=True)
+    store_image = models.ImageField(upload_to="store-images/", null=True)
+    
 
     objects = CustomAccountManager()
 
@@ -81,3 +83,21 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.store_name
+
+
+class Address(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
+    user = models.ForeignKey(User, verbose_name=_("Customer"), on_delete=models.CASCADE)
+    full_name = models.CharField(_("Full Name"), max_length=150)
+    phone = models.CharField(_("Phone Number"), max_length=50)
+    postcode = models.CharField(_("Postcode"), max_length=50)
+    address_line = models.CharField(_("Address Line 1"), max_length=255)
+    address_line2 = models.CharField(_("Address Line 2"), max_length=255)
+    town_city = models.CharField(_("Town/City/State"), max_length=150)
+    delivery_instructions = models.CharField(_("Delivery Instructions"), max_length=255)
+    country = CountryField()
+
+    def __str__(self):
+        return self.user.store_name
+
+

@@ -287,12 +287,14 @@ footer {
   border-radius: 5px;
   cursor: pointer;
   transition: all 1.5s ease-in-out;
+  outline: none
 }
 
 .update-cart-btn:hover {
   background-color: #6b69f8;
   color: #ffffff;
   transition: all 1.5s ease-in-out;
+  border: 0;
 }
 
 .delete-from-cart-btn,
@@ -385,6 +387,7 @@ div.cart-expenses > div:nth-child(2) {
 
 .product-info > * {
   margin: 6px 0;
+  
 }
 
 .product-info > p {

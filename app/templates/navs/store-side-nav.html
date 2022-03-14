@@ -5,13 +5,21 @@
         <li><a href="{% url "app:store_overview" %}">My Store</a></li>
         <li><a href="">Customers</a></li>
         <li><a href="">Orders</a></li>
+        <li><a href="">WishList</a></li>
         <li><a href="">Transanction History</a></li>
       </ul>
     </span>
     <span class="store-sidenav-seg">
       <p>Catalog</p>
       <ul>
-        <li><a href="">Products</a></li>
+        <span>
+          <li><a href="">Products</a></li>
+          <ul>
+            <li><a href="{% url 'app:store_products' %}">All Products</a></li>
+            <li><a href="">Add Products</a></li>
+            <li><a href="">Add Coll</a></li>
+          </ul>
+        </span>
         <li><a href="">Reviews</a></li>
       </ul>
     </span>
@@ -27,7 +35,7 @@
         <li><a href="">Store Settings</a></li>
         <li><a href="">Subscription</a></li>
         <li><a href="">Store Custmization</a></li>
-        <li><a href="">User Account</a></li>
+        <li><a href="{% url 'account:user_profile' %}">User Account</a></li>
         <li><a href="">Staff Account</a></li>
         <li><a href="">Import Products</a></li>
       </ul>

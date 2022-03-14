@@ -65,6 +65,7 @@ class Product(models.Model):
         blank=True,
         validators=[MinValueValidator(0), MaxValueValidator(100)],
     )
+    wishlist = models.ManyToManyField(User, related_name='wishlist', blank=True)
 
     # pulral for the table name in the admin page
     class Meta:

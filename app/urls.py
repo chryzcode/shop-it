@@ -9,9 +9,9 @@ urlpatterns = [
     path("", views.home_page, name="base"),
     path("create-product/", views.create_product, name="create_product"),
     path(
-        "<slugified_store_name>/all-products/",
+        "products/",
         views.a_user_all_products,
-        name="a_user_all_products",
+        name="store_products",
     ),
     path(
         "<slugified_store_name>/all-categories/",
