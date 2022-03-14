@@ -1,6 +1,10 @@
 {% extends 'navs/store-nav.html' %} {% load static %} {% block title %} <title>Shop!t - Edit Account</title>
 {% endblock %} {% block content %}
-<div class="account-form-container">
+<div class="store-page-container">
+  {% include 'navs/store-side-nav.html' %}
+
+  
+  <div class="account-form-container">
   <form
     action="{% url 'account:user_profile' %}"
     method="post"
@@ -94,6 +98,7 @@
   <div class="delete-btn-container">
     <a class="delete-btn" href="{% url 'account:delete_account' %}">Delete Account</a>
   </div>
+</div>
 </div>
 
 {% endblock %}
