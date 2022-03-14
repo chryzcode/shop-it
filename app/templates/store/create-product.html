@@ -8,7 +8,11 @@
    
     <form action="" method="post" enctype="multipart/form-data" class="create-product-form">
        <div class="above-create-form">
+         {% if 'create' in request.get_full_path %}
         <p>Create Product</p>
+        {% else %}
+        <p>Edit Product</p>
+        {% endif %}
       </div>
       {% csrf_token %}
       <div class="input-container">       
@@ -110,7 +114,13 @@
       </div>
 
       <div class="form-btn-container">
-        <button class="form-btn" type="submit">Create</button>
+        <button class="form-btn" type="submit">
+          {% if 'create' in request.get_full_path %}
+          Create
+          {% else %}
+          Update
+          {% endif %}
+        </button>
       </div>     
       </div>      
     </form>

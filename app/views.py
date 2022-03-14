@@ -103,6 +103,29 @@ def edit_product(request, slug):
     context = {"form": form, "categories": categories, "product_units": product_units, "product": product}
     return render(request, "store/create-product.html", context)
 
+def delete_product(request, slug):
+    user = request.user
+    product = get_object_or_404(Product, slug=slug, created_by=user.id)
+    product.delete()
+    return redirect('app:store_products')
+
 def store_overview(request):
     return render(request, 'store/store-overview.html')
+
+def add_wishlist(request, slug):
+    user = request.user
+    product = get_object_or_404(Product, slug=slug)
+    product.wishlist.add(user)
+    return redirect('app:store_products')
+
+def remove_wishlist(request, slug):
+    user = request.user
+    product = get_object_or_404(Product, slug=slug)
+    product.wishlist.remove(user)
+    return redirect('app:store_products')
+
+def wishlist(request):
+    user = request.user
+    wishlist = Product.objects.filter(wishlist=user)
+    return render(request, 'store/wishlist.html', {'wishlist': wishlist})
 

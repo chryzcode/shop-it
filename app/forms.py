@@ -35,7 +35,7 @@ class ProductForm(ModelForm):
             "category": forms.Select(attrs={"class": "form-control"}),
             "availability": forms.NumberInput(attrs={"class": "form-control", "placeholder": "Product Availability"}),
             "product_details": forms.Textarea(attrs={"class": "form-control", "placeholder": "Product Details"}),
-            "product_unit": forms.TextInput(attrs={"class": "form-control", "placeholder": "Product Unit"}),
+            "product_unit": forms.Select(attrs={"class": "form-control", "placeholder": "Product Unit"}),
             "discount_percentage": forms.NumberInput(
                 attrs={"class": "form-control", "placeholder": "Product Discount"}
             ),

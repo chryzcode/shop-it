@@ -87,9 +87,18 @@
       Out of stock
     </button>
     {% endif %}
+
+    {% if request.user.is_authenticated %}
     <div>
-       <button type="button" class="update-cart-btn">Add to WishList</button>
+        {% if request.user in product.wishlist.all %}
+       <button type="button" class="update-cart-btn"><a href="">Remove from WishList</a></button>
+        {% else %}
+        <button type="button" class="update-cart-btn"><a href="">Add to WishList</a></button>
+        {% endif %}
+
     </div>
+    {% endif %}
+
     {% if product.product_details %}
     <div>
       <h3>Product Details</h3>
