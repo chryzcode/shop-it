@@ -74,25 +74,37 @@
         <div class="input-container">
           <label for="image_1">Image 1<span class="form-required">*</span></label>
           <p>{{ form.image_1.errors }}</p>
-          <input class="form-control" type="file" name="images" id="image_1" placeholder="Click to add image" />
+          {% if product.image_1 %}
+          <a href="{{product.image_1.url}}">Current Image</a>
+          {% endif %}
+          {{form.image_1}}
         </div>
 
         <div class="input-container">
           <label for="image_2">Image 2<span class="form-required">*</span></label>
           <p>{{ form.image_2.errors }}</p>
-          <input class="form-control" type="file" name="images" id="image_2" placeholder="Click to add image" />
+          {% if product.image_2 %}
+          <a href="{{product.image_2.url}}">Current Image</a>
+          {% endif %}
+          {{form.image_2}}
         </div>
 
         <div class="input-container">
           <label for="image_3">Image 3</label>
           <p>{{ form.image_3.errors }}</p>
-          <input class="form-control" type="file" name="images" id="image_3" placeholder="Click to add image" />
+          {% if product.image_3 %}
+          <a href="{{product.image_3.url}}">Current Image</a>
+          {% endif %}
+          {{form.image_3}}
         </div>
 
         <div class="input-container">
           <label for="image_4">Image 4</label>
           <p>{{ form.image_4.errors }}</p>
-          <input class="form-control" type="file" name="images" id="image_4" placeholder="Click to add image" />
+          {% if product.image_4 %}
+          <a href="{{product.image_4.url}}">Current Image</a>
+          {% endif %}
+          {{form.image_4}}
         </div>
         
       </div>

@@ -100,7 +100,7 @@ def edit_product(request, slug):
                 slug=product.slug,
                 slugified_store_name=product.created_by.slugified_store_name,
             )
-    context = {"form": form, "categories": categories, "product_units": product_units}
+    context = {"form": form, "categories": categories, "product_units": product_units, "product": product}
     return render(request, "store/create-product.html", context)
 
 def store_overview(request):
