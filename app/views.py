@@ -82,6 +82,27 @@ def create_product(request):
     context = {"form": form, "categories": categories, "product_units": product_units}
     return render(request, "store/create-product.html", context)
 
+
+def edit_product(request, slug):
+    user = request.user
+    product = get_object_or_404(Product, slug=slug, created_by=user.id)
+    form = ProductForm(instance=product)
+    categories = Category.objects.filter(created_by=user.id)
+    product_units = ProductUnit.objects.all()
+    if request.method == "POST":
+        form = ProductForm(request.POST, request.FILES, instance=product)
+        if form.is_valid():
+            product = form.save(commit=False)
+            product.created_by = request.user
+            product.save()
+            return redirect(
+                "app:product_detail",
+                slug=product.slug,
+                slugified_store_name=product.created_by.slugified_store_name,
+            )
+    context = {"form": form, "categories": categories, "product_units": product_units}
+    return render(request, "store/create-product.html", context)
+
 def store_overview(request):
     return render(request, 'store/store-overview.html')
 
