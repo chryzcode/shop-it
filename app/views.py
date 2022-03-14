@@ -38,8 +38,8 @@ def a_user_all_categories(request, slugified_store_name):
     )
 
 
-def product_detail(request, slug, slugified_store_name):
-    user =  get_object_or_404(User, slugified_store_name=slugified_store_name)
+def product_detail(request, slug):
+    user =  request.user
     product = get_object_or_404(Product, slug=slug)
     category_product = Product.objects.filter(
         category=product.category, created_by=user.id
@@ -116,13 +116,13 @@ def add_wishlist(request, slug):
     user = request.user
     product = get_object_or_404(Product, slug=slug)
     product.wishlist.add(user)
-    return redirect('app:store_products')
+    return redirect('app:product_detail', product.slug)
 
 def remove_wishlist(request, slug):
     user = request.user
     product = get_object_or_404(Product, slug=slug)
     product.wishlist.remove(user)
-    return redirect('app:store_products')
+    return redirect('app:product_detail', product.slug)
 
 def wishlist(request):
     user = request.user

@@ -279,7 +279,7 @@ footer {
   flex-wrap: wrap;
 }
 
-.update-cart-btn {
+.update-btn {
   background-color: #fff;
   color: #6b69f8;
   border: 1px solid #6b69f8;
@@ -290,14 +290,14 @@ footer {
   outline: none;
 }
 
-.update-cart-btn:hover {
+.update-btn:hover {
   background-color: #6b69f8;
   color: #ffffff;
   transition: all 1.5s ease-in-out;
   border: 0;
 }
 
-.delete-from-cart-btn,
+.delete-btn,
 .delete-btn {
   background-color: #fff;
   color: red;
@@ -309,28 +309,28 @@ footer {
   text-decoration: none;
 }
 
-.delete-from-cart-btn:hover,
+.delete-btn:hover,
 .delete-btn:hover {
   background-color: red;
   color: #ffffff;
   transition: all 1.5s ease-in-out;
 }
 
-.update-cart-btn > a {
+.update-btn > a {
   color: #6b69f8;;
   text-decoration: none;
 }
 
-.update-cart-btn > a:hover {
+.update-btn > a:hover {
   color: #ffffff
 }
 
-.delete-from-cart-btn > a {
+.delete-btn > a {
   color: red;
   text-decoration: none;
 }
 
-.delete-from-cart-btn > a:hover {
+.delete-btn > a:hover {
   color: #ffffff
 }
 

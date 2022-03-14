@@ -81,9 +81,9 @@
       </div>
     </select>
 
-    <button type="button" id="add-to-cart-btn" value="{{product.id}}" class="update-cart-btn">Add to cart</button>
+    <button type="button" id="add-to-cart-btn" value="{{product.id}}" class="update-btn">Add to cart</button>
     {% else %}
-    <button type="button" id="add-to-cart-btn" value="{{product.id}}" class="update-cart-btn out-of-stock">
+    <button type="button" id="add-to-cart-btn" value="{{product.id}}" class="update-btn out-of-stock">
       Out of stock
     </button>
     {% endif %}
@@ -91,9 +91,9 @@
     {% if request.user.is_authenticated %}
     <div>
         {% if request.user in product.wishlist.all %}
-       <button type="button" class="update-cart-btn"><a href="">Remove from WishList</a></button>
+       <button type="button" class="delete-btn"><a href="{% url 'app:remove_wishlist' product.slug %}">Remove from WishList</a></button>
         {% else %}
-        <button type="button" class="update-cart-btn"><a href="">Add to WishList</a></button>
+        <button type="button" class="update-btn"><a href="{% url 'app:add_wishlist' product.slug %}">Add to WishList</a></button>
         {% endif %}
 
     </div>

@@ -23,12 +23,12 @@
           <td>{{ product.category }}</td>
           <td>{{ product.availability }}</td>
           <td>
-            <button type="button" class="update-cart-btn">
+            <button type="button" class="update-btn">
               <a href="{% url 'app:edit_product' product.slug  %}"><i class="far fa-edit"></i>Update</a>
             </button>
           </td>
           <td>
-            <button type="button" class="delete-from-cart-btn">
+            <button type="button" class="delete-btn">
               <a href="{% url 'app:delete_product' product.slug  %}"><i class="fas fa-trash-alt"></i>Delete</a>
             </button>
           </td>
