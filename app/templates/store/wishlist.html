@@ -1,0 +1,35 @@
+{% extends 'navs/store-nav.html' %} {% load static %}{% block title %}<title>
+  Shop !t - {{request.user }} WishList
+</title>
+{% endblock %} {% block content %}
+<div class="store-page-container">
+  {% include 'navs/store-side-nav.html' %}
+  <div class="store-content-container">
+    <span class="store-products-container">
+      <p>My Wish List</p>
+      <table class="store-products-table">
+        <tr class="table-rows">
+          <th>Product</th>
+          <th>Price</th>
+          <th>Category</th>
+          <th>In Stock</th>
+          <th>Remove</th>
+        </tr>
+        {% for product in wishlist %}
+        <tr class="table-rows">
+          <td><a href="{{product.get_absolute_url}}">{{ product.name }}</a></td>
+          <td>{{ product.price }}</td>
+          <td>{{ product.category }}</td>
+          <td>{{ product.availability }}</td>
+          <td>
+            <button type="button" class="delete-btn">
+              <a href="{% url 'app:remove_wishlist' product.slug %}"><i class="fas fa-trash-alt"></i>Delete</a>
+            </button>
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+    </span>
+  </div>
+  {% endblock %}
+</div>

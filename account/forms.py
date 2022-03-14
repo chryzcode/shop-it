@@ -48,7 +48,14 @@ class RegistrationForm(ModelForm):
 class UserProfileForm(ModelForm):
     class Meta:
         model = User
-        fields = ["full_name", "avatar", "instagram", "twitter", "facebook", "phone_number"]
+        fields = [
+            "full_name",
+            "avatar",
+            "instagram",
+            "twitter",
+            "facebook",
+            "phone_number",
+        ]
 
         widgets = {
             "full_name": forms.TextInput(
@@ -57,7 +64,9 @@ class UserProfileForm(ModelForm):
             "avatar": forms.FileInput(attrs={"class": "form-control"}),
             # 'country': forms.Select(attrs={'class': 'form-control'}),
             # 'post_code': forms.TextInput(attrs={'class': 'form-control', 'placeholder':'256785'}),
-            'phone_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder':'+1 97904095'}),
+            "phone_number": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "+1 97904095"}
+            ),
             # 'address_line_1': forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Block 235 Washington DC'}),
             # 'address_line_2': forms.TextInput(attrs={'class': 'form-control', 'placeholder':''}),
             # 'town_city': forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Texas'}),

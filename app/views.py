@@ -39,7 +39,7 @@ def a_user_all_categories(request, slugified_store_name):
 
 
 def product_detail(request, slug):
-    user =  request.user
+    user = request.user
     product = get_object_or_404(Product, slug=slug)
     category_product = Product.objects.filter(
         category=product.category, created_by=user.id
@@ -100,32 +100,41 @@ def edit_product(request, slug):
                 slug=product.slug,
                 slugified_store_name=product.created_by.slugified_store_name,
             )
-    context = {"form": form, "categories": categories, "product_units": product_units, "product": product}
+    context = {
+        "form": form,
+        "categories": categories,
+        "product_units": product_units,
+        "product": product,
+    }
     return render(request, "store/create-product.html", context)
+
 
 def delete_product(request, slug):
     user = request.user
     product = get_object_or_404(Product, slug=slug, created_by=user.id)
     product.delete()
-    return redirect('app:store_products')
+    return redirect("app:store_products")
+
 
 def store_overview(request):
-    return render(request, 'store/store-overview.html')
+    return render(request, "store/store-overview.html")
+
 
 def add_wishlist(request, slug):
     user = request.user
     product = get_object_or_404(Product, slug=slug)
     product.wishlist.add(user)
-    return redirect('app:product_detail', product.slug)
+    return redirect("app:product_detail", product.slug)
+
 
 def remove_wishlist(request, slug):
     user = request.user
     product = get_object_or_404(Product, slug=slug)
     product.wishlist.remove(user)
-    return redirect('app:product_detail', product.slug)
+    return redirect("app:product_detail", product.slug)
+
 
 def wishlist(request):
     user = request.user
     wishlist = Product.objects.filter(wishlist=user)
-    return render(request, 'store/wishlist.html', {'wishlist': wishlist})
-
+    return render(request, "store/wishlist.html", {"wishlist": wishlist})

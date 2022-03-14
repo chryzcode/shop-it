@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('account', '0004_remove_user_address_line_1_and_more'),
+        ("account", "0004_remove_user_address_line_1_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='user',
-            name='phone_number',
+            model_name="user",
+            name="phone_number",
             field=models.CharField(blank=True, max_length=15),
         ),
     ]

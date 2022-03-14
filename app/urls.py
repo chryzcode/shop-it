@@ -12,6 +12,7 @@ urlpatterns = [
     path("delete/product/<slug>", views.delete_product, name="delete_product"),
     path("add-wishlist/<slug>", views.add_wishlist, name="add_wishlist"),
     path("remove-wishlist/<slug>", views.remove_wishlist, name="remove_wishlist"),
+    path("wishlist/", views.wishlist, name="wishlist"),
     path(
         "products/",
         views.a_user_all_products,
@@ -32,6 +33,5 @@ urlpatterns = [
         views.a_user_category_products,
         name="a_user_category_products",
     ),
-
     path("home/", views.store_overview, name="store_overview"),
 ]

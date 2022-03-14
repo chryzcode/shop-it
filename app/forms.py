@@ -1,8 +1,7 @@
+from django import forms
 from django.forms import ModelForm
 
 from .models import Category, Product
-
-from django import forms
 
 
 class ProductForm(ModelForm):
@@ -25,23 +24,33 @@ class ProductForm(ModelForm):
         ]
 
         widgets = {
-            "name": forms.TextInput(attrs={"class": "form-control", "placeholder": "Product Name"}),
-            "description": forms.Textarea(attrs={"class": "form-control", "placeholder": "Product Description"}),
+            "name": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "Product Name"}
+            ),
+            "description": forms.Textarea(
+                attrs={"class": "form-control", "placeholder": "Product Description"}
+            ),
             "image_1": forms.FileInput(attrs={"class": "form-control"}),
             "image_2": forms.FileInput(attrs={"class": "form-control"}),
             "image_3": forms.FileInput(attrs={"class": "form-control"}),
             "image_4": forms.FileInput(attrs={"class": "form-control"}),
-            "price": forms.NumberInput(attrs={"class": "form-control", "placeholder": "Product Price"}),
+            "price": forms.NumberInput(
+                attrs={"class": "form-control", "placeholder": "Product Price"}
+            ),
             "category": forms.Select(attrs={"class": "form-control"}),
-            "availability": forms.NumberInput(attrs={"class": "form-control", "placeholder": "Product Availability"}),
-            "product_details": forms.Textarea(attrs={"class": "form-control", "placeholder": "Product Details"}),
-            "product_unit": forms.Select(attrs={"class": "form-control", "placeholder": "Product Unit"}),
+            "availability": forms.NumberInput(
+                attrs={"class": "form-control", "placeholder": "Product Availability"}
+            ),
+            "product_details": forms.Textarea(
+                attrs={"class": "form-control", "placeholder": "Product Details"}
+            ),
+            "product_unit": forms.Select(
+                attrs={"class": "form-control", "placeholder": "Product Unit"}
+            ),
             "discount_percentage": forms.NumberInput(
                 attrs={"class": "form-control", "placeholder": "Product Discount"}
             ),
         }
-
-    
 
     def __init__(self, *args, **kwargs):
         super(ProductForm, self).__init__(*args, **kwargs)

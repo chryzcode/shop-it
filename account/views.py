@@ -10,7 +10,7 @@ from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 
-from .forms import UserProfileForm, RegistrationForm
+from .forms import RegistrationForm, UserProfileForm
 from .models import User
 from .tokens import account_activation_token
 
@@ -111,4 +111,3 @@ def user_profile(request):
         "account/user/user-profile.html",
         {"userprofileform": userprofileform, "account": account},
     )
-
