@@ -14,29 +14,19 @@
       <div class="input-container">       
         <label for="name">Product Name<span class="form-required">*</span></label>
         <p>{{ form.name.errors }}</p>
-        <input class="form-control" type="text" name="name" id="name" placeholder="Name of Product" />
+        {{form.name}}
       </div>
 
       <div class="input-container">
         <label for="category">Product Category<span class="form-required">*</span></label>
         <p>{{ form.category.errors }}</p>
-        <select class="form-control" name="category" id="category">
-          <option value="">Select Category</option>
-          {% for category in categories %}
-          <option value="{{ category.id }}">{{ category.name }}</option>
-          {% endfor %}
-        </select>
+        {{form.category}}
       </div>
 
       <div class="input-container">
         <label for="description">Short Description<span class="form-required">*</span></label>
         <p>{{ form.description.errors }}</p>
-        <textarea
-          class="form-control"
-          name="description"
-          id="description"
-          placeholder="Short Description on Project"
-        ></textarea>
+        {{form.description}}
       </div>
 
       <div class="input-container">
@@ -53,13 +43,13 @@
             <span class="input-container">
               <label for="price">Price<span class="form-required">*</span></label>
               <p>{{ form.price.errors }}</p>
-              <input class="form-control" type="number" name="price" id="price" />
+              {{form.price}}
             </span>
 
             <span class="input-container">
               <label for="discount_percentage">Discount Percentage</label>
               <p>{{ form.discount_percentage.errors }}</p>
-              <input class="form-control" type="number" name="discount_percentage" id="discount_percentage" />
+              {{form.discount_percentage}}
             </span>
           </div>
 
@@ -67,18 +57,13 @@
             <span class="input-container">
               <label for="availability">Product Count<span class="form-required">*</span></label>
               <p>{{ form.availability.errors }}</p>
-              <input class="form-control" type="number" name="availability" id="availability" />
+              {{form.availability}}
             </span>
 
             <span class="input-container">
               <label for="product_unit">Product Unit<span class="form-required">*</span></label>
               <p>{{ form.product_unit.errors }}</p>
-              <select class="form-control" id="product_unit" name="product_unit">
-                <option value="">Select Unit</option>
-                {% for unit in product_units %}
-                <option value="{{ unit.id }}">{{ unit.name }}</option>
-                {% endfor %}
-              </select>
+              {{form.product_unit}}
             </span>
           </div>
         </div>
