@@ -781,6 +781,7 @@ button {
 
 #user-account:hover {
   color: #6b69f8;
+  transition: all 1.01s ease-in-out;
 }
 
 #user-account > span {
@@ -813,7 +814,7 @@ button {
   height: 40px;
   padding: 10px 15px;
   outline: none;
-  border: 1px solid #3d5170;
+  border: 0;
   border-radius: 8px;
 }
 
@@ -831,4 +832,20 @@ button {
 
 .notification:hover {
   color: #6b69f8;
+  transition: all 1.01s ease-in-out;
+}
+
+.store-front-btn {
+  background-color: #3d5170;
+  color: #ffffff;
+  padding: 5px 10px;
+  border-radius: 8px;
+  text-decoration: none;
+}
+
+.store-front-btn:hover {
+  background-color: #ffffff;
+  color: #3d5170;
+  border: 1px solid #3d5170;
+  transition: all 1.01s ease-in-out;
 }
