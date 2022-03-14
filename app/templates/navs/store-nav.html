@@ -50,7 +50,7 @@
             <span>{{request.user.full_name}}</span> <i class="fas fa-caret-down"></i
           ></span>
           <ul id="acc-store-nav-links">
-            <li><a href="" id="a-nav-link">Profile</a></li>
+            <li><a href="{% url 'account:user_profile' %}" id="a-nav-link">Profile</a></li>
             <li><a href="{% url 'account:logout' %}" id="a-nav-link">Sign Out</a></li>
           </ul>
         </span>

@@ -1,8 +1,8 @@
-{% extends 'navs/users-nav.html' %} {% load static %} {% block title %} <title>Shop!t - Edit Account</title>
+{% extends 'navs/store-nav.html' %} {% load static %} {% block title %} <title>Shop!t - Edit Account</title>
 {% endblock %} {% block content %}
 <div class="account-form-container">
   <form
-    action="{% url 'account:edit_account' account.slugified_store_name %}"
+    action="{% url 'account:user_profile' %}"
     method="post"
     enctype="multipart/form-data"
   >

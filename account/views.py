@@ -97,19 +97,18 @@ def account_activate(request, uidb64, token):
         return render(request, "error-pages/404-page.html")
 
 
-def edit_account(request, slugified_store_name):
-    account = get_object_or_404(User, slugified_store_name=slugified_store_name)
-    if request.user == account:
-        form = EditAccountForm(instance=account)
-        if request.method == "POST":
-            form = EditAccountForm(request.POST, request.FILES, instance=account)
-            if form.is_valid():
-                form.save()
-                return redirect("/")
+def user_profile(request):
+    account = request.user
+    form = EditAccountForm(instance=account)
+    if request.method == "POST":
+        form = EditAccountForm(request.POST, request.FILES, instance=account)
+        if form.is_valid():
+            form.save()
+            return redirect("/")
 
-        return render(
-            request,
-            "account/user/edit-account.html",
-            {"form": form, "account": account},
-        )
-    return redirect("/")
+    return render(
+        request,
+        "account/user/user-profile.html",
+        {"form": form, "account": account},
+    )
+
