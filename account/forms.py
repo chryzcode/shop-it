@@ -45,10 +45,10 @@ class RegistrationForm(ModelForm):
         super(RegistrationForm, self).__init__(*args, **kwargs)
 
 
-class EditAccountForm(ModelForm):
+class UserProfileForm(ModelForm):
     class Meta:
         model = User
-        fields = ["full_name", "avatar", "instagram", "twitter", "facebook"]
+        fields = ["full_name", "avatar", "instagram", "twitter", "facebook", "phone_number"]
 
         widgets = {
             "full_name": forms.TextInput(
@@ -57,7 +57,7 @@ class EditAccountForm(ModelForm):
             "avatar": forms.FileInput(attrs={"class": "form-control"}),
             # 'country': forms.Select(attrs={'class': 'form-control'}),
             # 'post_code': forms.TextInput(attrs={'class': 'form-control', 'placeholder':'256785'}),
-            # 'phone_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder':'+1 97904095'}),
+            'phone_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder':'+1 97904095'}),
             # 'address_line_1': forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Block 235 Washington DC'}),
             # 'address_line_2': forms.TextInput(attrs={'class': 'form-control', 'placeholder':''}),
             # 'town_city': forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Texas'}),
@@ -82,7 +82,7 @@ class EditAccountForm(ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
-        super(EditAccountForm, self).__init__(*args, **kwargs)
+        super(UserProfileForm, self).__init__(*args, **kwargs)
 
 
 class PasswordResetForm(PasswordResetForm):

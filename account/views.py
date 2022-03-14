@@ -10,7 +10,7 @@ from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 
-from .forms import EditAccountForm, RegistrationForm
+from .forms import UserProfileForm, RegistrationForm
 from .models import User
 from .tokens import account_activation_token
 
@@ -99,9 +99,9 @@ def account_activate(request, uidb64, token):
 
 def user_profile(request):
     account = request.user
-    form = EditAccountForm(instance=account)
+    form = UserProfileForm(instance=account)
     if request.method == "POST":
-        form = EditAccountForm(request.POST, request.FILES, instance=account)
+        form = UserProfileForm(request.POST, request.FILES, instance=account)
         if form.is_valid():
             form.save()
             return redirect("/")
@@ -109,6 +109,6 @@ def user_profile(request):
     return render(
         request,
         "account/user/user-profile.html",
-        {"form": form, "account": account},
+        {"userprofileform": form, "account": account},
     )
 

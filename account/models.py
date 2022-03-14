@@ -42,7 +42,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     avatar = models.ImageField(upload_to="user-profile-images/", null=True)
     slugified_store_name = models.SlugField(max_length=255, unique=True)
     # country = CountryField()
-    # phone_number = models.CharField(max_length=15, blank= True)
+    phone_number = models.CharField(max_length=15, blank= True)
     # post_code = models.CharField(max_length=13, blank= True)
     # address_line_1 = models.CharField(max_length=200, blank=True)
     # address_line_2 = models.CharField(max_length=200, blank=True)

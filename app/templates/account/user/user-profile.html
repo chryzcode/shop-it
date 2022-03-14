@@ -3,102 +3,140 @@
 <div class="store-page-container">
   {% include 'navs/store-side-nav.html' %}
 
-  
   <div class="account-form-container">
-  <form
-    action="{% url 'account:user_profile' %}"
-    method="post"
-    enctype="multipart/form-data"
-  >
-    {% csrf_token %}
-    <div class="above-create-form">
-      <p>Edit Account</p>
+    <form action="{% url 'account:user_profile' %}" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="above-create-form">
+        <p>User Profile</p>
+      </div>
+
+      <div class="acc-form-seg">
+        <p>Basic Info</p>
+        <div class="input-container">
+          <label for="avatar">Avatar<span class="form-required">*</span></label>
+          <p>{{ userprofileform.avatar.errors }}</p>
+          <div>{{ userprofileform.avatar }}</div>
+        </div>
+
+        <div class="input-container">
+          <label for="name">Full Name<span class="form-required">*</span></label>
+          <p>{{ userprofileform.full_name.errors }}</p>
+          <div>{{ userprofileform.full_name }}</div>
+        </div>
+
+        <div class="input-container">
+          <label for="phone_number">Phone Number</label>
+          <p>{{ userprofileform.phone_number.errors }}</p>
+          {{userprofileform.phone_number}}
+        </div>
+      </div>
+
+      {% comment %}
+      <div class="acc-form-seg">
+        <p>Location and Contact</p>
+        <div class="input-container">
+          <label for="country">Country</label>
+          <p>{{ userprofileform.country.errors }}</p>
+          <div>{{ userprofileform.country }}</div>
+        </div>
+
+        <div class="input-container">
+          <label for="post_code">Post Code</label>
+          <p>{{ userprofileform.post_code.errors }}</p>
+          <div>{{userprofileform.post_code}}</div>
+        </div>
+
+        <div class="input-container">
+          <label for="town_city">Town City</label>
+          <p>{{ userprofileform.town_city.errors }}</p>
+          <div>{{userprofileform.town_city}}</div>
+        </div>
+
+        <div class="input-container">
+          <label for="address_line_1">Address Line</label>
+          <p>{{ userprofileform.address_line_1.errors }}</p>
+          <div>{{ userprofileform.address_line_1 }}</div>
+        </div>
+
+        <div class="input-container">
+          <label for="address_line_2">Address Line 2</label>
+          <p>{{ userprofileform.address_line_2.errors }}</p>
+          <div>{{ userprofileform.address_line_2 }}</div>
+        </div>
+      </div>
+      {% endcomment %}
+
+      <div class="acc-form-seg">
+        <p>Socials</p>
+        <div class="input-container">
+          <label for="twitter">Twitter</label>
+          <p>{{ userprofileform.twitter.errors }}</p>
+          <div>{{ userprofileform.twitter }}</div>
+        </div>
+
+        <div class="input-container">
+          <label for="instagram">Instagram</label>
+          <p>{{ userprofileform.instagram.errors }}</p>
+          <div>{{ userprofileform.instagram }}</div>
+        </div>
+
+        <div class="input-container">
+          <label for="facebook">Facebook</label>
+          <p>{{ userprofileform.facebook.errors }}</p>
+          <div>{{ userprofileform.facebook }}</div>
+        </div>
+      </div>
+
+      <div class="form-btn-container">
+        <button class="form-btn" type="submit">Update</button>
+      </div>
+    </form>
+
+
+    <form action="{% url 'account:change_password' %}" method="post">
+      {% csrf_token %}
+      <div class="acc-form-seg">
+        <p>Change Password</p>
+         <div class="input-container">
+          <label for="old_password">Old Password<span class="form-required">*</span></label>
+          <p>{{ form.old_password.errors }}</p>
+          <input type="password" name="old_password" class="form-control" required id="id_old_password" />
+        </div>
+
+        <div class="input-container">
+          <label for="new_password1">New Password<span class="form-required">*</span></label>
+          <p>{{ form.new_password1.errors }}</p>
+          <input
+            type="password"
+            name="new_password1"
+            class="form-control"
+            maxlength="100"
+            required
+            id="id_new_password1"
+          />
+        </div>
+
+        <div class="input-container">
+          <label for="new_password2">Confirm Password<span class="form-required">*</span></label>
+          <p>{{ form.new_password2.errors }}</p>
+          <input
+            type="password"
+            name="new_password2"
+            class="form-control"
+            maxlength="100"
+            required
+            id="id_new_password2"
+          />
+        </div>
+
+        <button class="form-btn" type="submit">Update</button>
+      </div>
+    </form>
+
+    <div class="delete-btn-container">
+      <a class="delete-btn" href="{% url 'account:delete_account' %}">Delete Account</a>
     </div>
-
-    <div class="edit-acc-form-seg">
-      <p>Basic Info</p>
-      <div class="input-container">
-        <label for="avatar">Avatar<span class="form-required">*</span></label>
-        <p>{{ form.avatar.errors }}</p>
-        <div>{{ form.avatar }}</div>
-      </div>
-
-      <div class="input-container">
-        <label for="name">Full Name<span class="form-required">*</span></label>
-        <p>{{ form.full_name.errors }}</p>
-        <div>{{ form.full_name }}</div>
-      </div>
-    </div>
-
-    {% comment %} <div class="edit-acc-form-seg">
-      <p>Location and Contact</p>
-      <div class="input-container">
-        <label for="country">Country</label>
-        <p>{{ form.country.errors }}</p>
-        <div>{{ form.country }}</div>
-      </div>
-
-      <div class="input-container">
-        <label for="post_code">Post Code</label>
-        <p>{{ form.post_code.errors }}</p>
-        <div>{{form.post_code}}</div>
-      </div>
-
-      <div class="input-container">
-        <label for="town_city">Town City</label>
-        <p>{{ form.town_city.errors }}</p>
-        <div>{{form.town_city}}</div>
-      </div>
-
-      <div class="input-container">
-        <label for="address_line_1">Address Line</label>
-        <p>{{ form.address_line_1.errors }}</p>
-        <div>{{ form.address_line_1 }}</div>
-      </div>
-
-      <div class="input-container">
-        <label for="address_line_2">Address Line 2</label>
-        <p>{{ form.address_line_2.errors }}</p>
-        <div>{{ form.address_line_2 }}</div>
-      </div>
-
-      <div class="input-container">
-        <label for="phone_number">Phone Number</label>
-        <p>{{ form.phone_number.errors }}</p>
-        {{form.phone_number}}
-      </div>
-    </div> {% endcomment %}
-
-    <div class="edit-acc-form-seg">
-      <p>Socials</p>
-      <div class="input-container">
-        <label for="twitter">Twitter</label>
-        <p>{{ form.twitter.errors }}</p>
-        <div>{{ form.twitter }}</div>
-      </div>
-
-      <div class="input-container">
-        <label for="instagram">Instagram</label>
-        <p>{{ form.instagram.errors }}</p>
-        <div>{{ form.instagram }}</div>
-      </div>
-
-      <div class="input-container">
-        <label for="facebook">Facebook</label>
-        <p>{{ form.facebook.errors }}</p>
-        <div>{{ form.facebook }}</div>
-      </div>
-    </div>
-
-    <div class="form-btn-container">
-      <button class="form-btn" type="submit">Update</button>
-    </div>
-  </form>
-
-  <div class="delete-btn-container">
-    <a class="delete-btn" href="{% url 'account:delete_account' %}">Delete Account</a>
   </div>
-</div>
 </div>
 
 {% endblock %}

@@ -590,7 +590,7 @@ div.product-info > p:nth-child(2) {
 
 .pricing-quantity-seg,
 .images-seg,
-.edit-acc-form-seg {
+.acc-form-seg {
   box-shadow: 0px 20px 30px 0px #ccc;
   padding: 30px;
   margin-top: 30px;
@@ -598,7 +598,7 @@ div.product-info > p:nth-child(2) {
 
 .pricing-quantity-seg > p,
 .images-seg > p,
-.edit-acc-form-seg > p {
+.acc-form-seg > p {
   margin-bottom: 20px;
   font-size: 20px;
   color: #3d5170;
