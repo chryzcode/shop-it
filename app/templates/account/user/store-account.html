@@ -1,0 +1,52 @@
+{% extends 'navs/store-nav.html' %} {% load static %} {% block title %} <title>Shop!t - Edit Account</title>
+{% endblock %} {% block content %}
+
+<div class="store-page-container">
+  {% include 'navs/store-side-nav.html' %}
+
+  <div class="account-form-container">
+    <form action="" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="above-create-form">
+        <p>Store Account</p>
+      </div>
+
+      <div class="acc-form-seg">
+        <p>Store Info</p>
+        <div class="input-container">
+          <label for="store_image">Store Avatar</label>
+          <p>{{ storeform.store_image.errors }}</p>
+          {% if account.store_image %}
+          <a href="{{account.store_image.url}}">Current Image</a>
+          {% endif %}
+          <div>{{ storeform.store_image }}</div>
+        </div>
+
+        <div class="input-container">
+          <label for="store_name">Store Name<span class="form-required">*</span></label>
+          <p>{{ storeform.store_name.errors }}</p>
+          <div>{{ storeform.store_name }}</div>
+        </div>
+
+        <div class="input-container">
+          <label for="store_description">About Store</label>
+          <p>{{ storeform.store_description.errors }}</p>
+          {{storeform.store_description}}
+        </div>
+      </div>
+
+      
+
+      <div class="form-btn-container">
+        <button class="form-btn" type="submit">Update</button>
+      </div>
+    </form>
+
+
+    <!-- <div class="delete-btn-container">
+      <a class="delete-btn" href="{% url 'account:delete_account' %}">Delete Account</a>
+    </div> -->
+  </div>
+</div>
+
+{% endblock %}

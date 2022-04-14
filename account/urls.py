@@ -16,7 +16,8 @@ urlpatterns = [
     path("register/", views.account_register, name="register"),
     path("login/", views.account_login, name="login"),
     path("logout/", views.account_logout, name="logout"),
-    path("settings/profile", views.user_profile, name="user_profile"),
+    path("settings/profile/", views.user_profile, name="user_profile"),
+    path("settings/store-account/", views.store_account, name="store_account"),
     path("delete/", views.account_delete, name="delete_account"),
     path(
         "password-reset/",

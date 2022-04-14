@@ -98,7 +98,6 @@ def edit_product(request, slug):
             return redirect(
                 "app:product_detail",
                 slug=product.slug,
-                slugified_store_name=product.created_by.slugified_store_name,
             )
     context = {
         "form": form,
@@ -124,7 +123,7 @@ def add_wishlist(request, slug):
     user = request.user
     product = get_object_or_404(Product, slug=slug)
     product.wishlist.add(user)
-    return redirect("app:product_detail", product.slug)
+    return redirect("app:wishlist")
 
 
 def remove_wishlist(request, slug):

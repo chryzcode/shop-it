@@ -280,29 +280,29 @@ footer {
 }
 
 .update-btn {
-  background-color: #fff;
-  color: #6b69f8;
-  border: 1px solid #6b69f8;
-  padding: 5px;
+  color: #fff;
+  background-color: #3d5170;
+  padding: 8px;
   border-radius: 5px;
   cursor: pointer;
-  transition: all 1.5s ease-in-out;
+  transition: all 1s ease-in-out;
   outline: none;
+  border: 0;
 }
 
 .update-btn:hover {
+  transition: all 1s ease-in-out;
   background-color: #6b69f8;
-  color: #ffffff;
-  transition: all 1.5s ease-in-out;
   border: 0;
+  color: #ffffff;
 }
 
 .delete-btn,
 .delete-btn {
-  background-color: #fff;
-  color: red;
-  border: 1px solid red;
-  padding: 5px;
+  background-color: rgba(218, 41, 41, 0.981);
+  color: white;
+  border: 0;
+  padding: 7px;
   border-radius: 5px;
   cursor: pointer;
   transition: all 1.5s ease-in-out;
@@ -313,25 +313,25 @@ footer {
 .delete-btn:hover {
   background-color: red;
   color: #ffffff;
-  transition: all 1.5s ease-in-out;
+  /* transition: all 1.5s ease-in-out; */
 }
 
 .update-btn > a {
-  color: #6b69f8;;
+  color: #ffffff;
   text-decoration: none;
 }
 
-.update-btn > a:hover {
-  color: #ffffff
+.update-btn > a:hover{
+  color: #ffffff;
 }
 
 .delete-btn > a {
-  color: red;
+  color: white;
   text-decoration: none;
 }
 
 .delete-btn > a:hover {
-  color: #ffffff
+  color: #ffffff;
 }
 
 .cart-table-bottom-contents {
@@ -404,11 +404,28 @@ div.cart-expenses > div:nth-child(2) {
 }
 
 .product-info > * {
-  margin: 6px 0;
+  margin: 9px 0;
+}
+
+.product-info > h1 {
+  color: #3d5170;
 }
 
 .product-info > p {
-  font-size: 20px;
+  font-size: 19px;
+  color: #3d5170;
+}
+
+.product-info > div {
+  color: #3d5170;
+}
+
+.product-info > div > span {
+  font-size: 18px;
+}
+
+.product-info > div > h3 {
+  margin-bottom: 7px;
 }
 
 select {
@@ -519,6 +536,7 @@ body > nav > span:nth-child(2) > i {
 
 div.product-info > p:nth-child(2) {
   color: #6b69f8;
+  font-size: 17px;
 }
 
 .discount-precentage {
@@ -543,6 +561,7 @@ div.product-info > p:nth-child(2) {
   text-align: center;
   margin-bottom: 20px;
   font-size: 20px;
+  color: #6b69f8;
 }
 
 .store-sidenav-seg > ul {

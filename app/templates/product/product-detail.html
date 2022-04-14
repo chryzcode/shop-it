@@ -50,21 +50,27 @@
     <h1>{{ product.name }}</h1>
     <p>{{product.category}}</p>
     <p>{{product.description}}</p>
-    {% if product.availability > 1 %}
-    <div>Availability: {{product.availability}} {{product.product_unit}}s</div>
+   
+    <div>
+      {% if product.availability > 1 %}
+    <span>Availability: {{product.availability}} {{product.product_unit}}s</span>
     {% else %}
-    <div>Availability: {{product.availability}} {{product.product_unit}}</div>
+    <span>Availability: {{product.availability}} {{product.product_unit}}</span>
     {% endif %}
-    <p class="">
+    </div>
+
+    <div class="">
       {% if product.discount_percentage %}
       <span>${{product.discount_price}}</span>
       <span class="discount-precentage">{{product.discount_percentage}}%</span>
       <p class="price-with-discount">${{product.price}}</p>
       {% else %}
-      <span>{{product.price}}</span>
+      <span><b>{{product.price}}</b></span>
       {% endif %}
-    </p>
-    {% if product.availability > 0 %}
+    </div>
+  
+  
+      {% if product.availability > 0 %}
     <select id="select">
       <div class="list">
         <option value="0">0</option>
@@ -89,23 +95,23 @@
     {% endif %}
 
     {% if request.user.is_authenticated %}
-    <div>
         {% if request.user in product.wishlist.all %}
        <button type="button" class="delete-btn"><a href="{% url 'app:remove_wishlist' product.slug %}">Remove from WishList</a></button>
         {% else %}
         <button type="button" class="update-btn"><a href="{% url 'app:add_wishlist' product.slug %}">Add to WishList</a></button>
         {% endif %}
-
-    </div>
     {% endif %}
+  
 
     {% if product.product_details %}
     <div>
       <h3>Product Details</h3>
-        <p>{{product.product_details|safe}}</p>
+      <p>{{product.product_details|safe}}</p>
     </div>
     {% endif %}
-    <p>Review</p>
+    <div class="reviews">
+      <h2>Reviews</h2>
+    </div>
     </div>
   
   </div>
@@ -150,3 +156,4 @@
   });
 </script>
 {% endblock %}
+

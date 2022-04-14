@@ -91,7 +91,6 @@ class Product(models.Model):
             "app:product_detail",
             kwargs={
                 "slug": self.slug,
-                "slugified_store_name": self.created_by.slugified_store_name,
             },
         )
 

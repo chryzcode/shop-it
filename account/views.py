@@ -1,6 +1,3 @@
-import email
-from ast import Store
-
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -10,7 +7,7 @@ from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 
-from .forms import RegistrationForm, UserProfileForm
+from .forms import RegistrationForm, UserProfileForm, StoreForm
 from .models import User
 from .tokens import account_activation_token
 
@@ -111,3 +108,19 @@ def user_profile(request):
         "account/user/user-profile.html",
         {"userprofileform": userprofileform, "account": account},
     )
+
+def store_account(request):
+    account = request.user
+    storeform = StoreForm(instance=account)
+    if request.method == "POST":
+        storeform = StoreForm(request.POST, request.FILES, instance=account)
+        if storeform.is_valid():
+            storeform.save()
+            return redirect("/")
+
+    return render(
+        request, 
+        "account/user/store-account.html",
+        {"storeform": storeform, "account": account}
+    )
+

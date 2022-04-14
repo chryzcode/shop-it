@@ -1,3 +1,4 @@
+from pyexpat import model
 from django import forms
 from django.contrib.auth.forms import PasswordResetForm, SetPasswordForm
 from django.forms import ModelForm
@@ -44,6 +45,22 @@ class RegistrationForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(RegistrationForm, self).__init__(*args, **kwargs)
 
+class StoreForm(ModelForm):
+    class Meta:
+        model = User
+        fields = [
+            "store_name", 
+            "store_image",
+            "store_description",
+        ]
+
+        widgets = {
+            "store_name": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "The Shop!t Store"}
+            ),
+            "store_image": forms.FileInput(attrs={"class": "form-control"}),
+            "store_description": forms.Textarea(attrs={"class": "form-control", "placeholder":"This is the Shop!t store for your day to day online business......"}),
+        }
 
 class UserProfileForm(ModelForm):
     class Meta:
@@ -114,3 +131,4 @@ class PasswordResetConfirmForm(SetPasswordForm):
         if cd["new_password1"] != cd["new_password2"]:
             raise forms.ValidationError("Passwords do not match.")
         return cd["new_password2"]
+

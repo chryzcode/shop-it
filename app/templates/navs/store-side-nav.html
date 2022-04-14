@@ -1,6 +1,6 @@
 <div class="store-sidenav" id="store-sidenav">
     <span class="store-sidenav-seg">
-      <p>{{request.user.store_name}}</p>
+      <p>{{request.user.store_name |capfirst }}</p>
       <ul>
         <li><a href="{% url "app:store_overview" %}">My Store</a></li>
         <li><a href="">Customers</a></li>
@@ -12,14 +12,9 @@
     <span class="store-sidenav-seg">
       <p>Catalog</p>
       <ul>
-        <span>
-          <li><a href="">Products</a></li>
-          <ul>
-            <li><a href="{% url 'app:store_products' %}">All Products</a></li>
-            <li><a href="{% url 'app:create_product' %}">Add Product</a></li>
-            <li><a href="">Category</a></li>
-          </ul>
-        </span>
+        <li><a href="{% url 'app:store_products' %}">All Products</a></li>
+        <li><a href="{% url 'app:create_product' %}">Add Product</a></li>
+        <li><a href="">Category</a></li>
         <li><a href="">Reviews</a></li>
       </ul>
     </span>
@@ -32,7 +27,7 @@
     <span class="store-sidenav-seg">
       <p>Store Settings</p>
       <ul>
-        <li><a href="">Store Settings</a></li>
+        <li><a href="{% url 'account:store_account' %}">Store Settings</a></li>
         <li><a href="">Subscription</a></li>
         <li><a href="">Store Custmization</a></li>
         <li><a href="{% url 'account:user_profile' %}">User Account</a></li>
