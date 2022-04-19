@@ -897,6 +897,18 @@ button {
   padding: 30px 0;
 }
 
+.store-products-container > span > a {
+  color: #ffffff;
+  background-color: #3d5170;
+  padding: 7px;
+  display: inline-block;
+  text-align: right;
+  text-decoration: none;
+  margin: 0 15px 10px 0;
+  float: right;
+  border-radius: 5px;
+}
+
 .store-products-table {
   width: 100%;
 }

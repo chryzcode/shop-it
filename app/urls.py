@@ -34,4 +34,8 @@ urlpatterns = [
         name="a_user_category_products",
     ),
     path("home/", views.store_overview, name="store_overview"),
+    path("categories/", views.all_category, name="all_category"),
+    path("create-category/", views.add_category, name="create_category"),
+    path("edit-category/<slug:slug>/", views.edit_category, name="edit_category"),
+    path("delete-category/<slug:slug>/", views.delete_category, name="delete_category"),
 ]

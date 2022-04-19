@@ -1,3 +1,4 @@
+from unicodedata import category
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import *
@@ -28,14 +29,7 @@ def a_user_all_products(request):
     )
 
 
-def a_user_all_categories(request, slugified_store_name):
-    user = get_object_or_404(User, slugified_store_name=slugified_store_name)
-    all_categories = Category.objects.filter(created_by=user.id)
-    return render(
-        request,
-        "store/a-store-categories.html",
-        {"all_categories": all_categories},
-    )
+
 
 
 def product_detail(request, slug):
@@ -48,19 +42,6 @@ def product_detail(request, slug):
         request,
         "product/product-detail.html",
         {"product": product, "category_product": category_product},
-    )
-
-
-def a_user_category_products(request, slugified_store_name, slug):
-    user = get_object_or_404(User, slugified_store_name=slugified_store_name)
-    category = get_object_or_404(Category, slug=slug, created_by=user.id)
-    category_products = Product.objects.filter(
-        category=category, created_by=user.id, in_stock=True
-    )
-    return render(
-        request,
-        "product/category-products.html",
-        {"category_products": category_products, "category": category},
     )
 
 
@@ -137,3 +118,72 @@ def wishlist(request):
     user = request.user
     wishlist = Product.objects.filter(wishlist=user)
     return render(request, "store/wishlist.html", {"wishlist": wishlist})
+
+def add_category(request):
+    form = CategoryForm
+    if request.method == "POST":
+        form = CategoryForm(request.POST, request.FILES)
+        if form.is_valid():
+            category = form.save(commit=False)
+            category.created_by = request.user
+            category.save()
+            return redirect(
+                "app:all_category"           
+            )
+    context = {"form": form}
+    return render(request, "store/create-category.html", context)
+
+
+def edit_category(request, slug):
+    user = request.user
+    category = get_object_or_404(Category, slug=slug, created_by=user.id)
+    form = CategoryForm(instance=category)
+    if request.method == "POST":
+        form = CategoryForm(request.POST, request.FILES, instance=category)
+        if form.is_valid():
+            category = form.save(commit=False)
+            category.created_by = request.user
+            category.save()
+            return redirect(
+                "app:all_category"
+            )
+    context = {
+        "form": form,
+    }
+    return render(request, "store/create-category.html", context)
+
+def delete_category(request, slug):
+    user = request.user
+    category = get_object_or_404(Category, slug=slug, created_by=user.id)
+    category.delete()
+    return redirect("app:all_category")
+
+
+def all_category(request):
+    user = request.user
+    categories = Category.objects.filter(created_by=user)
+    context = {"categories":categories}
+    return render(request, "store/category.html", context)
+
+def a_user_all_categories(request, slugified_store_name):
+    user = get_object_or_404(User, slugified_store_name=slugified_store_name)
+    all_categories = Category.objects.filter(created_by=user.id)
+    return render(
+        request,
+        "store/a-store-categories.html",
+        {"all_categories": all_categories},
+    )
+
+def a_user_category_products(request, slugified_store_name, slug):
+    user = get_object_or_404(User, slugified_store_name=slugified_store_name)
+    category = get_object_or_404(Category, slug=slug, created_by=user.id)
+    category_products = Product.objects.filter(
+        category=category, created_by=user.id, in_stock=True
+    )
+    return render(
+        request,
+        "product/category-products.html",
+        {"category_products": category_products, "category": category},
+    )
+
+

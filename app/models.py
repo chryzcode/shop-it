@@ -25,6 +25,15 @@ class Category(models.Model):
             self.slug = slugify(self.name)
         return super(Category, self).save(*args, **kwargs)
 
+    def get_absolute_url(self):
+        return reverse(
+            "app:a_user_category_products",
+            kwargs={
+                "slug": self.slug,
+                "slugified_store_name": self.created_by.slugified_store_name,
+            },
+        )
+
     def __str__(self):
         return self.name
 

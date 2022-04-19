@@ -54,3 +54,17 @@ class ProductForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(ProductForm, self).__init__(*args, **kwargs)
+
+class CategoryForm(ModelForm):
+    class Meta:
+        model = Category
+        exclude = ["slug", "created_by"]
+        fields = ["name"]
+
+        widgets = {
+            "name": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "Category Name"}
+            ),
+        }
+    def __init__(self, *args, **kwargs):
+        super(CategoryForm, self).__init__(*args, **kwargs)

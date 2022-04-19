@@ -1,0 +1,36 @@
+{% extends 'navs/store-nav.html' %} {% load static %}{% block title %}<title>
+  Shop !t - {{request.user }} Products
+</title>
+{% endblock %} {% block content %}
+<div class="store-page-container">
+  {% include 'navs/store-side-nav.html' %}
+  <div class="store-content-container">
+    <span class="store-products-container">
+      <p>All Category</p>
+      <span ><a href="{% url 'app:create_category' %}" target="_blank" rel="noopener noreferrer">Add Category</a></span>
+      <table class="store-products-table">
+        <tr class="table-rows">
+          <th>Name</th>
+          <th>Edit</th>
+          <th>Delete</th>
+        </tr>
+        {% for category in categories %}
+        <tr class="table-rows">
+          <td><a href="{{category.get_absolute_url}}">{{ category.name }}</a></td>
+          <td>
+            <button type="button" class="update-btn">
+              <a href="{% url 'app:edit_category' category.slug  %}"><i class="far fa-edit"></i>Update</a>
+            </button>
+          </td>
+          <td>
+            <button type="button" class="delete-btn">
+              <a href="{% url 'app:delete_category' category.slug  %}"><i class="fas fa-trash-alt"></i>Delete</a>
+            </button>
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+    </span>
+  </div>
+  {% endblock %}
+</div>
