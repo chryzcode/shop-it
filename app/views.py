@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import *
 from .models import *
+from datetime import datetime, timedelta
 
 # Create your views here.
 
@@ -27,9 +28,6 @@ def a_user_all_products(request):
         "store/products.html",
         {"all_products": all_products},
     )
-
-
-
 
 
 def product_detail(request, slug):

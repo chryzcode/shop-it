@@ -44,6 +44,23 @@ class ProductUnit(models.Model):
     def __str__(self):
         return self.name
 
+class Coupon(models.Model):
+    code = models.CharField(max_length=30)
+    percentage = models.IntegerField(
+        default=1,
+        validators=[MinValueValidator(1), MaxValueValidator(100)],
+    )
+    created_by = models.ForeignKey(
+        User, related_name="coupon_creator", on_delete=models.CASCADE
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    expiry_date = models.IntegerField()
+    active = models.BooleanField(default=True)
+
+
+    def __str__(self):
+        return "coupon" + self.code[:5] + "..."
+
 
 class Product(models.Model):
     created_by = models.ForeignKey(
@@ -75,6 +92,7 @@ class Product(models.Model):
         validators=[MinValueValidator(0), MaxValueValidator(100)],
     )
     wishlist = models.ManyToManyField(User, related_name="wishlist", blank=True)
+    coupon = models.CharField(max_length=30, null=True, blank=True)
 
     # pulral for the table name in the admin page
     class Meta:
