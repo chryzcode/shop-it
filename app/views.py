@@ -191,3 +191,5 @@ def discount_products(request):
         "product/discount-products.html",
         {"products": products},
     )
+
+def create_coupon

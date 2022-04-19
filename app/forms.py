@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import ModelForm
 
-from .models import Category, Product
+from .models import Category, Product, Coupon
 
 
 class ProductForm(ModelForm):
@@ -68,3 +68,5 @@ class CategoryForm(ModelForm):
         }
     def __init__(self, *args, **kwargs):
         super(CategoryForm, self).__init__(*args, **kwargs)
+
+class CouponForm
