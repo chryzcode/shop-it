@@ -56,6 +56,7 @@ class Coupon(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     expiry_date = models.IntegerField()
     active = models.BooleanField(default=True)
+    users = models.ManyToManyField(User, blank=True)
 
 
     def __str__(self):

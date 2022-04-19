@@ -192,4 +192,31 @@ def discount_products(request):
         {"products": products},
     )
 
-def create_coupon
+def create_coupon(request):
+    form = CouponForm
+    if request.method == "POST":
+        form = CouponForm(request.POST, request.FILES)
+        if form.is_valid():
+            coupon = form.save(commit=False)
+            coupon.created_by = request.user
+            coupon.save()
+            return redirect(
+                "app:all_coupons"
+            )
+    context = {"form": form}
+    return render(request, "store/create-coupon.html", context)
+
+def all_coupons(request):
+    user = request.user
+    coupons = Coupon.objects.filter(created_by=user.id, active=True)
+    return render(
+        request,
+        "store/coupons.html",
+        {"coupons": coupons},
+    )
+
+def delete_coupon(request):
+    user = request.user
+    coupon = get_object_or_404(Coupon, created_by=user.id, active=True)
+    coupon.delete()
+    return redirect("app:all_coupons")

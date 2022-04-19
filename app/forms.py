@@ -69,4 +69,22 @@ class CategoryForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(CategoryForm, self).__init__(*args, **kwargs)
 
-class CouponForm
+class CouponForm(ModelForm):
+    class Meta:
+        model = Coupon
+        exclude = ["created_by", "created_at", "active"]
+        fields = ["code", "percentage", "expiry_date"]
+
+        widgets = {
+            "code": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "Coupon Code"}
+            ),
+            "percentage": forms.NumberInput(
+                attrs={"class": "form-control", "placeholder": "Coupon Percentage"}
+            ),
+            "expiry_date": forms.NumberInput(
+                attrs={"class": "form-control", "placeholder": "Coupon Expiry Date"}
+            ),
+        }
+    def __init__(self, *args, **kwargs):
+        super(CouponForm, self).__init__(*args, **kwargs)
