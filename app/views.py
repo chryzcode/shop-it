@@ -58,7 +58,6 @@ def create_product(request):
             return redirect(
                 "app:product_detail",
                 slug=product.slug,
-                slugified_store_name=product.created_by.slugified_store_name,
             )
     context = {"form": form, "categories": categories, "product_units": product_units}
     return render(request, "store/create-product.html", context)
