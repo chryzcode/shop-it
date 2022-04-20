@@ -16,7 +16,7 @@ class Cart:
         if product_id in self.cart:
             self.cart[product_id]["qty"] = qty
         else:
-            self.cart[product_id] = {"price": str(product.price), "qty": int(qty)}
+            self.cart[product_id] = {"price": str(product.price - (product.price * product.discount_percentage / 100)), "qty": int(qty)}
         self.save()
 
     def __iter__(self):

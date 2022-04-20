@@ -93,7 +93,7 @@ class Product(models.Model):
         validators=[MinValueValidator(0), MaxValueValidator(100)],
     )
     wishlist = models.ManyToManyField(User, related_name="wishlist", blank=True)
-    coupon = models.CharField(max_length=30, null=True, blank=True)
+    coupon = models.CharField(max_length=20, null=True, blank=True)
 
     # pulral for the table name in the admin page
     class Meta:
