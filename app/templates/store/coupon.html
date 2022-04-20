@@ -1,0 +1,35 @@
+{% extends 'navs/store-nav.html' %} {% load static %}{% block title %}<title>
+  Shop !t - {{request.user }} Coupon Codes
+</title>
+{% endblock %} {% block content %}
+<div class="store-page-container">
+  {% include 'navs/store-side-nav.html' %}
+  <div class="store-content-container">
+    <span class="store-products-container">
+      <p>Coupon Codes</p>
+      <span><a href="{% url 'app:create_coupon' %}" target="_blank" rel="noopener noreferrer">Add Coupon</a></span>
+      <table class="store-products-table">
+        <tr class="table-rows">
+          <th>Code</th>
+          <th>Percentage</th>
+          <th>Created</th>
+          <th>Expiry(mins)</th>
+        </tr>
+        {% for coupon in coupons %}
+        <tr class="table-rows">
+          <td>{{ coupon.code }}</td>
+          <td>{{ coupon.percentage}} %</td>
+          <td>{{ coupon.created_at|timesince}}</td>
+          <td>{{coupon.expiry_date}} mins</td>
+          <td>
+            <button type="button" class="delete-btn">
+              <a href="{% url 'app:delete_coupon' coupon.pk  %}"><i class="fas fa-trash-alt"></i>Delete</a>
+            </button>
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+    </span>
+  </div>
+  {% endblock %}
+</div>

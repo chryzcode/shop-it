@@ -45,7 +45,7 @@ class ProductUnit(models.Model):
         return self.name
 
 class Coupon(models.Model):
-    code = models.CharField(max_length=30)
+    code = models.CharField(max_length=20)
     percentage = models.IntegerField(
         default=1,
         validators=[MinValueValidator(1), MaxValueValidator(100)],

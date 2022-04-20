@@ -39,4 +39,7 @@ urlpatterns = [
     path("edit-category/<slug:slug>/", views.edit_category, name="edit_category"),
     path("delete-category/<slug:slug>/", views.delete_category, name="delete_category"),
     path("discount-products/", views.discount_products, name="discount_products"),
+    path("coupon/", views.all_coupons, name="all_coupons"),
+    path("create-coupon/", views.create_coupon, name="create_coupon"),
+    path("delete-coupon/<str:pk>/", views.delete_coupon, name="delete_coupon"),
 ]

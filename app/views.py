@@ -211,12 +211,12 @@ def all_coupons(request):
     coupons = Coupon.objects.filter(created_by=user.id, active=True)
     return render(
         request,
-        "store/coupons.html",
+        "store/coupon.html",
         {"coupons": coupons},
     )
 
-def delete_coupon(request):
+def delete_coupon(request, pk):
     user = request.user
-    coupon = get_object_or_404(Coupon, created_by=user.id, active=True)
+    coupon = get_object_or_404(Coupon, pk=pk, created_by=user.id, active=True)
     coupon.delete()
     return redirect("app:all_coupons")
