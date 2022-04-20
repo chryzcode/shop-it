@@ -1,5 +1,5 @@
 {% extends 'navs/store-nav.html' %} {% load static %} {% block title %}
-<title>Shop!t - {% if 'create' in request.get_full_path %} Create Coupon </title>
+<title>Shop!t - Create Coupon </title>
 {% endblock %} {% block content %}
 <div class="store-page-container">
   {% include 'navs/store-side-nav.html' %}
@@ -10,13 +10,23 @@
         <p>Create Coupon</p>
       </div>
       {% csrf_token %}
-      <!-- <div class="input-container">
-        <label for="name">Name<span class="form-required">*</span></label>
-        <p>{{ form.name.errors }}</p>
-        {{form.name}}
-      </div> -->
+      <div class="input-container">
+        <label for="code">Code<span class="form-required">*</span></label>
+        <p>{{ form.code.errors }}</p>
+        {{form.code}}
+      </div>
 
-      {{form.as_p}}
+      <div class="input-container">
+        <label for="percentage">Percentage<span class="form-required">*</span></label>
+        <p>{{ form.percentage.errors }}</p>
+        {{form.percentage}}
+      </div>
+
+      <div class="input-container">
+        <label for="expiry_date">Expiry Date(mins)<span class="form-required">*</span></label>
+        <p>{{ form.expiry_date.errors }}</p>
+        {{form.expiry_date}}
+      </div>
 
       <div class="form-btn-container">
         <button class="form-btn" type="submit">
