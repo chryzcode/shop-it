@@ -9,6 +9,8 @@ from .cart import *
 from app.forms import UseCouponForm
 from datetime import datetime, timedelta
 
+from .cart import * 
+
 
 # Create your views here.
 def cart_summary(request):
@@ -22,8 +24,11 @@ def cart_summary(request):
                 coupon = Coupon.objects.get(code=coupon_code)
                 if request.user in coupon.users.all():
                     if coupon.expiry_date == coupon.created_at + timedelta(minutes=coupon.expiry_date):
-                        if coupon.active == True:
-                            if coupon.
+                        if coupon.active_coupon().active == True:
+                            coupon_percentage = coupon.percentage
+                            cart.get_total_price = Decimal(cart.get_total_price() - (cart.get_total_price() * (coupon_percentage / 100)))
+                            cart.save()
+                            return render(request, "cart/cart_summary.html", {"cart": cart, "form": form})
                     else:
                         return redirect("/cart/", {"error": "Coupon has expired"})
                         

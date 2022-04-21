@@ -60,13 +60,13 @@ class Coupon(models.Model):
     active = models.BooleanField(default=True)
     users = models.ManyToManyField(User, blank=True)
 
-    # def active_coupon(self, request):
-    #     if self.expiry_date == self.created_at + timedelta(minutes=self.expiry_date):
-    #         self.active = False
-    #         self.save()
-    #     if request.user in self.users.all():
-    #         self.active = False
-    #         self.save()
+    def active_coupon(self, request):
+        if self.expiry_date == self.created_at + timedelta(minutes=self.expiry_date):
+           active = False
+           return active
+        if request.user in self.users.all():
+            active = False
+            return active
         
 
     
