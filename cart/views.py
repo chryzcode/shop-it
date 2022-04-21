@@ -28,7 +28,7 @@ def cart_summary(request):
                             coupon_percentage = coupon.percentage
                             cart.get_total_price = Decimal(cart.get_total_price() - (cart.get_total_price() * (coupon_percentage / 100)))
                             cart.save()
-                            return render(request, "cart/cart_summary.html", {"cart": cart, "form": form})
+                            # return render(request, "cart/cart-summary.html", {"cart": cart, "form": form})
                     else:
                         return redirect("/cart/", {"error": "Coupon has expired"})
                         
@@ -37,6 +37,8 @@ def cart_summary(request):
                    
             else:
                 return redirect("/cart/", {"error": "Coupon is not valid"})
+
+    return render(request, "cart/cart-summary.html", {"cart": cart, "form": form})
                
 
 def add_to_cart(request):
