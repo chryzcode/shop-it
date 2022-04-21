@@ -56,6 +56,11 @@
       <h3>Note</h3>
     </div>
 
+    <form action="" method="post">
+      {% csrf_token %}
+      {{form.as_p}}
+    
+
     <div class="cart-expenses">
       <div>
         <span>Sub Total:</span>
@@ -63,8 +68,11 @@
       </div>
       <div>Grand Total:</div>
       <span> </span>
-      <a href="" class="checkout-btn">CheckOut</a>
+      <button class="checkout-btn" type="submit">CheckOut</button>
+      <!-- <a href="" class="checkout-btn">CheckOut</a> -->
     </div>
+
+    </form>
   </div>
 
   {% else %}
