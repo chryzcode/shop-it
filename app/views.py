@@ -220,3 +220,6 @@ def delete_coupon(request, pk):
     coupon = get_object_or_404(Coupon, pk=pk, created_by=user.id, active=True)
     coupon.delete()
     return redirect("app:all_coupons")
+
+
+        

@@ -88,3 +88,18 @@ class CouponForm(ModelForm):
         }
     def __init__(self, *args, **kwargs):
         super(CouponForm, self).__init__(*args, **kwargs)
+
+
+class UseCouponForm(ModelForm):
+    class Meta:
+        model = Product
+        fields= ["coupon"]
+    
+        widgets = {
+            "coupon": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "Coupon Code"}
+            ),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(UseCouponForm, self).__init__(*args, **kwargs)

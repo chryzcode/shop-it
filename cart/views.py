@@ -6,13 +6,33 @@ from django.shortcuts import get_object_or_404, redirect, render
 from app.models import *
 
 from .cart import *
+from app.forms import UseCouponForm
+from datetime import datetime, timedelta
 
 
 # Create your views here.
 def cart_summary(request):
     cart = Cart(request)
-    return render(request, "cart/cart-summary.html", {"cart": cart})
-
+    form = UseCouponForm
+    if request.method == "POST":
+        form = UseCouponForm(request.POST)
+        if form.is_valid():
+            coupon_code = form.cleaned_data.get("coupon_code")
+            if Coupon.objects.filter(code=coupon_code).exists():
+                coupon = Coupon.objects.get(code=coupon_code)
+                if request.user in coupon.users.all():
+                    if coupon.expiry_date == coupon.created_at + timedelta(minutes=coupon.expiry_date):
+                        if coupon.active == True:
+                            if coupon.
+                    else:
+                        return redirect("/cart/", {"error": "Coupon has expired"})
+                        
+                else:
+                    return redirect("/cart/", {"error": "Coupon has been used by you"})
+                   
+            else:
+                return redirect("/cart/", {"error": "Coupon is not valid"})
+               
 
 def add_to_cart(request):
     cart = Cart(request)

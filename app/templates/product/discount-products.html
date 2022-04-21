@@ -13,7 +13,6 @@
           <th>Price</th>
           <th>Discount</th>
           <th>Discount Price</th>
-          <th>Coupon</th>
         </tr>
         {% for product in products %}
         <tr class="table-rows">
@@ -21,7 +20,6 @@
           <td>{{ product.price }}</td>
           <td>{{ product.discount_percentage }} %</td>
           <td>{{product.discount_price}}</td>
-          <td>Not Yet</td>
         </tr>
         {% endfor %}
       </table>
