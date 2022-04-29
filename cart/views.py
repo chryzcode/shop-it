@@ -19,26 +19,14 @@ def cart_summary(request):
     if request.method == "POST":
         form = UseCouponForm(request.POST)
         if form.is_valid():
-            coupon_code = form.cleaned_data.get("coupon_code")
+            coupon_code = form.cleaned_data.get("coupon")
             if Coupon.objects.filter(code=coupon_code).exists():
                 coupon = Coupon.objects.get(code=coupon_code)
-                if request.user in coupon.users.all():
-                    if coupon.expiry_date == coupon.created_at + timedelta(minutes=coupon.expiry_date):
-                        if coupon.active_coupon().active == True:
-                            coupon_percentage = coupon.percentage
-                            cart.get_total_price = Decimal(cart.get_total_price() - (cart.get_total_price() * (coupon_percentage / 100)))
-                            cart.save()
-                            return render(request, "cart/cart_summary.html", {"cart": cart, "form": form})
-                            # return render(request, "cart/cart-summary.html", {"cart": cart, "form": form})
-                    else:
-                        return redirect("/cart/", {"error": "Coupon has expired"})
-                        
-                else:
-                    return redirect("/cart/", {"error": "Coupon has been used by you"})
-                   
-            else:
-                return redirect("/cart/", {"error": "Coupon is not valid"})
-
+                coupon_percentage = coupon.percentage
+                cart.get_total_price = Decimal(cart.get_total_price() - (cart.get_total_price() * (Decimal(coupon_percentage / 100))))
+                print(cart.get_total_price)
+                cart.save()
+                return render(request, "cart/cart-summary.html", {"cart": cart, "form": form})                  
     return render(request, "cart/cart-summary.html", {"cart": cart, "form": form})
                
 
