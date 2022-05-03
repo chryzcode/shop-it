@@ -35,8 +35,14 @@ class Cart:
     def __len__(self):
         return sum(item["qty"] for item in self.cart.values())
 
-    def get_total_price(self):
-        return sum(Decimal(item["price"]) * item["qty"] for item in self.cart.values())
+    def get_total_price(self): 
+        return sum(Decimal(item["price"]) * item["qty"] for item in self.cart.values() )
+
+    def get_grand_total(self, coupon_percentage):
+        return sum(Decimal(item["price"]) * item["qty"] for item in self.cart.values()) - (
+                sum(Decimal(item["price"]) * item["qty"] for item in self.cart.values()) * Decimal((coupon_percentage / 100))
+            )   
+        
 
     # return the sum of an item quantity
     def get_product_qty(self, product):

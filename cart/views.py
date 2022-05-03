@@ -23,9 +23,8 @@ def cart_summary(request):
             if Coupon.objects.filter(code=coupon_code).exists():
                 coupon = Coupon.objects.get(code=coupon_code)
                 coupon_percentage = coupon.percentage
-                cart.get_total_price = Decimal(cart.get_total_price() - (cart.get_total_price() * (Decimal(coupon_percentage / 100))))
-                print(cart.get_total_price)
-                cart.save()
+                cart.get_grand_total(coupon_percentage)
+                print(int(cart.get_grand_total(coupon_percentage)))
                 return render(request, "cart/cart-summary.html", {"cart": cart, "form": form})                  
     return render(request, "cart/cart-summary.html", {"cart": cart, "form": form})
                
@@ -64,6 +63,7 @@ def update_cart(request):
         carttotal = cart.get_total_price()
         a_product_price = get_object_or_404(Product, id=product_id).price
         a_discount_price = get_object_or_404(Product, id=product_id).discount_price()
+        
         if Product.objects.get(id=product_id).discount_price() < a_product_price:
             cartproductqty = item_qty * a_discount_price
         else:
