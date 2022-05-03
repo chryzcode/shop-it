@@ -7,7 +7,6 @@ from app.models import *
 
 from .cart import *
 from app.forms import UseCouponForm
-import time, datetime
 from datetime import datetime, timedelta
 
 from .cart import * 
@@ -19,6 +18,13 @@ def cart_summary(request):
     form_feedback = ''
     cart = Cart(request)
     form = UseCouponForm
+    expired_coupons = Coupon.objects.all()
+    for coupon in expired_coupons:
+        expiry_date = (datetime.now().astimezone() - coupon.created_at)
+        expiry_date_seconds = expiry_date.total_seconds()
+        minutes = expiry_date_seconds/60
+        if int(minutes) > coupon.expiry_date:
+            coupon.delete()
     if request.method == "POST":
         form = UseCouponForm(request.POST)
         if form.is_valid():
@@ -31,6 +37,7 @@ def cart_summary(request):
                     minutes = expiry_date_seconds/60
                     if int(minutes) > coupon.expiry_date:
                         form_feedback = 'Copoun is Expired'
+                        coupon.delete()
                     else:
                         coupon_percentage = coupon.percentage
                         cart.get_grand_total(coupon_percentage)

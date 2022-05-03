@@ -279,8 +279,6 @@ footer {
   flex-wrap: wrap;
 }
 
-
-
 .update-btn {
   color: #fff;
   background-color: #3d5170;
@@ -419,6 +417,26 @@ div.cart-expenses > div:nth-child(2) {
 }
 
 .apply-coupon-btn:hover {
+  background-color: #6b69f8;
+  color: #ffffff;
+  transition: all 1.5s ease-in-out;
+  cursor: pointer;
+}
+
+.checkout-btn {
+  display: block;
+  padding: 6px;
+  background-color: #6d7d89;
+  color: #ffffff;
+  border: 1px solid #6d7d89;
+  border-radius: 5px;
+  text-decoration: none;
+  text-align: center;
+  width: 100px;
+  margin: 20px auto 4px auto;
+}
+
+.checkout-btn:hover {
   background-color: #6b69f8;
   color: #ffffff;
   transition: all 1.5s ease-in-out;

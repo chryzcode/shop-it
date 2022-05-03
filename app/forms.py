@@ -92,8 +92,8 @@ class CouponForm(ModelForm):
 
 class UseCouponForm(ModelForm):
     class Meta:
-        model = Product
-        fields= ["coupon"]
+        model = Coupon
+        fields= ["code"]
     
         widgets = {
             "coupon": forms.TextInput(

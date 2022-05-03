@@ -8,6 +8,9 @@ from django.utils.text import slugify
 
 from account.models import User
 
+from datetime import datetime, timedelta
+
+
 
 class Category(models.Model):
     created_by = models.ForeignKey(
@@ -55,12 +58,11 @@ class Coupon(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     expiry_date = models.IntegerField()
-    active = models.BooleanField(default=True)
-    users = models.ManyToManyField(User, blank=True)  
 
-
+    users = models.ManyToManyField(User, blank=True)
+    
     def __str__(self):
-        return "coupon" + self.code[:5] + "..."
+        return "coupon" + ' ' + self.code[:5] + "..."
 
 
 class Product(models.Model):
@@ -93,7 +95,6 @@ class Product(models.Model):
         validators=[MinValueValidator(0), MaxValueValidator(100)],
     )
     wishlist = models.ManyToManyField(User, related_name="wishlist", blank=True)
-    coupon = models.CharField(max_length=20, null=True, blank=True)
 
     # pulral for the table name in the admin page
     class Meta:
