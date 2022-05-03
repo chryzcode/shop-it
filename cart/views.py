@@ -7,6 +7,7 @@ from app.models import *
 
 from .cart import *
 from app.forms import UseCouponForm
+import time, datetime
 from datetime import datetime, timedelta
 
 from .cart import * 
@@ -14,6 +15,7 @@ from .cart import *
 
 # Create your views here.
 def cart_summary(request):
+    grand_total = ''
     cart = Cart(request)
     form = UseCouponForm
     if request.method == "POST":
@@ -22,11 +24,23 @@ def cart_summary(request):
             coupon_code = form.cleaned_data.get("coupon")
             if Coupon.objects.filter(code=coupon_code).exists():
                 coupon = Coupon.objects.get(code=coupon_code)
-                coupon_percentage = coupon.percentage
-                cart.get_grand_total(coupon_percentage)
-                print(int(cart.get_grand_total(coupon_percentage)))
-                return render(request, "cart/cart-summary.html", {"cart": cart, "form": form})                  
-    return render(request, "cart/cart-summary.html", {"cart": cart, "form": form})
+                if request.user not in coupon.users.all():
+                    expiry_date = (datetime.now().astimezone() - coupon.created_at)
+                    expiry_date_seconds = expiry_date.total_seconds()
+                    minutes = expiry_date_seconds/60
+                    if int(minutes) > coupon.expiry_date:
+                        print("Coupon Expired")
+                    else:
+                        coupon_percentage = coupon.percentage
+                        cart.get_grand_total(coupon_percentage)
+                        coupon.users.add(request.user)
+                        grand_total = int(cart.get_grand_total(coupon_percentage))
+                        print(grand_total)
+                else:
+                    print("You have already used this coupon")
+            else:
+                print("Coupon does not exist")             
+    return render(request, "cart/cart-summary.html", {"cart": cart, "form": form, "grand_total": grand_total})
                
 
 def add_to_cart(request):

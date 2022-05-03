@@ -11,7 +11,7 @@
       <span>${{product.discount_price}}</span>
       {% else %}
       <span>{{product.price}}</span>
-      {% endif %} 
+      {% endif %}
     </span>
 
     <span>
@@ -31,7 +31,6 @@
         <i class="far fa-edit"></i>Update
       </button>
     </span>
-
 
     <span id="item_total_price{{product.id}}">{{item.total_price}}</span>
 
@@ -57,21 +56,20 @@
     </div>
 
     <form action="" method="post">
-      {% csrf_token %}
-      {{form.as_p}}
-    
+      {% csrf_token %} {{form.as_p}}
 
-    <div class="cart-expenses">
-      <div>
-        <span>Sub Total:</span>
-        <span id="subtotal">{{cart.get_total_price }}</span>
+      <div class="cart-expenses">
+        <div>
+          <span>Sub Total:</span>
+          <span id="subtotal">{{cart.get_total_price }}</span>
+        </div>
+        <div>
+          <span>Grand Total:</span>
+          <span>{{grand_total}}</span>
+        </div>
+        <button class="checkout-btn" type="submit">CheckOut</button>
+        <!-- <a href="" class="checkout-btn">CheckOut</a> -->
       </div>
-      <div>Grand Total:</div>
-      <span>{{cart.get_grand_total}} </span>
-      <button class="checkout-btn" type="submit">CheckOut</button>
-      <!-- <a href="" class="checkout-btn">CheckOut</a> -->
-    </div>
-
     </form>
   </div>
 
@@ -103,7 +101,6 @@
         $('.product-item[data-index="' + prodid + '"]').remove();
         document.getElementById("subtotal").innerHTML = json.subtotal;
         document.getElementById("product-cart-qty").innerHTML = json.qty;
-
       },
       error: function (xhr, errmsg, err) {},
     });
@@ -112,7 +109,6 @@
   //update item
 
   $(document).on("click", ".update-cart-btn", function (e) {
-  
     e.preventDefault();
     var prodid = $(this).data("index");
     $.ajax({
@@ -127,9 +123,9 @@
       success: function (json) {
         document.getElementById("product-cart-qty").innerHTML = json.qty;
         document.getElementById("subtotal").innerHTML = json.subtotal;
-        document.getElementById("item_total_price"+prodid).innerHTML = json.cartproqty;
-        console.log(json.cartproqty)
-        console.log(prodid)
+        document.getElementById("item_total_price" + prodid).innerHTML = json.cartproqty;
+        console.log(json.cartproqty);
+        console.log(prodid);
       },
       error: function (xhr, errmsg, err) {},
     });

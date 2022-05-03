@@ -5,8 +5,6 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
-from datetime import datetime, timedelta
-from django.shortcuts import get_object_or_404
 
 from account.models import User
 
@@ -58,18 +56,7 @@ class Coupon(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     expiry_date = models.IntegerField()
     active = models.BooleanField(default=True)
-    users = models.ManyToManyField(User, blank=True)
-
-    def active_coupon(self, request):
-        if self.expiry_date == self.created_at + timedelta(minutes=self.expiry_date):
-           active = False
-           return active
-        if request.user in self.users.all():
-            active = False
-            return active
-        
-
-    
+    users = models.ManyToManyField(User, blank=True)  
 
 
     def __str__(self):
