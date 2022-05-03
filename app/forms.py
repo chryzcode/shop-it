@@ -96,7 +96,7 @@ class UseCouponForm(ModelForm):
         fields= ["code"]
     
         widgets = {
-            "coupon": forms.TextInput(
+            "code": forms.TextInput(
                 attrs={"class": "form-control", "placeholder": "Coupon Code"}
             ),
         }

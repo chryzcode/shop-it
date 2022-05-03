@@ -297,7 +297,6 @@ footer {
   color: #ffffff;
 }
 
-.delete-btn,
 .delete-btn {
   background-color: rgba(218, 41, 41, 0.981);
   color: white;
@@ -309,8 +308,7 @@ footer {
   text-decoration: none;
 }
 
-.delete-btn:hover,
-.delete-btn:hover {
+.delete-btn:hover{
   background-color: red;
   color: #ffffff;
   /* transition: all 1.5s ease-in-out; */
@@ -323,6 +321,10 @@ footer {
 
 .update-btn > a:hover {
   color: #ffffff;
+}
+
+.delete-btn > i, .delete-btn > a > i {
+  padding-right: 2px;
 }
 
 .delete-btn > a {
