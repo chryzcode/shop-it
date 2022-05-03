@@ -36,10 +36,13 @@ def cart_summary(request):
                         cart.get_grand_total(coupon_percentage)
                         coupon.users.add(request.user)
                         grand_total = int(cart.get_grand_total(coupon_percentage))
+                        form = UseCouponForm
                         form_feedback = 'Coupon Successfully Used'
                 else:
+                    form = UseCouponForm
                     form_feedback = 'Copoun has been used by you'
             else:
+                form = UseCouponForm
                 form_feedback = 'Coupon does not exist'           
     return render(request, "cart/cart-summary.html", {"cart": cart, "form": form, "grand_total": grand_total, "form_feedback": form_feedback})
                

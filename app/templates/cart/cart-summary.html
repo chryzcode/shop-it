@@ -68,7 +68,11 @@
       </div>
       <div>
         <span>Grand Total:</span>
-        <span>{{grand_total}}</span>
+        <span id="subtotal">{% if grand_total %} {{grand_total}}
+          {% else %}
+          {{cart.get_total_price }}
+          {% endif %}
+        </span>
       </div>
 
       <!-- <a href="" class="checkout-btn">CheckOut</a> -->
