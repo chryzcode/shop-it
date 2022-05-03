@@ -208,7 +208,13 @@ def create_coupon(request):
 
 def all_coupons(request):
     user = request.user
-    coupons = Coupon.objects.filter(created_by=user.id, active=True)
+    coupons = Coupon.objects.filter(created_by=user.id)
+    for coupon in coupons:
+        expiry_date = (datetime.now().astimezone() - coupon.created_at)
+        expiry_date_seconds = expiry_date.total_seconds()
+        minutes = expiry_date_seconds/60
+        if int(minutes) > coupon.expiry_date:
+            coupon.delete()
     return render(
         request,
         "store/coupon.html",

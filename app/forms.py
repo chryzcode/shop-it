@@ -104,3 +104,4 @@ class UseCouponForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(UseCouponForm, self).__init__(*args, **kwargs)
         self.label_suffix = ""
+        self.fields['code'].label = "Coupon"
