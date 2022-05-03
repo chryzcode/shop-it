@@ -16,6 +16,7 @@ from .cart import *
 # Create your views here.
 def cart_summary(request):
     grand_total = ''
+    form_feedback = ''
     cart = Cart(request)
     form = UseCouponForm
     if request.method == "POST":
@@ -29,18 +30,18 @@ def cart_summary(request):
                     expiry_date_seconds = expiry_date.total_seconds()
                     minutes = expiry_date_seconds/60
                     if int(minutes) > coupon.expiry_date:
-                        print("Coupon Expired")
+                        form_feedback = 'Copoun is Expired'
                     else:
                         coupon_percentage = coupon.percentage
                         cart.get_grand_total(coupon_percentage)
                         coupon.users.add(request.user)
                         grand_total = int(cart.get_grand_total(coupon_percentage))
-                        print(grand_total)
+                        form_feedback = 'Coupon Successfully Used'
                 else:
-                    print("You have already used this coupon")
+                    form_feedback = 'Copoun has been used by you'
             else:
-                print("Coupon does not exist")             
-    return render(request, "cart/cart-summary.html", {"cart": cart, "form": form, "grand_total": grand_total})
+                form_feedback = 'Coupon does not exist'           
+    return render(request, "cart/cart-summary.html", {"cart": cart, "form": form, "grand_total": grand_total, "form_feedback": form_feedback})
                
 
 def add_to_cart(request):

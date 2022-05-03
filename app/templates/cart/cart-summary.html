@@ -51,26 +51,28 @@
   </div>
 
   <div class="note-checkout-section">
-    <div>
-      <h3>Note</h3>
-    </div>
+    <span>
+      <div>Note: You can use a coupon only once</div>
 
-    <form action="" method="post">
-      {% csrf_token %} {{form.as_p}}
+      <form action="" method="post">
+         <p class="coupon_feedback ">{{form_feedback}}</p>
+        {% csrf_token %} {{form.as_p}}
+        <button class="apply-coupon-btn" type="submit">Apply</button>
+      </form>
+    </span>
 
-      <div class="cart-expenses">
-        <div>
-          <span>Sub Total:</span>
-          <span id="subtotal">{{cart.get_total_price }}</span>
-        </div>
-        <div>
-          <span>Grand Total:</span>
-          <span>{{grand_total}}</span>
-        </div>
-        <button class="checkout-btn" type="submit">CheckOut</button>
-        <!-- <a href="" class="checkout-btn">CheckOut</a> -->
+    <div class="cart-expenses">
+      <div>
+        <span>Sub Total:</span>
+        <span id="subtotal">{{cart.get_total_price }}</span>
       </div>
-    </form>
+      <div>
+        <span>Grand Total:</span>
+        <span>{{grand_total}}</span>
+      </div>
+
+      <!-- <a href="" class="checkout-btn">CheckOut</a> -->
+    </div>
   </div>
 
   {% else %}
