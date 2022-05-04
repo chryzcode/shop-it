@@ -3,7 +3,7 @@ from django.contrib.auth.forms import PasswordResetForm, SetPasswordForm
 from django.forms import ModelForm
 from django.utils.text import slugify
 
-from .models import User
+from .models import User, store_staff
 
 
 class RegistrationForm(ModelForm):
@@ -131,3 +131,32 @@ class PasswordResetConfirmForm(SetPasswordForm):
             raise forms.ValidationError("Passwords do not match.")
         return cd["new_password2"]
 
+class StoreStaffForm(ModelForm):
+    class Meta:
+        model = store_staff
+        fields = ["full_name", "username", "avatar", "phone_number", "password", "password2"]
+
+        widgets = {
+            "full_name": forms.TextInput(attrs={"class": "form-control", "placeholder": "John Doe"}),
+            "username": forms.TextInput(attrs={"class": "form-control", "placeholder": "John"}),
+            "avatar": forms.FileInput(attrs={"class": "form-control"}),
+            "phone_number": forms.TextInput(attrs={"class": "form-control", "placeholder": "+1 97904095"}),
+            "password": forms.PasswordInput(attrs={"class": "form-control"}),
+            "password2": forms.PasswordInput(attrs={"class": "form-control"}),
+        }
+
+    def clean_username(self):
+        username = self.cleaned_data["username"]
+        r = store_staff.objects.filter(username=username)
+        if r.count():
+            raise forms.ValidationError("Username already exists")
+        return username
+
+    def clean_password2(self):
+        cd = self.cleaned_data
+        if cd["password"] != cd["password2"]:
+            raise forms.ValidationError("Passwords do not match.")
+        return cd["password2"]
+
+    def __init__(self, *args, **kwargs):
+        super(StoreStaffForm, self).__init__(*args, **kwargs)

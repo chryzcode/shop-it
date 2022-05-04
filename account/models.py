@@ -94,6 +94,8 @@ class store_staff(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     store = models.ForeignKey(User, on_delete=models.CASCADE, related_name="store_staff")
+    password = models.CharField(max_length=100, default="password")
+    password2 = models.CharField(max_length=100, default="password")
 
     USERNAME_FIELD = "username"
 

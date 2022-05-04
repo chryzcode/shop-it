@@ -7,8 +7,8 @@ from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 
-from .forms import RegistrationForm, UserProfileForm, StoreForm
-from .models import User
+from .forms import RegistrationForm, UserProfileForm, StoreForm, StoreStaffForm
+from .models import User, store_staff
 from .tokens import account_activation_token
 
 
@@ -123,4 +123,24 @@ def store_account(request):
         "account/user/store-account.html",
         {"storeform": storeform, "account": account}
     )
+
+def store_staff_page(request):
+    store_staffs = store_staff.objects.filter(store=request.user)
+    return render(request, "store/store-staff-page.html", {"store_staffs": store_staffs})
+
+
+def store_staff_register(request):
+    form = StoreStaffForm
+    if request.method == "POST":
+        form = StoreStaffForm(request.POST, request.FILES)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.username = user.username.lower()
+            user.store = request.user
+            user.save()
+            return redirect("/")
+
+    return render(request, "account/registration/store-staff-register.html", {"form": form})
+
+            
 
