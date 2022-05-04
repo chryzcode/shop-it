@@ -138,9 +138,14 @@ def store_staff_register(request):
             user.username = user.username.lower()
             user.store = request.user
             user.save()
-            return redirect("/")
+            return redirect("account:store_staff_page")
 
     return render(request, "account/registration/store-staff-register.html", {"form": form})
+
+def delete_store_staff(request, slugified_username):
+    store_staff = get_object_or_404(store_staff, slugified_username=slugified_username, store= request.user)
+    store_staff.delete()
+    return redirect("account:store_staff_page")
 
             
 
