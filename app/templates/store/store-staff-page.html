@@ -12,12 +12,14 @@
         <tr class="table-rows">
           <th>Full Name</th>
           <th>Email</th>
+          <th>Phone</th>
           <th>Delete</th>
         </tr>
         {% for staff in store_staffs %}
         <tr class="table-rows">
           <td>{{ staff.full_name }}</td>
           <td>{{ staff.email }}</td>
+          <td>{{ staff.phone_number }}</td>
           <td>
             <button type="button" class="delete-btn">
               <a href="{% url 'account:delete_store_staff' staff.pk  %}"><i class="fas fa-trash-alt"></i>Delete</a>

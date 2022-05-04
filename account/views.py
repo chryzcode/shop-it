@@ -146,9 +146,9 @@ def store_staff_register(request):
                 email = form.cleaned_data["email"],
                 full_name = form.cleaned_data["full_name"],
                 phone_number = form.cleaned_data["phone_number"],
-                # store_name = request.user.store_name,
                 is_active = True,
                 is_staff = False,
+                store_creator = False,
             )
             user.set_password(form.cleaned_data["password"])
             user.save()
