@@ -68,7 +68,8 @@
       </div>
       <div>
         <span>Grand Total:</span>
-        <span id="subtotal">{% if grand_total %} {{grand_total}}
+        <span id="grand_total">
+          {% if grand_total %} {{grand_total}}
           {% else %}
           {{cart.get_total_price }}
           {% endif %}
@@ -130,6 +131,7 @@
         document.getElementById("product-cart-qty").innerHTML = json.qty;
         document.getElementById("subtotal").innerHTML = json.subtotal;
         document.getElementById("item_total_price" + prodid).innerHTML = json.cartproqty;
+        document.getElementById("grand_total").innerHTML = json.subtotal;
         console.log(json.cartproqty);
         console.log(prodid);
       },

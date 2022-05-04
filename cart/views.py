@@ -28,7 +28,7 @@ def cart_summary(request):
     if request.method == "POST":
         form = UseCouponForm(request.POST)
         if form.is_valid():
-            coupon_code = form.cleaned_data.get("coupon")
+            coupon_code = form.cleaned_data.get("code")
             if Coupon.objects.filter(code=coupon_code).exists():
                 coupon = Coupon.objects.get(code=coupon_code)
                 if request.user not in coupon.users.all():
