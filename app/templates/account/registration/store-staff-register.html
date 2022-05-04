@@ -11,7 +11,6 @@
       </div>
 
       <div class="acc-form-seg">
-        <p>Basic Info</p>
         <div class="input-container">
           <label for="avatar">Avatar<span class="form-required">*</span></label>
           <p>{{ form.avatar.errors }}</p>
@@ -19,25 +18,31 @@
         </div>
 
         <div class="input-container">
-          <label for="name">Full Name<span class="form-required">*</span></label>
+          <label for="full_name">Full Name<span class="form-required">*</span></label>
           <p>{{ form.full_name.errors }}</p>
           <div>{{ form.full_name }}</div>
         </div>
 
         <div class="input-container">
-          <label for="phone_number">Phone Number</label>
+          <label for="email">Email<span class="form-required">*</span></label>
+          <p>{{ form.email.errors }}</p>
+          <div>{{ form.email }}</div>
+        </div>
+
+        <div class="input-container">
+          <label for="phone_number">Phone Number<span class="form-required">*</span></label>
           <p>{{ form.phone_number.errors }}</p>
           {{form.phone_number}}
         </div>
 
         <div class="input-container">
-            <label for="password">Password</label>
+            <label for="password">Password<span class="form-required">*</span></label>
             <p>{{ form.password.errors }}</p>
             {{form.password}}
         </div>
 
         <div class="input-container">
-            <label for="password2">Password</label>
+            <label for="password2">Confirm Password<span class="form-required">*</span></label>
             <p>{{ form.password2.errors }}</p>
             {{form.password2}}
         </div>

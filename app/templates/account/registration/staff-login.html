@@ -1,9 +1,9 @@
 {% extends 'navs/base.html' %} {% load static %} {% block title %} <title>Shop!t - Sign In</title> {% endblock %} {%block content %}
 <div class="auth-form-container">
-  <form action="{% url 'account:login' %}" method="post">
+  <form action="{% url 'account:staff_login' %}" method="post">
     {% csrf_token %}
     <div class="above-create-form">
-      <p>Sign In</p>
+      <p>Staff Sign In</p>
     </div>
     {% if messages %} {% for message in messages %}
     <p class="login-errors">{{message}}</p>
@@ -25,7 +25,6 @@
   <div class="form-bottom">
     <a href="{% url 'account:password_reset' %}">Forgot Password?</a>
   </div>
-  <a href="{% url 'account:staff_login' %}">Staff Login</a>
 </div>
 
 {% endblock %}

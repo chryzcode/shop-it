@@ -1,9 +1,10 @@
+import email
 from django import forms
 from django.contrib.auth.forms import PasswordResetForm, SetPasswordForm
 from django.forms import ModelForm
 from django.utils.text import slugify
 
-from .models import User, store_staff
+from .models import User, store_staff, Store
 
 
 class RegistrationForm(ModelForm):
@@ -12,8 +13,8 @@ class RegistrationForm(ModelForm):
     password2 = forms.CharField()
 
     class Meta:
-        model = User
-        fields = ["email", "full_name", "store_name", "check"]
+        models = User
+        fields = ["email", "store_name", "full_name", "check"]
 
     def clean_username(self):
         store_name = self.cleaned_data["store_name"].lower()
@@ -37,7 +38,7 @@ class RegistrationForm(ModelForm):
     def clean_store_name(self):
         store_name = self.cleaned_data["store_name"]
         slugified_store_name = slugify(store_name)
-        if User.objects.filter(slugified_store_name=slugified_store_name).exists():
+        if Store.objects.filter(slugified_store_name=slugified_store_name).exists():
             raise forms.ValidationError("Store name is already taken")
         return store_name
 
@@ -46,7 +47,7 @@ class RegistrationForm(ModelForm):
 
 class StoreForm(ModelForm):
     class Meta:
-        model = User
+        model = Store
         fields = [
             "store_name", 
             "store_image",
@@ -134,22 +135,22 @@ class PasswordResetConfirmForm(SetPasswordForm):
 class StoreStaffForm(ModelForm):
     class Meta:
         model = store_staff
-        fields = ["full_name", "username", "avatar", "phone_number", "password", "password2"]
+        fields = ["full_name", "email", "avatar", "phone_number", "password", "password2"]
 
         widgets = {
             "full_name": forms.TextInput(attrs={"class": "form-control", "placeholder": "John Doe"}),
-            "username": forms.TextInput(attrs={"class": "form-control", "placeholder": "John"}),
+            "email": forms.TextInput(attrs={"class": "form-control", "placeholder": "johndoe@gmail.com"}),
             "avatar": forms.FileInput(attrs={"class": "form-control"}),
             "phone_number": forms.TextInput(attrs={"class": "form-control", "placeholder": "+1 97904095"}),
             "password": forms.PasswordInput(attrs={"class": "form-control"}),
             "password2": forms.PasswordInput(attrs={"class": "form-control"}),
         }
 
-    def clean_username(self):
-        username = self.cleaned_data["username"]
-        r = store_staff.objects.filter(username=username)
+    def clean_email(self):
+        username = self.cleaned_data["email"]
+        r = store_staff.objects.filter(email=email)
         if r.count():
-            raise forms.ValidationError("Username already exists")
+            raise forms.ValidationError("Email already exists")
         return username
 
     def clean_password2(self):

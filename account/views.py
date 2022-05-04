@@ -8,7 +8,7 @@ from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 
 from .forms import RegistrationForm, UserProfileForm, StoreForm, StoreStaffForm
-from .models import User, store_staff
+from .models import User, store_staff, Store
 from .tokens import account_activation_token
 
 
@@ -62,6 +62,10 @@ def account_register(request):
             user.set_password(registerform.cleaned_data["password"])
             user.is_active = False
             user.save()
+            store = Store.objects.create(
+                owner = user,
+                store_name = registerform.cleaned_data["store_name"],
+            )
             current_site = get_current_site(request)
             subject = "Activate your Shop!t Account"
             message = render_to_string(
@@ -134,18 +138,51 @@ def store_staff_register(request):
     if request.method == "POST":
         form = StoreStaffForm(request.POST, request.FILES)
         if form.is_valid():
-            user = form.save(commit=False)
-            user.username = user.username.lower()
-            user.store = request.user
+            staff_user = form.save(commit=False)
+            staff_user.store = request.user
+            staff_user.save()
+            user = User.objects.create(
+                email = form.cleaned_data["email"],
+                full_name = form.cleaned_data["full_name"],
+                avatar = form.cleaned_data["avatar"],
+                phone_number = form.cleaned_data["phone_number"],
+                store_name = request.user.store_name,
+                is_active = True,
+                is_staff = False,
+            )
+            user.set_password(form.cleaned_data["password"])
             user.save()
+            Store.staffs.add(staff_user)       
             return redirect("account:store_staff_page")
 
     return render(request, "account/registration/store-staff-register.html", {"form": form})
 
 def delete_store_staff(request, slugified_username):
-    store_staff = get_object_or_404(store_staff, slugified_username=slugified_username, store= request.user)
-    store_staff.delete()
+    staff = get_object_or_404(store_staff, slugified_username=slugified_username, store= request.user)
+    staff.delete()
     return redirect("account:store_staff_page")
 
-            
+def staff_login(request):
+    error = ''
+    if request.user.is_authenticated:
+        return redirect('/')
+
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        password = request.POST.get('password')   
+
+        try:
+            user = User.objects.get(email=email)
+        except:
+            messages.error(request, 'User does not exist')
+
+        user = authenticate(request, email=email, password=password)
+
+        if user is not None:
+            login(request, user)
+            return redirect('/')
+        else:
+            messages.error(request, 'Username or password does not exist')
+             
+    return render(request,'account/registration/staff-login.html', {'error': error})            
 
