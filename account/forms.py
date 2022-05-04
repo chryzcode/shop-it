@@ -135,12 +135,11 @@ class PasswordResetConfirmForm(SetPasswordForm):
 class StoreStaffForm(ModelForm):
     class Meta:
         model = store_staff
-        fields = ["full_name", "email", "avatar", "phone_number", "password", "password2"]
+        fields = ["full_name", "email", "phone_number", "password", "password2"]
 
         widgets = {
             "full_name": forms.TextInput(attrs={"class": "form-control", "placeholder": "John Doe"}),
             "email": forms.TextInput(attrs={"class": "form-control", "placeholder": "johndoe@gmail.com"}),
-            "avatar": forms.FileInput(attrs={"class": "form-control"}),
             "phone_number": forms.TextInput(attrs={"class": "form-control", "placeholder": "+1 97904095"}),
             "password": forms.PasswordInput(attrs={"class": "form-control"}),
             "password2": forms.PasswordInput(attrs={"class": "form-control"}),

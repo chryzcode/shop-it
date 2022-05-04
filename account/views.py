@@ -129,7 +129,7 @@ def store_account(request):
     )
 
 def store_staff_page(request):
-    store_staffs = store_staff.objects.filter(store=request.user)
+    store_staffs = store_staff.objects.filter(store=request.user.store_name)
     return render(request, "store/store-staff-page.html", {"store_staffs": store_staffs})
 
 
@@ -140,25 +140,26 @@ def store_staff_register(request):
         if form.is_valid():
             staff_user = form.save(commit=False)
             staff_user.store = request.user
+            staff_user.store = request.user.store_name
             staff_user.save()
             user = User.objects.create(
                 email = form.cleaned_data["email"],
                 full_name = form.cleaned_data["full_name"],
-                avatar = form.cleaned_data["avatar"],
                 phone_number = form.cleaned_data["phone_number"],
-                store_name = request.user.store_name,
+                # store_name = request.user.store_name,
                 is_active = True,
                 is_staff = False,
             )
             user.set_password(form.cleaned_data["password"])
             user.save()
-            Store.staffs.add(staff_user)       
+            store = Store.objects.get(owner=request.user)
+            store.staffs.add(user)       
             return redirect("account:store_staff_page")
 
     return render(request, "account/registration/store-staff-register.html", {"form": form})
 
-def delete_store_staff(request, slugified_username):
-    staff = get_object_or_404(store_staff, slugified_username=slugified_username, store= request.user)
+def delete_store_staff(request, pk):
+    staff = get_object_or_404(store_staff, pk=pk, store= request.user)
     staff.delete()
     return redirect("account:store_staff_page")
 
@@ -184,5 +185,5 @@ def staff_login(request):
         else:
             messages.error(request, 'Username or password does not exist')
              
-    return render(request,'account/registration/staff-login.html', {'error': error})            
+    return render(request,'account/registration/login.html', {'error': error})            
 

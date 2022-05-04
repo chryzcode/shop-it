@@ -57,6 +57,5 @@ urlpatterns = [
     ),
     path("store-staff/", views.store_staff_page, name="store_staff_page"),
     path("add-store-staff/", views.store_staff_register, name="add_store_staff"),
-    path("delete-staff/<slugified_username>", views.delete_store_staff, name="delete_store_staff"),
-    path("staff-login/", views.staff_login, name="staff_login"),
+    path("delete-staff/<str:pk>", views.delete_store_staff, name="delete_store_staff"),
 ]

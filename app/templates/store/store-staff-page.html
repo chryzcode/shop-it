@@ -11,16 +11,16 @@
       <table class="store-products-table">
         <tr class="table-rows">
           <th>Full Name</th>
-          <th>Username</th>
+          <th>Email</th>
           <th>Delete</th>
         </tr>
         {% for staff in store_staffs %}
         <tr class="table-rows">
           <td>{{ staff.full_name }}</td>
-          <td>{{ staff.username }}</td>
+          <td>{{ staff.email }}</td>
           <td>
             <button type="button" class="delete-btn">
-              <a href="{% url 'account:delete_store_staff' staff.slugified_username  %}"><i class="fas fa-trash-alt"></i>Delete</a>
+              <a href="{% url 'account:delete_store_staff' staff.pk  %}"><i class="fas fa-trash-alt"></i>Delete</a>
             </button>
           </td>
         </tr>

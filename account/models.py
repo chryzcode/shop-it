@@ -55,25 +55,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     twitter = models.CharField(max_length=100, blank=True)
     store_name = models.CharField(max_length=150, unique=True)
 
-    # for store
     
     objects = CustomAccountManager()
 
     USERNAME_FIELD = "email"
 
     REQUIRED_FIELDS = ["store_name"]
-
-class store_staff(models.Model):
-    full_name = models.CharField(max_length=300)
-    email = models.EmailField(_("email"), unique=True)
-    avatar = models.ImageField(upload_to="user-profile-images/", null=True)
-    is_active = models.BooleanField(default=True)
-    phone_number = models.CharField(max_length=15, blank=True)
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
-    store = models.ForeignKey(User, on_delete=models.CASCADE, related_name="store_staff")
-    password = models.CharField(max_length=100)
-    password2 = models.CharField(max_length=100)
 
 
 
@@ -83,7 +70,7 @@ class Store(models.Model):
     slugified_store_name = models.SlugField(max_length=255, unique=True)
     store_description = models.TextField(max_length=500, blank=True)
     store_image = models.ImageField(upload_to="store-images/", null=True)
-    staffs =  models.ManyToManyField(store_staff, related_name="store_staffs", blank=True)
+    staffs =  models.ManyToManyField(User, related_name="store_staffs", blank=True)
 
     def save(self, *args, **kwargs):
         if not self.slugified_store_name:
@@ -105,6 +92,30 @@ class Store(models.Model):
 
     def __str__(self):
         return self.store_name
+
+class store_staff(models.Model):
+    full_name = models.CharField(max_length=300)
+    email = models.EmailField(_("email"), unique=True)
+    avatar = models.ImageField(upload_to="user-profile-images/", null=True)
+    is_active = models.BooleanField(default=True)
+    phone_number = models.CharField(max_length=15, blank=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    password = models.CharField(max_length=100)
+    password2 = models.CharField(max_length=100)
+
+     #choices field for all the store
+    store_choices = (
+       Store.objects.all().values_list('store_name', 'store_name')
+    )
+    store= models.CharField(max_length=100, choices=store_choices)
+
+    class Meta:
+        verbose_name = "Store Staff"
+        verbose_name_plural = " Store Staffs"
+
+    def __str__(self):
+        return self.full_name
 
 
 
