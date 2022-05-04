@@ -84,6 +84,28 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.store_name
 
 
+class store_staff(models.Model):
+    full_name = models.CharField(max_length=300)
+    username = models.CharField(_("username"), max_length=150, unique=True)
+    slugified_username = models.SlugField(max_length=255, unique=True)
+    avatar = models.ImageField(upload_to="user-profile-images/", null=True)
+    is_active = models.BooleanField(default=True)
+    phone_number = models.CharField(max_length=15, blank=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    store = models.ForeignKey(User, on_delete=models.CASCADE, related_name="store_staff")
+
+    USERNAME_FIELD = "username"
+
+    REQUIRED_FIELDS = ["store"]
+
+    def save(self, *args, **kwargs):
+        if not self.slugified_username:
+            self.slugified_store_name = slugify(self.store_name)
+        return super(User, self).save(*args, **kwargs)
+
+
+
 class Address(models.Model):
     id = models.UUIDField(
         primary_key=True, default=uuid.uuid4, editable=False, unique=True

@@ -1,4 +1,3 @@
-from pyexpat import model
 from django import forms
 from django.contrib.auth.forms import PasswordResetForm, SetPasswordForm
 from django.forms import ModelForm
