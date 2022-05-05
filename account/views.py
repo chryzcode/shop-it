@@ -114,19 +114,22 @@ def user_profile(request):
     )
 
 def store_account(request):
-    account = request.user
-    storeform = StoreForm(instance=account)
-    if request.method == "POST":
-        storeform = StoreForm(request.POST, request.FILES, instance=account)
-        if storeform.is_valid():
-            storeform.save()
-            return redirect("/")
+    if request.user.store_creator == True:
+        account = request.user
+        storeform = StoreForm(instance=account)
+        if request.method == "POST":
+            storeform = StoreForm(request.POST, request.FILES, instance=account)
+            if storeform.is_valid():
+                storeform.save()
+                return redirect("/")
 
-    return render(
-        request, 
-        "account/user/store-account.html",
-        {"storeform": storeform, "account": account}
-    )
+        return render(
+            request, 
+            "account/user/store-account.html",
+            {"storeform": storeform, "account": account}
+        )
+    else:
+        return redirect("account:user_profile")
 
 def store_staff_page(request):
     store_staffs = store_staff.objects.filter(store=request.user.store_name)
@@ -134,34 +137,43 @@ def store_staff_page(request):
 
 
 def store_staff_register(request):
-    form = StoreStaffForm
-    if request.method == "POST":
-        form = StoreStaffForm(request.POST, request.FILES)
-        if form.is_valid():
-            staff_user = form.save(commit=False)
-            staff_user.store = request.user
-            staff_user.store = request.user.store_name
-            staff_user.save()
-            user = User.objects.create(
-                email = form.cleaned_data["email"],
-                full_name = form.cleaned_data["full_name"],
-                phone_number = form.cleaned_data["phone_number"],
-                is_active = True,
-                is_staff = False,
-                store_creator = False,
-            )
-            user.set_password(form.cleaned_data["password"])
-            user.save()
-            store = Store.objects.get(owner=request.user)
-            store.staffs.add(user)       
-            return redirect("account:store_staff_page")
+    error= ''
+    if request.user.store_creator == True:
+        form = StoreStaffForm   
+        if request.method == "POST":
+            form = StoreStaffForm(request.POST, request.FILES)
+            if form.is_valid():
+                staff_user = form.save(commit=False)
+                staff_user.store = request.user
+                staff_user.store = request.user.store_name
+                staff_user.save()
+                user = User.objects.create(
+                    email = form.cleaned_data["email"],
+                    full_name = form.cleaned_data["full_name"],
+                    phone_number = form.cleaned_data["phone_number"],
+                    is_active = True,
+                    is_staff = False,
+                    store_creator = False,
+                )
+                user.set_password(form.cleaned_data["password"])
+                user.save()
+                store = Store.objects.get(owner=request.user)
+                store.staffs.add(user)       
+                return redirect("account:store_staff_page")
+    else:
+        error = 'You are not authorized'
+        return render(request, "store/store-staff-page.html", {"error":error})
 
     return render(request, "account/registration/store-staff-register.html", {"form": form})
 
 def delete_store_staff(request, pk):
-    staff = get_object_or_404(store_staff, pk=pk, store= request.user)
-    staff.delete()
-    return redirect("account:store_staff_page")
+    if request.user.store_creator == True:
+        staff = get_object_or_404(store_staff, pk=pk, store= request.user)
+        staff.delete()
+        return redirect("account:store_staff_page")
+    else:
+        error = 'You are not authorized'
+        return render(request, "store/store-staff-page.html", {"error":error})
 
 def staff_login(request):
     error = ''

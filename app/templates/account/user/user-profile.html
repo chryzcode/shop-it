@@ -66,6 +66,7 @@
       </div>
       {% endcomment %}
 
+      {% if request.user.store_creator == True %}
       <div class="acc-form-seg">
         <p>Socials</p>
         <div class="input-container">
@@ -86,6 +87,7 @@
           <div>{{ userprofileform.facebook }}</div>
         </div>
       </div>
+      {% endif %}
 
       <div class="form-btn-container">
         <button class="form-btn" type="submit">Update</button>

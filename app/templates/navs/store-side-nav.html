@@ -28,9 +28,11 @@
     <span class="store-sidenav-seg">
       <p>Store Settings</p>
       <ul>
+        {% if request.user.store_creator == True %}
         <li><a href="{% url 'account:store_account' %}">Store Settings</a></li>
         <li><a href="">Subscription</a></li>
         <li><a href="">Store Custmization</a></li>
+        {% endif %}
         <li><a href="{% url 'account:user_profile' %}">User Account</a></li>
         <li><a href="{% url 'account:store_staff_page' %}">Staff Account</a></li>
         <li><a href="">Import Products</a></li>

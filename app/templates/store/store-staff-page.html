@@ -7,24 +7,31 @@
   <div class="store-content-container">
     <span class="store-products-container">
       <p>Store Staffs</p>
+      <p>{{error}}</p>
+      {% if request.user.store_creator == True %}
       <span><a href="{% url 'account:add_store_staff' %}" target="_blank" rel="noopener noreferrer">Add Staff</a></span>
+      {% endif %}
       <table class="store-products-table">
         <tr class="table-rows">
           <th>Full Name</th>
           <th>Email</th>
           <th>Phone</th>
+          {% if request.user.store_creator == True %}
           <th>Delete</th>
+          {% endif %}
         </tr>
         {% for staff in store_staffs %}
         <tr class="table-rows">
           <td>{{ staff.full_name }}</td>
           <td>{{ staff.email }}</td>
           <td>{{ staff.phone_number }}</td>
+          {% if request.user.store_creator == True %}
           <td>
             <button type="button" class="delete-btn">
               <a href="{% url 'account:delete_store_staff' staff.pk  %}"><i class="fas fa-trash-alt"></i>Delete</a>
             </button>
           </td>
+           {% endif %}
         </tr>
         {% endfor %}
       </table>
