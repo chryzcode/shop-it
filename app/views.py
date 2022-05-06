@@ -76,16 +76,19 @@ def create_product(request):
 
 
 def edit_product(request, slug):
-    user = request.user
-    product = get_object_or_404(Product, slug=slug, created_by=user.id)
+    if request.user.store_creator == True:
+        store = request.user.store_name
+    else:
+        store = store_staff.objects.get(user = request.user).store
+    product = get_object_or_404(Product, slug=slug, created_by=store)
     form = ProductForm(instance=product)
-    categories = Category.objects.filter(created_by=user.id)
+    categories = Category.objects.filter(created_by=store)
     product_units = ProductUnit.objects.all()
     if request.method == "POST":
         form = ProductForm(request.POST, request.FILES, instance=product)
         if form.is_valid():
             product = form.save(commit=False)
-            product.created_by = request.user
+            product.created_by = store
             product.save()
             return redirect(
                 "app:product_detail",
