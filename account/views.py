@@ -46,14 +46,8 @@ def account_login(request):
 
 
 def account_logout(request):
-    if request.user.store_creator == False:
-        request.user.store_name = ''
-        request.user.save()
-        logout(request)
-        return redirect("/")
-    else:
-        logout(request)
-        return redirect("/")
+    logout(request)
+    return redirect("/")
 
 
 def account_delete(request):
@@ -246,7 +240,8 @@ def staff_stores(request):
         if stores.count() > 1:
             return render(request, "account/user/staff-stores-page.html", {"stores":stores})
         else:
-            return redirect("/")
+            # use select store function
+            return redirect("account:select_store", stores.first().slugified_store_name)
     logout(request)
     error = 'You are not a staff of any store'
     return render(request, "account/registration/login.html", {"error": error})

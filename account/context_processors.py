@@ -15,7 +15,6 @@ def multiple_store_staff(request):
     if request.user.is_authenticated:
         stores = Store.objects.filter(staffs = request.user)
         if stores:
-            print(stores)
             if stores.count() > 1:
                 return {"multiple_store_staff": True}
             else:
