@@ -20,8 +20,8 @@ urlpatterns = [
     ),
     path(
         "<slugified_store_name>/all-categories/",
-        views.a_user_all_categories,
-        name="a_user_all_categories",
+        views.a_store_all_categories,
+        name="a_store_all_categories",
     ),
     path(
         "product/<slug:slug>/",
@@ -30,8 +30,8 @@ urlpatterns = [
     ),
     path(
         "<slugified_store_name>/category-products/<slug:slug>/",
-        views.a_user_category_products,
-        name="a_user_category_products",
+        views.a_store_category_products,
+        name="a_store_category_products",
     ),
     path("home/", views.store_overview, name="store_overview"),
     path("categories/", views.all_category, name="all_category"),

@@ -187,7 +187,7 @@ def all_category(request):
         context = {"categories":categories}
         return render(request, "store/category.html", context)
 
-def a_user_all_categories(request, slugified_store_name):
+def a_store_all_categories(request, slugified_store_name):
     user = get_object_or_404(User, slugified_store_name=slugified_store_name)
     all_categories = Category.objects.filter(created_by=user.id)
     return render(
@@ -196,7 +196,7 @@ def a_user_all_categories(request, slugified_store_name):
         {"all_categories": all_categories},
     )
 
-def a_user_category_products(request, slugified_store_name, slug):
+def a_store_category_products(request, slugified_store_name, slug):
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
     category = get_object_or_404(Category, slug=slug, created_by=store.store_name)
     category_products = Product.objects.filter(
