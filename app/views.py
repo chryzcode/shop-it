@@ -35,14 +35,17 @@ def a_store_all_products(request):
 
 
 def product_detail(request, slug):
-    if request.user.store_creator == True:
-        store_name = request.user.store_name
+    if request.user.is_authenticated:
+        if request.user.store_creator == True:
+            store_name = request.user.store_name
+        else:
+            store_name = store_staff.objects.get(user = request.user).store
     else:
-        store_name = store_staff.objects.get(user = request.user).store
-    product = get_object_or_404(Product, slug=slug)
-    category_product = Product.objects.filter(
-        category=product.category, created_by=store_name
-    ).exclude(id=product.id)[:6]
+        product = get_object_or_404(Product, slug=slug)
+        store_name = product.created_by
+        category_product = Product.objects.filter(
+            category=product.category, created_by=store_name
+        ).exclude(id=product.id)[:6]
     return render(
         request,
         "product/product-detail.html",
