@@ -223,12 +223,11 @@ def existing_store_staff(request):
 
 def delete_store_staff(request, pk):
     if request.user.store_creator == True:
-        staff = get_object_or_404(store_staff, pk=pk, store= request.user.store_name)
         store = Store.objects.get(owner=request.user)
-        a_staff = get_object_or_404(User, email = staff.email)
-        store.staffs.remove(a_staff)
-        staff.delete()      
-        return redirect("account:store_staff_page")
+        user = get_object_or_404(User, pk=pk)
+        if user in store.staffs.all():
+            store.staffs.remove(user)      
+            return redirect("account:store_staff_page")
     else:
         error = 'You are not authorized'
         return render(request, "store/store-staff-page.html", {"error":error})
