@@ -1,0 +1,5 @@
+{% block content %}
+{% for store in stores %}
+<p><a href="{% url 'account:select_store' store.slugified_store_name %}">{{store.store_name}}</a></p>
+{% endfor %}
+{% endblock %}

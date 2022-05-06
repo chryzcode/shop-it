@@ -25,9 +25,15 @@ def account_login(request):
             if user:
                 user = authenticate(request, email=email, password=password)
                 if user:
-                    if user is not None:
+                    if user.store_creator == True:
                         login(request, user)
                         return redirect("/")
+
+                    if user.store_creator == False:
+                        login(request, user)
+                        return redirect("account:staff_stores")
+                   
+                                           
                 else:
                     messages.error(request, "Password is incorrect")
             else:
@@ -39,8 +45,14 @@ def account_login(request):
 
 
 def account_logout(request):
-    logout(request)
-    return redirect("/")
+    if request.user.store_creator == False:
+        request.user.store_name = ''
+        request.user.save()
+        logout(request)
+        return redirect("/")
+    else:
+        logout(request)
+        return redirect("/")
 
 
 def account_delete(request):
@@ -175,27 +187,16 @@ def delete_store_staff(request, pk):
         error = 'You are not authorized'
         return render(request, "store/store-staff-page.html", {"error":error})
 
-def staff_login(request):
-    error = ''
-    if request.user.is_authenticated:
-        return redirect('/')
 
-    if request.method == 'POST':
-        email = request.POST.get('email')
-        password = request.POST.get('password')   
+def staff_stores(request):
+    stores = Store.objects.filter(staffs = request.user)
+    return render(request, "account/user/staff-stores-page.html", {"stores":stores})
 
-        try:
-            user = User.objects.get(email=email)
-        except:
-            messages.error(request, 'User does not exist')
 
-        user = authenticate(request, email=email, password=password)
+def select_store(request, slugified_store_name):
+    store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
+    if request.user in store.staffs.all():
+        store_staff.objects.filter(email = request.user.email).update(store = store.store_name)
+        return redirect("/")
 
-        if user is not None:
-            login(request, user)
-            return redirect('/')
-        else:
-            messages.error(request, 'Username or password does not exist')
-             
-    return render(request,'account/registration/login.html', {'error': error})            
 

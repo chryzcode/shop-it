@@ -39,6 +39,15 @@ class CustomAccountManager(BaseUserManager):
             )
         return user
 
+    def email_user(self, subject, message):
+        send_mail(
+            subject,
+            message,
+            settings.SENDER_EMAIL,
+            [self.email],
+            fail_silently=False,
+        )
+
 
 # Create your models here.
 class User(AbstractBaseUser, PermissionsMixin):
@@ -63,6 +72,10 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     REQUIRED_FIELDS = ["store_name"]
 
+    def __str__(self):
+        return self.full_name
+
+
 
 
 class Store(models.Model):
@@ -70,7 +83,8 @@ class Store(models.Model):
     store_name = models.CharField(max_length=150, unique=True)
     slugified_store_name = models.SlugField(max_length=255, unique=True)
     store_description = models.TextField(max_length=500, blank=True)
-    store_image = models.ImageField(upload_to="store-images/", null=True)
+    store_image = models.ImageField(upload_to="store-images/", null=True, blank=True
+    )
     staffs =  models.ManyToManyField(User, related_name="store_staffs", blank=True)
 
     def save(self, *args, **kwargs):
@@ -82,22 +96,13 @@ class Store(models.Model):
         verbose_name = "Store"
         verbose_name_plural = "Stores"
 
-    def email_user(self, subject, message):
-        send_mail(
-            subject,
-            message,
-            settings.SENDER_EMAIL,
-            [self.email],
-            fail_silently=False,
-        )
-
     def __str__(self):
         return self.store_name
 
 class store_staff(models.Model):
     full_name = models.CharField(max_length=300)
     email = models.EmailField(_("email"), unique=True)
-    avatar = models.ImageField(upload_to="user-profile-images/", null=True)
+    avatar = models.ImageField(upload_to="user-profile-images/", null=True, blank=True)
     is_active = models.BooleanField(default=True)
     phone_number = models.CharField(max_length=15, blank=True)
     created = models.DateTimeField(auto_now_add=True)

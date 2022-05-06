@@ -58,4 +58,6 @@ urlpatterns = [
     path("store-staff/", views.store_staff_page, name="store_staff_page"),
     path("add-store-staff/", views.store_staff_register, name="add_store_staff"),
     path("delete-staff/<str:pk>", views.delete_store_staff, name="delete_store_staff"),
+    path("staff-stores/", views.staff_stores, name="staff_stores"),
+    path("store/<slugified_store_name>/", views.select_store, name="select_store")
 ]
