@@ -182,7 +182,6 @@ def store_staff_register(request):
 
 def existing_store_staff(request):
     form = ExistingStoreStaffForm
-
     if request.user.store_creator != True:
         error = 'You are not authorized'
         return render(request, "store/store-staff-page.html", {"error":error})
@@ -194,6 +193,15 @@ def existing_store_staff(request):
             if User.objects.filter(email=email).exists():
                 user = User.objects.get(email=email)
                 store.staffs.add(user)
+                store_staff.objects.create(
+                    full_name = user.full_name,
+                    email = user.email,
+                    avatar = user.avatar,
+                    phone_number = user.phone_number,
+                    store = store,
+                    password = user.password,
+                    password2 = user.password,
+                )
                 return redirect("account:store_staff_page")
     
     return render(request, "account/registration/add-store-staff-exist.html", {"form": form})
