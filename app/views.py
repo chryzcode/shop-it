@@ -104,10 +104,13 @@ def edit_product(request, slug):
 
 
 def delete_product(request, slug):
-    user = request.user
-    product = get_object_or_404(Product, slug=slug, created_by=user.id)
-    product.delete()
-    return redirect("app:store_products")
+    if request.user.store_creator == True:
+        product = get_object_or_404(Product, slug=slug, created_by=request.user.store_name)
+        product.delete()
+        return redirect("app:store_products")
+    else:
+       return redirect("app:store_products")
+
 
 
 def store_overview(request):
