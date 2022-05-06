@@ -259,7 +259,6 @@ def delete_coupon(request, pk):
         coupon.delete()
         return redirect("app:all_coupons")
     else:
-        error = 'You are not authorized to delete coupons'
         return redirect("app:all_coupons")
         
 
