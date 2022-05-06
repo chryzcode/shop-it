@@ -7,14 +7,19 @@
   <div class="store-content-container">
     <span class="store-products-container">
       <p>Coupon Codes</p>
-      <span><a href="{% url 'app:create_coupon' %}" target="_blank" rel="noopener noreferrer">Add Coupon</a></span>
+      {% if request.user.store_creator == True %}
+      <span><a href="{% url 'app:create_coupon' %}">Add Coupon</a></span>
+      {% endif %}
+      <p>{{error}}</p>
       <table class="store-products-table">
         <tr class="table-rows">
           <th>Code</th>
           <th>Percentage</th>
           <th>Created</th>
           <th>Expiry(mins)</th>
+          {% if request.user.store_creator == True %}
           <th>Delete</th>
+          {% endif %}
         </tr>
         {% for coupon in coupons %}
         <tr class="table-rows">
@@ -22,11 +27,13 @@
           <td>{{ coupon.percentage}} %</td>
           <td>{{ coupon.created_at|timesince}}</td>
           <td>{{coupon.expiry_date}} mins</td>
+          {% if request.user.store_creator == True %}
           <td>
             <button type="button" class="delete-btn">
               <a href="{% url 'app:delete_coupon' coupon.pk  %}"><i class="fas fa-trash-alt"></i>Delete</a>
             </button>
           </td>
+          {% endif %}
         </tr>
         {% endfor %}
       </table>

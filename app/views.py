@@ -1,3 +1,4 @@
+from distutils.log import error
 from unicodedata import category
 from django.shortcuts import get_object_or_404, redirect, render
 
@@ -256,6 +257,9 @@ def delete_coupon(request, pk):
     if request.user.store_creator == True:
         coupon = get_object_or_404(Coupon, pk=pk, created_by=request.user.store_name, active=True)
         coupon.delete()
+        return redirect("app:all_coupons")
+    else:
+        error = 'You are not authorized to delete coupons'
         return redirect("app:all_coupons")
         
 
