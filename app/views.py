@@ -142,14 +142,21 @@ def add_category(request):
 
 
 def edit_category(request, slug):
-    user = request.user
-    category = get_object_or_404(Category, slug=slug, created_by=user.id)
+    if request.user.store_creator == True:
+        category = get_object_or_404(Category, slug=slug, created_by= request.user.store_name)
+    
+    else:
+        category = get_object_or_404(Category, slug=slug, created_by= store_staff.objects.get(user = request.user).store)
+
     form = CategoryForm(instance=category)
     if request.method == "POST":
         form = CategoryForm(request.POST, request.FILES, instance=category)
         if form.is_valid():
             category = form.save(commit=False)
-            category.created_by = request.user
+            if request.user.store_creator == True:
+                category.created_by = request.user.store_name 
+            else:
+                category.created_by = store_staff.objects.get(user = request.user).store
             category.save()
             return redirect(
                 "app:all_category"
@@ -160,8 +167,10 @@ def edit_category(request, slug):
     return render(request, "store/create-category.html", context)
 
 def delete_category(request, slug):
-    user = request.user
-    category = get_object_or_404(Category, slug=slug, created_by=user.id)
+    if request.user.store_creator == True:
+        category = get_object_or_404(Category, slug=slug, created_by= request.user.store_name) 
+    else:
+        category = get_object_or_404(Category, slug=slug, created_by= store_staff.objects.get(user = request.user).store)
     category.delete()
     return redirect("app:all_category")
 
