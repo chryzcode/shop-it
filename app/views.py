@@ -181,7 +181,6 @@ def all_category(request):
         context = {"categories":categories}
         return render(request, "store/category.html", context)
     else:
-        # store = store_staff.store 
         store = store_staff.objects.get(user = request.user).store
         categories = Category.objects.filter(created_by= store)
         context = {"categories":categories}
@@ -218,22 +217,29 @@ def discount_products(request):
     )
 
 def create_coupon(request):
-    form = CouponForm
-    if request.method == "POST":
-        form = CouponForm(request.POST, request.FILES)
-        if form.is_valid():
-            coupon = form.save(commit=False)
-            coupon.created_by = request.user
-            coupon.save()
-            return redirect(
-                "app:all_coupons"
-            )
-    context = {"form": form}
-    return render(request, "store/create-coupon.html", context)
+    if request.user.store_creator == False:
+        error = 'You are not authorized to create coupons'
+        return render(request, "store/coupon.html", {"error": error})
+
+    else:
+        form = CouponForm
+        if request.method == "POST":
+            form = CouponForm(request.POST, request.FILES)
+            if form.is_valid():
+                coupon = form.save(commit=False)
+                coupon.created_by = request.user.store_name
+                coupon.save()
+                return redirect(
+                    "app:all_coupons"
+                )
+        context = {"form": form}
+        return render(request, "store/create-coupon.html", context)
 
 def all_coupons(request):
-    user = request.user
-    coupons = Coupon.objects.filter(created_by=user.id)
+    if request.user.store_creator == True:
+        coupons = Coupon.objects.filter(created_by=request.user.store_name)
+    else:
+        coupons = Coupon.objects.filter(created_by=store_staff.objects.get(user = request.user).store)
     for coupon in coupons:
         expiry_date = (datetime.now().astimezone() - coupon.created_at)
         expiry_date_seconds = expiry_date.total_seconds()
@@ -247,10 +253,11 @@ def all_coupons(request):
     )
 
 def delete_coupon(request, pk):
-    user = request.user
-    coupon = get_object_or_404(Coupon, pk=pk, created_by=user.id, active=True)
-    coupon.delete()
-    return redirect("app:all_coupons")
+    if request.user.store_creator == True:
+        coupon = get_object_or_404(Coupon, pk=pk, created_by=request.user.store_name, active=True)
+        coupon.delete()
+        return redirect("app:all_coupons")
+        
 
 
         
