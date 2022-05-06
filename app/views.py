@@ -197,10 +197,10 @@ def a_user_all_categories(request, slugified_store_name):
     )
 
 def a_user_category_products(request, slugified_store_name, slug):
-    user = get_object_or_404(User, slugified_store_name=slugified_store_name)
-    category = get_object_or_404(Category, slug=slug, created_by=user.id)
+    store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
+    category = get_object_or_404(Category, slug=slug, created_by=store.store_name)
     category_products = Product.objects.filter(
-        category=category, created_by=user.id, in_stock=True
+        category=category, created_by=store.store_name, in_stock=True
     )
     return render(
         request,
