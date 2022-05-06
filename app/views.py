@@ -22,9 +22,11 @@ def home_page(request):
     return render(request, "base/index.html")
 
 
-def a_user_all_products(request):
-    user = request.user
-    all_products = Product.objects.filter(created_by=user.id)
+def a_store_all_products(request):
+    if request.user.store_creator == True:
+        all_products = Product.objects.filter(created_by= request.user.store_name)
+    else:
+        all_products = Product.objects.filter(created_by= store_staff.objects.get(user = request.user).store)
     return render(
         request,
         "store/products.html",
