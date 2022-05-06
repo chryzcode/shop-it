@@ -1,3 +1,4 @@
+import email
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -201,8 +202,11 @@ def existing_store_staff(request):
 
 def delete_store_staff(request, pk):
     if request.user.store_creator == True:
-        staff = get_object_or_404(store_staff, pk=pk, store= request.user)
-        staff.delete()
+        staff = get_object_or_404(store_staff, pk=pk, store= request.user.store_name)
+        store = Store.objects.get(owner=request.user)
+        a_staff = get_object_or_404(User, email = staff.email)
+        store.staffs.remove(a_staff)
+        staff.delete()      
         return redirect("account:store_staff_page")
     else:
         error = 'You are not authorized'
