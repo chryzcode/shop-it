@@ -9,10 +9,10 @@
       <p>Store Staffs</p>
       <p>{{error}}</p>
       {% if request.user.store_creator == True %}
-      <span>
+      <div>
         <a href="{% url 'account:existing_store_staff' %}">Add Staff(user exits)</a>
         <a href="{% url 'account:add_store_staff' %}">Create Staff(new user)</a>
-      </span>
+      </div>
       {% endif %}
       <table class="store-products-table">
         <tr class="table-rows">

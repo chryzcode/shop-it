@@ -944,11 +944,29 @@ button {
   background-color: #3d5170;
   padding: 7px;
   display: inline-block;
-  text-align: right;
+  text-align: center;
   text-decoration: none;
   margin: 0 15px 10px 0;
   float: right;
   border-radius: 5px;
+}
+
+.store-products-container > div {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px;
+  flex-wrap: wrap;
+}
+
+.store-products-container > div > a {
+   color: #ffffff;
+  background-color: #3d5170;
+  padding: 7px;
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 5px;
+  margin: 10px auto;
 }
 
 .store-products-table {
