@@ -39,16 +39,6 @@ class CustomAccountManager(BaseUserManager):
             )
         return user
 
-    def email_user(self, subject, message):
-        send_mail(
-            subject,
-            message,
-            settings.SENDER_EMAIL,
-            [self.email],
-            fail_silently=False,
-        )
-
-
 
 # Create your models here.
 class User(AbstractBaseUser, PermissionsMixin):
@@ -70,6 +60,15 @@ class User(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = "email"
 
     REQUIRED_FIELDS = ["store_name"]
+
+    def email_user(self, subject, message):
+        send_mail(
+            subject,
+            message,
+            settings.SENDER_EMAIL,
+            [self.email],
+            fail_silently=False,
+        )
 
     def __str__(self):
         return self.email
@@ -98,7 +97,7 @@ class Store(models.Model):
 class store_staff(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user")
     full_name = models.CharField(max_length=300)
-    email = models.EmailField(_("email"), unique=True)
+    email = models.EmailField(_("email"))
     avatar = models.ImageField(upload_to="user-profile-images/", null=True, blank=True)
     is_active = models.BooleanField(default=True)
     phone_number = models.CharField(max_length=15, blank=True)
@@ -111,7 +110,7 @@ class store_staff(models.Model):
     store_choices = (
        Store.objects.all().values_list('store_name', 'store_name')
     )
-    store= models.CharField(max_length=150, choices=store_choices, default='hello')
+    store= models.CharField(max_length=150, choices=store_choices)
 
     class Meta:
         verbose_name = "Store Staff"

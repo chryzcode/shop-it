@@ -123,11 +123,20 @@ def add_category(request):
         form = CategoryForm(request.POST, request.FILES)
         if form.is_valid():
             category = form.save(commit=False)
-            category.created_by = request.user
-            category.save()
-            return redirect(
-                "app:all_category"           
-            )
+            if request.user.store_creator == True:
+                category.created_by = request.user.store_name
+                category.save()
+                return redirect(
+                    "app:all_category"           
+                )
+            else:
+                #get staff store name 
+                staff = store_staff.objects.get(user = request.user)
+                category.created_by = staff.store
+                category.save()
+                return redirect(
+                    "app:all_category"           
+                )
     context = {"form": form}
     return render(request, "store/create-category.html", context)
 
@@ -158,10 +167,16 @@ def delete_category(request, slug):
 
 
 def all_category(request):
-    user = request.user
-    categories = Category.objects.filter(created_by=user)
-    context = {"categories":categories}
-    return render(request, "store/category.html", context)
+    if request.user.store_creator == True:
+        categories = Category.objects.filter(created_by=request.user.store_name)
+        context = {"categories":categories}
+        return render(request, "store/category.html", context)
+    else:
+        # store = store_staff.store 
+        store = store_staff.objects.get(user = request.user).store
+        categories = Category.objects.filter(created_by= store)
+        context = {"categories":categories}
+        return render(request, "store/category.html", context)
 
 def a_user_all_categories(request, slugified_store_name):
     user = get_object_or_404(User, slugified_store_name=slugified_store_name)

@@ -6,16 +6,17 @@ from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
 
-from account.models import User
+from account.models import User, Store
 
 from datetime import datetime, timedelta
 
 
 
 class Category(models.Model):
-    created_by = models.ForeignKey(
-        User, related_name="category_creator", on_delete=models.CASCADE
+    store_choices = (
+       Store.objects.all().values_list('store_name', 'store_name')
     )
+    created_by = models.CharField(max_length=150, choices=store_choices)
     name = models.CharField(max_length=255, db_index=True)
     slug = models.SlugField(max_length=255, unique=True)
 
@@ -33,7 +34,7 @@ class Category(models.Model):
             "app:a_user_category_products",
             kwargs={
                 "slug": self.slug,
-                "slugified_store_name": self.created_by.slugified_store_name,
+                "slugified_store_name": slugify(self.created_by),
             },
         )
 
@@ -54,7 +55,7 @@ class Coupon(models.Model):
         validators=[MinValueValidator(1), MaxValueValidator(100)],
     )
     created_by = models.ForeignKey(
-        User, related_name="coupon_creator", on_delete=models.CASCADE
+        Store, related_name="coupon_creator", on_delete=models.CASCADE
     )
     created_at = models.DateTimeField(auto_now_add=True)
     expiry_date = models.IntegerField()
@@ -67,7 +68,7 @@ class Coupon(models.Model):
 
 class Product(models.Model):
     created_by = models.ForeignKey(
-        User, related_name="product_creator", on_delete=models.CASCADE
+        Store, related_name="product_creator", on_delete=models.CASCADE
     )
     name = models.CharField(max_length=255)
     description = models.TextField()

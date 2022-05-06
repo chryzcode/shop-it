@@ -145,8 +145,13 @@ def store_account(request):
         return redirect("account:user_profile")
 
 def store_staff_page(request):
-    store_staffs = store_staff.objects.filter(store=request.user.store_name)
-    return render(request, "store/store-staff-page.html", {"store_staffs": store_staffs})
+    if request.user.store_creator == True:
+        store_staffs = Store.objects.get(store_name = request.user.store_name)
+        return render(request, "store/store-staff-page.html", {"store_staffs": store_staffs})
+    else:
+        store_name = store_staff.objects.get(user = request.user).store
+        store_staffs = Store.objects.get(store_name = store_name)  
+        return render(request, "store/store-staff-page.html", {"store_staffs": store_staffs})
 
 
 def store_staff_register(request):
@@ -194,16 +199,26 @@ def existing_store_staff(request):
                 user = User.objects.get(email=email)
                 if user not in store.staffs.all():
                     store.staffs.add(user)
-                    store_staff.objects.create(
-                        full_name = user.full_name,
-                        email = user.email,
-                        avatar = user.avatar,
-                        phone_number = user.phone_number,
-                        store = store,
-                        password = user.password,
-                        password2 = user.password,
-                    )
+                    
+                    staff_store_user = store_staff.objects.get(email=user.email)
+                    staff_store_user.store = store.store_name
+                    staff_store_user.save()
                     return redirect("account:store_staff_page")
+                        
+                    # else:
+                    #     #get staff_store_user
+                    #     store_staff.objects.create(
+                    #         user = user,
+                    #         full_name = user.full_name,
+                    #         email = user.email,
+                    #         avatar = user.avatar,
+                    #         phone_number = user.phone_number,
+                    #         store = store,
+                    #         password = user.password,
+                    #         password2 = user.password,
+                    #     )
+                    #     return redirect("account:store_staff_page")
+                        
                 error = 'User is already a staff'
                 return render(request, "account/registration/add-store-staff-exist.html", {"form": form, "error": error})
             error = 'User does not exist'
