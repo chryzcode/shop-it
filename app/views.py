@@ -188,8 +188,8 @@ def all_category(request):
         return render(request, "store/category.html", context)
 
 def a_store_all_categories(request, slugified_store_name):
-    user = get_object_or_404(User, slugified_store_name=slugified_store_name)
-    all_categories = Category.objects.filter(created_by=user.id)
+    store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
+    all_categories = Category.objects.filter(created_by=store.store_name)
     return render(
         request,
         "store/a-store-categories.html",

@@ -31,7 +31,7 @@ class Category(models.Model):
 
     def get_absolute_url(self):
         return reverse(
-            "app:a_user_category_products",
+            "app:a_store_category_products",
             kwargs={
                 "slug": self.slug,
                 "slugified_store_name": slugify(self.created_by),
