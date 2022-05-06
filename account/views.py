@@ -243,7 +243,10 @@ def delete_store_staff(request, pk):
 def staff_stores(request):
     stores = Store.objects.filter(staffs = request.user)
     if stores:
-        return render(request, "account/user/staff-stores-page.html", {"stores":stores})
+        if stores.count() > 1:
+            return render(request, "account/user/staff-stores-page.html", {"stores":stores})
+        else:
+            return redirect("/")
     logout(request)
     error = 'You are not a staff of any store'
     return render(request, "account/registration/login.html", {"error": error})

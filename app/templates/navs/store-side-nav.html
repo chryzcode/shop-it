@@ -1,6 +1,6 @@
 <div class="store-sidenav" id="store-sidenav">
     <span class="store-sidenav-seg">
-      <p>{{store.store_name |capfirst }}</p>
+      <p>{{a_staff_store_store |capfirst }}</p>
       <ul>
         <li><a href="{% url "app:store_overview" %}">My Store</a></li>
         <li><a href="">Customers</a></li>
@@ -35,6 +35,11 @@
         {% endif %}
         <li><a href="{% url 'account:user_profile' %}">User Account</a></li>
         <li><a href="{% url 'account:store_staff_page' %}">Staff Account</a></li>
+        {% if request.user.store_creator == False %}
+        {% if multiple_store_staff %}
+        <li><a href="{% url 'account:staff_stores' %}">Switch Store</a></li>
+        {% endif %}
+        {% endif %}
         <li><a href="">Import Products</a></li>
       </ul>
     </span>
