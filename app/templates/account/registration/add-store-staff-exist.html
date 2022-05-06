@@ -1,0 +1,30 @@
+{% extends 'navs/store-nav.html' %} {% load static %} {% block title %} <title>Shop!t - Add Staff </title>
+{% endblock %} {% block content %}
+<div class="store-page-container">
+  {% include 'navs/store-side-nav.html' %}
+
+  <div class="account-form-container">
+    <form action="" method="post">
+      {% csrf_token %}
+      <div class="above-create-form">
+        <p>Add Staff(user exists)</p>
+      </div>
+
+      <div class="acc-form-seg">
+
+        <div class="input-container">
+          <label for="email">Email<span class="form-required">*</span></label>
+          <p>{{ form.email.errors }}</p>
+          <div>{{ form.email }}</div>
+        </div>
+      
+      <div class="form-btn-container">
+        <button class="form-btn" type="submit">Add staff</button>
+      </div>
+    </form>
+
+
+  </div>
+</div>
+
+{% endblock %}

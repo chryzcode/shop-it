@@ -160,3 +160,15 @@ class StoreStaffForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(StoreStaffForm, self).__init__(*args, **kwargs)
+
+class ExistingStoreStaffForm(ModelForm):
+    class Meta:
+        model = store_staff
+        fields = ["email"]
+
+        widgets = {
+            "email": forms.TextInput(attrs={"class": "form-control", "placeholder": "johndoe@gmailcom"}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(ExistingStoreStaffForm, self).__init__(*args, **kwargs)

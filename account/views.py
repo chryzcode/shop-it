@@ -7,7 +7,7 @@ from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 
-from .forms import RegistrationForm, UserProfileForm, StoreForm, StoreStaffForm
+from .forms import RegistrationForm, UserProfileForm, StoreForm, StoreStaffForm, ExistingStoreStaffForm
 from .models import User, store_staff, Store
 from .tokens import account_activation_token
 
@@ -177,6 +177,27 @@ def store_staff_register(request):
         return render(request, "store/store-staff-page.html", {"error":error})
 
     return render(request, "account/registration/store-staff-register.html", {"form": form})
+
+
+def existing_store_staff(request):
+    form = ExistingStoreStaffForm
+
+    if request.user.store_creator != True:
+        error = 'You are not authorized'
+        return render(request, "store/store-staff-page.html", {"error":error})
+
+    if request.user.store_creator == True:
+        store = Store.objects.get(owner=request.user)       
+        if request.method == "POST":
+            email = request.POST.get("email")
+            if User.objects.filter(email=email).exists():
+                user = User.objects.get(email=email)
+                store.staffs.add(user)
+                return redirect("account:store_staff_page")
+    
+    return render(request, "account/registration/add-store-staff-exist.html", {"form": form})
+
+
 
 def delete_store_staff(request, pk):
     if request.user.store_creator == True:
