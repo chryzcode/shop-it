@@ -36,15 +36,18 @@ def a_store_all_products(request):
 
 def product_detail(request, slug):
     if request.user.is_authenticated:
+        product = get_object_or_404(Product, slug=slug)
         if request.user.store_creator == True:
-            store_name = request.user.store_name
+            store_name = product.created_by
         else:
             store_name = store_staff.objects.get(user = request.user).store
-    else:
-        product = get_object_or_404(Product, slug=slug)
-        store_name = product.created_by
         category_product = Product.objects.filter(
             category=product.category, created_by=store_name
+        ).exclude(id=product.id)[:6]
+    else:
+        product = get_object_or_404(Product, slug=slug)
+        category_product = Product.objects.filter(
+            category=product.category, created_by=product.created_by
         ).exclude(id=product.id)[:6]
     return render(
         request,
@@ -54,13 +57,15 @@ def product_detail(request, slug):
 
 
 def create_product(request):
+    form = ProductForm
+    product_units = ProductUnit.objects.all()
     if request.user.store_creator == True:
         store = request.user.store_name
+        categories = Category.objects.filter(created_by=store)
     else:
         store = store_staff.objects.get(user = request.user).store
-    form = ProductForm
-    categories = Category.objects.filter(created_by=store)
-    product_units = ProductUnit.objects.all()
+        categories = Category.objects.filter(created_by=store)
+
     if request.method == "POST":
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
