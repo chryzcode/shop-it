@@ -9,9 +9,10 @@
       <div class="above-create-form">
         <p>Add Staff(user exists)</p>
       </div>
-
       <div class="acc-form-seg">
-
+        {% if error %}
+        <p class="login-errors">{{error}}</p>
+        {% endif %}
         <div class="input-container">
           <label for="email">Email<span class="form-required">*</span></label>
           <p>{{ form.email.errors }}</p>

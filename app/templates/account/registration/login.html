@@ -8,6 +8,9 @@
     {% if messages %} {% for message in messages %}
     <p class="login-errors">{{message}}</p>
     {% endfor %} {% endif %}
+    {% if error %}
+    <p class="login-errors">{{error}}</p>
+    {% endif %}
     <div class="input-container">
       <label for="email">Email<span class="form-required">*</span></label>
       <input class="form-control" type="text" name="email" id="email" placeholder="johndoe@gmail.com" />

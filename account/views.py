@@ -157,9 +157,7 @@ def store_staff_register(request):
             form = StoreStaffForm(request.POST, request.FILES)
             if form.is_valid():
                 staff_user = form.save(commit=False)
-                staff_user.store = request.user
                 staff_user.store = request.user.store_name
-                staff_user.save()
                 user = User.objects.create(
                     email = form.cleaned_data["email"],
                     full_name = form.cleaned_data["full_name"],
@@ -170,6 +168,8 @@ def store_staff_register(request):
                 )
                 user.set_password(form.cleaned_data["password"])
                 user.save()
+                staff_user.user = user
+                staff_user.save()
                 store = Store.objects.get(owner=request.user)
                 store.staffs.add(user)       
                 return redirect("account:store_staff_page")
@@ -192,18 +192,22 @@ def existing_store_staff(request):
             email = request.POST.get("email")
             if User.objects.filter(email=email).exists():
                 user = User.objects.get(email=email)
-                store.staffs.add(user)
-                store_staff.objects.create(
-                    full_name = user.full_name,
-                    email = user.email,
-                    avatar = user.avatar,
-                    phone_number = user.phone_number,
-                    store = store,
-                    password = user.password,
-                    password2 = user.password,
-                )
-                return redirect("account:store_staff_page")
-    
+                if user not in store.staffs.all():
+                    store.staffs.add(user)
+                    store_staff.objects.create(
+                        full_name = user.full_name,
+                        email = user.email,
+                        avatar = user.avatar,
+                        phone_number = user.phone_number,
+                        store = store,
+                        password = user.password,
+                        password2 = user.password,
+                    )
+                    return redirect("account:store_staff_page")
+                error = 'User is already a staff'
+                return render(request, "account/registration/add-store-staff-exist.html", {"form": form, "error": error})
+            error = 'User does not exist'
+            return render(request, "account/registration/add-store-staff-exist.html", {"form": form, "error": error})
     return render(request, "account/registration/add-store-staff-exist.html", {"form": form})
 
 
@@ -223,7 +227,11 @@ def delete_store_staff(request, pk):
 
 def staff_stores(request):
     stores = Store.objects.filter(staffs = request.user)
-    return render(request, "account/user/staff-stores-page.html", {"stores":stores})
+    if stores:
+        return render(request, "account/user/staff-stores-page.html", {"stores":stores})
+    logout(request)
+    error = 'You are not a staff of any store'
+    return render(request, "account/registration/login.html", {"error": error})
 
 
 def select_store(request, slugified_store_name):

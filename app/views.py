@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import *
 from .models import *
+from account.models import *
 from datetime import datetime, timedelta
 
 # Create your views here.
