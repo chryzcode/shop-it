@@ -308,7 +308,7 @@ footer {
   text-decoration: none;
 }
 
-.delete-btn:hover{
+.delete-btn:hover {
   background-color: red;
   color: #ffffff;
   /* transition: all 1.5s ease-in-out; */
@@ -323,7 +323,8 @@ footer {
   color: #ffffff;
 }
 
-.delete-btn > i, .delete-btn > a > i {
+.delete-btn > i,
+.delete-btn > a > i {
   padding-right: 2px;
 }
 
@@ -959,7 +960,7 @@ button {
 }
 
 .store-products-container > div > a {
-   color: #ffffff;
+  color: #ffffff;
   background-color: #3d5170;
   padding: 7px;
   display: inline-block;

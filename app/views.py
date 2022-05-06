@@ -209,8 +209,10 @@ def a_user_category_products(request, slugified_store_name, slug):
     )
 
 def discount_products(request):
-    user = request.user
-    products = Product.objects.filter(created_by=user.id, discount_percentage__gt=0)
+    if request.user.store_creator == True:
+        products = Product.objects.filter(created_by=request.user.store_name, discount_percentage__gt=0)  
+    else:
+        products = Product.objects.filter(created_by=store_staff.objects.get(user = request.user).store, discount_percentage__gt=0)
     return render(
         request,
         "product/discount-products.html",
