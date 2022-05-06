@@ -54,14 +54,18 @@ def product_detail(request, slug):
 
 
 def create_product(request):
+    if request.user.store_creator == True:
+        store = request.user.store_name
+    else:
+        store = store_staff.objects.get(user = request.user).store
     form = ProductForm
-    categories = Category.objects.filter(created_by=request.user.id)
+    categories = Category.objects.filter(created_by=store)
     product_units = ProductUnit.objects.all()
     if request.method == "POST":
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
             product = form.save(commit=False)
-            product.created_by = request.user
+            product.created_by = store
             product.save()
             return redirect(
                 "app:product_detail",
