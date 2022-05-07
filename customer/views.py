@@ -54,5 +54,30 @@ def customer_login(request, slugified_store_name):
             messages.error(request, "User does not exist")
     return render(request, "customer/login.html", {"store": store, "slugified_store_name": slugified_store_name})
 
+def existing_user_customer_register(request, slugified_store_name):
+    form = ExistingUserCustomerForm
+    store = Store.objects.get(slugified_store_name=slugified_store_name)
+    slugified_store_name = store.slugified_store_name
+    if request.method == "POST":
+        form = ExistingUserCustomerForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data["email"]
+            user = User.objects.get(email=email)
+            if user not in store.customers.all():
+                form.save(commit=False)
+                customer = Customer.objects.create(
+                    full_name = user.full_name,
+                    email = user.email,
+                    password = user.password,
+                    password2 = user.password,
+                    store = store,
+                )
+                customer.save()
+                return redirect("customer_login", slugified_store_name=slugified_store_name)
+            else:
+                messages.error(request, "You are already a customer of this store.")
+
+    return render(request, "customer/existing-user-register.html", {"store": store, "slugified_store_name": slugified_store_name, "form": form})
+
         
 

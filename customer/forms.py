@@ -4,6 +4,7 @@ from django.forms import ModelForm
 from .models import *
 
 from account.models import User
+from django.shortcuts import get_object_or_404, redirect, render
 
 class CustomerForm(ModelForm):
     class Meta:
@@ -29,8 +30,22 @@ class CustomerForm(ModelForm):
         email = self.cleaned_data["email"]
         r =  User.objects.filter(email=email)
         if r.count():
-            raise forms.ValidationError("Email already exists")
-        return email
+            return redirect()
+
     
     def __init__(self, *args, **kwargs):
         super(CustomerForm, self).__init__(*args, **kwargs)
+
+class ExistingUserCustomerForm(ModelForm):
+    class Meta:
+        model = Customer
+        fields = ["email"]
+
+        widgets = {
+            "email": forms.EmailInput(
+                attrs={"class": "form-control", "placeholder": "Email"}
+            ),
+        }
+
+        def __init__(self, *args, **kwargs):
+            super(ExistingUserCustomerForm, self).__init__(*args, **kwargs)
