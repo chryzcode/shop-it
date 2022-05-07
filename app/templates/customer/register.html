@@ -1,0 +1,48 @@
+{% extends 'navs/consumer-nav.html' %} {% load static %} {% block title %} <title>Shop!t - Add Staff</title>
+{% endblock %} {% block content %}
+
+<div class="auth-form-container">
+  <form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="above-create-form">
+      <p>Customer Sign Up</p>
+    </div>
+    {% if messages %} {% for message in messages %}
+    <p class="login-errors">{{message}}</p>
+    {% endfor %} {% endif %} {% if error %}
+    <p class="login-errors">{{error}}</p>
+    {% endif %}
+
+
+      <div class="input-container">
+        <label for="full_name">Full Name<span class="form-required">*</span></label>
+        <p>{{ form.full_name.errors }}</p>
+        <div>{{ form.full_name }}</div>
+      </div>
+
+      <div class="input-container">
+        <label for="email">Email<span class="form-required">*</span></label>
+        <p>{{ form.email.errors }}</p>
+        <div>{{ form.email }}</div>
+      </div>
+
+      <div class="input-container">
+        <label for="password">Password<span class="form-required">*</span></label>
+        <p>{{ form.password.errors }}</p>
+        {{form.password}}
+      </div>
+
+      <div class="input-container">
+        <label for="password2">Confirm Password<span class="form-required">*</span></label>
+        <p>{{ form.password2.errors }}</p>
+        {{form.password2}}
+      </div>
+    </div>
+
+    <div class="form-btn-container">
+      <button class="form-btn" type="submit">Create</button>
+    </div>
+  </form>
+
+
+{% endblock %}

@@ -40,7 +40,7 @@
         {% if request.user.is_authenticated %}
         <li><a href="{% url "app:store_overview" %}" id="a-nav-link">My Store</a></li>
         {% else %}
-        <li><a href="{% url 'account:login' %}"" id="a-nav-link">Sign In</a></li>
+        <li><a href="{% url 'account:login' %}" id="a-nav-link">Sign In</a></li>
         <li><a href="{% url 'account:register' %}" id="a-nav-link">Sign Up</a></li>
         {% endif %}
       </ul>

@@ -6,7 +6,9 @@ from django.contrib import messages
 # Create your views here.
 
 def customer_register(request, slugified_store_name):
-    store = Store.objects.get(store_name=slugified_store_name)
+    form = CustomerForm
+    store = Store.objects.get(slugified_store_name=slugified_store_name)
+    slugified_store_name = store.slugified_store_name
     if request.method == "POST":
         form = CustomerForm(request.POST)
         if form.is_valid():
@@ -23,11 +25,12 @@ def customer_register(request, slugified_store_name):
             user.save()
             customer.save()
             return render(request, "customer/register_success.html")
-    return render(request, "customer/register.html", {"store": store})
+    return render(request, "customer/register.html", {"store": store, "slugified_store_name": slugified_store_name, "form": form})
 
 def customer_login(request, slugified_store_name):
     context = {}
     store = Store.objects.get(slugified_store_name=slugified_store_name)
+    slugified_store_name = store.slugified_store_name
     if request.user.is_authenticated:
         return redirect("/")
     if request.method == "POST":
@@ -49,6 +52,7 @@ def customer_login(request, slugified_store_name):
                 messages.error(request, "User does not exist")
         except:
             messages.error(request, "User does not exist")
+    return render(request, "customer/login.html", {"store": store, "slugified_store_name": slugified_store_name})
 
         
 
