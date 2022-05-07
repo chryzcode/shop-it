@@ -7,7 +7,6 @@ from django.core.mail import send_mail
 from django.db import models
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
-from django_countries.fields import CountryField
 
 
 class CustomAccountManager(BaseUserManager):
@@ -119,24 +118,3 @@ class store_staff(models.Model):
     def __str__(self):
         return self.full_name
 
-
-
-
-
-
-class Address(models.Model):
-    id = models.UUIDField(
-        primary_key=True, default=uuid.uuid4, editable=False, unique=True
-    )
-    user = models.ForeignKey(User, verbose_name=_("Customer"), on_delete=models.CASCADE)
-    full_name = models.CharField(_("Full Name"), max_length=150)
-    phone = models.CharField(_("Phone Number"), max_length=50)
-    postcode = models.CharField(_("Postcode"), max_length=50)
-    address_line = models.CharField(_("Address Line 1"), max_length=255)
-    address_line2 = models.CharField(_("Address Line 2"), max_length=255)
-    town_city = models.CharField(_("Town/City/State"), max_length=150)
-    delivery_instructions = models.CharField(_("Delivery Instructions"), max_length=255)
-    country = CountryField()
-
-    def __str__(self):
-        return self.user.store_name

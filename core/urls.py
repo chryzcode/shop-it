@@ -23,6 +23,7 @@ urlpatterns = [
     path("", include("app.urls", namespace="app")),
     path("cart/", include("cart.urls", namespace="cart")),
     path("account/", include("account.urls")),
+    path("<slugified_store_name>/", include("customer.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 handler404 = "app.views.custom_error_404"
