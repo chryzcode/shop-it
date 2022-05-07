@@ -80,6 +80,7 @@ class Store(models.Model):
     store_image = models.ImageField(upload_to="store-images/", null=True, blank=True
     )
     staffs =  models.ManyToManyField(User, related_name="store_staffs", blank=True)
+    customers = models.ManyToManyField(User, related_name="store_customers", blank=True)
 
     def save(self, *args, **kwargs):
         if not self.slugified_store_name:

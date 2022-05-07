@@ -7,7 +7,7 @@ class Customer(models.Model):
     full_name = models.CharField(max_length=300)
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=300)
-    password2 = models.CharField(max_length=300, default="uouos")
+    password2 = models.CharField(max_length=300)
     store_choices = (Store.objects.all().values_list('store_name', 'store_name'))
     store = models.CharField(max_length=150, choices=store_choices)
 
