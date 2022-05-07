@@ -24,7 +24,11 @@
       <div class="input-container">
         <label for="category">Product Category<span class="form-required">*</span></label>
         <p>{{ form.category.errors }}</p>
-        {{form.category}}
+        <select class="form-control" name="category" id="category">
+          {% for category in categories %}
+          <option value="{{ category.name }}">{{ category.name }}</option>
+          {% endfor %}
+        </select>
       </div>
 
       <div class="input-container">

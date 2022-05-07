@@ -37,7 +37,7 @@ class ProductForm(ModelForm):
             "price": forms.NumberInput(
                 attrs={"class": "form-control", "placeholder": "Product Price"}
             ),
-            "category": forms.Select(attrs={"class": "form-control"}),
+            "category": forms.Select(attrs={"class": "form-control" }),
             "availability": forms.NumberInput(
                 attrs={"class": "form-control", "placeholder": "Product Availability"}
             ),
