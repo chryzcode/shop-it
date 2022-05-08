@@ -26,13 +26,6 @@ class CustomerForm(ModelForm):
             ),
         }
 
-    def clean_email(self):
-        email = self.cleaned_data["email"]
-        r =  User.objects.filter(email=email)
-        if r.count():
-            return redirect()
-
-    
     def __init__(self, *args, **kwargs):
         super(CustomerForm, self).__init__(*args, **kwargs)
 

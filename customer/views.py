@@ -14,17 +14,22 @@ def customer_register(request, slugified_store_name):
         if form.is_valid():
             customer = form.save(commit=False)
             customer.store = store
-            user = User.objects.create(
-                email= form.cleaned_data["email"],
-                full_name=form.cleaned_data["full_name"],
-                is_active = True,
-                is_staff = False,
-                store_creator = False,
-            )
-            user.set_password(form.cleaned_data["password"])
-            user.save()
-            customer.save()
-            return render(request, "customer/register_success.html")
+            email= form.cleaned_data["email"]
+            check_email = User.objects.filter(email = email)
+            if check_email:
+                return redirect("customer:existing_user_customer_register", slugified_store_name)
+            else:
+                user = User.objects.create(
+                    email= form.cleaned_data["email"],
+                    full_name=form.cleaned_data["full_name"],
+                    is_active = True,
+                    is_staff = False,
+                    store_creator = False,
+                )
+                user.set_password(form.cleaned_data["password"])
+                user.save()
+                customer.save()
+                return redirect("customer:customer_login", slugified_store_name)
     return render(request, "customer/register.html", {"store": store, "slugified_store_name": slugified_store_name, "form": form})
 
 def customer_login(request, slugified_store_name):
@@ -32,6 +37,7 @@ def customer_login(request, slugified_store_name):
     store = Store.objects.get(slugified_store_name=slugified_store_name)
     slugified_store_name = store.slugified_store_name
     if request.user.is_authenticated:
+        logout(request)
         return redirect("/")
     if request.method == "POST":
         email = request.POST.get("email")
@@ -73,7 +79,7 @@ def existing_user_customer_register(request, slugified_store_name):
                     store = store,
                 )
                 customer.save()
-                return redirect("customer_login", slugified_store_name=slugified_store_name)
+                return redirect("customer:customer_login", slugified_store_name=slugified_store_name)
             else:
                 messages.error(request, "You are already a customer of this store.")
 
