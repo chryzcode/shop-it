@@ -486,18 +486,23 @@ body > nav > span:nth-child(2) > i {
   font-size: 40px;
 }
 
+.cart-icon-container {
+  display: inline-block;
+  margin: 0 10px;
+}
+
 .cart-btn {
   text-decoration: none;
-  color: #6b69f8;
+  color: red;
 }
 
 #product-cart-qty,
 .cart-qty-num {
   display: block;
   text-align: center;
-  font-size: 15px;
+  font-size: 17px;
   position: absolute;
-  top: 7px;
+  top: 5px;
   margin-left: 3px;
 }
 

@@ -30,26 +30,38 @@
   <body>
     <nav data-aos="fade-down" data-aos-duration="1500" class="nav">
       <span>
-        <a href="/" class="main-logo">{{product.created_by}}</a>
+        <a href="/" class="main-logo">{{store.store_name}}</a>
       </span>
 
-      <ul class="nav-links">
-        <li><a href="{% url 'customer:customer_register' store.slugified_store_name %}" id="a-nav-link">Customer Register</a></li>
+
+
+      <ul id="nav-links">
+        <input type="search" name="" id="" class="side-nav-search-bar" placeholder="Search for Customers, Products, orders" />
+
+        <span class="cart-icon-container">
+          <a href="{% url 'cart:cart_summary' %}" class="cart-btn">
+            {% with total_qty=cart|length %}
+            <span id="product-cart-qty">
+              <span class="cart-qty-num">
+                {% if total_qty > 0 %}
+                <div class="cart-qty-num">{{ total_qty }}</div>
+                {% else %}
+                <div class="cart-qty-num">0</div>
+                {% endif %}
+              </span>
+
+              {% endwith %}
+            </span>
+            <i class="far fa-shopping-cart"></i>
+          </a>
+        </span>
+        {% if request.user.is_authenticated %}
+        <li><a href="" id="a-nav-link">My Account</a></li>
+        {% else %}
+        <li><a href="{% url 'customer:customer_login' store.slugified_store_name %}" id="a-nav-link">Sign In</a></li>
+        <li><a href="{% url 'customer:customer_register' store.slugified_store_name %}" id="a-nav-link">Sign Up</a></li>
+        {% endif %}
       </ul>
-
-      <span class="cart-icon-container">
-        <a href="{% url 'cart:cart_summary' %}" class="cart-btn">
-          {% with total_qty=cart|length %}
-          <span id="product-cart-qty">
-            <span class="cart-qty-num">
-              {% if total_qty > 0 %} <div class="cart-qty-num">{{ total_qty }}</div> {% else %} <div class="cart-qty-num">0</div>{% endif %}
-            </span>
-        
-            {% endwith %}
-            </span>
-             <i class="fas fa-shopping-cart"></i>
-          </a>   
-      </span>
 
       <div id="toogle"></div>
     </nav>
