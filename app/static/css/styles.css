@@ -495,11 +495,15 @@ body > nav > span:nth-child(2) > i {
 .cart-qty-num {
   display: block;
   text-align: center;
+  font-size: 15px;
+  position: absolute;
+  top: 7px;
+  margin-left: 3px;
 }
 
 .cart-icon-container > a > i {
   color: #6d7d89;
-  font-size: 30px;
+  font-size: 25px;
   text-decoration: none;
 }
 
