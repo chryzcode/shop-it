@@ -33,6 +33,7 @@ urlpatterns = [
         views.a_store_category_products,
         name="a_store_category_products",
     ),
+    path("store/", views.store_admin, name="store_admin"),
     path("<slugified_store_name>/", views.store, name="store"),
     path("categories/", views.all_category, name="all_category"),
     path("create-category/", views.add_category, name="create_category"),

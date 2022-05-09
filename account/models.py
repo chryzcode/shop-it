@@ -54,11 +54,17 @@ class User(AbstractBaseUser, PermissionsMixin):
     twitter = models.CharField(max_length=100, blank=True)
     store_name = models.CharField(max_length=150, unique=True)
     store_creator = models.BooleanField(default=True)
+    slugified_store_name = models.SlugField(max_length=255, unique=True)
     objects = CustomAccountManager()
 
     USERNAME_FIELD = "email"
 
     REQUIRED_FIELDS = ["store_name"]
+
+    def save(self, *args, **kwargs):
+        if not self.slugified_store_name:
+            self.slugified_store_name = slugify(self.store_name)
+        return super(Store, self).save(*args, **kwargs)
 
     def email_user(self, subject, message):
         send_mail(

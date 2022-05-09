@@ -116,10 +116,11 @@ def delete_product(request, slug):
     else:
        return redirect("app:store_products")
 
-
+def store_admin(request):
+    return render(request, "store/store-admin.html")
 
 def store(request, slugified_store_name):
-    store = get_object_or_404(Store, slug=slugified_store_name)
+    store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
     return render(request, "store/store.html", {"store": store})
 
 
