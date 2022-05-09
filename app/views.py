@@ -121,7 +121,8 @@ def store_admin(request):
 
 def store(request, slugified_store_name):
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
-    return render(request, "store/store.html", {"store": store})
+    products = Product.objects.filter(created_by=store)
+    return render(request, "store/store.html", {"store": store, "products": products})
 
 
 def add_wishlist(request, slug):

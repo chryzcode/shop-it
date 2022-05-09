@@ -1,11 +1,19 @@
-{% extends 'navs/consumer-nav.html' %} {% load static %} 
-{% block title %} <title>Shop!t - My Store</title> {% endblock %}
-{% block content %}
-<div class="store-page-container">
-
-  <div class="store-content-container">
-   <p>html</p>
-    
-  </div>
+{% extends 'navs/consumer-nav.html' %} {% load static %} {% block title %} <title>Shop!t - My Store</title> {% endblock%} {% block content %}
+<div class="store-page-container"> 
+   <div>
+     <img src="{{ store.store_image.url }}" alt="">
+      {% for product in products %}
+     <div class="store-products-grid">
+       <span>
+          <img src="{{ product.image_1.url }}" >
+       </span>
+       <div>
+          <p>{{ product.name }}</p>
+          <p>{{ product.discount_price }}</p>
+       </div>
+     </div>
+      {% endfor %}
+    </div>
+ 
+  {% endblock %}
 </div>
-{% endblock %}
