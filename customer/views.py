@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from .models import *
+from account.models import *
 from .forms import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -76,9 +77,10 @@ def existing_user_customer_register(request, slugified_store_name):
                     email = user.email,
                     password = user.password,
                     password2 = user.password,
-                    store = store,
+                    store = store.store_name,
                 )
                 customer.save()
+                store.customers.add(user)
                 return redirect("customer:customer_login", slugified_store_name=slugified_store_name)
             else:
                 messages.error(request, "You are already a customer of this store.")

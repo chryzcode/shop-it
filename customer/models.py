@@ -11,6 +11,9 @@ class Customer(models.Model):
     store_choices = (Store.objects.all().values_list('store_name', 'store_name'))
     store = models.CharField(max_length=150, choices=store_choices)
 
+    def __str__(self):
+        return self.full_name + '' + self.store
+
 class Address(models.Model):
     id = models.UUIDField(
         primary_key=True, default=uuid.uuid4, editable=False, unique=True
