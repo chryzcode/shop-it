@@ -54,7 +54,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     twitter = models.CharField(max_length=100, blank=True)
     store_name = models.CharField(max_length=150, unique=True)
     store_creator = models.BooleanField(default=True)
-    slugified_store_name = models.SlugField(max_length=255, unique=True)
+
     objects = CustomAccountManager()
 
     USERNAME_FIELD = "email"
@@ -78,6 +78,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.email
 
+    def store_name_slug(self):
+        return slugify(self.store_name)
+
 class Store(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="store_owner")
     store_name = models.CharField(max_length=150, unique=True)
@@ -88,10 +91,6 @@ class Store(models.Model):
     staffs =  models.ManyToManyField(User, related_name="store_staffs", blank=True)
     customers = models.ManyToManyField(User, related_name="store_customers", blank=True)
 
-    def save(self, *args, **kwargs):
-        if not self.slugified_store_name:
-            self.slugified_store_name = slugify(self.store_name)
-        return super(Store, self).save(*args, **kwargs)
 
     class Meta:
         verbose_name = "Store"
