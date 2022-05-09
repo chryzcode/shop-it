@@ -118,8 +118,9 @@ def delete_product(request, slug):
 
 
 
-def store_overview(request):
-    return render(request, "store/store-overview.html")
+def store(request, slugified_store_name):
+    store = get_object_or_404(Store, slug=slugified_store_name)
+    return render(request, "store/store.html", {"store": store})
 
 
 def add_wishlist(request, slug):

@@ -87,5 +87,10 @@ def existing_user_customer_register(request, slugified_store_name):
 
     return render(request, "customer/existing-user-register.html", {"store": store, "slugified_store_name": slugified_store_name, "form": form})
 
+def customer_logout(request):
+    logout(request)
+    return redirect("/")
+
+
         
 
