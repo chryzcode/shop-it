@@ -1,7 +1,7 @@
 {% extends 'navs/consumer-nav.html' %} {% load static %} {% block title %} <title>Shop!t - My Store</title> {% endblock%} {% block content %}
 <div class="store-page-container"> 
    <div>
-     <img src="{{ store.store_image.url }}" alt="">
+     <img class="store-image-banner" src="{{ store.store_image.url }}" alt="">
       {% for product in products %}
      <div class="store-products-grid">
        <span>

@@ -1,3 +1,4 @@
+from email.policy import default
 import uuid
 
 from django.conf import settings
@@ -61,10 +62,6 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     REQUIRED_FIELDS = ["store_name"]
 
-    def save(self, *args, **kwargs):
-        if not self.slugified_store_name:
-            self.slugified_store_name = slugify(self.store_name)
-        return super(Store, self).save(*args, **kwargs)
 
     def email_user(self, subject, message):
         send_mail(
@@ -86,7 +83,7 @@ class Store(models.Model):
     store_name = models.CharField(max_length=150, unique=True)
     slugified_store_name = models.SlugField(max_length=255, unique=True)
     store_description = models.TextField(max_length=500, blank=True)
-    store_image = models.ImageField(upload_to="store-images/")
+    store_image = models.ImageField(upload_to="store-images/", default="store-images/default.jpg")
     staffs =  models.ManyToManyField(User, related_name="store_staffs", blank=True)
     customers = models.ManyToManyField(User, related_name="store_customers", blank=True)
 
