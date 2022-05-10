@@ -1024,10 +1024,15 @@ th {
 .view-store-products-grid > a {
   display: inline-block;
   width: 300px;
-  border: 1px solid #3d5170;
   border-radius: 8px;
   text-decoration: none;
   color: #6b69f8;
+  box-shadow: 0px 20px 30px 0px #ccc;
+}
+
+.view-store-products-grid > a:hover{
+  transform: scale(1.05);
+  transition: all 1.01s ease-in-out;
 }
 
 .view-store-products-grid > a > span {

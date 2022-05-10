@@ -14,8 +14,8 @@
           <div>
             <p>{{ product.name }}</p>
             <p>
-              {% if product.discount_price %}
-              <span>{{ product.price }}</span>
+              {% if product.discount_price != product.price %}
+              <span style="text-decoration: line-through;">{{ product.price }}</span>
               <span>{{ product.discount_price }}</span>
               {% else %}
                <span>{{ product.price }}</span>
