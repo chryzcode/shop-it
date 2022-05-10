@@ -997,3 +997,42 @@ th {
   padding: 0.5rem;
   text-align: left;
 }
+
+.store-image-banner {
+  width: 100%;
+  filter: blur(3px);
+  height: 300px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  object-fit: cover;
+}
+
+.view-store-products-container {
+  display: block;
+  width: 80%;
+  margin: 0 auto;
+}
+
+.view-store-products-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 20px;
+  margin-top: 30px;
+}
+
+.view-store-products-grid > a {
+  display: inline-block;
+  width: 300px;
+  border: 1px solid #3d5170;
+}
+
+.view-store-products-grid > a > span {
+  display: block;
+  width: 300px;
+}
+
+.view-store-products-grid > a > span  > img {
+  width: 100%;
+  object-fit: contain;
+}
