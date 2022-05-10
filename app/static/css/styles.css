@@ -1026,6 +1026,7 @@ th {
   width: 300px;
   border: 1px solid #3d5170;
   border-radius: 8px;
+  text-decoration:  none;
 }
 
 .view-store-products-grid > a > span {
