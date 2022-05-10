@@ -14,9 +14,11 @@
           <div>
             <p>{{ product.name }}</p>
             <p>
-              <span>{{ product.price }}</span>
               {% if product.discount_price %}
+              <span>{{ product.price }}</span>
               <span>{{ product.discount_price }}</span>
+              {% else %}
+               <span>{{ product.price }}</span>
               {% endif %}
             </p>
           </div>

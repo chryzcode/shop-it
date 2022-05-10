@@ -92,7 +92,6 @@ class Product(models.Model):
         ProductUnit, related_name="product_unit", on_delete=models.CASCADE
     )
     discount_percentage = models.IntegerField(
-        default=0,
         null=True,
         blank=True,
         validators=[MinValueValidator(0), MaxValueValidator(100)],
