@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from .models import *
 from account.models import *
+from app.models import *
 from .forms import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -90,6 +91,18 @@ def existing_user_customer_register(request, slugified_store_name):
 def customer_logout(request):
     logout(request)
     return redirect("/")
+
+def customer_product_detail(request, slugified_store_name, slug):
+        store = Store.objects.get(slugified_store_name=slugified_store_name)
+        product = get_object_or_404(Product, created_by=store.store_name, slug=slug)
+        category_product = Product.objects.filter(
+            category=product.category, created_by= store.store_name
+        ).exclude(id=product.id)[:6]
+        return render(
+            request,
+            "product/product-detail.html",
+            {"product": product, "category_product": category_product},
+        )
 
 
         

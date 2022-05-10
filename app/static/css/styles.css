@@ -1025,14 +1025,19 @@ th {
   display: inline-block;
   width: 300px;
   border: 1px solid #3d5170;
+  border-radius: 8px;
 }
 
 .view-store-products-grid > a > span {
   display: block;
   width: 300px;
+  height: 250px;
+  border-radius: 8px;
 }
 
 .view-store-products-grid > a > span  > img {
   width: 100%;
-  object-fit: contain;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px 8px 0 0;
 }

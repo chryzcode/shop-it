@@ -7,13 +7,18 @@
     <div class="view-store-products-container">
       <div class="view-store-products-grid">
         {% for product in products %}
-        <a href="">
+        <a href="{% url 'customer:customer_product_detail' store.slugified_store_name product.slug %}">
           <span>
             <img src="{{ product.image_1.url }}" />
           </span>
           <div>
             <p>{{ product.name }}</p>
-            <p>{{ product.discount_price }}</p>
+            <p>
+              <span>{{ product.price }}</span>
+              {% if product.discount %}
+              <span>{{ product.discount_price }}</span>
+              {% endif %}
+            </p>
           </div>
         </a>
         {% endfor %}
