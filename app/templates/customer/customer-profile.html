@@ -1,11 +1,11 @@
 {% extends 'navs/consumer-nav.html' %} {% load static %} {% block title %}
-<title>{{store.store_name }} - Edit Profile</title>
+<title>{{store.store_name }} - {{request.user.full_name}}</title>
 {% endblock %} {% block content %}
 <div class="store-page-container">
   <span class="customer-profile-container">
     <span class="store-sidenav-seg">
       <ul>
-        <li><a href="">My Wishlist</a></li>
+        <li><a href="{% url 'customer:wishlist' %}">My Wishlist</a></li>
         <li><a href="">Order</a></li>
         <li><a href="">Address</a></li>
         <li><a href="">Sign Out</a></li>

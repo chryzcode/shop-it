@@ -121,6 +121,11 @@ def customer_profile(request, slugified_store_name):
         {"userprofileform": userprofileform, "account": account, 'store':store},
     )
 
+def customer_wishlist(request):
+    user = request.user
+    wishlist = Product.objects.filter(wishlist=user)
+    return render(request, "customer/customer-wishlist.html", {"wishlist": wishlist})
+
 
         
 
