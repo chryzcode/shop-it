@@ -67,6 +67,7 @@ def account_register(request):
             user.store_name = registerform.cleaned_data["store_name"]
             user.set_password(registerform.cleaned_data["password"])
             user.is_active = False
+            user.store_staff = False
             user.save()
             store = Store.objects.create(
                 owner = user,
@@ -163,6 +164,7 @@ def store_staff_register(request):
                     is_active = True,
                     is_staff = False,
                     store_creator = False,
+                    store_staff = True,
                 )
                 user.set_password(form.cleaned_data["password"])
                 user.save()

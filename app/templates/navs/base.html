@@ -38,7 +38,12 @@
         <li><a href="" id="a-nav-link">MarketPlace</a></li>
         <li><a href="" id="a-nav-link">Pricing</a></li>
         {% if request.user.is_authenticated %}
+        {if request.user.store_creator == True}
         <li><a href="{% url "app:store_admin" %}" id="a-nav-link">My Store</a></li>
+        {% endif %}
+        {if request.user.store_creator == True}
+        <li><a href="{% url "app:store_admin" %}" id="a-nav-link">My Store</a></li>
+        {% endif %}
         {% else %}
         <li><a href="{% url 'account:login' %}" id="a-nav-link">Sign In</a></li>
         <li><a href="{% url 'account:register' %}" id="a-nav-link">Sign Up</a></li>

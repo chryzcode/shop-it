@@ -42,6 +42,13 @@ class RegistrationForm(ModelForm):
             raise forms.ValidationError("Store name is already taken")
         return store_name
 
+    #must add characters to the store name form field
+
+    def add_chatacters_to_store_name(self):
+        if self.cleaned_data["store_name"].length < 3:
+            raise forms.ValidationError("Store name must be at least 3 characters long")
+        return self.cleaned_data["store_name"]
+        
     def __init__(self, *args, **kwargs):
         super(RegistrationForm, self).__init__(*args, **kwargs)
 

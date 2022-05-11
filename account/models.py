@@ -53,8 +53,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     facebook = models.CharField(max_length=100, blank=True)
     instagram = models.CharField(max_length=100, blank=True)
     twitter = models.CharField(max_length=100, blank=True)
-    store_name = models.CharField(max_length=150, unique=True)
+    store_name = models.CharField(max_length=150, unique=True, blank=True)
     store_creator = models.BooleanField(default=True)
+    store_staff = models.BooleanField(default=False)
 
     objects = CustomAccountManager()
 
