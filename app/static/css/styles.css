@@ -1114,3 +1114,8 @@ th {
   text-align: center;
   margin-top: 10px;
 }
+
+.customer-profile-container {
+  display: flex;
+  justify-content: space-around;
+}
