@@ -6,7 +6,7 @@
   <span class="customer-profile-container">
     <span class="store-sidenav-seg">
       <ul>
-        <li><a href="{% url 'customer:wishlist' %}">My Wishlist</a></li>
+        <li><a href="{% url 'customer:customer_wishlist' store.slugified_store_name %}">My Wishlist</a></li>
         <li><a href="">Order</a></li>
         <li><a href="">Address</a></li>
         <li><a href="">Sign Out</a></li>
