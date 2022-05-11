@@ -10,6 +10,7 @@
         <a href="{% url 'customer:customer_product_detail' store.slugified_store_name product.slug %}">
           <span>
             <img src="{{ product.image_1.url }}" />
+            <img src="{{ product.image_2.url}}" alt="">
           </span>
           <div>
             <p>{{ product.name }}</p>
