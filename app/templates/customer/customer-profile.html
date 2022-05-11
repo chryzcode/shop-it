@@ -1,0 +1,92 @@
+{% extends 'navs/consumer-nav.html' %} {% load static %} {% block title %}
+<title>{{store.store_name }} - Edit Profile</title>
+{% endblock %} {% block content %}
+<div class="store-page-container">
+  <span class="store-sidenav-seg">
+    <ul>
+      <li><a href="">My Wishlist</a></li>
+      <li><a href="">Order</a></li>
+      <li><a href="">Address</a></li>
+      <li><a href="">Sign Out</a></li>
+    </ul>
+  </span>
+  <div class="account-form-container">
+    <form action="" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="above-create-form">
+        <p>My Profile</p>
+      </div>
+
+      <div class="acc-form-seg">
+        <p>Basic Info</p>
+        <div class="input-container">
+          <label for="avatar">Avatar<span class="form-required">*</span></label>
+          <p>{{ userprofileform.avatar.errors }}</p>
+          <div>{{ userprofileform.avatar }}</div>
+        </div>
+
+        <div class="input-container">
+          <label for="name">Full Name<span class="form-required">*</span></label>
+          <p>{{ userprofileform.full_name.errors }}</p>
+          <div>{{ userprofileform.full_name }}</div>
+        </div>
+
+        <div class="input-container">
+          <label for="phone_number">Phone Number</label>
+          <p>{{ userprofileform.phone_number.errors }}</p>
+          {{userprofileform.phone_number}}
+        </div>
+      </div>
+
+      <div class="form-btn-container">
+        <button class="form-btn" type="submit">Update</button>
+      </div>
+    </form>
+
+    <form action="{% url 'account:change_password' %}" method="post">
+      {% csrf_token %}
+      <div class="acc-form-seg">
+        <p>Change Password</p>
+        <div class="input-container">
+          <label for="old_password">Old Password<span class="form-required">*</span></label>
+          <p>{{ form.old_password.errors }}</p>
+          <input type="password" name="old_password" class="form-control" required id="id_old_password" />
+        </div>
+
+        <div class="input-container">
+          <label for="new_password1">New Password<span class="form-required">*</span></label>
+          <p>{{ form.new_password1.errors }}</p>
+          <input
+            type="password"
+            name="new_password1"
+            class="form-control"
+            maxlength="100"
+            required
+            id="id_new_password1"
+          />
+        </div>
+
+        <div class="input-container">
+          <label for="new_password2">Confirm Password<span class="form-required">*</span></label>
+          <p>{{ form.new_password2.errors }}</p>
+          <input
+            type="password"
+            name="new_password2"
+            class="form-control"
+            maxlength="100"
+            required
+            id="id_new_password2"
+          />
+        </div>
+
+        <button class="form-btn" type="submit">Update</button>
+      </div>
+    </form>
+
+    <div class="delete-btn-container">
+      <a class="delete-btn" href="{% url 'account:delete_account' %}">Delete Account</a>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
