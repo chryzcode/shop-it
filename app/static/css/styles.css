@@ -1057,6 +1057,14 @@ th {
   overflow: hidden;
 }
 
+.view-store-products-grid > a > span > img:nth-child(1):hover {
+  animation-iteration-count: 1;
+}
+
+/* .view-store-products-grid > a > span > img:nth-child(2):hover {
+  animation-iteration-count: 1;
+} */
+
 .view-store-products-grid > a > span > img:nth-child(2) {
   margin-left: -300px;
   width: 100%;
