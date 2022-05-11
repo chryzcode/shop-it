@@ -95,6 +95,7 @@ class Product(models.Model):
         null=True,
         blank=True,
         validators=[MinValueValidator(0), MaxValueValidator(100)],
+        default= 0,
     )
     wishlist = models.ManyToManyField(User, related_name="wishlist", blank=True)
 
