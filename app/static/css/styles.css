@@ -1014,6 +1014,13 @@ th {
   margin: 0 auto 200px auto;
 }
 
+.store-page-container > div > p {
+  font-size: 24px;
+  color: #6b69f8;
+  text-align: center;
+  margin: 30px 0;
+}
+
 .view-store-products-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -1060,10 +1067,6 @@ th {
 .view-store-products-grid > a > span > img:nth-child(1):hover {
   animation-iteration-count: 1;
 }
-
-/* .view-store-products-grid > a > span > img:nth-child(2):hover {
-  animation-iteration-count: 1;
-} */
 
 .view-store-products-grid > a > span > img:nth-child(2) {
   margin-left: -300px;
