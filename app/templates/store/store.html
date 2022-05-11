@@ -1,5 +1,5 @@
-{% extends 'navs/consumer-nav.html' %} {% load static %} {% block title %} <title>Shop!t - My Store</title> {%endblock%}
-{% block content %}
+{% extends 'navs/consumer-nav.html' %} {% load static %} {% block title %}
+<title>{{store.store_name}}</title> {%endblock%} {% block content %}
 <div class="store-page-container">
   <div>
     <img class="store-image-banner" src="{{ store.store_image.url }}" alt="" />
@@ -15,12 +15,14 @@
             <p>{{ product.name }}</p>
             <p>
               {% if product.discount_price != product.price %}
-              <span style="text-decoration: line-through;">{{ product.price }}</span>
-              <span>{{ product.discount_price }}</span>
+              <span>
+                <span style="text-decoration: line-through">{{ product.price }}</span>
+                <span>{{ product.discount_price }}</span>
+              </span>
               {% else %}
-               <span>{{ product.price }}</span>
-              {% endif %}
             </p>
+            <div>{{ product.price }}</div>
+            {% endif %}
           </div>
         </a>
         {% endfor %}

@@ -94,7 +94,7 @@ def customer_logout(request):
 
 def customer_product_detail(request, slugified_store_name, slug):
         store = Store.objects.get(slugified_store_name=slugified_store_name)
-        product = get_object_or_404(Product, created_by=store.store_name, slug=slug)
+        product = get_object_or_404(Product, created_by=store.store_name, slug=slug).order_by("-created_at")
         category_product = Product.objects.filter(
             category=product.category, created_by= store.store_name
         ).exclude(id=product.id)[:6]

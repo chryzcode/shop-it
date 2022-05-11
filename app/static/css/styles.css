@@ -1011,7 +1011,7 @@ th {
 .view-store-products-container {
   display: block;
   width: 80%;
-  margin: 0 auto;
+  margin: 0 auto 200px auto;
 }
 
 .view-store-products-grid {
@@ -1053,17 +1053,22 @@ th {
   padding: 20px;
 }
 
-.view-store-products-grid > a > div > p:nth-child(1) {
+.view-store-products-grid > a > div > p {
   font-size: 20px;
   font-weight: 500;
   text-align: center;
 }
 
-.view-store-products-grid > a > div > p:nth-child(2) {
+.view-store-products-grid > a > div > p > span {
   font-size: 15px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
   margin-top: 15px;
+}
+
+.view-store-products-grid > a > div >  div {
+  text-align: center;
+  margin-top: 10px;
 }
