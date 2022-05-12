@@ -16,7 +16,7 @@ class RegistrationForm(ModelForm):
         model = User
         fields = ["email", "store_name", "full_name", "check"]
 
-    def clean_username(self):
+    def clean_storename(self):
         store_name = self.cleaned_data["store_name"].lower()
         r = User.objects.filter(store_name=store_name)
         if r.count():
@@ -38,19 +38,13 @@ class RegistrationForm(ModelForm):
     def clean_store_name(self):
         store_name = self.cleaned_data["store_name"]
         slugified_store_name = slugify(store_name)
+        if len(store_name) == 0:
+            raise forms.ValidationError("Store name cannot be empty")
+
         if Store.objects.filter(slugified_store_name=slugified_store_name).exists():
             raise forms.ValidationError("Store name is already taken")
-        return store_name
-
-    #must add characters to the store name form field
-
-    def add_chatacters_to_store_name(self):
-        if self.cleaned_data["store_name"].length < 3:
-            raise forms.ValidationError("Store name must be at least 3 characters long")
-        return self.cleaned_data["store_name"]
         
-    def __init__(self, *args, **kwargs):
-        super(RegistrationForm, self).__init__(*args, **kwargs)
+        return store_name
 
 class StoreForm(ModelForm):
     class Meta:
