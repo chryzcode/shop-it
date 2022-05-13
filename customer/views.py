@@ -45,22 +45,20 @@ def customer_login(request, slugified_store_name):
     if request.method == "POST":
         email = request.POST.get("email")
         password = request.POST.get("password")
-        try:
-            user = get_object_or_404(User, email=email)
+        user = get_object_or_404(User, email=email)
+        if user:
+            user = authenticate(request, email=email, password=password)
             if user:
-                user = authenticate(request, email=email, password=password)
-                if user:
-                    if user in store.customers.all():
-                        login(request, user)
-                        return redirect("/")
-                    else:
-                        messages.error(request, "You are not a customer of this store.")
+                if user in store.customers.all():
+                    login(request, user)
+                    return redirect("app:store" , slugified_store_name=store.slugified_store_name)
                 else:
-                    messages.error(request, "Password is incorrect")            
+                    messages.error(request, "You are not a customer of this store.")
             else:
-                messages.error(request, "User does not exist")
-        except:
+                messages.error(request, "Password is incorrect")            
+        else:
             messages.error(request, "User does not exist")
+    
     return render(request, "customer/login.html", {"store": store, "slugified_store_name": slugified_store_name})
 
 def existing_user_customer_register(request, slugified_store_name):
@@ -89,9 +87,10 @@ def existing_user_customer_register(request, slugified_store_name):
 
     return render(request, "customer/existing-user-register.html", {"store": store, "slugified_store_name": slugified_store_name, "form": form})
 
-def customer_logout(request):
+def customer_logout(request, slugified_store_name):
+    store = get_object_or_404(Store, slugified_store_name= slugified_store_name)
     logout(request)
-    return redirect("/")
+    return redirect("app:store" , slugified_store_name=store.slugified_store_name)
 
 def customer_product_detail(request, slugified_store_name, slug):
         store = Store.objects.get(slugified_store_name=slugified_store_name)
