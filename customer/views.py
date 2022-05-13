@@ -128,8 +128,8 @@ def customer_wishlist(request, slugified_store_name):
 
 def address_list_page(request, slugified_store_name):
     store = get_object_or_404(Store, slugified_store_name= slugified_store_name)
-    user = request.user.full_name
-    address_list = Address.objects.filter(full_name=user)
+    customer = request.user
+    address_list = Address.objects.filter(customer=customer)
     return render(request, "customer/address-list.html", {"address_list": address_list, "store": store})
 
 

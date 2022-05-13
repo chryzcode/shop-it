@@ -27,6 +27,14 @@ class Address(models.Model):
     delivery_instructions = models.CharField(_("Delivery Instructions"), max_length=255)
     country = models.CharField(_("Country"), max_length=200)
     state = models.CharField(_("State"), max_length=200)
+    default = models.BooleanField(_("Default"), default=False)
 
     def __str__(self):
         return self.user.store_name
+
+    def save (self, *args, **kwargs):
+        if Address.objects.filter(customer=self.customer, default=True).exists():
+            self.default = False
+        else:
+            self.default = True
+        super(Address, self).save(*args, **kwargs)

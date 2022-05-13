@@ -49,3 +49,38 @@ class ExistingUserCustomerForm(ModelForm):
         if not user:
             raise forms.ValidationError("User does not exist")
         return email
+
+class AddressForm(ModelForm):
+    class Meta:
+        model = Address
+        exclude = ["customer"]
+
+        widgets = {
+            "full_name" : forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "Full Name"}
+            ),
+            "phone" : forms.NumberInput(
+                attrs={"class": "form-control", "placeholder": "+349 0854 9885"}
+            ),
+            "postcode": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "Post Code"}
+            ),
+            "address_line": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "Address Line"}
+            ),
+            "address_line2": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "Additional address(Not Compulsory)"}
+            ),
+            "delivery_instructions": forms.Textarea(
+                attrs={"class": "form-control", "placeholder": "Delivery Instructions"}
+            ),
+            "country" : forms.Select(
+                attrs={"class": "form-control"}
+            ),
+            "state" : forms.Select(
+                attrs={"class": "form-control"}
+            ),
+        }
+
+
+        
