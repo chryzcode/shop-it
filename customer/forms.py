@@ -42,3 +42,10 @@ class ExistingUserCustomerForm(ModelForm):
 
         def __init__(self, *args, **kwargs):
             super(ExistingUserCustomerForm, self).__init__(*args, **kwargs)
+
+    def clean_email(self):
+        email = self.cleaned_data["email"]
+        user = User.objects.filter(email=email)
+        if not user:
+            raise forms.ValidationError("User does not exist")
+        return email
