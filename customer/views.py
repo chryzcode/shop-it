@@ -45,7 +45,7 @@ def customer_login(request, slugified_store_name):
     if request.method == "POST":
         email = request.POST.get("email")
         password = request.POST.get("password")
-        user = get_object_or_404(User, email=email)
+        user = User.objects.filter(email=email)
         if user:
             user = authenticate(request, email=email, password=password)
             if user:
