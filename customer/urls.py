@@ -12,4 +12,7 @@ urlpatterns = [
     path("<slugified_store_name>/product/<slug:slug>/", views.customer_product_detail, name="customer_product_detail"),
     path("<slugified_store_name>/profile/", views.customer_profile, name="customer_profile"),
     path("<slugified_store_name>/wishlist/", views.customer_wishlist, name="customer_wishlist"),
+    path("<slugified_store_name>/address/", views.address_list, name="address_list"),
+    path("<slugified_store_name>/address/create/", views.create_address, name="create_address"),
 ]
+

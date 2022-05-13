@@ -126,7 +126,7 @@ def customer_wishlist(request, slugified_store_name):
     wishlist = Product.objects.filter(wishlist=user)
     return render(request, "customer/customer-wishlist.html", {"wishlist": wishlist, "store": store})
 
-def address_list_page(request, slugified_store_name):
+def address_list(request, slugified_store_name):
     store = get_object_or_404(Store, slugified_store_name= slugified_store_name)
     customer = request.user
     address_list = Address.objects.filter(customer=customer)
@@ -152,8 +152,10 @@ def create_address(request, slugified_store_name):
                 country = address_form.cleaned_data["country"],
             )
             address.save()
-            return redirect("customer:address_list_page", slugified_store_name=slugified_store_name)
+            return redirect("customer:address_list", slugified_store_name=slugified_store_name)
     return render(request, "customer/address-create.html", {"address_form": address_form, "store": store})
+
+
 
 
         
