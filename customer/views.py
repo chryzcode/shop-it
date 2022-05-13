@@ -132,6 +132,29 @@ def address_list_page(request, slugified_store_name):
     address_list = Address.objects.filter(customer=customer)
     return render(request, "customer/address-list.html", {"address_list": address_list, "store": store})
 
+def create_address(request, slugified_store_name):
+    store = get_object_or_404(Store, slugified_store_name= slugified_store_name)
+    customer = request.user
+    address_form = AddressForm()
+    if request.method == "POST":
+        address_form = AddressForm(request.POST)
+        if address_form.is_valid():
+            address_form.save(commit=False)
+            address = Address.objects.create(
+                customer = customer,
+                full_name = address_form.cleaned_data["full_name"],
+                phone = address_form.cleaned_data["phone"],
+                post_code = address_form.cleaned_data["post_code"],
+                delivery_instructions = address_form.cleaned_data["delivery_instructions"],
+                address_line_1 = address_form.cleaned_data["address_line_1"],
+                address_line_2 = address_form.cleaned_data["address_line_2"],
+                state = address_form.cleaned_data["state"],
+                country = address_form.cleaned_data["country"],
+            )
+            address.save()
+            return redirect("customer:address_list_page", slugified_store_name=slugified_store_name)
+    return render(request, "customer/address-create.html", {"address_form": address_form, "store": store})
+
 
         
 
