@@ -3,14 +3,7 @@
 {% endblock %} {% block content %}
 <div class="store-page-container">
   <span class="customer-profile-container">
-    <span class="store-sidenav-seg">
-      <ul>
-        <li><a href="{% url 'customer:customer_wishlist' store.slugified_store_name %}">My Wishlist</a></li>
-        <li><a href="">Order</a></li>
-        <li><a href="">Address</a></li>
-        <li><a href="{% url 'customer:customer_logout' store.slugified_store_name %}">Sign Out</a></li>
-      </ul>
-    </span>
+    {% include 'customer-side-nav.html' %}
     <div class="account-form-container">
       <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
