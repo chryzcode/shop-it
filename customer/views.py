@@ -155,6 +155,24 @@ def create_address(request, slugified_store_name):
             return redirect("customer:address_list", slugified_store_name=slugified_store_name)
     return render(request, "customer/address-create.html", {"address_form": address_form, "store": store})
 
+def edit_address(request, slugified_store_name, id):
+    store = get_object_or_404(Store, slugified_store_name= slugified_store_name)
+    customer = request.user
+    address = get_object_or_404(Address, id=id, customer=customer)
+    address_form = AddressForm(instance=address)
+    if request.method == "POST":
+        address_form = AddressForm(request.POST, instance=address)
+        if address_form.is_valid():
+            address_form.save()
+            return redirect("customer:address_list", slugified_store_name=slugified_store_name)
+    return render(request, "customer/address-create.html", {"address_form": address_form, "store": store})
+
+def delete_address(request, slugified_store_name, id):
+    store = get_object_or_404(Store, slugified_store_name= slugified_store_name)
+    customer = request.user
+    address = get_object_or_404(Address, id=id, customer=customer)
+    address.delete()
+    return redirect("customer:address_list", slugified_store_name=slugified_store_name)
 
 
 
