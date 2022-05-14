@@ -18,7 +18,7 @@
       <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="above-create-form">
-          <p>My Profile</p>
+          <p>My Address</p>
         </div>
 
         <div class="acc-form-seg">
@@ -34,7 +34,10 @@
             <p>{{ address_form.phone.errors }}</p>
             <div>{{ address_form.phone }}</div>
           </div>
+          </div>
 
+          <div class="acc-form-seg">
+            <p>Location Info</p>
           <div class="input-container">
             <label for="postcode">Post Code</label>
             <p>{{ address_form.postcode.errors }}</p>
@@ -89,6 +92,7 @@
           <button class="form-btn" type="submit">Create</button>
         </div>
       </form>
+    </div>
 
     </div>
   </span>
