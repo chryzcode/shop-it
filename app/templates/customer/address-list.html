@@ -1,0 +1,21 @@
+{% extends 'navs/consumer-nav.html' %} {% load static %}{% block title %}<title>
+  Shop !t - {{request.user }} Shipping Address
+</title>
+{% endblock %} {% block content %}
+<div class="store-page-container">
+  <span class="customer-profile-container">
+    {% include 'navs/customer-side-nav.html' %}
+    <div class="store-content-container">
+      <span class="store-products-container">
+        <p>My Shipping Address</p>
+        <a href="{% url 'customer:create_address' store.slugified_store_name %}">Add Address</a>
+        {% if address_list %}
+        {% for address in address_list %}
+        <p>{{address}</p>
+        {% endfor %}
+        {% endif %}
+      </span>
+    </div>
+  </span>
+  {% endblock %}
+</div>

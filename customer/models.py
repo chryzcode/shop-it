@@ -31,11 +31,4 @@ class Address(models.Model):
     default = models.BooleanField(_("Default"), default=False)
 
     def __str__(self):
-        return self.user.store_name
-
-    def save (self, *args, **kwargs):
-        if Address.objects.filter(customer=self.customer, default=True).exists():
-            self.default = False
-        else:
-            self.default = True
-        super(Address, self).save(*args, **kwargs)
+        return self.full_name

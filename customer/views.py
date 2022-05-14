@@ -128,13 +128,13 @@ def customer_wishlist(request, slugified_store_name):
 
 def address_list(request, slugified_store_name):
     store = get_object_or_404(Store, slugified_store_name= slugified_store_name)
-    customer = request.user
+    customer = request.user.pk
     address_list = Address.objects.filter(customer=customer)
     return render(request, "customer/address-list.html", {"address_list": address_list, "store": store})
 
 def create_address(request, slugified_store_name):
     store = get_object_or_404(Store, slugified_store_name= slugified_store_name)
-    customer = request.user
+    customer = Customer.objects.get(full_name=request.user.full_name)
     address_form = AddressForm()
     if request.method == "POST":
         address_form = AddressForm(request.POST)
@@ -144,15 +144,14 @@ def create_address(request, slugified_store_name):
                 customer = customer,
                 full_name = address_form.cleaned_data["full_name"],
                 phone = address_form.cleaned_data["phone"],
-                post_code = address_form.cleaned_data["post_code"],
+                postcode = address_form.cleaned_data["postcode"],
                 delivery_instructions = address_form.cleaned_data["delivery_instructions"],
-                address_line_1 = address_form.cleaned_data["address_line_1"],
-                address_line_2 = address_form.cleaned_data["address_line_2"],
+                address_line = address_form.cleaned_data["address_line"],
+                address_line2 = address_form.cleaned_data["address_line2"],
                 country = address_form.cleaned_data["country"],
                 state = address_form.cleaned_data["state"],
                 city = address_form.cleaned_data["city"],
-               
-            )
+               )
             address.save()
             return redirect("customer:address_list", slugified_store_name=slugified_store_name)
     return render(request, "customer/address-create.html", {"address_form": address_form, "store": store})
