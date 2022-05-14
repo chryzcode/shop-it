@@ -26,7 +26,7 @@
               <a href="{% url 'customer:edit_address' store.slugified_store_name address.id %}">Edit</a>
               <span>
                 {% if address.default == True %}
-                <span>Default</span>
+                <a href="{% url 'customer:set_default_address' store.slugified_store_name address.id %}">UnSet as Default</a>
                 {% else %}
                 <a href="{% url 'customer:set_default_address' store.slugified_store_name address.id %}">Set as Default</a>
                 {% endif %}

@@ -179,12 +179,17 @@ def delete_address(request, slugified_store_name, id):
 def set_default_address(request, slugified_store_name, id):
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
     customer = Customer.objects.get(email= request.user.email)
-    all_default_address = Address.objects.filter(customer= customer, default= True)
-    address = get_object_or_404(Address, id=id)
-    if address:
+    address = get_object_or_404(Address, id=id, customer=customer)
+    all_customer_address = Address.objects.filter(customer=customer)
+    if address.default:
+        address.default = False
+    else:
         address.default = True
-        all_default_address.default = False
-        return redirect("customer:address_list", slugified_store_name=slugified_store_name)
+        all_customer_address.update(default=False)
+    address.save()
+    return redirect("customer:address_list", slugified_store_name=slugified_store_name)
+
+  
 
 
 
