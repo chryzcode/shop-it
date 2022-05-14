@@ -15,5 +15,7 @@ urlpatterns = [
     path("<slugified_store_name>/address/", views.address_list, name="address_list"),
     path("<slugified_store_name>/address/create/", views.create_address, name="create_address"),
     path("<slugified_store_name>/set-default/address/<str:id>/", views.set_default_address, name="set_default_address"),
+    path("<slugified_store_name>/edit/address/<str:id>/", views.edit_address, name="edit_address"),
+    path("<slugified_store_name>/delete/address/<str:id>/", views.delete_address, name="delete_address"),
 ]
 

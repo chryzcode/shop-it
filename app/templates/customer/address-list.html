@@ -8,12 +8,34 @@
     <div class="store-content-container">
       <span class="store-products-container">
         <p>My Shipping Address</p>
-        <a href="{% url 'customer:create_address' store.slugified_store_name %}">Add Address</a>
+        <span>
+          <a href="{% url 'customer:create_address' store.slugified_store_name %}">Add Address</a>
+        </span>
         {% if address_list %}
-        {% for address in address_list %}
-        <p>{{address.full_name}}</p>
-        <p>{{address.phone}}</p>
-        {% endfor %}
+        <span class="customer-address-container">
+          {% for address in address_list %}
+          <span>
+            <p>{{ address.full_name}}</p>
+            <p>{{ address.address_line }}</p>
+            <div>
+              <span>{{ address.city }},</span>
+              <span>{{ address.state }}</span>
+              <span>{{ address.country }}</span>
+            </div>
+            <span>
+              <a href="{% url 'customer:edit_address' store.slugified_store_name address.id %}">Edit</a>
+              <span>
+                {% if address.default == True %}
+                <span>Default</span>
+                {% else %}
+                <a href="{% url 'customer:set_default_address' store.slugified_store_name address.id %}">Set as Default</a>
+                {% endif %}
+              </span>
+              <a href="{% url 'customer:delete_address' store.slugified_store_name address.id %}">Delete</a>
+            </span>
+          </span>
+          {% endfor %}
+        </span>
         {% else %}
         <p>You have no shipping address</p>
         {% endif %}

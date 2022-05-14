@@ -138,6 +138,10 @@
   .cart-table-bottom > * {
     padding: 20px;
   }
+
+  .customer-address-container{
+    grid-template-columns: 1fr;
+  }
 }
 
 @media all and (max-width: 850px) {

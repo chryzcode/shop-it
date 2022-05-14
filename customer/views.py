@@ -1,3 +1,4 @@
+from re import S
 from django.shortcuts import get_object_or_404, redirect, render
 from .models import *
 from account.models import *
@@ -158,7 +159,7 @@ def create_address(request, slugified_store_name):
 
 def edit_address(request, slugified_store_name, id):
     store = get_object_or_404(Store, slugified_store_name= slugified_store_name)
-    customer = request.user
+    customer = Customer.objects.get(email= request.user.email)
     address = get_object_or_404(Address, id=id, customer=customer)
     address_form = AddressForm(instance=address)
     if request.method == "POST":
@@ -170,19 +171,20 @@ def edit_address(request, slugified_store_name, id):
 
 def delete_address(request, slugified_store_name, id):
     store = get_object_or_404(Store, slugified_store_name= slugified_store_name)
-    customer = request.user
+    customer = Customer.objects.get(email= request.user.email)
     address = get_object_or_404(Address, id=id, customer=customer)
     address.delete()
     return redirect("customer:address_list", slugified_store_name=slugified_store_name)
 
 def set_default_address(request, slugified_store_name, id):
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
-    all_default_address = Address.objects.filter(cusomer= request.user, default= True)
+    customer = Customer.objects.get(email= request.user.email)
+    all_default_address = Address.objects.filter(customer= customer, default= True)
     address = get_object_or_404(Address, id=id)
     if address:
         address.default = True
         all_default_address.default = False
-        return redirect("/")
+        return redirect("customer:address_list", slugified_store_name=slugified_store_name)
 
 
 
