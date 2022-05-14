@@ -149,8 +149,11 @@ class StoreStaffForm(ModelForm):
     def clean_email(self):
         username = self.cleaned_data["email"]
         r = store_staff.objects.filter(email=email)
+        s = User.objects.filter(email=email, store_creator=True).exists()
         if r.count():
-            raise forms.ValidationError("Email already exists")
+            raise forms.ValidationError("Email already exists") 
+        if s:
+            raise forms.ValidationError("Store Creator can't be staff")
         return username
 
     def clean_password2(self):
@@ -170,6 +173,16 @@ class ExistingStoreStaffForm(ModelForm):
         widgets = {
             "email": forms.TextInput(attrs={"class": "form-control", "placeholder": "johndoe@gmailcom"}),
         }
+
+    def clean_email(self):
+        username = self.cleaned_data["email"]
+        r = store_staff.objects.filter(email=email)
+        s = User.objects.filter(email=email, store_creator=True).exists()
+        if r.count():
+            raise forms.ValidationError("Email already exists") 
+        if s:
+            raise forms.ValidationError("Store Creator can't be staff")
+        return username
 
     def __init__(self, *args, **kwargs):
         super(ExistingStoreStaffForm, self).__init__(*args, **kwargs)

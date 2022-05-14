@@ -192,29 +192,20 @@ def existing_store_staff(request):
             email = request.POST.get("email")
             if User.objects.filter(email=email).exists():
                 user = User.objects.get(email=email)
-                if user not in store.staffs.all():
-                    store.staffs.add(user)
-                    
-                    staff_store_user = store_staff.objects.get(email=user.email)
-                    staff_store_user.store = store.store_name
-                    staff_store_user.save()
-                    return redirect("account:store_staff_page")
-                        
-                    # else:
-                    #     #get staff_store_user
-                    #     store_staff.objects.create(
-                    #         user = user,
-                    #         full_name = user.full_name,
-                    #         email = user.email,
-                    #         avatar = user.avatar,
-                    #         phone_number = user.phone_number,
-                    #         store = store,
-                    #         password = user.password,
-                    #         password2 = user.password,
-                    #     )
-                    #     return redirect("account:store_staff_page")
-                        
-                error = 'User is already a staff'
+                if user.store_creator == False:
+                    if user not in store.staffs.all():                       
+                        staff_store_user = User.objects.get(email=user.email)
+                        if staff_store_user:
+                            store.staffs.add(user)
+                            staff_store_user.store = store.store_name
+                            staff_store_user.save()
+                            return redirect("account:store_staff_page")
+                        else:
+                            error = 'User is not eligible to be a staff yet'
+                            return render(request, "account/registration/add-store-staff-exist.html", {"form": form, "error": error})                         
+                    error = 'User is already a staff'
+                    return render(request, "account/registration/add-store-staff-exist.html", {"form": form, "error": error})
+                error = 'Store creator can''t be a staff'
                 return render(request, "account/registration/add-store-staff-exist.html", {"form": form, "error": error})
             error = 'User does not exist'
             return render(request, "account/registration/add-store-staff-exist.html", {"form": form, "error": error})
