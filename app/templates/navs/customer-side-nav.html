@@ -2,7 +2,7 @@
   <ul>
     <li><a href="{% url 'customer:customer_wishlist' store.slugified_store_name %}">My Wishlist</a></li>
     <li><a href="">Order</a></li>
-    <li><a href="">Address</a></li>
+    <li><a href="{% url 'customer:create_address' store.slugified_store_name %}">Address</a></li>
     <li><a href="{% url 'customer:customer_logout' store.slugified_store_name %}">Sign Out</a></li>
   </ul>
 </span>

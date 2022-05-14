@@ -1,15 +1,24 @@
-{% extends 'navs/consumer-nav.html' %} {% load static %} {% block title %}
-<title>{{store.store_name }} - {{request.user.full_name}}</title>
-{% endblock %} {% block content %}
+{% extends 'navs/consumer-nav.html' %} {% load static %} 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% block title %}
+  <title>{{store.store_name }} - {{request.user.full_name}}</title>
+  {% endblock %}
+</head>
+<body>
+{% block content %}
 <div class="store-page-container">
   <span class="customer-profile-container">
-    <span class="store-sidenav-seg">
-      {% include 'navs/customer-side-nav.html' %}
+    {% include 'navs/customer-side-nav.html' %}
     <div class="account-form-container">
-      <form action="" method="post" >
+      <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="above-create-form">
-          <p>My Address</p>
+          <p>My Profile</p>
         </div>
 
         <div class="acc-form-seg">
@@ -53,7 +62,7 @@
           <div class="input-container">
             <label for="country">Country</label>
             <p>{{ address_form.country.errors }}</p>
-            <select name="country" class="countries form-control" id="countryId country">
+            <select name="country" class="countries form-control" id="countryId">
               <option value="">Select Country</option>
             </select>
           </div>
@@ -62,7 +71,7 @@
           <div class="input-container">
             <label for="state">State</label>
             <p>{{ address_form.state.errors }}</p>
-            <select name="state" class="states form-control" id="stateId state">
+            <select name="state" class="states form-control" id="stateId">
               <option value="">Select State</option>
             </select>
           </div>
@@ -71,64 +80,27 @@
           <div class="input-container">
             <label for="city">City</label>
             <p>{{ address_form.city.errors }}</p>
-            <select name="city" class="cities form-control" id="cityId city">
+            <select name="city" class="cities form-control" id="cityId">
               <option value="">Select City</option>
             </select>
           </div>
 
-        </div>
-    
-
         <div class="form-btn-container">
-          <button class="form-btn" type="submit">Update</button>
+          <button class="form-btn" type="submit">Create</button>
         </div>
       </form>
 
-      <form action="{% url 'account:change_password' %}" method="post">
-        {% csrf_token %}
-        <div class="acc-form-seg">
-          <p>Change Password</p>
-          <div class="input-container">
-            <label for="old_password">Old Password<span class="form-required">*</span></label>
-            <p>{{ form.old_password.errors }}</p>
-            <input type="password" name="old_password" class="form-control" required id="id_old_password" />
-          </div>
-
-          <div class="input-container">
-            <label for="new_password1">New Password<span class="form-required">*</span></label>
-            <p>{{ form.new_password1.errors }}</p>
-            <input
-              type="password"
-              name="new_password1"
-              class="form-control"
-              maxlength="100"
-              required
-              id="id_new_password1"
-            />
-          </div>
-
-          <div class="input-container">
-            <label for="new_password2">Confirm Password<span class="form-required">*</span></label>
-            <p>{{ form.new_password2.errors }}</p>
-            <input
-              type="password"
-              name="new_password2"
-              class="form-control"
-              maxlength="100"
-              required
-              id="id_new_password2"
-            />
-          </div>
-
-          <button class="form-btn" type="submit">Update</button>
-        </div>
-      </form>
-
-      <div class="delete-btn-container">
-        <a class="delete-btn" href="{% url 'account:delete_account' %}">Delete Account</a>
-      </div>
     </div>
   </span>
 </div>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> 
+<script src="https://geodata.solutions/includes/countrystatecity.js"></script>
 {% endblock %}
+</body>
+</html>
+
+
+
+
+
+
