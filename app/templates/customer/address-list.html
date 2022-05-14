@@ -11,8 +11,11 @@
         <a href="{% url 'customer:create_address' store.slugified_store_name %}">Add Address</a>
         {% if address_list %}
         {% for address in address_list %}
-        <p>{{address}</p>
+        <p>{{address.full_name}}</p>
+        <p>{{address.phone}}</p>
         {% endfor %}
+        {% else %}
+        <p>You have no shipping address</p>
         {% endif %}
       </span>
     </div>

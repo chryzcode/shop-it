@@ -128,7 +128,7 @@ def customer_wishlist(request, slugified_store_name):
 
 def address_list(request, slugified_store_name):
     store = get_object_or_404(Store, slugified_store_name= slugified_store_name)
-    customer = request.user.pk
+    customer = Customer.objects.get(email=request.user.email)
     address_list = Address.objects.filter(customer=customer)
     return render(request, "customer/address-list.html", {"address_list": address_list, "store": store})
 
