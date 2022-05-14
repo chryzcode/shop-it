@@ -148,8 +148,10 @@ def create_address(request, slugified_store_name):
                 delivery_instructions = address_form.cleaned_data["delivery_instructions"],
                 address_line_1 = address_form.cleaned_data["address_line_1"],
                 address_line_2 = address_form.cleaned_data["address_line_2"],
-                state = address_form.cleaned_data["state"],
                 country = address_form.cleaned_data["country"],
+                state = address_form.cleaned_data["state"],
+                city = address_form.cleaned_data["city"],
+               
             )
             address.save()
             return redirect("customer:address_list", slugified_store_name=slugified_store_name)

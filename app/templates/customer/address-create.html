@@ -49,27 +49,35 @@
             <p>{{ address_form.delivery_instructions.errors }}</p>
             {{address_form.delivery_instructions}}
           </div>
-
+          
           <div class="input-container">
             <label for="country">Country</label>
             <p>{{ address_form.country.errors }}</p>
-            {{address_form.country}}
+            <select name="country" class="countries form-control" id="countryId country">
+              <option value="">Select Country</option>
+            </select>
           </div>
-        </div>
+       
 
-        <div class="input-container">
+          <div class="input-container">
             <label for="state">State</label>
             <p>{{ address_form.state.errors }}</p>
-            {{address_form.state}}
+            <select name="state" class="states form-control" id="stateId state">
+              <option value="">Select State</option>
+            </select>
           </div>
-        </div>
+      
 
-        <div class="input-container">
-            <label for="country">Country</label>
-            <p>{{ address_form.country.errors }}</p>
-            {{address_form.country}}
+          <div class="input-container">
+            <label for="city">City</label>
+            <p>{{ address_form.city.errors }}</p>
+            <select name="city" class="cities form-control" id="cityId city">
+              <option value="">Select City</option>
+            </select>
           </div>
+
         </div>
+    
 
         <div class="form-btn-container">
           <button class="form-btn" type="submit">Update</button>
