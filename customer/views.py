@@ -136,6 +136,7 @@ def address_list(request, slugified_store_name):
 def create_address(request, slugified_store_name):
     store = get_object_or_404(Store, slugified_store_name= slugified_store_name)
     customer = Customer.objects.get(email=request.user.email)
+    default_address = Address.objects.filter(customer=customer, default= True)
     address_form = AddressForm()
     if request.method == "POST":
         address_form = AddressForm(request.POST)
@@ -153,6 +154,10 @@ def create_address(request, slugified_store_name):
                 state = address_form.cleaned_data["state"],
                 city = address_form.cleaned_data["city"],
                )
+            if default_address:
+                address.default = False
+            else:
+                address.default = True
             address.save()
             return redirect("customer:address_list", slugified_store_name=slugified_store_name)
     return render(request, "customer/address-create.html", {"address_form": address_form, "store": store})
