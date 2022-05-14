@@ -42,7 +42,7 @@
           </div>
 
           <div class="input-container">
-            <label for="address_line">Address</label>
+            <label for="address_line">Address<span class="form-required">*</span></label>
             <p>{{ address_form.address_line.errors }}</p>
             {{address_form.address_line}}
           </div>
@@ -60,7 +60,7 @@
           </div>
           
           <div class="input-container">
-            <label for="country">Country</label>
+            <label for="country">Country<span class="form-required">*</span></label>
             <p>{{ address_form.country.errors }}</p>
             <select name="country" class="countries form-control" id="countryId">
               <option value="">Select Country</option>
@@ -69,7 +69,7 @@
        
 
           <div class="input-container">
-            <label for="state">State</label>
+            <label for="state">State<span class="form-required">*</span></label>
             <p>{{ address_form.state.errors }}</p>
             <select name="state" class="states form-control" id="stateId">
               <option value="">Select State</option>
@@ -78,7 +78,7 @@
       
 
           <div class="input-container">
-            <label for="city">City</label>
+            <label for="city">City<span class="form-required">*</span></label>
             <p>{{ address_form.city.errors }}</p>
             <select name="city" class="cities form-control" id="cityId">
               <option value="">Select City</option>
