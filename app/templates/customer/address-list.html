@@ -15,6 +15,9 @@
         <span class="customer-address-container">
           {% for address in address_list %}
           <span>
+            {% if address.default == True %}
+            <small>Default</small>
+            {% endif %}
             <p>{{ address.full_name}}</p>
             <p>{{ address.address_line }}</p>
             <div>
