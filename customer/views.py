@@ -134,7 +134,7 @@ def address_list(request, slugified_store_name):
 
 def create_address(request, slugified_store_name):
     store = get_object_or_404(Store, slugified_store_name= slugified_store_name)
-    customer = Customer.objects.get(full_name=request.user.full_name)
+    customer = Customer.objects.get(email=request.user.email)
     address_form = AddressForm()
     if request.method == "POST":
         address_form = AddressForm(request.POST)
