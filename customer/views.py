@@ -176,6 +176,16 @@ def delete_address(request, slugified_store_name, id):
     address.delete()
     return redirect("customer:address_list", slugified_store_name=slugified_store_name)
 
+def set_default_address(request, slugified_store_name, id):
+    store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
+    all_default_address = Address.objects.filter(cusomer= request.user, default= True)
+    address = get_object_or_404(Address, id=id)
+    if address:
+        address.default = True
+        all_default_address.default = False
+        return redirect("/")
+
+
 
 
         
