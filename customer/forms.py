@@ -80,6 +80,7 @@ class AddressForm(ModelForm):
             "state" : forms.Select(
                 attrs={"class": "form-control"}
             ),
+            
         }
 
 

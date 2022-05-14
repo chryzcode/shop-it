@@ -6,30 +6,68 @@
     <span class="store-sidenav-seg">
       {% include 'navs/customer-side-nav.html' %}
     <div class="account-form-container">
-      <form action="" method="post" enctype="multipart/form-data">
+      <form action="" method="post" >
         {% csrf_token %}
         <div class="above-create-form">
-          <p>My Profile</p>
+          <p>My Address</p>
         </div>
 
         <div class="acc-form-seg">
           <p>Basic Info</p>
           <div class="input-container">
-            <label for="avatar">Avatar<span class="form-required">*</span></label>
-            <p>{{ userprofileform.avatar.errors }}</p>
-            <div>{{ userprofileform.avatar }}</div>
+            <label for="full_name">Full Name<span class="form-required">*</span></label>
+            <p>{{ address_form.full_name.errors }}</p>
+            <div>{{ address_form.full_name }}</div>
           </div>
 
           <div class="input-container">
-            <label for="name">Full Name<span class="form-required">*</span></label>
-            <p>{{ userprofileform.full_name.errors }}</p>
-            <div>{{ userprofileform.full_name }}</div>
+            <label for="phone">Phone Number<span class="form-required">*</span></label>
+            <p>{{ address_form.phone.errors }}</p>
+            <div>{{ address_form.phone }}</div>
           </div>
 
           <div class="input-container">
-            <label for="phone_number">Phone Number</label>
-            <p>{{ userprofileform.phone_number.errors }}</p>
-            {{userprofileform.phone_number}}
+            <label for="postcode">Post Code</label>
+            <p>{{ address_form.postcode.errors }}</p>
+            {{address_form.postcode}}
+          </div>
+
+          <div class="input-container">
+            <label for="address_line">Address</label>
+            <p>{{ address_form.address_line.errors }}</p>
+            {{address_form.address_line}}
+          </div>
+
+          <div class="input-container">
+            <label for="address_line2">Address 2</label>
+            <p>{{ address_form.address_line2.errors }}</p>
+            {{address_form.address_line2}}
+          </div>
+
+          <div class="input-container">
+            <label for="delivery_instructions">Delivery Instructions</label>
+            <p>{{ address_form.delivery_instructions.errors }}</p>
+            {{address_form.delivery_instructions}}
+          </div>
+
+          <div class="input-container">
+            <label for="country">Country</label>
+            <p>{{ address_form.country.errors }}</p>
+            {{address_form.country}}
+          </div>
+        </div>
+
+        <div class="input-container">
+            <label for="state">State</label>
+            <p>{{ address_form.state.errors }}</p>
+            {{address_form.state}}
+          </div>
+        </div>
+
+        <div class="input-container">
+            <label for="country">Country</label>
+            <p>{{ address_form.country.errors }}</p>
+            {{address_form.country}}
           </div>
         </div>
 

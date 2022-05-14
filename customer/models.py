@@ -27,6 +27,7 @@ class Address(models.Model):
     delivery_instructions = models.CharField(_("Delivery Instructions"), max_length=255, blank=True, null=True)
     country = models.CharField(_("Country"), max_length=200)
     state = models.CharField(_("State"), max_length=200)
+    city = models.CharField(_("City"), max_length=200, default="lagos")
     default = models.BooleanField(_("Default"), default=False)
 
     def __str__(self):
