@@ -96,9 +96,17 @@
 
     {% if request.user.is_authenticated %}
         {% if request.user in product.wishlist.all %}
-       <button type="button" class="delete-btn"><a href="{% url 'app:remove_wishlist' product.slug %}">Remove from WishList</a></button>
+        {% if 'customer' in request.get_full_path %}
+        <button type="button" class="delete-btn"><a href="{% url 'customer:customer_remove_wishlist' product.slug %}">Remove from WishList</a></button>
         {% else %}
-        <button type="button" class="update-btn"><a href="{% url 'app:add_wishlist' product.slug %}">Add to WishList</a></button>
+       <button type="button" class="delete-btn"><a href="{% url 'app:remove_wishlist' product.slug %}">Remove from WishList</a></button>
+       {% endif %}
+        {% else %}
+        {% if 'customer' in request.get_full_path %}
+        <button type="button" class="update-btn"><a href="{% url 'customer:customer_add_wishlist' product.slug %}">Add to WishList</a></button>
+        {% else %}
+         <button type="button" class="update-btn"><a href="{% url 'app:add_wishlist' product.slug %}">Add to WishList</a></button>
+         {% endif %}
         {% endif %}
     {% endif %}
   

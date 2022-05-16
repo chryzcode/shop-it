@@ -7,6 +7,7 @@ from .forms import *
 from account.forms import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from django.utils.text import slugify
 # Create your views here.
 
 def customer_register(request, slugified_store_name):
@@ -193,6 +194,22 @@ def set_default_address(request, slugified_store_name, id):
         all_customer_address.update(default=False)
     address.save()
     return redirect("customer:address_list", slugified_store_name=slugified_store_name)
+
+
+def customer_add_wishlist(request, slug):
+    user = request.user
+    product = get_object_or_404(Product, slug=slug)
+    store = get_object_or_404(Store, store_name = product.created_by)
+    product.wishlist.add(user)
+    return redirect("customer:customer_wishlist", slugified_store_name= slugify(store))
+
+
+def customer_remove_wishlist(request, slug):
+    user = request.user
+    product = get_object_or_404(Product, slug=slug)
+    store = get_object_or_404(Store, store_name = product.created_by)
+    product.wishlist.remove(user)
+    return redirect("app:product_detail", slug=product.slug, slugified_store_name= slugify(store))
 
   
 

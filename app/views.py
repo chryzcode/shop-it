@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 from cart.cart import *
 from django.http import JsonResponse
 from decimal import Decimal
-
+from django.utils.text import slugify
 # Create your views here.
 
 
@@ -138,8 +138,9 @@ def add_wishlist(request, slug):
 def remove_wishlist(request, slug):
     user = request.user
     product = get_object_or_404(Product, slug=slug)
+    store = get_object_or_404(Store, store_name= product.created_by)
     product.wishlist.remove(user)
-    return redirect("app:product_detail", product.slug)
+    return redirect("app:product_detail", slug=product.slug, slugified_store_name=slugify(store))
 
 
 def wishlist(request):
