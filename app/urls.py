@@ -24,7 +24,7 @@ urlpatterns = [
         name="a_store_all_categories",
     ),
     path(
-        "product/<slug:slug>/",
+        "<slugified_store_name>/product/<slug:slug>/",
         views.product_detail,
         name="product_detail",
     ),

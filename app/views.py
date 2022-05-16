@@ -35,7 +35,8 @@ def a_store_all_products(request):
     )
 
 
-def product_detail(request, slug):
+def product_detail(request, slug, slugified_store_name):
+    page = "product_detail"
     if request.user.is_authenticated:
         product = get_object_or_404(Product, slug=slug)
         if request.user.store_creator == True:
@@ -50,10 +51,11 @@ def product_detail(request, slug):
         category_product = Product.objects.filter(
             category=product.category, created_by=product.created_by
         ).exclude(id=product.id)[:6]
+    store = Store.objects.get(store_name=product.created_by)
     return render(
         request,
         "product/product-detail.html",
-        {"product": product, "category_product": category_product},
+        {"product": product, "category_product": category_product, "store": store, "page":page},
     )
 
 

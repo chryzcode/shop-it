@@ -30,7 +30,9 @@
   <body>
     <nav data-aos="fade-down" data-aos-duration="1500" class="nav">
       <span>
-        <a href="/" class="main-logo">{{store.store_name}}</a>
+        {% if store %}
+        <a href="{% url 'app:store' store.slugified_store_name %}" class="main-logo">{{store.store_name}}</a>
+        {% endif %}
       </span>
 
 

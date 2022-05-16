@@ -102,7 +102,7 @@ def customer_product_detail(request, slugified_store_name, slug):
         return render(
             request,
             "product/product-detail.html",
-            {"product": product, "category_product": category_product},
+            {"product": product, "category_product": category_product, 'store':store},
         )
 
 def customer_profile(request, slugified_store_name):

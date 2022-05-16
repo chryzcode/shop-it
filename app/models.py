@@ -123,6 +123,7 @@ class Product(models.Model):
             "app:product_detail",
             kwargs={
                 "slug": self.slug,
+                "slugified_store_name": slugify(self.created_by),
             },
         )
 
