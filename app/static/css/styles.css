@@ -1163,4 +1163,21 @@ th {
   color: #6b69f8;
 }
 
+.staff-stores-container {
+  width: 80%;
+  margin: 50px auto;
+}
 
+.staff-stores-container > span {
+  display: inline-block;
+  width: 250px;
+  object-fit: cover;
+  text-align: center;
+  text-decoration: none;
+  box-shadow:  0px 20px 30px 0px #ccc;
+}
+
+.staff-stores-container > span > img {
+  width: 100%;
+  display: block;
+}

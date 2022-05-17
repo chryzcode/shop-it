@@ -1,10 +1,27 @@
-{% block content %}
-<div>
-  {% for store in stores %}
-  <span>
-      <img src="{{store.store_image.url}}" alt="">
-      <a href="{% url 'account:select_store' store.slugified_store_name %}">{{store.store_name}}</a>
-    </span>
-  {% endfor %}
-</div>
-{% endblock %}
+{% load static %}<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'css/styles.css'%}" />
+    <link rel="stylesheet" href="{% static 'css/mobile-view.css'%}" />
+    <link rel="stylesheet" href="{% static 'css/desktop-view.css'%}" />
+    <title>{{request.user.full_name}} stores (staff)</title>
+  </head>
+  <body>
+    {% block content %}
+    <div>
+        <p>My Stores (staff)</p>
+      <div class="staff-stores-container">
+        {% for store in stores %}
+        <span>
+          <img src="{{store.store_image.url}}" alt="" />
+          <a href="{% url 'account:select_store' store.slugified_store_name %}">{{store.store_name}}</a>
+        </span>
+        {% endfor %}
+      </div>
+    </div>
+    {% endblock %}
+  </body>
+</html>

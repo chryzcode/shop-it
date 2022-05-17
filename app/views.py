@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404, redirect, render
-
+from django.contrib.auth import authenticate, login, logout
 from .forms import *
 from .models import *
 from account.models import *
@@ -123,6 +123,8 @@ def store_admin(request):
     return render(request, "store/store-admin.html")
 
 def store(request, slugified_store_name):
+    if request.user.is_authenticated:
+        logout(request)
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
     products = Product.objects.filter(created_by=store).order_by("-created")
     return render(request, "store/store.html", {"store": store, "products": products})

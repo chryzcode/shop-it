@@ -1,5 +1,3 @@
-from operator import add
-from re import S
 from django.shortcuts import get_object_or_404, redirect, render
 from .models import *
 from account.models import *
@@ -132,7 +130,7 @@ def customer_wishlist(request, slugified_store_name):
 def address_list(request, slugified_store_name):
     store = get_object_or_404(Store, slugified_store_name= slugified_store_name)
     customer = Customer.objects.get(email=request.user.email)
-    address_list = Address.objects.filter(customer=customer)
+    address_list = Address.objects.filter(customer=customer).order_by('-default')
     return render(request, "customer/address-list.html", {"address_list": address_list, "store": store})
 
 def create_address(request, slugified_store_name):
