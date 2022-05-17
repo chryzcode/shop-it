@@ -1,3 +1,4 @@
+from operator import add
 from re import S
 from django.shortcuts import get_object_or_404, redirect, render
 from .models import *
@@ -140,27 +141,18 @@ def create_address(request, slugified_store_name):
     default_address = Address.objects.filter(customer=customer, default= True)
     address_form = AddressForm()
     if request.method == "POST":
-        address_form = AddressForm(request.POST)
+        address_form = AddressForm(data=request.POST)
         if address_form.is_valid():
-            address_form.save(commit=False)
-            address = Address.objects.create(
-                customer = customer,
-                full_name = address_form.cleaned_data["full_name"],
-                phone = address_form.cleaned_data["phone"],
-                postcode = address_form.cleaned_data["postcode"],
-                delivery_instructions = address_form.cleaned_data["delivery_instructions"],
-                address_line = address_form.cleaned_data["address_line"],
-                address_line2 = address_form.cleaned_data["address_line2"],
-                country = address_form.cleaned_data["country"],
-                state = address_form.cleaned_data["state"],
-                city = address_form.cleaned_data["city"],
-               )
+            address_form = address_form.save(commit=False)
+            address_form.customer = customer
             if default_address:
-                address.default = False
+                address_form.default = False
+                address_form.save()
+                return redirect("customer:address_list", slugified_store_name=slugified_store_name)
             else:
-                address.default = True
-            address.save()
-            return redirect("customer:address_list", slugified_store_name=slugified_store_name)
+                address_form.default = True
+                address_form.save()
+                return redirect("customer:address_list", slugified_store_name=slugified_store_name)
     return render(request, "customer/address-create.html", {"address_form": address_form, "store": store})
 
 def edit_address(request, slugified_store_name, id):
@@ -184,15 +176,10 @@ def delete_address(request, slugified_store_name, id):
 
 def set_default_address(request, slugified_store_name, id):
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
-    customer = Customer.objects.get(email= request.user.email)
-    address = get_object_or_404(Address, id=id, customer=customer)
-    all_customer_address = Address.objects.filter(customer=customer)
-    if address.default:
-        address.default = False
-    else:
-        address.default = True
-        all_customer_address.update(default=False)
-    address.save()
+    customer = Customer.objects.get(email=request.user.email)
+    Address.objects.filter(customer=customer, default=True).update(default=False)
+    Address.objects.filter(id=id, customer=customer).update(default=True)
+    previous_url = request.META.get("HTTP_REFERER")
     return redirect("customer:address_list", slugified_store_name=slugified_store_name)
 
 
