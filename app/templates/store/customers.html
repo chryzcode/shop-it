@@ -1,0 +1,25 @@
+{% extends 'navs/store-nav.html' %} {% load static %}{% block title %}<title>
+  Shop !t - {{request.user.store_name }} Customers
+</title>
+{% endblock %} {% block content %}
+<div class="store-page-container">
+  {% include 'navs/store-side-nav.html' %}
+  <div class="store-content-container">
+    <span class="store-products-container">
+      <p>Customers</p>
+      <table class="store-products-table">
+        <tr class="table-rows">
+          <th>Name</th>
+          <th>Email</th>
+        </tr>
+        {% for customer in customers %}
+        <tr class="table-rows">
+          <td>{{ product.name }}</a></td>
+          <td>{{ product.price }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    </span>
+  </div>
+  {% endblock %}
+</div>

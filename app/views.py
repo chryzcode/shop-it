@@ -130,6 +130,12 @@ def store(request, slugified_store_name):
     return render(request, "store/store.html", {"store": store, "products": products})
 
 
+def store_customers(request, slugified_store_name):
+    store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
+    customers = store.customers.all()
+    return render(request, "store/store-customers.html", {"store": store, "customers": customers})
+
+
 def add_wishlist(request, slug):
     user = request.user
     product = get_object_or_404(Product, slug=slug)
