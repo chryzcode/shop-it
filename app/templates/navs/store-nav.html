@@ -34,9 +34,7 @@
       </span>
       <span>
         <input type="search" name="" id="" class="side-nav-search-bar" placeholder="Search for Customers, Products, orders" />
-        {% if request.user.store_creator == True%}
-        <a href="{% url "app:store" request.user.store_name_slug %}" class="store-front-btn" target="_blank" rel="noopener noreferrer">StoreFront</a>
-        {% endif %}
+        <a href="{% url "app:store" a_staff_store_store_slugified %}" class="store-front-btn" target="_blank" rel="noopener noreferrer">StoreFront</a>
       </span>
 
       <span class="nav-not-acc-sec">

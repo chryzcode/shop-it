@@ -1,4 +1,5 @@
 from .models import *
+from django.utils.text import slugify
 
 def a_staff_store_store(request):
     if request.user.is_authenticated:
@@ -8,6 +9,17 @@ def a_staff_store_store(request):
         else:
             store = store_staff.objects.get(user = request.user).store
             return {"a_staff_store_store": store}
+    else:
+        return {"a_staff_store_store": None}
+
+def a_staff_store_store_slugified(request):
+    if request.user.is_authenticated:
+        if request.user.store_creator == True:
+            return {"a_staff_store_store_slugified": slugify(request.user.store_name)}
+            
+        else:
+            store = store_staff.objects.get(user = request.user).store
+            return {"a_staff_store_store_slugified": slugify(store)}
     else:
         return {"a_staff_store_store": None}
 
