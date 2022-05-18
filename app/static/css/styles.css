@@ -1043,7 +1043,7 @@ th {
   overflow: hidden;
 }
 
-.view-store-products-grid > a:hover{
+.view-store-products-grid > a:hover {
   transform: scale(1.05);
   transition: all 1.01s ease-in-out;
 }
@@ -1054,9 +1054,7 @@ th {
   width: 300px;
   height: 250px;
   border-radius: 8px;
-
 }
-
 
 .view-store-products-grid > a > span > img:nth-child(1) {
   position: absolute;
@@ -1089,7 +1087,6 @@ th {
   }
 }
 
-
 @keyframes image-animation {
   100% {
     margin-left: 100%;
@@ -1115,7 +1112,7 @@ th {
   margin-top: 15px;
 }
 
-.view-store-products-grid > a > div >  div {
+.view-store-products-grid > a > div > div {
   text-align: center;
   margin-top: 10px;
 }
@@ -1164,20 +1161,36 @@ th {
 }
 
 .staff-stores-container {
-  width: 80%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-row: 20px;
   margin: 50px auto;
 }
 
-.staff-stores-container > span {
-  display: inline-block;
-  width: 250px;
-  object-fit: cover;
+.heading {
+  font-size: 25px;
+  font-weight: 500;
   text-align: center;
-  text-decoration: none;
-  box-shadow:  0px 20px 30px 0px #ccc;
+  color: #6b69f8;
+  margin-top: 70px;
 }
 
-.staff-stores-container > span > img {
+.staff-stores-container > a > img {
   width: 100%;
   display: block;
 }
+
+.staff-stores-container > a {
+  display: inline-block;
+  object-fit: cover;
+  text-align: center;
+  text-decoration: none;
+  box-shadow: 0px 20px 30px 0px #ccc;
+  margin: 0 20px;
+  padding: 20px;
+  color: #6b69f8;
+  font-size: 18px;
+}
+
+
+

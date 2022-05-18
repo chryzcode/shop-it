@@ -11,14 +11,14 @@
   </head>
   <body>
     {% block content %}
-    <div>
-        <p>My Stores (staff)</p>
+    <div class="store-page-container">
+      <p class="heading">My Stores (staff)</p>
       <div class="staff-stores-container">
         {% for store in stores %}
-        <span>
+        <a href="{% url 'account:select_store' store.slugified_store_name %}">
           <img src="{{store.store_image.url}}" alt="" />
-          <a href="{% url 'account:select_store' store.slugified_store_name %}">{{store.store_name}}</a>
-        </span>
+          <p>{{store.store_name}}</p>
+        </a>
         {% endfor %}
       </div>
     </div>
