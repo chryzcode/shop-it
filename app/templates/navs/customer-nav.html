@@ -58,10 +58,13 @@
           </a>
         </span>
         {% if request.user.is_authenticated %}
+        {% if request.user in store.customers %}
         <li><a href="{% url 'customer:customer_profile' store.slugified_store_name %}" id="a-nav-link">My Account</a></li>
         {% else %}
+      
         <li><a href="{% url 'customer:customer_login' store.slugified_store_name %}" id="a-nav-link">Sign In</a></li>
         <li><a href="{% url 'customer:customer_register' store.slugified_store_name %}" id="a-nav-link">Sign Up</a></li>
+        {% endif %}
         {% endif %}
       </ul>
 
