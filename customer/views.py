@@ -1,3 +1,4 @@
+from cmath import log
 from django.shortcuts import get_object_or_404, redirect, render
 from .models import *
 from account.models import *
@@ -107,19 +108,26 @@ def customer_product_detail(request, slugified_store_name, slug):
 
 def customer_profile(request, slugified_store_name):
     store = get_object_or_404(Store, slugified_store_name= slugified_store_name)
-    account = request.user
-    userprofileform = UserProfileForm(instance=account)
-    if request.method == "POST":
-        userprofileform = UserProfileForm(request.POST, request.FILES, instance=account)
-        if userprofileform.is_valid():
-            userprofileform.save()
-            return redirect("/")
+    if request.user in store.customers.all():
+        account = Customer.objects.get(store=store.store_name, email=request.user)
+        if account:
+            userprofileform = UserProfileForm(instance=account)
+            if request.method == "POST":
+                userprofileform = UserProfileForm(request.POST, request.FILES, instance=account)
+                if userprofileform.is_valid():
+                    userprofileform.save()
+                    return redirect("/")
 
-    return render(
-        request,
-        "customer/customer-profile.html",
-        {"userprofileform": userprofileform, "account": account, 'store':store},
-    )
+            return render(
+                request,
+                "customer/customer-profile.html",
+                {"userprofileform": userprofileform, "account": account, 'store':store},
+            )
+        else:
+            return redirect("customer:customer_login", slugified_store_name=slugified_store_name)
+    else:
+        logout(request)
+        return redirect("customer:customer_login", slugified_store_name=slugified_store_name)
 
 def customer_wishlist(request, slugified_store_name):
     store = get_object_or_404(Store, slugified_store_name= slugified_store_name)
