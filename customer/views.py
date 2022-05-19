@@ -44,6 +44,8 @@ def customer_login(request, slugified_store_name):
     if request.user.is_authenticated:
         logout(request)
         return redirect("customer:customer_login", slugified_store_name=slugified_store_name)
+        
+
     if request.method == "POST":
         email = request.POST.get("email")
         password = request.POST.get("password")
