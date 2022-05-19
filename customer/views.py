@@ -11,6 +11,8 @@ from django.utils.text import slugify
 # Create your views here.
 
 def customer_register(request, slugified_store_name):
+    if request.user.is_authenticated:
+        logout(request)
     form = CustomerForm
     store = Store.objects.get(slugified_store_name=slugified_store_name)
     slugified_store_name = store.slugified_store_name
@@ -33,6 +35,7 @@ def customer_register(request, slugified_store_name):
                 )
                 user.set_password(form.cleaned_data["password"])
                 user.save()
+                store.customers.add(user)
                 customer.save()
                 return redirect("customer:customer_login", slugified_store_name)
     return render(request, "customer/register.html", {"store": store, "slugified_store_name": slugified_store_name, "form": form})
@@ -44,7 +47,7 @@ def customer_login(request, slugified_store_name):
     if request.user.is_authenticated:
         logout(request)
         return redirect("customer:customer_login", slugified_store_name=slugified_store_name)
-        
+
 
     if request.method == "POST":
         email = request.POST.get("email")
