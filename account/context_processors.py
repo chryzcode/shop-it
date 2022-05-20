@@ -4,31 +4,24 @@ from django.utils.text import slugify
 def a_staff_store_store(request):
     if request.user.is_authenticated:
         if request.user.store_staff == True:
-            if request.user.store_creator == True:
-                return {"a_staff_store_store": request.user.store_name}
+            store = store_staff.objects.get(user = request.user).store
+            return {"a_staff_store_store": store}
+        if request.user.store_creator == True:
+            return {"a_staff_store_store": request.user.store_name}
+    return {"a_staff_store_store": None}
                 
-            else:
-                store = store_staff.objects.get(user = request.user).store
-                return {"a_staff_store_store": store}
-        else:
-            return {"a_staff_store_store": None}
-
-    else:
-        return {"a_staff_store_store": None}
+  
 
 def a_staff_store_store_slugified(request):
     if request.user.is_authenticated:
         if request.user.store_creator == True:
-            if request.user.store_staff == True:
-                return {"a_staff_store_store_slugified": slugify(request.user.store_name)}
-                
-            else:
-                store = store_staff.objects.get(user = request.user).store
-                return {"a_staff_store_store_slugified": slugify(store)}
-        else:
-            return {"a_staff_store_store": None}
-    else:
-        return {"a_staff_store_store": None}
+            return {"a_staff_store_store_slugified": slugify(request.user.store_name)}
+
+        if request.user.store_staff == True:
+            store = store_staff.objects.get(user = request.user).store
+            return {"a_staff_store_store_slugified": slugify(store)}
+
+    return {"a_staff_store_store_slugified": None}
 
 def multiple_store_staff(request):
     if request.user.is_authenticated:
@@ -40,5 +33,5 @@ def multiple_store_staff(request):
                 return {"multiple_store_staff": None}
         else:
             return {"multiple_store_staff": None}
-    else:
-        return {"multiple_store_staff": None}
+  
+    return {"multiple_store_staff": None}
