@@ -20,7 +20,7 @@ class RegistrationForm(ModelForm):
         store_name = self.cleaned_data["store_name"].lower()
         r = User.objects.filter(store_name=store_name)
         if r.count():
-            raise forms.ValidationError("Username already exists")
+            raise forms.ValidationError("Store already exists")
         return store_name
 
     def clean_password2(self):

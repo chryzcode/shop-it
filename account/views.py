@@ -29,11 +29,13 @@ def account_login(request):
                         login(request, user)
                         return redirect("/")
 
-                    if user.store_creator == False:
+                    if user.store_staff == True:
                         login(request, user)
                         return redirect("account:staff_stores")
-                   
-                                           
+
+                    if user.store_creator == False and user.store_staff == False:
+                        messages.error(request, "You are not a store staff or store creator")  
+
                 else:
                     messages.error(request, "Password is incorrect")
             else:
