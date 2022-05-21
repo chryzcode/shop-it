@@ -1,0 +1,27 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'css/styles.css'%}" />
+    <link rel="stylesheet" href="{% static 'css/mobile-view.css'%}" />
+    <link rel="stylesheet" href="{% static 'css/desktop-view.css'%}" />
+    <title>{{request.user.full_name}} stores (staff)</title>
+  </head>
+  <body>
+    {% block content %}
+    <div class="store-page-container">
+      <p class="heading">My Stores (customer)</p>
+      <div class="staff-stores-container">
+        {% for store in stores %}
+        <a href="{% url 'app:store' store.slugified_store_name %}">
+          <img src="{{store.store_image.url}}" alt="" />
+          <p>{{store.store_name}}</p>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+    {% endblock %}
+  </body>
+</html>

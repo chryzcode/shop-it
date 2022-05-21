@@ -44,6 +44,9 @@
         {% if request.user.store_staff == True %}
         <li><a href="{% url "app:store_admin" %}" id="a-nav-link">Store</a></li>
         {% endif %}
+        {% if request.user.store_creator == False  and  request.user.store_staff == False %}
+        <li><a href="{% url 'customer:customer_stores' %}">Stores</a></li>
+        {% endif %}
         {% else %}
         <li><a href="{% url 'account:login' %}" id="a-nav-link">Sign In</a></li>
         <li><a href="{% url 'account:register' %}" id="a-nav-link">Sign Up</a></li>

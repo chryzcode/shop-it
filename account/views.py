@@ -34,7 +34,9 @@ def account_login(request):
                         return redirect("account:staff_stores")
 
                     if user.store_creator == False and user.store_staff == False:
-                        messages.error(request, "You are not a store staff or store creator")  
+                        login(request, user)
+                        return redirect("/")
+                        # messages.error(request, "You are not a store staff or store creator")  
 
                 else:
                     messages.error(request, "Password is incorrect")

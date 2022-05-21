@@ -209,6 +209,12 @@ def customer_remove_wishlist(request, slug):
     product.wishlist.remove(user)
     return redirect("app:product_detail", slug=product.slug, slugified_store_name= slugify(store))
 
+def customer_stores(request):
+    customer = User.objects.get(email=request.user.email, store_creator=False, store_staff=False)
+    if customer:
+        stores = Store.objects.filter(customers=customer)
+        return render(request, "customer/customer-stores.html", {"stores": stores})
+
   
 
 
