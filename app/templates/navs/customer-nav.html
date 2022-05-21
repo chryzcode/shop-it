@@ -41,7 +41,7 @@
         <input type="search" name="" id="" class="side-nav-search-bar" placeholder="Search for Products" />
 
         <span class="cart-icon-container">
-          <a href="{% url 'cart:cart_summary' %}" class="cart-btn">
+          <a href="{% url 'cart:cart_summary' store.slugified_store_name %}" class="cart-btn">
             {% with total_qty=cart|length %}
             <span id="product-cart-qty">
               <span class="cart-qty-num">

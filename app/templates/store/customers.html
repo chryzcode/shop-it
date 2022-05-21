@@ -6,7 +6,13 @@
   {% include 'navs/store-side-nav.html' %}
   <div class="store-content-container">
     <span class="store-products-container">
-      <p>Customers</p>
+      <p>
+        {{customers.count}}{% if customers.count > 1 %}
+        Customers
+        {% else %}
+        customer
+        {% endif %}
+      </p>
       <table class="store-products-table">
         <tr class="table-rows">
           <th>Name</th>
@@ -14,8 +20,8 @@
         </tr>
         {% for customer in customers %}
         <tr class="table-rows">
-          <td>{{ product.name }}</a></td>
-          <td>{{ product.price }}</td>
+          <td>{{ customer.full_name }}</a></td>
+          <td>{{ customer.email }}</td>
         </tr>
         {% endfor %}
       </table>

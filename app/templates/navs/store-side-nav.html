@@ -3,7 +3,7 @@
       <p>{{a_staff_store_store |capfirst }}</p>
       <ul>
         <li><a href="">My Store</a></li>
-        <li><a href="">Customers</a></li>
+        <li><a href="{% url "app:all_customers" %}">Customers</a></li>
         <li><a href="">Orders</a></li>
         <li><a href="{% url 'app:wishlist' %}">WishList</a></li>
         <li><a href="">Transanction History</a></li>

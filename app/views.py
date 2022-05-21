@@ -298,5 +298,14 @@ def delete_coupon(request, pk):
         return redirect("app:all_coupons")
     else:
         return redirect("app:all_coupons")
+
+def all_customers(request):
+    if request.user.store_creator == True:
+        store = request.user.store_name
+    if request.user.store_staff == True:
+        store = store_staff.objects.get(user = request.user).store
+    
+    customers = Store.objects.get(store_name=store).customers.all()
+    return render(request, "store/customers.html", {"customers":customers})
                
 
