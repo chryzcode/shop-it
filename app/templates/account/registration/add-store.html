@@ -1,0 +1,21 @@
+{% extends 'navs/base.html' %} {% load static %} {% block title %} <title>Shop!t - Create Store</title> {% endblock %} {%block content %}
+<div class="auth-form-container">
+  <form action="" method="post">
+    {% csrf_token %}
+    <div class="above-create-form">
+      <p>Create Store</p>
+    </div>
+    {% if error %}
+    <p class="login-errors">{{error}}</p>
+    {% endif %}
+    <div class="input-container">
+      <label for="store_name">Store<span class="form-required">*</span></label>
+      <p>{{ form.store_name.errors }}</p>
+        <div>{{ form.store_name }}</div>
+    </div>
+    <button class="form-btn" type="submit">Create</button>
+  </form>
+
+</div>
+
+{% endblock %}

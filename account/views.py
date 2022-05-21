@@ -7,7 +7,7 @@ from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 
-from .forms import RegistrationForm, UserProfileForm, StoreForm, StoreStaffForm, ExistingStoreStaffForm
+from .forms import *
 from .models import User, store_staff, Store
 from .tokens import account_activation_token
 
@@ -247,5 +247,20 @@ def select_store(request, slugified_store_name):
     if request.user in store.staffs.all():
         store_staff.objects.filter(email = request.user.email).update(store = store.store_name)
         return redirect("/")
+
+def create_store(request):
+    if request.user.store_creator == False and request.user.store_staff == False:
+        form = AddStoreForm
+        user = request.user
+        if request.method == "POST":
+            form = AddStoreForm(request.POST, request.FILES)
+            if form.is_valid():
+                store_name = form.cleaned_data["store_name"]
+                user.store_name = store_name
+                user.store_creator = True
+                user.save()
+                return redirect("/")
+    return render(request, "account/registration/add-store.html", {"form": form})
+    
 
 

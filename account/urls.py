@@ -61,4 +61,5 @@ urlpatterns = [
     path("staff-stores/", views.staff_stores, name="staff_stores"),
     path("store/<slugified_store_name>/", views.select_store, name="select_store"),
     path("add-staff/user-exist/", views.existing_store_staff, name="existing_store_staff"),
+    path("create-store/", views.create_store, name="create_store"),
 ]
