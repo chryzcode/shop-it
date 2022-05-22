@@ -1,202 +1,202 @@
-from django import forms
-from django.contrib.auth.forms import PasswordResetForm, SetPasswordForm
-from django.forms import ModelForm
-from django.utils.text import slugify
+# from django import forms
+# from django.contrib.auth.forms import PasswordResetForm, SetPasswordForm
+# from django.forms import ModelForm
+# from django.utils.text import slugify
 
-from .models import User, store_staff, Store
+# from .models import User, store_staff, Store
 
 
-class RegistrationForm(ModelForm):
-    check = forms.BooleanField(required=True)
-    password = forms.CharField()
-    password2 = forms.CharField()
+# class RegistrationForm(ModelForm):
+#     check = forms.BooleanField(required=True)
+#     password = forms.CharField()
+#     password2 = forms.CharField()
 
-    class Meta:
-        model = User
-        fields = ["email", "store_name", "full_name", "check"]
+#     class Meta:
+#         model = User
+#         fields = ["email", "store_name", "full_name", "check"]
 
-    def clean_storename(self):
-        store_name = self.cleaned_data["store_name"].lower()
-        r = User.objects.filter(store_name=store_name)
-        if r.count():
-            raise forms.ValidationError("Store already exists")
-        return store_name
+#     def clean_storename(self):
+#         store_name = self.cleaned_data["store_name"].lower()
+#         r = User.objects.filter(store_name=store_name)
+#         if r.count():
+#             raise forms.ValidationError("Store already exists")
+#         return store_name
 
-    def clean_password2(self):
-        cd = self.cleaned_data
-        if cd["password"] != cd["password2"]:
-            raise forms.ValidationError("Passwords do not match.")
-        return cd["password2"]
+#     def clean_password2(self):
+#         cd = self.cleaned_data
+#         if cd["password"] != cd["password2"]:
+#             raise forms.ValidationError("Passwords do not match.")
+#         return cd["password2"]
 
-    def clean_email(self):
-        email = self.cleaned_data["email"]
-        if User.objects.filter(email=email).exists():
-            raise forms.ValidationError("Email is already taken")
-        return email
+#     def clean_email(self):
+#         email = self.cleaned_data["email"]
+#         if User.objects.filter(email=email).exists():
+#             raise forms.ValidationError("Email is already taken")
+#         return email
 
-    def clean_store_name(self):
-        store_name = self.cleaned_data["store_name"]
-        slugified_store_name = slugify(store_name)
-        if len(store_name) == 0:
-            raise forms.ValidationError("Store name cannot be empty")
+#     def clean_store_name(self):
+#         store_name = self.cleaned_data["store_name"]
+#         slugified_store_name = slugify(store_name)
+#         if len(store_name) == 0:
+#             raise forms.ValidationError("Store name cannot be empty")
 
-        if Store.objects.filter(slugified_store_name=slugified_store_name).exists():
-            raise forms.ValidationError("Store name is already taken")
+#         if Store.objects.filter(slugified_store_name=slugified_store_name).exists():
+#             raise forms.ValidationError("Store name is already taken")
         
-        return store_name
+#         return store_name
 
-class StoreForm(ModelForm):
-    class Meta:
-        model = Store
-        fields = [
-            "store_name", 
-            "store_image",
-            "store_description",
-            "instagram",
-            "twitter",
-            "facebook",
-        ]
+# class StoreForm(ModelForm):
+#     class Meta:
+#         model = Store
+#         fields = [
+#             "store_name", 
+#             "store_image",
+#             "store_description",
+#             "instagram",
+#             "twitter",
+#             "facebook",
+#         ]
 
-        widgets = {
-            "store_name": forms.TextInput(
-                attrs={"class": "form-control", "placeholder": "The Shop!t Store"}
-            ),
-            "store_image": forms.FileInput(attrs={"class": "form-control"}),
-            "store_description": forms.Textarea(attrs={"class": "form-control", "placeholder":"This is the Shop!t store for your day to day online business......"}),
-            "instagram": forms.TextInput(
-                attrs={
-                    "class": "form-control",
-                    "placeholder": "https://instagram.com/*******",
-                }
-            ),
-            "twitter": forms.TextInput(
-                attrs={
-                    "class": "form-control",
-                    "placeholder": "https://twitter.com/*******",
-                }
-            ),
-            "facebook": forms.TextInput(
-                attrs={
-                    "class": "form-control",
-                    "placeholder": "https://facebook.com/*******",
-                }
-            ),
-        }
+#         widgets = {
+#             "store_name": forms.TextInput(
+#                 attrs={"class": "form-control", "placeholder": "The Shop!t Store"}
+#             ),
+#             "store_image": forms.FileInput(attrs={"class": "form-control"}),
+#             "store_description": forms.Textarea(attrs={"class": "form-control", "placeholder":"This is the Shop!t store for your day to day online business......"}),
+#             "instagram": forms.TextInput(
+#                 attrs={
+#                     "class": "form-control",
+#                     "placeholder": "https://instagram.com/*******",
+#                 }
+#             ),
+#             "twitter": forms.TextInput(
+#                 attrs={
+#                     "class": "form-control",
+#                     "placeholder": "https://twitter.com/*******",
+#                 }
+#             ),
+#             "facebook": forms.TextInput(
+#                 attrs={
+#                     "class": "form-control",
+#                     "placeholder": "https://facebook.com/*******",
+#                 }
+#             ),
+#         }
 
-class UserProfileForm(ModelForm):
-    class Meta:
-        model = User
-        fields = [
-            "full_name",
-            "avatar",
-            "phone_number",
-        ]
+# class UserProfileForm(ModelForm):
+#     class Meta:
+#         model = User
+#         fields = [
+#             "full_name",
+#             "avatar",
+#             "phone_number",
+#         ]
 
-        widgets = {
-            "full_name": forms.TextInput(
-                attrs={"class": "form-control", "placeholder": "John Doe"}
-            ),
-            "avatar": forms.FileInput(attrs={"class": "form-control"}),
-            "phone_number": forms.TextInput(
-                attrs={"class": "form-control", "placeholder": "+1 97904095"}
-            ),
-        }
+#         widgets = {
+#             "full_name": forms.TextInput(
+#                 attrs={"class": "form-control", "placeholder": "John Doe"}
+#             ),
+#             "avatar": forms.FileInput(attrs={"class": "form-control"}),
+#             "phone_number": forms.TextInput(
+#                 attrs={"class": "form-control", "placeholder": "+1 97904095"}
+#             ),
+#         }
 
-    def __init__(self, *args, **kwargs):
-        super(UserProfileForm, self).__init__(*args, **kwargs)
-
-
-class PasswordResetForm(PasswordResetForm):
-    email = forms.CharField()
-
-    def clean_email(self):
-        email = self.cleaned_data["email"]
-        user = User.objects.filter(email=email)
-        if not user:
-            raise forms.ValidationError("Account not found")
-        return email
+#     def __init__(self, *args, **kwargs):
+#         super(UserProfileForm, self).__init__(*args, **kwargs)
 
 
-class PasswordResetConfirmForm(SetPasswordForm):
-    new_password1 = forms.CharField()
-    new_password2 = forms.CharField()
+# class PasswordResetForm(PasswordResetForm):
+#     email = forms.CharField()
 
-    def clean_password2(self):
-        cd = self.cleaned_data
-        if cd["new_password1"] != cd["new_password2"]:
-            raise forms.ValidationError("Passwords do not match.")
-        return cd["new_password2"]
+#     def clean_email(self):
+#         email = self.cleaned_data["email"]
+#         user = User.objects.filter(email=email)
+#         if not user:
+#             raise forms.ValidationError("Account not found")
+#         return email
 
-class StoreStaffForm(ModelForm):
-    class Meta:
-        model = store_staff
-        fields = ["full_name", "email", "phone_number", "password", "password2"]
 
-        widgets = {
-            "full_name": forms.TextInput(attrs={"class": "form-control", "placeholder": "John Doe"}),
-            "email": forms.TextInput(attrs={"class": "form-control", "placeholder": "johndoe@gmail.com"}),
-            "phone_number": forms.TextInput(attrs={"class": "form-control", "placeholder": "+1 97904095"}),
-            "password": forms.PasswordInput(attrs={"class": "form-control"}),
-            "password2": forms.PasswordInput(attrs={"class": "form-control"}),
-        }
+# class PasswordResetConfirmForm(SetPasswordForm):
+#     new_password1 = forms.CharField()
+#     new_password2 = forms.CharField()
 
-    def clean_email(self):
-        username = self.cleaned_data["email"]
-        r = store_staff.objects.filter(email=email)
-        s = User.objects.filter(email=email, store_creator=True).exists()
-        if r.count():
-            raise forms.ValidationError("Email already exists") 
-        if s:
-            raise forms.ValidationError("Store Creator can't be staff")
-        return username
+#     def clean_password2(self):
+#         cd = self.cleaned_data
+#         if cd["new_password1"] != cd["new_password2"]:
+#             raise forms.ValidationError("Passwords do not match.")
+#         return cd["new_password2"]
 
-    def clean_password2(self):
-        cd = self.cleaned_data
-        if cd["password"] != cd["password2"]:
-            raise forms.ValidationError("Passwords do not match.")
-        return cd["password2"]
+# class StoreStaffForm(ModelForm):
+#     class Meta:
+#         model = store_staff
+#         fields = ["full_name", "email", "phone_number", "password", "password2"]
 
-    def __init__(self, *args, **kwargs):
-        super(StoreStaffForm, self).__init__(*args, **kwargs)
+#         widgets = {
+#             "full_name": forms.TextInput(attrs={"class": "form-control", "placeholder": "John Doe"}),
+#             "email": forms.TextInput(attrs={"class": "form-control", "placeholder": "johndoe@gmail.com"}),
+#             "phone_number": forms.TextInput(attrs={"class": "form-control", "placeholder": "+1 97904095"}),
+#             "password": forms.PasswordInput(attrs={"class": "form-control"}),
+#             "password2": forms.PasswordInput(attrs={"class": "form-control"}),
+#         }
 
-class ExistingStoreStaffForm(ModelForm):
-    class Meta:
-        model = store_staff
-        fields = ["email"]
+#     def clean_email(self):
+#         email = self.cleaned_data["email"]
+#         r = store_staff.objects.filter(email=email)
+#         s = User.objects.filter(email=email, store_creator=True).exists()
+#         if r.count():
+#             raise forms.ValidationError("Email already exists") 
+#         if s:
+#             raise forms.ValidationError("Store Creator can't be staff")
+#         return email
 
-        widgets = {
-            "email": forms.TextInput(attrs={"class": "form-control", "placeholder": "johndoe@gmailcom"}),
-        }
+#     def clean_password2(self):
+#         cd = self.cleaned_data
+#         if cd["password"] != cd["password2"]:
+#             raise forms.ValidationError("Passwords do not match.")
+#         return cd["password2"]
 
-    def clean_email(self):
-        username = self.cleaned_data["email"]
-        r = store_staff.objects.filter(email=email)
-        s = User.objects.filter(email=email, store_creator=True).exists()
-        if r.count():
-            raise forms.ValidationError("Email already exists") 
-        if s:
-            raise forms.ValidationError("Store Creator can't be staff")
-        return username
+#     def __init__(self, *args, **kwargs):
+#         super(StoreStaffForm, self).__init__(*args, **kwargs)
 
-    def __init__(self, *args, **kwargs):
-        super(ExistingStoreStaffForm, self).__init__(*args, **kwargs)
+# class ExistingStoreStaffForm(ModelForm):
+#     class Meta:
+#         model = store_staff
+#         fields = ["email"]
 
-class AddStoreForm(ModelForm):
-    class Meta:
-        model = User
-        fields = ["store_name"]
+#         widgets = {
+#             "email": forms.TextInput(attrs={"class": "form-control", "placeholder": "johndoe@gmailcom"}),
+#         }
 
-        widgets = {
-            "store_name": forms.TextInput(attrs={"class": "form-control", "placeholder": "The Shop!t Store"}),
-        }
+#     def clean_email(self):
+#         email = self.cleaned_data["email"]
+#         r = store_staff.objects.filter(email=email)
+#         s = User.objects.filter(email=email, store_creator=True).exists()
+#         if r.count():
+#             raise forms.ValidationError("Email already exists") 
+#         if s:
+#             raise forms.ValidationError("Store Creator can't be staff")
+#         return email
 
-    def clean_store_name(self):
-        store_name = self.cleaned_data["store_name"]
-        slugified_store_name = slugify(store_name)
-        if len(store_name) == 0:
-            raise forms.ValidationError("Store name cannot be empty")
+#     def __init__(self, *args, **kwargs):
+#         super(ExistingStoreStaffForm, self).__init__(*args, **kwargs)
 
-        if Store.objects.filter(slugified_store_name=slugified_store_name).exists():
-            raise forms.ValidationError("Store name is already taken")
+# class AddStoreForm(ModelForm):
+#     class Meta:
+#         model = User
+#         fields = ["store_name"]
+
+#         widgets = {
+#             "store_name": forms.TextInput(attrs={"class": "form-control", "placeholder": "The Shop!t Store"}),
+#         }
+
+#     def clean_store_name(self):
+#         store_name = self.cleaned_data["store_name"]
+#         slugified_store_name = slugify(store_name)
+#         if len(store_name) == 0:
+#             raise forms.ValidationError("Store name cannot be empty")
+
+#         if Store.objects.filter(slugified_store_name=slugified_store_name).exists():
+#             raise forms.ValidationError("Store name is already taken")
         
-        return store_name
+#         return store_name
