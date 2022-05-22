@@ -72,7 +72,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                # "cart.context_processors.cart",
+                "cart.context_processors.cart",
                 "account.context_processors.a_staff_store_store",
                 "account.context_processors.multiple_store_staff",
                 "account.context_processors.a_staff_store_store_slugified",
