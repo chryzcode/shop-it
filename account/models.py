@@ -31,10 +31,10 @@ class CustomAccountManager(BaseUserManager):
         user = self.model(email=email, store_name=store_name, **other_fields)
         user.set_password(password)
         user.save()
-        # store = Store.objects.create(
-        #         owner = user,
-        #         store_name = store_name,
-        #     )
+        store = Store.objects.create(
+                owner = user,
+                store_name = store_name,
+            )
         return user
 
 
@@ -51,7 +51,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     facebook = models.CharField(max_length=100, blank=True)
     instagram = models.CharField(max_length=100, blank=True)
     twitter = models.CharField(max_length=100, blank=True)
-    # store_name = models.CharField(max_length=150, blank=True, null= True)
+    store_name = models.CharField(max_length=150, blank=True, null= True)
     store_creator = models.BooleanField(default=True)
     store_staff = models.BooleanField(default=False)
 
@@ -77,45 +77,45 @@ class User(AbstractBaseUser, PermissionsMixin):
     def store_name_slug(self):
         return slugify(self.store_name)
 
-# class Store(models.Model):
-#     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="store_owner")
-#     store_name = models.CharField(max_length=150, unique=True)
-#     slugified_store_name = models.SlugField(max_length=255, unique=True)
-#     store_description = models.TextField(max_length=500, blank=True)
-#     store_image = models.ImageField(upload_to="store-images/", default="store-images/default.jpg")
-#     staffs =  models.ManyToManyField(User, related_name="store_staffs", blank=True)
-#     customers = models.ManyToManyField(User, related_name="store_customers", blank=True)
+class Store(models.Model):
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="store_owner")
+    store_name = models.CharField(max_length=150, unique=True)
+    slugified_store_name = models.SlugField(max_length=255, unique=True)
+    store_description = models.TextField(max_length=500, blank=True)
+    store_image = models.ImageField(upload_to="store-images/", default="store-images/default.jpg")
+    staffs =  models.ManyToManyField(User, related_name="store_staffs", blank=True)
+    customers = models.ManyToManyField(User, related_name="store_customers", blank=True)
 
 
-#     class Meta:
-#         verbose_name = "Store"
-#         verbose_name_plural = "Stores"
+    class Meta:
+        verbose_name = "Store"
+        verbose_name_plural = "Stores"
 
-#     def __str__(self):
-#         return self.store_name
+    def __str__(self):
+        return self.store_name
 
-# class store_staff(models.Model):
-#     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user")
-#     full_name = models.CharField(max_length=300)
-#     email = models.EmailField(_("email"))
-#     avatar = models.ImageField(upload_to="user-profile-images/", null=True, blank=True)
-#     is_active = models.BooleanField(default=True)
-#     phone_number = models.CharField(max_length=15, blank=True)
-#     created = models.DateTimeField(auto_now_add=True)
-#     updated = models.DateTimeField(auto_now=True)
-#     password = models.CharField(max_length=100)
-#     password2 = models.CharField(max_length=100)
+class store_staff(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user")
+    full_name = models.CharField(max_length=300)
+    email = models.EmailField(_("email"))
+    avatar = models.ImageField(upload_to="user-profile-images/", null=True, blank=True)
+    is_active = models.BooleanField(default=True)
+    phone_number = models.CharField(max_length=15, blank=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    password = models.CharField(max_length=100)
+    password2 = models.CharField(max_length=100)
 
-#      #choices field for all the store
-#     store_choices = (
-#        Store.objects.all().values_list('store_name', 'store_name')
-#     )
-#     store= models.CharField(max_length=150, choices=store_choices)
+     #choices field for all the store
+    store_choices = (
+       Store.objects.all().values_list('store_name', 'store_name')
+    )
+    store= models.CharField(max_length=150, choices=store_choices)
 
-#     class Meta:
-#         verbose_name = "Store Staff"
-#         verbose_name_plural = " Store Staffs"
+    class Meta:
+        verbose_name = "Store Staff"
+        verbose_name_plural = " Store Staffs"
 
-#     def __str__(self):
-#         return self.full_name
+    def __str__(self):
+        return self.full_name
 
