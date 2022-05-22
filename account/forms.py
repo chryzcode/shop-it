@@ -52,6 +52,9 @@ class StoreForm(ModelForm):
             "store_name", 
             "store_image",
             "store_description",
+            "instagram",
+            "twitter",
+            "facebook",
         ]
 
         widgets = {
@@ -60,33 +63,6 @@ class StoreForm(ModelForm):
             ),
             "store_image": forms.FileInput(attrs={"class": "form-control"}),
             "store_description": forms.Textarea(attrs={"class": "form-control", "placeholder":"This is the Shop!t store for your day to day online business......"}),
-        }
-
-class UserProfileForm(ModelForm):
-    class Meta:
-        model = User
-        fields = [
-            "full_name",
-            "avatar",
-            "instagram",
-            "twitter",
-            "facebook",
-            "phone_number",
-        ]
-
-        widgets = {
-            "full_name": forms.TextInput(
-                attrs={"class": "form-control", "placeholder": "John Doe"}
-            ),
-            "avatar": forms.FileInput(attrs={"class": "form-control"}),
-            # 'country': forms.Select(attrs={'class': 'form-control'}),
-            # 'post_code': forms.TextInput(attrs={'class': 'form-control', 'placeholder':'256785'}),
-            "phone_number": forms.TextInput(
-                attrs={"class": "form-control", "placeholder": "+1 97904095"}
-            ),
-            # 'address_line_1': forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Block 235 Washington DC'}),
-            # 'address_line_2': forms.TextInput(attrs={'class': 'form-control', 'placeholder':''}),
-            # 'town_city': forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Texas'}),
             "instagram": forms.TextInput(
                 attrs={
                     "class": "form-control",
@@ -104,6 +80,25 @@ class UserProfileForm(ModelForm):
                     "class": "form-control",
                     "placeholder": "https://facebook.com/*******",
                 }
+            ),
+        }
+
+class UserProfileForm(ModelForm):
+    class Meta:
+        model = User
+        fields = [
+            "full_name",
+            "avatar",
+            "phone_number",
+        ]
+
+        widgets = {
+            "full_name": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "John Doe"}
+            ),
+            "avatar": forms.FileInput(attrs={"class": "form-control"}),
+            "phone_number": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "+1 97904095"}
             ),
         }
 
