@@ -48,9 +48,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    facebook = models.CharField(max_length=100, blank=True)
-    instagram = models.CharField(max_length=100, blank=True)
-    twitter = models.CharField(max_length=100, blank=True)
     store_name = models.CharField(max_length=150, blank=True, null= True)
     store_creator = models.BooleanField(default=True)
     store_staff = models.BooleanField(default=False)
@@ -85,6 +82,9 @@ class Store(models.Model):
     store_image = models.ImageField(upload_to="store-images/", default="store-images/default.jpg")
     staffs =  models.ManyToManyField(User, related_name="store_staffs", blank=True)
     customers = models.ManyToManyField(User, related_name="store_customers", blank=True)
+    facebook = models.CharField(max_length=100, blank=True)
+    instagram = models.CharField(max_length=100, blank=True)
+    twitter = models.CharField(max_length=100, blank=True)
 
 
     class Meta:
