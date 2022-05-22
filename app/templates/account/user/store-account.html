@@ -33,19 +33,34 @@
           <p>{{ storeform.store_description.errors }}</p>
           {{storeform.store_description}}
         </div>
-      </div>
 
-      
+        <div class="acc-form-seg">
+          <p>Socials</p>
+          <div class="input-container">
+            <label for="twitter">Twitter</label>
+            <p>{{ storeform.twitter.errors }}</p>
+            <div>{{ storeform.twitter }}</div>
+          </div>
+
+          <div class="input-container">
+            <label for="instagram">Instagram</label>
+            <p>{{ storeform.instagram.errors }}</p>
+            <div>{{ storeform.instagram }}</div>
+          </div>
+
+          <div class="input-container">
+            <label for="facebook">Facebook</label>
+            <p>{{ storeform.facebook.errors }}</p>
+            <div>{{ storeform.facebook }}</div>
+          </div>
+        </div>
+      </div>
 
       <div class="form-btn-container">
         <button class="form-btn" type="submit">Update</button>
       </div>
     </form>
 
-
-    <!-- <div class="delete-btn-container">
-      <a class="delete-btn" href="{% url 'account:delete_account' %}">Delete Account</a>
-    </div> -->
   </div>
 </div>
 

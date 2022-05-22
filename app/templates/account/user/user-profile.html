@@ -31,63 +31,7 @@
         </div>
       </div>
 
-      {% comment %}
-      <div class="acc-form-seg">
-        <p>Location and Contact</p>
-        <div class="input-container">
-          <label for="country">Country</label>
-          <p>{{ userprofileform.country.errors }}</p>
-          <div>{{ userprofileform.country }}</div>
-        </div>
 
-        <div class="input-container">
-          <label for="post_code">Post Code</label>
-          <p>{{ userprofileform.post_code.errors }}</p>
-          <div>{{userprofileform.post_code}}</div>
-        </div>
-
-        <div class="input-container">
-          <label for="town_city">Town City</label>
-          <p>{{ userprofileform.town_city.errors }}</p>
-          <div>{{userprofileform.town_city}}</div>
-        </div>
-
-        <div class="input-container">
-          <label for="address_line_1">Address Line</label>
-          <p>{{ userprofileform.address_line_1.errors }}</p>
-          <div>{{ userprofileform.address_line_1 }}</div>
-        </div>
-
-        <div class="input-container">
-          <label for="address_line_2">Address Line 2</label>
-          <p>{{ userprofileform.address_line_2.errors }}</p>
-          <div>{{ userprofileform.address_line_2 }}</div>
-        </div>
-      </div>
-      {% endcomment %}
-
-      {% if request.user.store_creator == True %}
-      <div class="acc-form-seg">
-        <p>Socials</p>
-        <div class="input-container">
-          <label for="twitter">Twitter</label>
-          <p>{{ userprofileform.twitter.errors }}</p>
-          <div>{{ userprofileform.twitter }}</div>
-        </div>
-
-        <div class="input-container">
-          <label for="instagram">Instagram</label>
-          <p>{{ userprofileform.instagram.errors }}</p>
-          <div>{{ userprofileform.instagram }}</div>
-        </div>
-
-        <div class="input-container">
-          <label for="facebook">Facebook</label>
-          <p>{{ userprofileform.facebook.errors }}</p>
-          <div>{{ userprofileform.facebook }}</div>
-        </div>
-      </div>
-      {% endif %}
 
       <div class="form-btn-container">
         <button class="form-btn" type="submit">Update</button>
