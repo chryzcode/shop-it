@@ -5,6 +5,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
+from requests import request
 
 from account.models import User, Store
 
@@ -83,9 +84,7 @@ class Product(models.Model):
     in_stock = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now_add=True)
-    category = models.ForeignKey(
-        Category, related_name="category", on_delete=models.CASCADE
-    )
+    category = models.CharField(max_length=255, unique=False)
     availability = models.IntegerField(default=1)
     product_details = RichTextField(null=True, blank=True, max_length=300)
     product_unit = models.ForeignKey(

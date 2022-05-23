@@ -91,8 +91,15 @@ class Store(models.Model):
         verbose_name = "Store"
         verbose_name_plural = "Stores"
 
+    
+    def save(self, *args, **kwargs):
+        self.slugified_store_name = slugify(self.store_name)
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.store_name
+
+    
 
 class store_staff(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user")

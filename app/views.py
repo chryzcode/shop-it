@@ -78,7 +78,7 @@ def create_product(request):
                 "app:product_detail",
                 slug=product.slug,
             )
-    categories = Category.objects.all().filter(created_by=store)
+    categories = Category.objects.filter(created_by=store)
     context = {"form": form, "categories": categories, "product_units": product_units}
     return render(request, "store/create-product.html", context)
 
