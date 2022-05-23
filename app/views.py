@@ -165,24 +165,24 @@ def wishlist(request):
 
 def add_category(request):
     form = CategoryForm
+    if request.user.store_creator == True:
+        store = request.user.store_name
+    else:
+        store = store_staff.objects.get(user = request.user).store
     if request.method == "POST":
         form = CategoryForm(request.POST, request.FILES)
         if form.is_valid():
-            category = form.save(commit=False)
-            if request.user.store_creator == True:
-                category.created_by = request.user.store_name
-                category.save()
-                return redirect(
-                    "app:all_category"           
-                )
+            name = request.POST.get("name")
+            if Category.objects.filter(name=name, created_by=store).exists():
+                error = 'Category already exists'
+                return render(request, "store/create-category.html", {"form":form, "error":error})
             else:
-                #get staff store name 
-                staff = store_staff.objects.get(user = request.user)
-                category.created_by = staff.store
+                category = form.save(commit=False)
+                category.created_by = store
                 category.save()
                 return redirect(
-                    "app:all_category"           
-                )
+                        "app:all_category"           
+                    )
     context = {"form": form}
     return render(request, "store/create-category.html", context)
 
@@ -274,12 +274,17 @@ def create_coupon(request):
         if request.method == "POST":
             form = CouponForm(request.POST, request.FILES)
             if form.is_valid():
-                coupon = form.save(commit=False)
-                coupon.created_by = request.user.store_name
-                coupon.save()
-                return redirect(
-                    "app:all_coupons"
-                )
+                code = request.POST.get("code")
+                if Coupon.objects.filter(code=code, created_by = request.user.store_name).exists():
+                    error = "Coupon already exists"
+                    return render(request, "store/create-coupon.html", {"form":form, "error":error})
+                else:
+                    coupon = form.save(commit=False)
+                    coupon.created_by = request.user.store_name
+                    coupon.save()
+                    return redirect(
+                        "app:all_coupons"
+                    )
         context = {"form": form}
         return render(request, "store/create-coupon.html", context)
 
@@ -302,7 +307,7 @@ def all_coupons(request):
 
 def delete_coupon(request, pk):
     if request.user.store_creator == True:
-        coupon = get_object_or_404(Coupon, pk=pk, created_by=request.user.store_name, active=True)
+        coupon = get_object_or_404(Coupon, pk=pk, created_by=request.user.store_name)
         coupon.delete()
         return redirect("app:all_coupons")
     else:

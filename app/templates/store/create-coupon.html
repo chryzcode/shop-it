@@ -12,6 +12,7 @@
       {% csrf_token %}
       <div class="input-container">
         <label for="code">Code<span class="form-required">*</span></label>
+        <p class="error">{{error}}</p>
         <p>{{ form.code.errors }}</p>
         {{form.code}}
       </div>

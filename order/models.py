@@ -3,6 +3,7 @@ from django.db import models
 from account.models import *
 from app.models import *
 from django.conf import settings
+from django.utils.translation import gettext_lazy as _
 
 
 

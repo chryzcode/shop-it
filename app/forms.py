@@ -1,3 +1,4 @@
+from venv import create
 from django import forms
 from django.forms import ModelForm
 
@@ -80,13 +81,14 @@ class CategoryForm(ModelForm):
                 attrs={"class": "form-control", "placeholder": "Category Name"}
             ),
         }
+
     def __init__(self, *args, **kwargs):
         super(CategoryForm, self).__init__(*args, **kwargs)
 
 class CouponForm(ModelForm):
     class Meta:
         model = Coupon
-        exclude = ["created_by", "created_at", "active"]
+        exclude = ["created_by", "created_at"]
         fields = ["code", "percentage", "expiry_date"]
 
         widgets = {
@@ -100,6 +102,9 @@ class CouponForm(ModelForm):
                 attrs={"class": "form-control", "placeholder": "Coupon Expiry Date"}
             ),
         }
+
+
+
     def __init__(self, *args, **kwargs):
         super(CouponForm, self).__init__(*args, **kwargs)
 
