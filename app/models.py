@@ -107,10 +107,9 @@ class Product(models.Model):
         ordering = ("-created",)
 
     def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.name)
         if self.availability < 1:
             self.in_stock = False
+    
         return super(Product, self).save(*args, **kwargs)
 
     def discount_price(self):

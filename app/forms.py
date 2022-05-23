@@ -52,6 +52,18 @@ class ProductForm(ModelForm):
             ),
         }
 
+    def clean_product_name(self):
+        name = self.cleaned_data.get("name")
+        if name is None:
+            raise forms.ValidationError("Product name is required")
+        if len(name) < 3:
+            raise forms.ValidationError("Product name must be at least 3 characters")
+        product = Product.objects.filter(name=name, created_by=self.instance.created_by)
+        if product.exists():
+            raise forms.ValidationError("Product name is already taken")
+        return name
+
+
 
 
     def __init__(self, *args, **kwargs):

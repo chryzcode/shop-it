@@ -1192,5 +1192,10 @@ th {
   font-size: 18px;
 }
 
+.error {
+  color: red;
+  font-size: 13px;
+}
+
 
 

@@ -1,3 +1,4 @@
+from distutils.log import error
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import authenticate, login, logout
 from .forms import *
@@ -60,25 +61,33 @@ def product_detail(request, slug):
 
 
 def create_product(request):
-    
+    error = ''
     form = ProductForm
-    product_units = ProductUnit.objects.all()
+   
     if request.user.store_creator == True:
         store = request.user.store_name
     else:
         store = store_staff.objects.get(user = request.user).store
-    
+    product_units = ProductUnit.objects.all()
+    categories = Category.objects.filter(created_by=store)
     if request.method == "POST":
         form = ProductForm(request.POST, request.FILES)
+        product_name = request.POST.get("product_name")
+        if Product.objects.filter(name=product_name, created_by=store, slug= slugify(product_name)).exists():
+            error = "Product already exists"
+            return render(request, "store/create-product.html", {"form": form, "error": error, "product_units": product_units})
         if form.is_valid():
             product = form.save(commit=False)
             product.created_by = store
+            product.slug = slugify(product.name)
+            if Product.objects.filter(slug=product.slug, created_by=store).exists():
+                error = "Product already exists"
+                return render(request, "store/create-product.html", {"form": form, "error": error, "product_units": product_units})
             product.save()
             return redirect(
-                "app:product_detail",
-                slug=product.slug,
-            )
-    categories = Category.objects.filter(created_by=store)
+                        "app:product_detail",
+                        slug=product.slug,
+                    )
     context = {"form": form, "categories": categories, "product_units": product_units}
     return render(request, "store/create-product.html", context)
 
