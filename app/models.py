@@ -3,6 +3,7 @@ from decimal import Decimal
 from ckeditor.fields import RichTextField
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils.text import slugify
 from requests import request
@@ -80,11 +81,13 @@ class Product(models.Model):
     image_3 = models.ImageField(upload_to="product-images/", null=True, blank=True)
     image_4 = models.ImageField(upload_to="product-images/", null=True, blank=True)
     slug = models.SlugField(max_length=255, unique=True)
-    price = models.DecimalField(max_digits=6, decimal_places=2)
+    price = models.DecimalField(max_digits=6, decimal_places=2, validators=[MinValueValidator(0)])
     in_stock = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now_add=True)
-    category = models.CharField(max_length=255, unique=False)
+    category = models.ForeignKey(
+        Category, on_delete=models.CASCADE, related_name="products_category"
+    )
     availability = models.IntegerField(default=1)
     product_details = RichTextField(null=True, blank=True, max_length=300)
     product_unit = models.ForeignKey(
@@ -122,9 +125,9 @@ class Product(models.Model):
             "app:product_detail",
             kwargs={
                 "slug": self.slug,
-                "slugified_store_name": slugify(self.created_by),
-            },
+            }
         )
+
 
     def __str__(self):
         return self.name

@@ -52,6 +52,8 @@ class ProductForm(ModelForm):
             ),
         }
 
+
+
     def __init__(self, *args, **kwargs):
         super(ProductForm, self).__init__(*args, **kwargs)
 

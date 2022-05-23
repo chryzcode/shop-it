@@ -35,7 +35,7 @@ def a_store_all_products(request):
     )
 
 
-def product_detail(request, slug, slugified_store_name):
+def product_detail(request, slug):
     page = "product_detail"
     if request.user.is_authenticated:
         product = get_object_or_404(Product, slug=slug)
