@@ -5,6 +5,8 @@ from django.utils.text import slugify
 
 from .models import User, store_staff, Store
 
+from django.conf import settings
+
 
 class RegistrationForm(ModelForm):
     check = forms.BooleanField(required=True)
@@ -30,7 +32,8 @@ class RegistrationForm(ModelForm):
 
     def clean_email(self):
         email = self.cleaned_data["email"]
-        if User.objects.filter(email=email).exists():
+        r = User.objects.filter(email=email)
+        if r.count():
             raise forms.ValidationError("Email is already taken")
         return email
 
