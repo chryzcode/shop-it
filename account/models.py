@@ -63,7 +63,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         send_mail(
             subject,
             message,
-            settings.SENDER_EMAIL,
+            settings.EMAIL_HOST_USER,
             [self.email],
             fail_silently=False,
         )
