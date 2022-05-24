@@ -23,7 +23,7 @@
           <th>Delete</th>
           {% endif %}
         </tr>
-        {% for staff in store_staffs.staffs.all %}
+        {% for staff in store_staffs %}
         <tr class="table-rows">
           <td>{{ staff.full_name }}</td>
           <td>{{ staff.email }}</td>

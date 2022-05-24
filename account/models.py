@@ -114,10 +114,8 @@ class store_staff(models.Model):
     password2 = models.CharField(max_length=100)
 
      #choices field for all the store
-    store_choices = (
-       Store.objects.all().values_list('store_name', 'store_name')
-    )
-    store= models.CharField(max_length=150, choices=store_choices)
+
+    store= models.CharField(max_length=150)
 
     class Meta:
         verbose_name = "Store Staff"
