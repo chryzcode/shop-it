@@ -202,6 +202,16 @@ def existing_store_staff(request):
                     if user not in store.staffs.all():                       
                         staff_store_user = User.objects.get(email=user.email)
                         if staff_store_user:
+                            staff = store_staff.objects.create(
+                                store = request.user.store_name,
+                                user = staff_store_user,
+                                full_name = staff_store_user.full_name,
+                                email = staff_store_user.email,
+                                phone_number = staff_store_user.phone_number,
+                                avatar = staff_store_user.avatar,
+                                password = staff_store_user.password,
+                            )
+                            staff.save()
                             store.staffs.add(user)
                             staff_store_user.store = store.store_name
                             staff_store_user.save()
@@ -222,13 +232,18 @@ def existing_store_staff(request):
 def delete_store_staff(request, pk):
     if request.user.store_creator == True:
         store = Store.objects.get(owner=request.user)
-        user = get_object_or_404(User, pk=pk)
-        if user in store.staffs.all():
-            store.staffs.remove(user)      
+        staff = store_staff.objects.get(pk=pk)
+        print(staff)
+        if staff:
+            staff.delete()
+            store.staffs.remove(staff.user)
+            return redirect("account:store_staff_page")
+        else:
             return redirect("account:store_staff_page")
     else:
         error = 'You are not authorized'
         return render(request, "store/store-staff-page.html", {"error":error})
+
 
 
 def staff_stores(request):
