@@ -1,4 +1,5 @@
 from cmath import log
+from distutils.log import error
 from django.shortcuts import get_object_or_404, redirect, render
 from .models import *
 from account.models import *
@@ -29,6 +30,7 @@ def customer_register(request, slugified_store_name):
             email= form.cleaned_data["email"]
             check_email = User.objects.filter(email = email)
             if check_email:
+                error = "You have an exiting account"
                 return redirect("customer:existing_user_customer_register", slugified_store_name)
             else:
                 user = User.objects.create(
@@ -56,7 +58,6 @@ def customer_register(request, slugified_store_name):
                 )
                 user.email_user(subject=subject, message=message)
                 return render(request, "account/registration/registration-success.html")
-                # return redirect("customer:customer_login", slugified_store_name)
     return render(request, "customer/register.html", {"store": store, "slugified_store_name": slugified_store_name, "form": form})
 
 def customer_login(request, slugified_store_name):
