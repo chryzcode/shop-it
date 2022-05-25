@@ -8,6 +8,11 @@ from account.forms import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.utils.text import slugify
+from django.template.loader import render_to_string
+from django.utils.encoding import force_bytes, force_str
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.contrib.sites.shortcuts import get_current_site
+from account.tokens import account_activation_token
 # Create your views here.
 
 def customer_register(request, slugified_store_name):
@@ -29,15 +34,29 @@ def customer_register(request, slugified_store_name):
                 user = User.objects.create(
                     email= form.cleaned_data["email"],
                     full_name=form.cleaned_data["full_name"],
-                    is_active = True,
+                    is_active = False,
                     is_staff = False,
                     store_creator = False,
                 )
                 user.set_password(form.cleaned_data["password"])
                 user.save()
                 store.customers.add(user)
+                customer.user = user
                 customer.save()
-                return redirect("customer:customer_login", slugified_store_name)
+                current_site = get_current_site(request)
+                subject = "Activate your Shop!t Account"
+                message = render_to_string(
+                    "account/registration/account_activation_email.html",
+                    {
+                        "user": user,
+                        "domain": current_site.domain,
+                        "uid": urlsafe_base64_encode(force_bytes(user.pk)),
+                        "token": account_activation_token.make_token(user),
+                    },
+                )
+                user.email_user(subject=subject, message=message)
+                return render(request, "account/registration/registration-success.html")
+                # return redirect("customer:customer_login", slugified_store_name)
     return render(request, "customer/register.html", {"store": store, "slugified_store_name": slugified_store_name, "form": form})
 
 def customer_login(request, slugified_store_name):
@@ -80,6 +99,7 @@ def existing_user_customer_register(request, slugified_store_name):
             if user not in store.customers.all():
                 form.save(commit=False)
                 customer = Customer.objects.create(
+                    user = user,
                     full_name = user.full_name,
                     email = user.email,
                     password = user.password,
