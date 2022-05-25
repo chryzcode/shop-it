@@ -155,7 +155,7 @@ def remove_wishlist(request, slug):
     product = get_object_or_404(Product, slug=slug)
     store = get_object_or_404(Store, store_name= product.created_by)
     product.wishlist.remove(user)
-    return redirect("app:product_detail", slug=product.slug, slugified_store_name=slugify(store))
+    return redirect("app:product_detail", slug=product.slug)
 
 
 def wishlist(request):
