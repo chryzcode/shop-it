@@ -167,7 +167,7 @@ def store_staff_register(request):
                     email = form.cleaned_data["email"],
                     full_name = form.cleaned_data["full_name"],
                     phone_number = form.cleaned_data["phone_number"],
-                    is_active = True,
+                    is_active = False,
                     is_staff = False,
                     store_creator = False,
                     store_staff = True,
