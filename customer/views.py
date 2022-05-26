@@ -31,7 +31,7 @@ def customer_register(request, slugified_store_name):
             check_email = User.objects.filter(email = email)
             if check_email:
                 error = "You have an exiting account"
-                return redirect("customer:existing_user_customer_register", slugified_store_name)
+                return redirect("customer:existing_user_customer_register", slugified_store_name=slugified_store_name)
             else:
                 user = User.objects.create(
                     email= form.cleaned_data["email"],
