@@ -36,8 +36,6 @@ def account_login(request):
                     if user.store_creator == False and user.store_staff == False:
                         login(request, user)
                         return redirect("/")
-                        # messages.error(request, "You are not a store staff or store creator")  
-
                 else:
                     messages.error(request, "Password is incorrect")
             else:
@@ -98,7 +96,7 @@ def account_activate(request, uidb64, token):
         uid = force_str(urlsafe_base64_decode(uidb64))
         user = get_object_or_404(User, pk=uid)
     except:
-        return render(request, "app/404-page.html")
+        return render(request, "error-pages/404-page.html")
 
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
@@ -191,7 +189,6 @@ def store_staff_register(request):
                 )
                 user.email_user(subject=subject, message=message)
                 return render(request, "account/registration/registration-success.html")       
-                # return redirect("account:store_staff_page")
     else:
         error = 'You are not authorized'
         return render(request, "store/store-staff-page.html", {"error":error})
@@ -265,7 +262,6 @@ def staff_stores(request):
         if stores.count() > 1:
             return render(request, "account/user/staff-stores-page.html", {"stores":stores})
         else:
-            # use select store function
             return redirect("account:select_store", stores.first().slugified_store_name)
     logout(request)
     error = 'You are not a staff of any store'
