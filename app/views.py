@@ -78,6 +78,7 @@ def create_product(request):
             return render(request, "store/create-product.html", {"form": form, "error": error, "product_units": product_units})
         if form.is_valid():
             product = form.save(commit=False)
+            product.store = Store.objects.get(store_name=store)
             product.created_by = store
             product.slug = slugify(product.name)
             if Product.objects.filter(slug=product.slug, created_by=store).exists():
