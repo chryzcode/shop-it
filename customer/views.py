@@ -23,6 +23,7 @@ def customer_register(request, slugified_store_name):
     store = Store.objects.get(slugified_store_name=slugified_store_name)
     slugified_store_name = store.slugified_store_name
     store_owner = User.objects.filter(store_creator=True, store_name=store)
+    print(store_owner)
     if store_owner:
         return redirect("app:store", slugified_store_name=slugified_store_name)
     if request.method == "POST":
