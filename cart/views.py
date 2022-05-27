@@ -17,6 +17,7 @@ def cart_summary(request):
     grand_total = ''
     form_feedback = ''
     cart = Cart(request)
+    cart_product_stores = cart.cart_products_store_name()
     form = UseCouponForm
     expired_coupons = Coupon.objects.all()
     for coupon in expired_coupons:
@@ -31,23 +32,27 @@ def cart_summary(request):
             coupon_code = form.cleaned_data.get("code")
             if Coupon.objects.filter(code=coupon_code).exists():
                 coupon = Coupon.objects.get(code=coupon_code)
-                if request.user not in coupon.users.all():
-                    expiry_date = (datetime.now().astimezone() - coupon.created_at)
-                    expiry_date_seconds = expiry_date.total_seconds()
-                    minutes = expiry_date_seconds/60
-                    if int(minutes) > coupon.expiry_date:
-                        form_feedback = 'Copoun is Expired'
-                        coupon.delete()
+                if coupon.created_by in cart_product_stores:
+                    if request.user not in coupon.users.all():
+                        expiry_date = (datetime.now().astimezone() - coupon.created_at)
+                        expiry_date_seconds = expiry_date.total_seconds()
+                        minutes = expiry_date_seconds/60
+                        if int(minutes) > coupon.expiry_date:
+                            form_feedback = 'Copoun is Expired'
+                            coupon.delete()
+                        else:
+                            coupon_percentage = coupon.percentage
+                            cart.get_grand_total(coupon_percentage)
+                            coupon.users.add(request.user)
+                            grand_total = int(cart.get_grand_total(coupon_percentage))
+                            form = UseCouponForm
+                            form_feedback = 'Coupon Successfully Used'
                     else:
-                        coupon_percentage = coupon.percentage
-                        cart.get_grand_total(coupon_percentage)
-                        coupon.users.add(request.user)
-                        grand_total = int(cart.get_grand_total(coupon_percentage))
                         form = UseCouponForm
-                        form_feedback = 'Coupon Successfully Used'
+                        form_feedback = 'Copoun has been used by you'
                 else:
                     form = UseCouponForm
-                    form_feedback = 'Copoun has been used by you'
+                    form_feedback = 'Copoun is not valid for this product'
             else:
                 form = UseCouponForm
                 form_feedback = 'Coupon does not exist'           
