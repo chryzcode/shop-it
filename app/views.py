@@ -167,9 +167,9 @@ def wishlist(request):
 def add_category(request):
     form = CategoryForm
     if request.user.store_creator == True:
-        store = request.user.store_name
+        store = Store.objects.get(store_name=request.user.store_name)
     else:
-        store = store_staff.objects.get(user = request.user).store
+        store = Store.objects.get(store_name=store_staff.objects.get(user = request.user).store)
     if request.method == "POST":
         form = CategoryForm(request.POST, request.FILES)
         if form.is_valid():
@@ -191,10 +191,12 @@ def add_category(request):
 
 def edit_category(request, slug):
     if request.user.store_creator == True:
-        category = get_object_or_404(Category, slug=slug, created_by= request.user.store_name)
+        store = Store.objects.get(store_name=request.user.store_name)
+        category = get_object_or_404(Category, slug=slug, created_by= store)
     
     else:
-        category = get_object_or_404(Category, slug=slug, created_by= store_staff.objects.get(user = request.user).store)
+        store = Store.objects.get(store_name=store_staff.objects.get(user = request.user).store)
+        category = get_object_or_404(Category, slug=slug, created_by= store)
 
     form = CategoryForm(instance=category)
     if request.method == "POST":
@@ -202,7 +204,7 @@ def edit_category(request, slug):
         if form.is_valid():
             category = form.save(commit=False)
             if request.user.store_creator == True:
-                category.created_by = request.user.store_name 
+                category.created_by = store
             else:
                 category.created_by = store_staff.objects.get(user = request.user).store
             category.save()
@@ -216,20 +218,23 @@ def edit_category(request, slug):
 
 def delete_category(request, slug):
     if request.user.store_creator == True:
-        category = get_object_or_404(Category, slug=slug, created_by= request.user.store_name) 
+        store = Store.objects.get(store_name=request.user.store_name)
+        category = get_object_or_404(Category, slug=slug, created_by= store) 
     else:
-        category = get_object_or_404(Category, slug=slug, created_by= store_staff.objects.get(user = request.user).store)
+        store = Store.objects.get(store_name=store_staff.objects.get(user = request.user).store)
+        category = get_object_or_404(Category, slug=slug, created_by= store)
     category.delete()
     return redirect("app:all_category")
 
 
 def all_category(request):
     if request.user.store_creator == True:
-        categories = Category.objects.filter(created_by=request.user.store_name)
+        store = Store.objects.get(store_name=request.user.store_name)
+        categories = Category.objects.filter(created_by=store)
         context = {"categories":categories}
         return render(request, "store/category.html", context)
     else:
-        store = store_staff.objects.get(user = request.user).store
+        store = Store.objects.get(store_name=store_staff.objects.get(user = request.user).store)
         categories = Category.objects.filter(created_by= store)
         context = {"categories":categories}
         return render(request, "store/category.html", context)
@@ -277,7 +282,8 @@ def create_coupon(request):
             form = CouponForm(request.POST, request.FILES)
             if form.is_valid():
                 code = request.POST.get("code")
-                if Coupon.objects.filter(code=code, created_by = request.user.store_name).exists():
+                store = Store.objects.get(store_name=request.user.store_name)
+                if Coupon.objects.filter(code=code, created_by = store).exists():
                     error = "Coupon already exists"
                     return render(request, "store/create-coupon.html", {"form":form, "error":error})
                 else:
@@ -293,9 +299,11 @@ def create_coupon(request):
 
 def all_coupons(request):
     if request.user.store_creator == True:
-        coupons = Coupon.objects.filter(created_by=request.user.store_name)
+        store = Store.objects.get(store_name=request.user.store_name)
+        coupons = Coupon.objects.filter(created_by=store)
     else:
-        coupons = Coupon.objects.filter(created_by=store_staff.objects.get(user = request.user).store)
+        store = Store.objects.get(store_name=store_staff.objects.get(user = request.user).store)
+        coupons = Coupon.objects.filter(created_by=store)
     for coupon in coupons:
         expiry_date = (datetime.now().astimezone() - coupon.created_at)
         expiry_date_seconds = expiry_date.total_seconds()
@@ -310,7 +318,8 @@ def all_coupons(request):
 
 def delete_coupon(request, pk):
     if request.user.store_creator == True:
-        coupon = get_object_or_404(Coupon, pk=pk, created_by=request.user.store_name)
+        store = Store.objects.get(store_name=request.user.store_name)
+        coupon = get_object_or_404(Coupon, pk=pk, created_by=store)
         coupon.delete()
         return redirect("app:all_coupons")
     else:
