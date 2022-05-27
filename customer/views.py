@@ -22,6 +22,9 @@ def customer_register(request, slugified_store_name):
     form = CustomerForm
     store = Store.objects.get(slugified_store_name=slugified_store_name)
     slugified_store_name = store.slugified_store_name
+    store_owner = User.objects.filter(store_creator=True, store_name=store)
+    if store_owner:
+        return redirect("app:store", slugified_store_name=slugified_store_name)
     if request.method == "POST":
         form = CustomerForm(request.POST)
         if form.is_valid():
@@ -67,6 +70,10 @@ def customer_login(request, slugified_store_name):
     if request.user.is_authenticated:
         logout(request)
         return redirect("customer:customer_login", slugified_store_name=slugified_store_name)
+
+    store_owner = User.objects.filter(store_creator=True, store_name=store)
+    if store_owner:
+        return redirect("app:store", slugified_store_name=slugified_store_name)
 
 
     if request.method == "POST":
