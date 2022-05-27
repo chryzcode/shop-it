@@ -233,7 +233,7 @@ def existing_store_staff(request):
                             return render(request, "account/registration/add-store-staff-exist.html", {"form": form, "error": error})                         
                     error = 'User is already a staff'
                     return render(request, "account/registration/add-store-staff-exist.html", {"form": form, "error": error})
-                error = 'Store creator can''t be a staff'
+                error = 'Store creator can\'t be a staff'
                 return render(request, "account/registration/add-store-staff-exist.html", {"form": form, "error": error})
             error = 'User does not exist'
             return render(request, "account/registration/add-store-staff-exist.html", {"form": form, "error": error})
