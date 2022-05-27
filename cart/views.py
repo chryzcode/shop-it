@@ -13,8 +13,7 @@ from .cart import *
 
 
 # Create your views here.
-def cart_summary(request, slugified_store_name):
-    store = get_object_or_404(Store, slugified_store_name= slugified_store_name)
+def cart_summary(request):
     grand_total = ''
     form_feedback = ''
     cart = Cart(request)
@@ -52,7 +51,7 @@ def cart_summary(request, slugified_store_name):
             else:
                 form = UseCouponForm
                 form_feedback = 'Coupon does not exist'           
-    return render(request, "cart/cart-summary.html", {"cart": cart, "form": form, "grand_total": grand_total, "form_feedback": form_feedback, 'store':store})
+    return render(request, "cart/cart-summary.html", {"cart": cart, "form": form, "grand_total": grand_total, "form_feedback": form_feedback})
                
 
 def add_to_cart(request):

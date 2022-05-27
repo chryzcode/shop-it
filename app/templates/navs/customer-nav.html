@@ -41,7 +41,7 @@
         <input type="search" name="" id="" class="side-nav-search-bar" placeholder="Search for Products" />
 
         <span class="cart-icon-container">
-          <a href="{% url 'cart:cart_summary' store.slugified_store_name %}" class="cart-btn">
+          <a href="{% url 'cart:cart_summary'  %}" class="cart-btn">
             {% with total_qty=cart|length %}
             <span id="product-cart-qty">
               <span class="cart-qty-num">
@@ -57,6 +57,7 @@
             <i class="far fa-shopping-cart"></i>
           </a>
         </span>
+        {% if store %}
         {% if request.user in store.customers.all %}
         <li><a href="{% url 'customer:customer_profile' store.slugified_store_name %}" id="a-nav-link">My Account</a></li>  
         {% else %}  
@@ -64,6 +65,7 @@
         {% else %} 
         <li><a href="{% url 'customer:customer_login' store.slugified_store_name %}" id="a-nav-link">Sign In</a></li>
         <li><a href="{% url 'customer:customer_register' store.slugified_store_name %}" id="a-nav-link">Sign Up</a></li>
+        {% endif %}
         {% endif %}
         {% endif %}
       </ul>
