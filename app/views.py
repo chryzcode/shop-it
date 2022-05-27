@@ -179,6 +179,7 @@ def add_category(request):
                 return render(request, "store/create-category.html", {"form":form, "error":error})
             else:
                 category = form.save(commit=False)
+                store = Store.objects.get(store_name=store)
                 category.created_by = store
                 category.save()
                 return redirect(
@@ -281,7 +282,8 @@ def create_coupon(request):
                     return render(request, "store/create-coupon.html", {"form":form, "error":error})
                 else:
                     coupon = form.save(commit=False)
-                    coupon.created_by = request.user.store_name
+                    store = Store.objects.get(store_name=request.user.store_name)
+                    coupon.created_by = store
                     coupon.save()
                     return redirect(
                         "app:all_coupons"

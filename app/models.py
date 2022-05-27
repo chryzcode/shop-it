@@ -15,7 +15,7 @@ from datetime import datetime, timedelta
 
 
 class Category(models.Model):
-    created_by = models.CharField(max_length=150)
+    created_by = models.ForeignKey(Store,  on_delete=models.CASCADE)
     name = models.CharField(max_length=255, db_index=True)
     slug = models.SlugField(max_length=255, unique=True)
 
@@ -53,7 +53,7 @@ class Coupon(models.Model):
         default=1,
         validators=[MinValueValidator(1), MaxValueValidator(100)],
     )
-    created_by = models.CharField(max_length=150)
+    created_by = models.ForeignKey(Store, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     expiry_date = models.IntegerField()
 
