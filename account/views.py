@@ -11,6 +11,7 @@ from .forms import *
 from .models import User, store_staff, Store
 from .tokens import account_activation_token
 
+from customer.models import Customer
 
 def account_login(request):
     context = {}
@@ -146,7 +147,7 @@ def store_staff_page(request):
         store_staffs = store_staff.objects.filter(store=store)
         return render(request, "store/store-staff-page.html", {"store_staffs": store_staffs})
     else:
-        store = Store.objects.get(owner=request.user)
+        store = Store.objects.get(store_name=store_staff.objects.get(user = request.user).store)
         store_staffs = store_staff.objects.filter(store=store)
         return render(request, "store/store-staff-page.html", {"store_staffs": store_staffs})
 
@@ -159,7 +160,8 @@ def store_staff_register(request):
             form = StoreStaffForm(request.POST, request.FILES)
             if form.is_valid():
                 staff_user = form.save(commit=False)
-                staff_user.store = request.user.store_name
+                store = Store.objects.get(owner=request.user)
+                staff_user.store = store
                 user = User.objects.create(
                     email = form.cleaned_data["email"],
                     full_name = form.cleaned_data["full_name"],
@@ -211,8 +213,9 @@ def existing_store_staff(request):
                     if user not in store.staffs.all():                       
                         staff_store_user = User.objects.get(email=user.email)
                         if staff_store_user:
+                            store = Store.objects.get(owner=request.user)
                             staff = store_staff.objects.create(
-                                store = request.user.store_name,
+                                store = store,
                                 user = staff_store_user,
                                 full_name = staff_store_user.full_name,
                                 email = staff_store_user.email,
@@ -222,7 +225,7 @@ def existing_store_staff(request):
                             )
                             staff.save()
                             store.staffs.add(user)
-                            staff_store_user.store = store.store_name
+                            staff_store_user.store = store
                             staff_store_user.save()
                             return redirect("account:store_staff_page")
                         else:
@@ -243,10 +246,18 @@ def delete_store_staff(request, pk):
         store = Store.objects.get(owner=request.user)
         staff = store_staff.objects.get(pk=pk)
         print(staff)
+        staff_stores = Store.objects.filter(staffs=staff.user)
+        print(staff_stores)
+        customer_stores = Customer.objects.filter(user=staff.user)
+        print(customer_stores)
         if staff:
             staff.delete()
             store.staffs.remove(staff.user)
-            return redirect("account:store_staff_page")
+            if staff_stores or customer_stores or staff.user.store_creator == True:
+                        return redirect("account:store_staff_page")
+            else:
+                staff.user.delete()
+                return redirect("/")
         else:
             return redirect("account:store_staff_page")
     else:
