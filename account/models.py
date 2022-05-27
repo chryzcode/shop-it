@@ -112,7 +112,7 @@ class store_staff(models.Model):
     updated = models.DateTimeField(auto_now=True)
     password = models.CharField(max_length=100)
     password2 = models.CharField(max_length=100)
-    store= models.CharField(max_length=150)
+    store= models.ForeignKey(Store, on_delete=models.CASCADE, related_name="store")
 
     class Meta:
         verbose_name = "Store Staff"
