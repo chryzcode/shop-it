@@ -285,6 +285,11 @@ def create_store(request):
                 user.store_name = store_name
                 user.store_creator = True
                 user.save()
+                store = Store.objects.create(
+                    store_name = store_name,
+                    owner = user,
+                    slugified_store_name = slugify(store_name),
+                )
                 return redirect("/")
     return render(request, "account/registration/add-store.html", {"form": form})
     
