@@ -2,7 +2,9 @@
 <title>{{store.store_name}}</title> {%endblock%} {% block content %}
 <div class="store-page-container">
   <div>
+    {% if store.store_image %}
     <img class="store-image-banner" src="{{ store.store_image.url }}" alt="" />
+    {% endif %}
     <p>Latest Products</p>
     <div class="view-store-products-container">
       <div class="view-store-products-grid">
