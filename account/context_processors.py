@@ -35,3 +35,12 @@ def multiple_store_staff(request):
             return {"multiple_store_staff": None}
   
     return {"multiple_store_staff": None}
+
+def owner_store(request):
+    if request.user.is_authenticated:
+        if request.user.store_creator == True:
+            store = Store.objects.get(owner = request.user)
+            return {"owner_store": store}     
+        else:
+            return {"owner_store": None}
+    return {"owner_store": None}
