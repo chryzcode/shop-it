@@ -142,13 +142,12 @@ def store_account(request):
 
 def store_staff_page(request):
     if request.user.store_creator == True:
-        store_staffs = store_staff.objects.filter(store=request.user.store_name)
-        print('hi:', store_staffs)
+        store = Store.objects.get(owner=request.user)
+        store_staffs = store_staff.objects.filter(store=store)
         return render(request, "store/store-staff-page.html", {"store_staffs": store_staffs})
     else:
-        store_name = store_staff.objects.get(user = request.user).store
-        store_staffs = store_staff.objects.filter(store=store_name)
-        print(store_staffs)
+        store = Store.objects.get(owner=request.user)
+        store_staffs = store_staff.objects.filter(store=store)
         return render(request, "store/store-staff-page.html", {"store_staffs": store_staffs})
 
 
