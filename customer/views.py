@@ -143,7 +143,7 @@ def customer_product_detail(request, slugified_store_name, slug):
 def customer_profile(request, slugified_store_name):
     store = get_object_or_404(Store, slugified_store_name= slugified_store_name)
     if request.user in store.customers.all():
-        account = Customer.objects.get(store=store.store_name, email=request.user)
+        account = Customer.objects.get(store=store, email=request.user)
         if account:
             userprofileform = UserProfileForm(instance=account)
             if request.method == "POST":
