@@ -22,46 +22,45 @@ def customer_register(request, slugified_store_name):
     form = CustomerForm
     store = Store.objects.get(slugified_store_name=slugified_store_name)
     slugified_store_name = store.slugified_store_name
-    store_owner = User.objects.filter(store_creator=True, store_name=store)
-    print(store_owner)
-    if store_owner:
-        return redirect("app:store", slugified_store_name=slugified_store_name)
     if request.method == "POST":
         form = CustomerForm(request.POST)
         if form.is_valid():
             customer = form.save(commit=False)
             customer.store = store
             email= form.cleaned_data["email"]
-            check_email = User.objects.filter(email = email)
-            if check_email:
-                error = "You have an exiting account"
-                return redirect("customer:existing_user_customer_register", slugified_store_name=slugified_store_name)
+            check_email = User.objects.get(email = email)
+            if check_email.store_name == store.store_name:
+                messages.error(request, "You can't be a customer of your store.")
             else:
-                user = User.objects.create(
-                    email= form.cleaned_data["email"],
-                    full_name=form.cleaned_data["full_name"],
-                    is_active = False,
-                    is_staff = False,
-                    store_creator = False,
-                )
-                user.set_password(form.cleaned_data["password"])
-                user.save()
-                store.customers.add(user)
-                customer.user = user
-                customer.save()
-                current_site = get_current_site(request)
-                subject = "Activate your Shop!t Account"
-                message = render_to_string(
-                    "account/registration/account_activation_email.html",
-                    {
-                        "user": user,
-                        "domain": current_site.domain,
-                        "uid": urlsafe_base64_encode(force_bytes(user.pk)),
-                        "token": account_activation_token.make_token(user),
-                    },
-                )
-                user.email_user(subject=subject, message=message)
-                return render(request, "account/registration/registration-success.html")
+                if check_email:
+                    error = "You have an exiting account"
+                    return redirect("customer:existing_user_customer_register", slugified_store_name=slugified_store_name)
+                else:
+                    user = User.objects.create(
+                        email= form.cleaned_data["email"],
+                        full_name=form.cleaned_data["full_name"],
+                        is_active = False,
+                        is_staff = False,
+                        store_creator = False,
+                    )
+                    user.set_password(form.cleaned_data["password"])
+                    user.save()
+                    store.customers.add(user)
+                    customer.user = user
+                    customer.save()
+                    current_site = get_current_site(request)
+                    subject = "Activate your Shop!t Account"
+                    message = render_to_string(
+                        "account/registration/account_activation_email.html",
+                        {
+                            "user": user,
+                            "domain": current_site.domain,
+                            "uid": urlsafe_base64_encode(force_bytes(user.pk)),
+                            "token": account_activation_token.make_token(user),
+                        },
+                    )
+                    user.email_user(subject=subject, message=message)
+                    return render(request, "account/registration/registration-success.html")
     return render(request, "customer/register.html", {"store": store, "slugified_store_name": slugified_store_name, "form": form})
 
 def customer_login(request, slugified_store_name):
@@ -72,15 +71,13 @@ def customer_login(request, slugified_store_name):
         logout(request)
         return redirect("customer:customer_login", slugified_store_name=slugified_store_name)
 
-    store_owner = User.objects.filter(store_creator=True, store_name=store)
-    if store_owner:
-        return redirect("app:store", slugified_store_name=slugified_store_name)
-
 
     if request.method == "POST":
         email = request.POST.get("email")
         password = request.POST.get("password")
-        user = User.objects.filter(email=email)
+        user = User.objects.get(email=email)
+        if user.store_name == store.store_name:
+            messages.error(request, "You can/'t be a customer of your store.")
         if user:
             user = authenticate(request, email=email, password=password)
             if user:
@@ -105,21 +102,24 @@ def existing_user_customer_register(request, slugified_store_name):
         if form.is_valid():
             email = form.cleaned_data["email"]
             user = User.objects.get(email=email)
-            if user not in store.customers.all():
-                form.save(commit=False)
-                customer = Customer.objects.create(
-                    user = user,
-                    full_name = user.full_name,
-                    email = user.email,
-                    password = user.password,
-                    password2 = user.password,
-                    store = store.store_name,
-                )
-                customer.save()
-                store.customers.add(user)
-                return redirect("customer:customer_login", slugified_store_name=slugified_store_name)
+            if user.store_name == store.store_name:
+                messages.error(request, "You can't be a customer of your store.")
             else:
-                messages.error(request, "You are already a customer of this store.")
+                if user not in store.customers.all():
+                    form.save(commit=False)
+                    customer = Customer.objects.create(
+                        user = user,
+                        full_name = user.full_name,
+                        email = user.email,
+                        password = user.password,
+                        password2 = user.password,
+                        store = store,
+                    )
+                    customer.save()
+                    store.customers.add(user)
+                    return redirect("customer:customer_login", slugified_store_name=slugified_store_name)
+                else:
+                    messages.error(request, "You are already a customer of this store.")
 
     return render(request, "customer/existing-user-register.html", {"store": store, "slugified_store_name": slugified_store_name, "form": form})
 
