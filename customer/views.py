@@ -143,7 +143,7 @@ def customer_product_detail(request, slugified_store_name, slug):
 def customer_profile(request, slugified_store_name):
     store = get_object_or_404(Store, slugified_store_name= slugified_store_name)
     if request.user in store.customers.all():
-        account = Customer.objects.get(store=store, email=request.user)
+        account = Customer.objects.get(store=store, email=request.user.email)
         if account:
             userprofileform = UserProfileForm(instance=account)
             if request.method == "POST":
@@ -244,6 +244,12 @@ def customer_stores(request):
         stores = Store.objects.filter(customers=customer)
         return render(request, "customer/customer-stores.html", {"stores": stores})
 
+def delete_account(request, slugified_store_name):
+    store = Store.objects.get(slugified_store_name=slugified_store_name)
+    customer = Customer.objects.get(email=request.user.email, store=store)
+    store.customers.remove(customer.user)
+    customer.delete()
+    return redirect("app:store", store.slugified_store_name)
   
 
 

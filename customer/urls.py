@@ -20,5 +20,6 @@ urlpatterns = [
     path("<slugified_store_name>/edit/address/<str:id>/", views.edit_address, name="edit_address"),
     path("<slugified_store_name>/delete/address/<str:id>/", views.delete_address, name="delete_address"),
     path("stores/", views.customer_stores, name="customer_stores"),
+    path("<slugified_store_name>/delete", views.delete_account, name="delete_account"),
 ]
 

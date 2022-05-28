@@ -245,11 +245,8 @@ def delete_store_staff(request, pk):
     if request.user.store_creator == True:
         store = Store.objects.get(owner=request.user)
         staff = store_staff.objects.get(pk=pk)
-        print(staff)
         staff_stores = Store.objects.filter(staffs=staff.user)
-        print(staff_stores)
         customer_stores = Customer.objects.filter(user=staff.user)
-        print(customer_stores)
         if staff:
             staff.delete()
             store.staffs.remove(staff.user)
