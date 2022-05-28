@@ -39,6 +39,9 @@
 
     <button class="form-btn" type="submit">Sign Up</button>
   </form>
+  <div class="form-bottom">
+    <a href="{% url 'customer:existing_user_customer_register' store.slugified_store_name %}">Sign Up for Shop!t users</a>
+  </div>
 </div>
 
 {% endblock %}
