@@ -610,9 +610,13 @@ div.product-info > p:nth-child(2) {
   margin: 0 20px;
 }
 
-/* .store-sidenav-seg > ul {
-  width: 110px;
-} */
+.customer-store-sidenav {
+  border: 0 !important;
+}
+
+.customer-store-sidenav > ul {
+  width: 110px !important;
+}
 
 .store-sidenav-seg > p {
   text-align: center;
@@ -958,12 +962,13 @@ button {
   color: #ffffff;
   background-color: #3d5170;
   padding: 7px;
-  display: inline-block;
+  display: block;
   text-align: center;
   text-decoration: none;
-  margin: 0 15px 10px 0;
-  float: right;
+  margin: 0 15px 10px auto;
+  /* float: right; */
   border-radius: 5px;
+  width: max-content;
 }
 
 .store-products-container > div {
@@ -1196,6 +1201,3 @@ th {
   color: red;
   font-size: 13px;
 }
-
-
-
