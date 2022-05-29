@@ -148,7 +148,7 @@
   $(document).on("click", "#add-to-cart-btn", function (e) {
     $.ajax({
       type: "POST",
-      url: "{% url 'cart:add_to_cart' %}",
+      url: "{% url 'cart:add_to_cart' store.slugified_store_name %}",
       data: {
         productid: $("#add-to-cart-btn").val(),
         productqty: $("#select option:selected").text(),

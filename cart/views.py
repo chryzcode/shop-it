@@ -14,7 +14,7 @@ from .cart import *
 
 # Create your views here.
 def cart_summary(request, slugified_store_name):
-    store = get_object_or_404(Store, slugified_name=slugified_store_name)
+    store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
     grand_total = ''
     form_feedback = ''
     cart = Cart(request)
@@ -57,10 +57,11 @@ def cart_summary(request, slugified_store_name):
             else:
                 form = UseCouponForm
                 form_feedback = 'Coupon does not exist'           
-    return render(request, "cart/cart-summary.html", {"cart": cart, "form": form, "grand_total": grand_total, "form_feedback": form_feedback})
+    return render(request, "cart/cart-summary.html", {"cart": cart, "form": form, "grand_total": grand_total, "form_feedback": form_feedback, "store":store})
                
 
-def add_to_cart(request):
+def add_to_cart(request, slugified_store_name):
+    store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
     cart = Cart(request)
     if request.POST.get("action") == "post":
         product_id = int(request.POST.get("productid"))
@@ -68,22 +69,24 @@ def add_to_cart(request):
         product = get_object_or_404(Product, id=product_id)
         cart.add(product=product, qty=product_qty)
         product_qty = cart.__len__()
-        response = JsonResponse({"qty": product_qty})
+        response = JsonResponse({"qty": product_qty, "store": store})
         return response
 
 
-def delete_from_cart(request):
+def delete_from_cart(request, slugified_store_name):
+    store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
     cart = Cart(request)
     if request.POST.get("action") == "post":
         product_id = int(request.POST.get("productid"))
         cart.delete(product=product_id)
         cartqty = cart.__len__()
         carttotal = cart.get_total_price()
-        response = JsonResponse({"qty": cartqty, "subtotal": carttotal})
+        response = JsonResponse({"qty": cartqty, "subtotal": carttotal, "store": store})
         return response
 
 
-def update_cart(request):
+def update_cart(request, slugified_store_name):
+    store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
     cart = Cart(request)
     if request.POST.get("action") == "post":
         product_id = int(request.POST.get("productid"))
@@ -101,15 +104,15 @@ def update_cart(request):
             cartproductqty = item_qty * Decimal(a_product_price)
         print(cartproductqty)
         response = JsonResponse(
-            {"qty": cartqty, "subtotal": carttotal, "cartproqty": cartproductqty}
-        )
+            {"qty": cartqty, "subtotal": carttotal, "cartproqty": cartproductqty, "store": store})
         return response
 
 
-def clear_all_cart(request):
+def clear_all_cart(request, slugified_store_name):
+    store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
     cart = Cart(request)
     cart.clear()
     cartqty = cart.__len__()
     carttotal = cart.get_total_price()
-    response = JsonResponse({"qty": cartqty, "subtotal": carttotal})
-    return redirect("/cart/", response)
+    response = JsonResponse({"qty": cartqty, "subtotal": carttotal, "store": store})
+    return redirect("cart-summary", slugified_store_name=slugified_store_name)
