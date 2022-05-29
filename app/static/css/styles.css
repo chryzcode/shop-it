@@ -54,7 +54,7 @@ body {
 }
 
 .an-illustration-grid {
-  box-shadow: 0px 20px 30px 0px #ccc;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   border-radius: 8px;
   margin: 30px 0;
   transition: transform 2s;
@@ -231,7 +231,7 @@ footer {
   flex-direction: row;
   height: auto;
   margin: 20px 0;
-  box-shadow: 0px 20px 30px 0px #ccc;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   transition: transform 2s;
   padding: 25px 25px;
   flex-wrap: wrap;
@@ -691,7 +691,7 @@ div.product-info > p:nth-child(2) {
 .pricing-quantity-seg,
 .images-seg,
 .acc-form-seg {
-  box-shadow: 0px 20px 30px 0px #ccc;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   padding: 30px;
   margin-top: 30px;
 }
@@ -862,7 +862,7 @@ button {
   z-index: 1070;
   background-color: #fff;
   margin-top: 10px;
-  box-shadow: 0px 20px 30px 0px #ccc;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   right: 0;
   margin-right: 20px;
   border-radius: 10px;
@@ -1044,7 +1044,7 @@ th {
   border-radius: 8px;
   text-decoration: none;
   color: #6b69f8;
-  box-shadow: 0px 20px 30px 0px #ccc;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   overflow: hidden;
 }
 
@@ -1138,7 +1138,7 @@ th {
   display: inline-flex;
   flex-direction: column;
   margin: 0 20px;
-  box-shadow: 0px 20px 30px 0px #ccc;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   padding: 30px;
   height: 250px;
   overflow: hidden;
@@ -1190,7 +1190,7 @@ th {
   object-fit: cover;
   text-align: center;
   text-decoration: none;
-  box-shadow: 0px 20px 30px 0px #ccc;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   margin: 0 20px;
   padding: 20px;
   color: #6b69f8;

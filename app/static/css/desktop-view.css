@@ -63,7 +63,7 @@
     flex-direction: column;
     width: 50%;
     margin: 20px auto;
-    box-shadow: 0px 20px 30px 0px #ccc;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     align-items: center;
     transition: transform 2s;
   }
@@ -118,7 +118,7 @@
   }
 
   .store-content-container {
-    box-shadow: 0px 20px 30px 0px #ccc;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     width: calc(70% - 40px);
     margin-left: auto;
     display: block;
@@ -134,13 +134,13 @@
   .auth-form-container {
     width: 350px;
     margin: 30px auto;
-    box-shadow: 0px 20px 30px 0px #ccc;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     padding: 30px;
     border-radius: 10px;
   }
 
   .account-form-container {
-    box-shadow: 0px 20px 30px 0px #ccc;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     padding: 25px;
     width: calc(60% - 40px);
     margin-left: auto;
