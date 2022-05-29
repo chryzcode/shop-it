@@ -65,9 +65,9 @@ def create_product(request):
     form = ProductForm
    
     if request.user.store_creator == True:
-        store = request.user.store_name
+        store = Store.objects.get(store_name=request.user.store_name)
     else:
-        store = store_staff.objects.get(user = request.user).store
+        store = Store.objects.get(store_name=store_staff.objects.get(user = request.user).store)
     product_units = ProductUnit.objects.all()
     categories = Category.objects.filter(created_by=store)
     if request.method == "POST":

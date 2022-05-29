@@ -13,7 +13,8 @@ from .cart import *
 
 
 # Create your views here.
-def cart_summary(request):
+def cart_summary(request, slugified_store_name):
+    store = get_object_or_404(Store, slugified_name=slugified_store_name)
     grand_total = ''
     form_feedback = ''
     cart = Cart(request)
@@ -32,7 +33,7 @@ def cart_summary(request):
             coupon_code = form.cleaned_data.get("code")
             if Coupon.objects.filter(code=coupon_code).exists():
                 coupon = Coupon.objects.get(code=coupon_code)
-                if coupon.created_by in cart_product_stores:
+                if coupon.created_by == store:
                     if request.user not in coupon.users.all():
                         expiry_date = (datetime.now().astimezone() - coupon.created_at)
                         expiry_date_seconds = expiry_date.total_seconds()
