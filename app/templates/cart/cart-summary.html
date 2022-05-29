@@ -45,7 +45,7 @@
       ><a href="" class="cart-table-bottom-contents">Continue Shopping<i class="far fa-angle-double-right"></i></a
     ></span>
     <span
-      ><a href="{% url 'cart:clear_all_cart' %}" class="cart-table-bottom-contents"
+      ><a href="{% url 'cart:clear_all_cart' store.slugified_store_name %}" class="cart-table-bottom-contents"
         >Clear cart<i class="fas fa-trash-alt"></i></a
     ></span>
   </div>
@@ -98,7 +98,7 @@
     var prodid = $(this).data("index");
     $.ajax({
       type: "POST",
-      url: "{% url 'cart:delete_form_cart' %}",
+      url: "{% url 'cart:delete_form_cart' store.slugified_store_name %}",
       data: {
         productid: $(this).data("index"),
         csrfmiddlewaretoken: "{{ csrf_token }}",
@@ -120,7 +120,7 @@
     var prodid = $(this).data("index");
     $.ajax({
       type: "POST",
-      url: "{% url 'cart:update_cart' %}",
+      url: "{% url 'cart:update_cart' store.slugified_store_name %}",
       data: {
         productid: $(this).data("index"),
         productqty: $("#select" + prodid + " option:selected").text(),

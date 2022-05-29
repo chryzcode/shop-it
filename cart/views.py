@@ -69,7 +69,7 @@ def add_to_cart(request, slugified_store_name):
         product = get_object_or_404(Product, id=product_id)
         cart.add(product=product, qty=product_qty)
         product_qty = cart.__len__()
-        response = JsonResponse({"qty": product_qty, "store": store})
+        response = JsonResponse({"qty": product_qty})
         return response
 
 
@@ -81,7 +81,7 @@ def delete_from_cart(request, slugified_store_name):
         cart.delete(product=product_id)
         cartqty = cart.__len__()
         carttotal = cart.get_total_price()
-        response = JsonResponse({"qty": cartqty, "subtotal": carttotal, "store": store})
+        response = JsonResponse({"qty": cartqty, "subtotal": carttotal})
         return response
 
 
@@ -104,7 +104,7 @@ def update_cart(request, slugified_store_name):
             cartproductqty = item_qty * Decimal(a_product_price)
         print(cartproductqty)
         response = JsonResponse(
-            {"qty": cartqty, "subtotal": carttotal, "cartproqty": cartproductqty, "store": store})
+            {"qty": cartqty, "subtotal": carttotal, "cartproqty": cartproductqty})
         return response
 
 
@@ -114,5 +114,5 @@ def clear_all_cart(request, slugified_store_name):
     cart.clear()
     cartqty = cart.__len__()
     carttotal = cart.get_total_price()
-    response = JsonResponse({"qty": cartqty, "subtotal": carttotal, "store": store})
-    return redirect("cart-summary", slugified_store_name=slugified_store_name)
+    response = JsonResponse({"qty": cartqty, "subtotal": carttotal})
+    return redirect("cart:cart_summary", slugified_store_name=slugified_store_name)
