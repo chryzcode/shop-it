@@ -70,13 +70,12 @@ class Cart:
     def save(self):
         self.session.modified = True
 
-    def cart_products_store_name(self):
-        product_ids = self.cart.keys()
-        products = Product.objects.filter(id__in=product_ids)
-        products_store = [ product.created_by for product in products ]
-        return products_store
+    # def cart_products_store_name(self):
+    #     product_ids = self.cart.keys()
+    #     products = Product.objects.filter(id__in=product_ids)
+    #     products_store = [ product.created_by for product in products ]
+    #     return products_store
 
-    # delete all session
     def clear(self):
         del self.session["skey"]
         self.session.modified = True

@@ -18,7 +18,6 @@ def cart_summary(request, slugified_store_name):
     grand_total = ''
     form_feedback = ''
     cart = Cart(request)
-    cart_product_stores = cart.cart_products_store_name()
     form = UseCouponForm
     expired_coupons = Coupon.objects.all()
     for coupon in expired_coupons:
