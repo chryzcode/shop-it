@@ -37,9 +37,9 @@
         <div>
           <label for="currency">Currency</label>
           <p>{{ storeform.currency.errors }}</p>
-          <select name="currency" id="currency">
+          <select name="currency" id="currency" class="form-control">
             {% for currency in currencies %}
-            <option value="{{currency.id}}">{{currency.name}}</option>
+            <option value="{{currency.id}}">{{currency.currency_name}}</option>
             {% endfor %}
           </select>
         </div>
