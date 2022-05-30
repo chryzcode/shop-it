@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "account",
     "customer",
     "order",
+    "payment"
 ]
 
 MIDDLEWARE = [
@@ -179,5 +180,8 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = config("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
+
+PAYSTACK_SECRET_KEY = config("PAYSTACK_SECRET_KEY")
+PAYSTACK_PUBLIC_KEY = config("PAYSTACK_PUBLIC_KEY")
 
 
