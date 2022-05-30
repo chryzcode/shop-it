@@ -85,7 +85,7 @@ class Currency(models.Model):
         verbose_name_plural = "Currencies"
 
     def __str__(self):
-        return self.currency_name
+        return self.name
 
 class Store(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="store_owner")
