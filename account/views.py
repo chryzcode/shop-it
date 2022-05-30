@@ -1,3 +1,4 @@
+from locale import currency
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -8,7 +9,7 @@ from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 
 from .forms import *
-from .models import User, store_staff, Store
+from .models import *
 from .tokens import account_activation_token
 
 from customer.models import Customer
@@ -125,6 +126,7 @@ def user_profile(request):
 
 def store_account(request):
     if request.user.store_creator == True:
+        currencies = Currency.objects.all()
         account = request.user
         storeform = StoreForm(instance=account)
         if request.method == "POST":
@@ -136,7 +138,7 @@ def store_account(request):
         return render(
             request, 
             "account/user/store-account.html",
-            {"storeform": storeform, "account": account}
+            {"storeform": storeform, "account": account, "currencies": currencies}
         )
     else:
         return redirect("account:user_profile")
