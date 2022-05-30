@@ -92,7 +92,7 @@ class Store(models.Model):
     store_name = models.CharField(max_length=150, unique=True)
     slugified_store_name = models.SlugField(max_length=255, unique=True)
     store_description = models.TextField(max_length=500, blank=True)
-    currency = models.ForeignKey(Currency, on_delete=models.CASCADE, related_name="currency", default=1)
+    currency = models.ForeignKey(Currency, on_delete=models.CASCADE, related_name="currency")
     store_image = models.ImageField(upload_to="store-images/")
     staffs =  models.ManyToManyField(User, related_name="store_staffs", blank=True)
     customers = models.ManyToManyField(User, related_name="store_customers", blank=True)
