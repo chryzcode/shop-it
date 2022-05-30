@@ -1,4 +1,5 @@
 
+from locale import currency
 from django.conf import settings
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
                                         PermissionsMixin)
@@ -73,6 +74,14 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def store_name_slug(self):
         return slugify(self.store_name)
+
+class Currency(models.Model):
+    currency_name = models.CharField(max_length=50)
+    currency_code = models.CharField(max_length=10)
+    currency_symbol = models.CharField(max_length=10)
+
+    def __str__(self):
+        return self.currency_name
 
 class Store(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="store_owner")
