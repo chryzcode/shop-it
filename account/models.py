@@ -76,9 +76,9 @@ class User(AbstractBaseUser, PermissionsMixin):
         return slugify(self.store_name)
 
 class Currency(models.Model):
-    currency_name = models.CharField(max_length=50)
-    currency_code = models.CharField(max_length=10)
-    currency_symbol = models.CharField(max_length=10)
+    name = models.CharField(max_length=50)
+    code = models.CharField(max_length=10)
+    symbol = models.CharField(max_length=10)
 
     class Meta:
         verbose_name = "Currency"
