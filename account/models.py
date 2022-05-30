@@ -80,6 +80,10 @@ class Currency(models.Model):
     currency_code = models.CharField(max_length=10)
     currency_symbol = models.CharField(max_length=10)
 
+    class Meta:
+        verbose_name = "Currency"
+        verbose_name_plural = "Currencies"
+
     def __str__(self):
         return self.currency_name
 
