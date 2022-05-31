@@ -7,7 +7,12 @@ def initiate_paymemt(request: HttpRequest) -> HttpResponse:
     if request.method == 'POST':
         payment_form = PaymentForm(request.POST)
         if payment_form.is_valid():
-            payment = payment_form.save()
+            payment = payment_form.save(commit=False)
+            if request.user.is_authenticated:
+                payment.user = request.user
+                payment.save()
+                render(request, 'payment/make-payment.html', {"payment":payment})
+            payment.save()
             render(request, 'payment/make-payment.html', {"payment":payment})
     else:
         payment_form  = PaymentForm()
