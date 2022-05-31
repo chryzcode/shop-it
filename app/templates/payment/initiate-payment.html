@@ -1,14 +1,79 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment</title>
-</head>
-<body>
-    {% block content %}
+{% extends 'navs/base.html' %} 
+{% block title %}<title>Initiate Payment</title>{% endblock %}
+{% block content %}
+<div class="account-form-container">
+    <form action="" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="above-create-form">
+        <p>Store Account</p>
+      </div>
 
-    {% endblock %}
-</body>
-</html>
+      <div class="acc-form-seg">
+        <p>Store Info</p>
+        <div class="input-container">
+          <label for="full_name">Full Name<span class="form-required">*</span></label>
+          <p>{{ payment_form.full_name.errors }}</p>
+          <div>{{ payment_form.full_name }}</div>
+        </div>
+
+        <div class="input-container">
+          <label for="email">Email<span class="form-required">*</span></label>
+          <p>{{ payment_form.email.errors }}</p>
+          <div>{{ payment_form.email }}</div>
+        </div>
+
+        <div class="input-container">
+          <label for="phone">Phone Number<span class="form-required">*</span></label>
+          <p>{{ payment_form.phone.errors }}</p>
+          {{payment_form.phone}}
+        </div>
+
+        <div class="input-container">
+          <label for="address_line">Address Line<span class="form-required">*</span></label>
+          <p>{{ payment_form.address_line.errors }}</p>
+          {{payment_form.address_line}}
+        </div>
+
+        <div class="input-container">
+          <label for="address_line2">Address Line 2</label>
+          <p>{{ payment_form.address_line2.errors }}</p>
+          {{payment_form.address_line2}}
+        </div>
+
+        <div class="input-container">
+          <label for="country">Country<span class="form-required">*</span></label>
+          <p>{{ payment_form.country.errors }}</p>
+          <select name="country" class="countries form-control" id="countryId">
+              <option value="">Select Country</option>
+            </select>
+        </div>
+
+        <div class="input-container">
+            <label for="state">State<span class="form-required">*</span></label>
+            <p>{{ payment_form.state.errors }}</p>
+            <select name="state" class="states form-control" id="stateId">
+              <option value="">Select State</option>
+            </select>
+          </div>
+      
+
+          <div class="input-container">
+            <label for="city">City<span class="form-required">*</span></label>
+            <p>{{ payment_form.city.errors }}</p>
+            <select name="city" class="cities form-control" id="cityId">
+              <option value="">Select City</option>
+            </select>
+          </div>
+
+
+
+
+
+
+      <div class="form-btn-container">
+        <button class="form-btn" type="submit">Update</button>
+      </div>
+    </form>
+  </div>
+
+{% endblock %}

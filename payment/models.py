@@ -1,6 +1,7 @@
 from django.db import models
 import secrets
 from django.conf import settings
+from customer.models import *
 
 # Create your models here.
 class Payment(models.Model):
@@ -17,10 +18,12 @@ class Payment(models.Model):
     country = models.CharField(max_length=200)
     state = models.CharField(max_length=200)
     city = models.CharField(max_length=200)
+    use_address = models.ForeignKey(Address, on_delete=models.CASCADE, null=True)
+    default_address = models.BooleanField(default=False, null=True, blank=True)
 
 
     class Meta:
-        ordering = ('-date_created')
+        ordering = ['-date_created']
 
     def __str__(self):
         return "payment" + ' ' + self.amount
