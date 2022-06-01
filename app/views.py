@@ -83,7 +83,10 @@ def create_product(request):
             product.slug = slugify(product.name)
             if Product.objects.filter(slug=product.slug, created_by=store).exists():
                 error = "Product already exists"
-                return render(request, "store/create-product.html", {"form": form, "error": error, "product_units": product_units})
+                return render(request, "store/create-product.html", {"form": form, "error": error, "product_units": product_units, "categories":categories})
+            if not store.currency:
+                error = "Please set your store currency in store settings"
+                return render(request, "store/create-product.html", {"form": form, "error": error, "product_units": product_units, "categories":categories})
             product.save()
             return redirect(
                         "app:product_detail",
