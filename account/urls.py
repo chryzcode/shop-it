@@ -65,4 +65,5 @@ urlpatterns = [
     path("shipping-method/", views.shipping_method_list, name="shipping_method_list"),
     path("create/shipping-method/", views.add_shipping_method, name="add_shipping_method"),
     path("edit/shipping-method/<str:pk>", views.edit_shipping_method, name="edit_shipping_method"),
+    path("delete/shipping-method/<str:pk>", views.delete_shipping_method, name="delete_shipping_method"),
 ]

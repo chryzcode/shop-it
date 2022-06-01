@@ -29,7 +29,7 @@
           </td>
           <td>
             <button type="button" class="delete-btn">
-              <a href=""><i class="fas fa-trash-alt"></i>Delete</a>
+              <a href="{% url 'account:delete_shipping_method' shipping_method.pk %}"><i class="fas fa-trash-alt"></i>Delete</a>
             </button>
           </td>
           {% endif %}
