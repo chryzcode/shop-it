@@ -328,7 +328,7 @@ def add_shipping_method(request):
         return render(request, "store/shipping-method.html", {"form": form})
     else:
         error = 'You are not authorized'
-        return render(request, "store/all-store-staff-page.html", {"error":error, "form": form})
+        return render(request, "store/shipping-method.html", {"error":error, "form": form})
 
 def edit_shipping_method(request, pk):
     if request.user.store_creator == True:
@@ -348,7 +348,18 @@ def edit_shipping_method(request, pk):
         return render(request, "store/shipping-method.html", {"form": form})
     else:
         error = 'You are not authorized'
-        return render(request, "store/all-store-staff-page.html", {"error":error, "form": form})
+        return render(request, "store/shipping-method.html", {"error":error, "form": form})
+
+def delete_shipping_method(request, pk):
+    if request.user.store_creator == True:
+        store = Store.objects.get(owner=request.user)
+        shipping_method = get_object_or_404(Shipping_Method, pk=pk)
+        if shipping_method:
+            shipping_method.delete()
+            return redirect("account:shipping_method_list")
+    else:
+        error = 'You are not authorized'
+        return render(request, "store/shipping-method.html", {"error":error})
     
 
 
