@@ -16,8 +16,8 @@
         <div class="input-container">
           <label for="store_image">Store Avatar</label>
           <p>{{ storeform.store_image.errors }}</p>
-          {% if account.store_image %}
-          <a href="{{account.store_image.url}}">Current Image</a>
+          {% if store.store_image %}
+          <a href="{{store.store_image.url}}">Current Image</a>
           {% endif %}
           <div>{{ storeform.store_image }}</div>
         </div>
@@ -35,7 +35,7 @@
         </div>
 
         <div>
-          <label for="currency">Currency</label>
+          <label for="currency">Currency<span class="form-required">*</span></label>
           <p>{{ storeform.currency.errors }}</p>
           {{storeform.currency}}
         </div>

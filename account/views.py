@@ -145,7 +145,7 @@ def store_account(request,):
         return render(
             request, 
             "account/user/store-account.html",
-            {"storeform": storeform, "account": account, "currencies":currencies}
+            {"storeform": storeform, "account": account, "store":store, "currencies":currencies}
         )
     else:
         return redirect("account:user_profile")
