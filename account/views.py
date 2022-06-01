@@ -138,6 +138,8 @@ def store_account(request,):
                 form.owner = request.user
                 form.slugified_store_name = slugify(store_name)
                 form.save()
+                request.user.store_name = store_name
+                request.user.save()
                 return redirect("account:store_account")
 
         return render(
