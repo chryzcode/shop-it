@@ -55,6 +55,7 @@ class StoreForm(ModelForm):
             "store_name", 
             "store_image",
             "store_description",
+            "currency",
             "instagram",
             "twitter",
             "facebook",
@@ -66,6 +67,7 @@ class StoreForm(ModelForm):
             ),
             "store_image": forms.FileInput(attrs={"class": "form-control"}),
             "store_description": forms.Textarea(attrs={"class": "form-control", "placeholder":"This is the Shop!t store for your day to day online business......"}),
+            "currency": forms.Select(attrs={"class": "form-control"}),
             "instagram": forms.TextInput(
                 attrs={
                     "class": "form-control",
