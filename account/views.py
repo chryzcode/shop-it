@@ -127,17 +127,23 @@ def user_profile(request):
 def store_account(request,):
     if request.user.store_creator == True:
         currencies = Currency.objects.all()
-        # store = Store.objects.get(slugified_store_name=slugified_store_name)
-        # account = User.objects.get(store_name=store.store_name)
         account = request.user
-        storeform = StoreForm(instance=account)
+        store = Store.objects.get(owner=account)
+        storeform = StoreForm(instance=store)
         if request.method == "POST":
-            currency = request.POST.get("currency")
-            storeform = StoreForm(request.POST, request.FILES, instance=account)
+            storeform = StoreForm(request.POST, request.FILES, instance=store)
             if storeform.is_valid():
-                store_account = storeform.save(commit=False)
-                store_account.currency = currency
-                store_account.save()
+                form = storeform.save(commit=False)
+                form.owner = request.user
+                form.storename = storeform.cleaned_data["store_name"]
+                form.slugified_store_name = slugify(form.storename)
+                form.store_description = storeform.cleaned_data["store_description"]
+                form.currency = storeform.cleaned_data["currency"]
+                form.store_image = storeform.cleaned_data["store_image"]
+                form.facebook = storeform.cleaned_data["facebook"]
+                form.instagram = storeform.cleaned_data["instagram"]
+                form.twitter = storeform.cleaned_data["twitter"]
+                form.save()
                 return redirect("/")
 
         return render(

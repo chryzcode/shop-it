@@ -87,6 +87,9 @@ class StoreForm(ModelForm):
                 }
             ),
         }
+    
+    def __init__(self, *args, **kwargs):
+        super(StoreForm, self).__init__(*args, **kwargs)
 
 class UserProfileForm(ModelForm):
     class Meta:
