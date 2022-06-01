@@ -167,7 +167,10 @@ def remove_wishlist(request, slug):
 def wishlist(request):
     user = request.user
     wishlist = Product.objects.filter(wishlist=user)
-    return render(request, "store/wishlist.html", {"wishlist": wishlist})
+    for product in wishlist:
+        product_store = Store.objects.get(store_name=product.created_by)
+        currency = product_store.currency
+    return render(request, "store/wishlist.html", {"wishlist": wishlist, "currency": currency})
 
 def add_category(request):
     form = CategoryForm

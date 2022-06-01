@@ -14,7 +14,7 @@
       <div class="acc-form-seg">
         <p>Store Info</p>
         <div class="input-container">
-          <label for="store_image">Store Avatar</label>
+          <label for="store_image">Store Avatar<span class="form-required">*</span></label>
           <p>{{ storeform.store_image.errors }}</p>
           {% if store.store_image %}
           <a href="{{store.store_image.url}}">Current Image</a>
