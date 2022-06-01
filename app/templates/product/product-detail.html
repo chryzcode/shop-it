@@ -61,11 +61,11 @@
 
     <div class="">
       {% if product.discount_percentage %}
-      <span>${{product.discount_price}}</span>
+      <span>{{store.currency.symbol}}{{product.discount_price}}</span>
       <span class="discount-precentage">{{product.discount_percentage}}%</span>
-      <p class="price-with-discount">${{product.price}}</p>
+      <p class="price-with-discount">{{store.currency.symbol}}{{product.price}}</p>
       {% else %}
-      <span><b>{{product.price}}</b></span>
+      <span><b>{{store.currency.symbol}}{{product.price}}</b></span>
       {% endif %}
     </div>
   
