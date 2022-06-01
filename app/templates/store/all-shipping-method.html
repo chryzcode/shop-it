@@ -22,7 +22,11 @@
           <td>{{ shipping_method.location }}</td>
           <td>{{ shipping_method.price }}</td>
           {% if request.user.store_creator == True %}
-          <td>{{ shipping_method.category }}</td>
+          <td>
+            <button type="button" class="update-btn">
+              <a href="{% url 'account:edit_shipping_method' shipping_method.pk  %}"><i class="far fa-edit"></i>Update</a>
+            </button>
+          </td>
           <td>
             <button type="button" class="delete-btn">
               <a href=""><i class="fas fa-trash-alt"></i>Delete</a>
