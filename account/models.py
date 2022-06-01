@@ -1,5 +1,6 @@
 
 from locale import currency
+from operator import mod
 from django.conf import settings
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
                                         PermissionsMixin)
@@ -149,4 +150,9 @@ class store_staff(models.Model):
 
     def __str__(self):
         return self.full_name
+
+class Shipping_Method(models.Model):
+    store = models.ForeignKey(Store, on_delete=models.CASCADE, related_name="shipping_method")
+    location = models.CharField(max_length=250)
+    price = models.PositiveIntegerField(default=0)
 

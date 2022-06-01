@@ -3,7 +3,7 @@ from django.contrib.auth.forms import PasswordResetForm, SetPasswordForm
 from django.forms import ModelForm
 from django.utils.text import slugify
 
-from .models import User, store_staff, Store
+from .models import *
 
 from django.conf import settings
 
@@ -203,3 +203,13 @@ class AddStoreForm(ModelForm):
             raise forms.ValidationError("Store name is already taken")
         
         return store_name
+
+class ShippingMethodForm(ModelForm):
+    class Meta:
+        model = Shipping_Method
+        fields = ["location", "price"]
+
+        widgets = {
+            "location":forms.TextInput(attrs={"class": "form-control", "placeholder": "Location Coverage"})
+        }
+

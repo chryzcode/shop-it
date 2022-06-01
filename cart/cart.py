@@ -39,9 +39,11 @@ class Cart:
         return sum(Decimal(item["price"]) * item["qty"] for item in self.cart.values() )
 
     def get_grand_total(self, coupon_percentage):
+        #add coupon percentage to cart session
         return sum(Decimal(item["price"]) * item["qty"] for item in self.cart.values()) - (
                 sum(Decimal(item["price"]) * item["qty"] for item in self.cart.values()) * Decimal((coupon_percentage / 100))
-            )   
+            )
+           
         
 
     # return the sum of an item quantity

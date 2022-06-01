@@ -1,15 +1,15 @@
 {% extends 'navs/base.html' %} 
 {% block title %}<title>Initiate Payment</title>{% endblock %}
 {% block content %}
-<div class="account-form-container">
+<div class="auth-form-container">
     <form action="" method="post" enctype="multipart/form-data">
       {% csrf_token %}
       <div class="above-create-form">
-        <p>Store Account</p>
+        <p>Initiate Payment</p>
       </div>
 
       <div class="acc-form-seg">
-        <p>Store Info</p>
+        <p>My Details</p>
         <div class="input-container">
           <label for="full_name">Full Name<span class="form-required">*</span></label>
           <p>{{ payment_form.full_name.errors }}</p>
@@ -28,6 +28,29 @@
           {{payment_form.phone}}
         </div>
 
+        {% if address_count %}
+        <div class="input-container">
+          <label for="use_address">Address<span class="form-required">*</span></label>
+          <p>{{ payment_form.use_address.errors }}</p>
+          <select name="use_address" id="use_address" class="form-control">
+            <option value="">Select an address</option>
+            {% for address in address %}
+            <option value="{{ address.id }}">{{ address.address_line }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        {% else %}
+        <div class="input-container">
+          <label for="default_address">Default Address</label>
+          <p>{{ payment_form.default_address.errors }}</p>
+          <div>{{ payment_form.default_address }}</div>
+        </div>
+
+        {% endif %}
+
+        {% if default_address %}
+        {% else %}
         <div class="input-container">
           <label for="address_line">Address Line<span class="form-required">*</span></label>
           <p>{{ payment_form.address_line.errors }}</p>
@@ -64,8 +87,9 @@
               <option value="">Select City</option>
             </select>
           </div>
+        {% endif %}
 
-
+        
 
 
 

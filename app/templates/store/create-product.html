@@ -1,5 +1,10 @@
 {% extends 'navs/store-nav.html' %} {% load static %} 
-{% block title %} <title>Shop!t - Create Product</title> {% endblock %}
+{% block title %} 
+<title>Shop!t - 
+  {% if 'create' in request.get_full_path %}
+        Create Product{% else %}Edit Product
+  {% endif %}</title>
+{% endblock %}
 {% block content %}
 <div class="store-page-container">
   {% include 'navs/store-side-nav.html' %}

@@ -301,6 +301,34 @@ def create_store(request):
                 )
                 return redirect("/")
     return render(request, "account/registration/add-store.html", {"form": form})
+
+def shipping_method_list(request):
+    if request.user.store_creator == True:
+        store = Store.objects.get(owner=request.user)
+    else:
+        store = store_staff.objects.get(user=request.user).store
+    shipping_methods = Shipping_Method.objects.filter(store=store)
+    return render(request, "store/all-shipping-method.html", {"shipping_methods":shipping_methods, "store":store})
+
+def add_shipping_method(request):
+    if request.user.store_creator == True:
+        store = Store.objects.get(owner=request.user)
+        form = ShippingMethodForm
+        if request.method == "POST":
+            form = ShippingMethodForm(request.POST)
+            if form.is_valid():
+                location = form.cleaned_data["location"] 
+                shipping_method = form.save(commit=False)
+                shipping_method.store = store
+                if Shipping_Method.objects.filter(location=location, store=store).exists():
+                    error = "Shipping Method already exists"
+                    return render(request, "store/shipping-method.html", {"form": form, "error":error})
+                shipping_method.save()
+                return redirect("/")
+        return render(request, "account/registration/shipping-address.html", {"form": form})
+    else:
+        error = 'You are not authorized'
+        return render(request, "store/all-store-staff-page.html", {"error":error, "form": form})
     
 
 

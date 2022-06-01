@@ -19,7 +19,7 @@ from django.utils.translation import gettext_lazy as _
 #     city = models.CharField(_("City"), max_length=200)
 #     created = models.DateTimeField(auto_now_add=True)
 #     updated = models.DateTimeField(auto_now=True)
-#     total_paid = models.IntegerField(default=0)
+#     amount = models.IntegerField(default=0)
 #     payment_option = models.CharField(max_length=200, blank=True)
 #     billing_status = models.BooleanField(default=False)
 
