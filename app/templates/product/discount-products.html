@@ -19,7 +19,7 @@
           <td><a href="{{product.get_absolute_url}}">{{ product.name }}</a></td>
           <td>{{store.currency.symbol}}{{ product.price }}</td>
           <td>{{ product.discount_percentage }} %</td>
-          <td>{{product.discount_price}}</td>
+          <td>{{store.currency.symbol}}{{product.discount_price}}</td>
         </tr>
         {% endfor %}
       </table>

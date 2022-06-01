@@ -26,13 +26,15 @@ def home_page(request):
 
 def a_store_all_products(request):
     if request.user.store_creator == True:
-        all_products = Product.objects.filter(created_by= request.user.store_name)
+        store = Store.objects.get(store_name=request.user.store_name)
+        all_products = Product.objects.filter(created_by= store)
     else:
-        all_products = Product.objects.filter(created_by= store_staff.objects.get(user = request.user).store)
+        store = Store.objects.get(store_name=store_staff.objects.get(user = request.user).store)
+        all_products = Product.objects.filter(created_by= store)
     return render(
         request,
         "store/products.html",
-        {"all_products": all_products},
+        {"all_products": all_products, "store": store},
     )
 
 
@@ -265,13 +267,15 @@ def a_store_category_products(request, slugified_store_name, slug):
 
 def discount_products(request):
     if request.user.store_creator == True:
-        products = Product.objects.filter(created_by=request.user.store_name, discount_percentage__gt=0)  
+        store = Store.objects.get(store_name=request.user.store_name)
+        products = Product.objects.filter(created_by=store, discount_percentage__gt=0)  
     else:
-        products = Product.objects.filter(created_by=store_staff.objects.get(user = request.user).store, discount_percentage__gt=0)
+        store = Store.objects.get(store_name=store_staff.objects.get(user = request.user).store)
+        products = Product.objects.filter(created_by=store, discount_percentage__gt=0)
     return render(
         request,
         "product/discount-products.html",
-        {"products": products},
+        {"products": products, "store": store}
     )
 
 def create_coupon(request):
