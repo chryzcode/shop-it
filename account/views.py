@@ -133,16 +133,10 @@ def store_account(request,):
         if request.method == "POST":
             storeform = StoreForm(request.POST, request.FILES, instance=store)
             if storeform.is_valid():
+                store_name = storeform.cleaned_data["store_name"]
                 form = storeform.save(commit=False)
                 form.owner = request.user
-                form.storename = storeform.cleaned_data["store_name"]
-                form.slugified_store_name = slugify(form.storename)
-                form.store_description = storeform.cleaned_data["store_description"]
-                form.currency = storeform.cleaned_data["currency"]
-                form.store_image = storeform.cleaned_data["store_image"]
-                form.facebook = storeform.cleaned_data["facebook"]
-                form.instagram = storeform.cleaned_data["instagram"]
-                form.twitter = storeform.cleaned_data["twitter"]
+                form.slugified_store_name = slugify(store_name)
                 form.save()
                 return redirect("/")
 
@@ -153,26 +147,6 @@ def store_account(request,):
         )
     else:
         return redirect("account:user_profile")
-
-# def edit_shipping_method(request, pk):
-#     if request.user.store_creator == True:
-#         store = Store.objects.get(owner=request.user)
-#         shipping_method = get_object_or_404(Shipping_Method, pk=pk)
-#         form = ShippingMethodForm(instance=shipping_method)
-#         if request.method == "POST":
-#             form = ShippingMethodForm(request.POST, instance=shipping_method)
-#             if form.is_valid():
-#                 shipping_method = form.save(commit=False)
-#                 shipping_method.store = store
-#                 if Shipping_Method.objects.filter(location=shipping_method.location, store=store).exists():
-#                     error = "Shipping Method already exists"
-#                     return render(request, "store/shipping-method.html", {"form": form, "error":error})
-#                 shipping_method.save()
-#                 return redirect("account:shipping_method_list")
-#         return render(request, "store/shipping-method.html", {"form": form})
-#     else:
-#         error = 'You are not authorized'
-#         return render(request, "store/shipping-method.html", {"error":error, "form": form})
 
 def store_staff_page(request):
     if request.user.store_creator == True:
