@@ -20,27 +20,19 @@
       </div>
       {% csrf_token %}
       <div class="input-container">       
-        <label for="locatio">Product Name<span class="form-required">*</span></label>
+        <label for="location">Location<span class="form-required">*</span></label>
         <p class="error"> {{error}}</p>
-        <p>{{ form.name.errors }}</p>
-        {{form.name}}
+        <p>{{ form.location.errors }}</p>
+        {{form.location}}
       </div>
 
       <div class="input-container">
-        <label for="category">Product Category<span class="form-required">*</span></label>
-        <p>{{ form.category.errors }}</p>
-        <select class="form-control" name="category" id="category">
-          {% for category in categories %}
-           <option value="{{ category.pk }}">{{ category.name }}</option>
-          {% endfor %}
-        </select>
+        <label for="price">Price<span class="form-required">*</span></label>
+        <p>{{ form.price.errors }}</p>
+        <p>{{form.price}}</p>
       </div>
 
-      <div class="input-container">
-        <label for="description">Short Description<span class="form-required">*</span></label>
-        <p>{{ form.description.errors }}</p>
-        {{form.description}}
-      </div>
+     
 
 
       <div class="form-btn-container">

@@ -210,6 +210,7 @@ class ShippingMethodForm(ModelForm):
         fields = ["location", "price"]
 
         widgets = {
-            "location":forms.TextInput(attrs={"class": "form-control", "placeholder": "Location Coverage"})
+            "location":forms.TextInput(attrs={"class": "form-control", "placeholder": "Location Coverage"}),
+            "price": forms.NumberInput(attrs={"class": "form-control", "placeholder": "Price"}),
         }
 

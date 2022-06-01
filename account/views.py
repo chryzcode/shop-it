@@ -324,8 +324,28 @@ def add_shipping_method(request):
                     error = "Shipping Method already exists"
                     return render(request, "store/shipping-method.html", {"form": form, "error":error})
                 shipping_method.save()
-                return redirect("/")
-        return render(request, "account/registration/shipping-address.html", {"form": form})
+                return redirect("account:shipping_method_list")
+        return render(request, "store/shipping-method.html", {"form": form})
+    else:
+        error = 'You are not authorized'
+        return render(request, "store/all-store-staff-page.html", {"error":error, "form": form})
+
+def edit_shipping_method(request, pk):
+    if request.user.store_creator == True:
+        store = Store.objects.get(owner=request.user)
+        shipping_method = get_object_or_404(Shipping_Method, pk=pk)
+        form = ShippingMethodForm(instance=shipping_method)
+        if request.method == "POST":
+            form = ShippingMethodForm(request.POST, instance=shipping_method)
+            if form.is_valid():
+                shipping_method = form.save(commit=False)
+                shipping_method.store = store
+                if Shipping_Method.objects.filter(location=shipping_method.location, store=store).exists():
+                    error = "Shipping Method already exists"
+                    return render(request, "store/shipping-method.html", {"form": form, "error":error})
+                shipping_method.save()
+                return redirect("account:shipping_method_list")
+        return render(request, "store/shipping-method.html", {"form": form})
     else:
         error = 'You are not authorized'
         return render(request, "store/all-store-staff-page.html", {"error":error, "form": form})

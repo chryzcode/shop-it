@@ -49,7 +49,7 @@ class ProductUnit(models.Model):
 
 class Coupon(models.Model):
     code = models.CharField(max_length=20)
-    percentage = models.IntegerField(
+    percentage = models.PositiveIntegerField(
         default=1,
         validators=[MinValueValidator(1), MaxValueValidator(100)],
     )

@@ -156,3 +156,6 @@ class Shipping_Method(models.Model):
     location = models.CharField(max_length=250)
     price = models.PositiveIntegerField(default=0)
 
+    def __str__(self):
+        return self.location  + " " + self.store.store_name
+
