@@ -17,9 +17,9 @@ def cart_summary(request, slugified_store_name):
     store_currency_symbol = store.currency.symbol
     grand_total = ''
     form_feedback = ''
+    #cart products filter by store
     cart = Cart(request)
-    hey = cart.cart_products_store_name()
-    print(hey)
+    cart_check = cart.store_check()
     form = UseCouponForm
     expired_coupons = Coupon.objects.all()
     for coupon in expired_coupons:
@@ -61,7 +61,7 @@ def cart_summary(request, slugified_store_name):
                 form_feedback = 'Coupon does not exist' 
 
                       
-    return render(request, "cart/cart-summary.html", {"cart": cart, "form": form, "grand_total": grand_total, "form_feedback": form_feedback, "store":store, "store_currency_symbol":store_currency_symbol})
+    return render(request, "cart/cart-summary.html", {"cart": cart, "form": form, "grand_total": grand_total, "form_feedback": form_feedback, "store":store, "store_currency_symbol":store_currency_symbol, 'cart_check':cart_check})
                
 
 def add_to_cart(request, slugified_store_name):
@@ -72,12 +72,11 @@ def add_to_cart(request, slugified_store_name):
         product_qty = int(request.POST.get("productqty"))
         product = get_object_or_404(Product, id=product_id)
         cart.add(product=product, qty=product_qty)
-        if cart.cart_products_store_name():
+        if cart.store_check():
             product_qty = cart.__len__()
             response = JsonResponse({"qty": product_qty})
             return response
         else:
-            #remove the product from the cart and redirect to the cart page and show an error message
             cart.delete(product=product_id)
             product_qty = cart.__len__()
             response = JsonResponse({"qty": product_qty})
