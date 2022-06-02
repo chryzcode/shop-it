@@ -167,7 +167,11 @@ def customer_wishlist(request, slugified_store_name):
     store = get_object_or_404(Store, slugified_store_name= slugified_store_name)
     user = request.user
     wishlist = Product.objects.filter(wishlist=user)
-    return render(request, "customer/customer-wishlist.html", {"wishlist": wishlist, "store": store})
+    for product in wishlist:
+        product_store = Store.objects.get(store_name=product.created_by)
+        currency = product_store.currency
+        print(currency)
+    return render(request, "customer/customer-wishlist.html", {"wishlist": wishlist, "store": store, "currency":currency})
 
 def address_list(request, slugified_store_name):
     store = get_object_or_404(Store, slugified_store_name= slugified_store_name)

@@ -1,4 +1,6 @@
 from decimal import Decimal
+from locale import currency
+from pyexpat import model
 
 from ckeditor.fields import RichTextField
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -8,7 +10,7 @@ from django.urls import reverse
 from django.utils.text import slugify
 from requests import request
 
-from account.models import User, Store
+from account.models import *
 
 from datetime import datetime, timedelta
 
@@ -92,6 +94,7 @@ class Product(models.Model):
         default= 0,
     )
     wishlist = models.ManyToManyField(User, related_name="wishlist", blank=True)
+    currency = models.ForeignKey(Currency, on_delete=models.CASCADE, default=8)
 
     # pulral for the table name in the admin page
     class Meta:
