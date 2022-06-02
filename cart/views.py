@@ -1,4 +1,5 @@
 from decimal import Decimal
+from distutils.log import error
 
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -17,6 +18,8 @@ def cart_summary(request, slugified_store_name):
     grand_total = ''
     form_feedback = ''
     cart = Cart(request)
+    hey = cart.cart_products_store_name()
+    print(hey)
     form = UseCouponForm
     expired_coupons = Coupon.objects.all()
     for coupon in expired_coupons:
@@ -69,9 +72,17 @@ def add_to_cart(request, slugified_store_name):
         product_qty = int(request.POST.get("productqty"))
         product = get_object_or_404(Product, id=product_id)
         cart.add(product=product, qty=product_qty)
-        product_qty = cart.__len__()
-        response = JsonResponse({"qty": product_qty})
-        return response
+        if cart.cart_products_store_name():
+            product_qty = cart.__len__()
+            response = JsonResponse({"qty": product_qty})
+            return response
+        else:
+            #remove the product from the cart and redirect to the cart page and show an error message
+            cart.delete(product=product_id)
+            product_qty = cart.__len__()
+            response = JsonResponse({"qty": product_qty})
+            return response
+            
 
 
 def delete_from_cart(request, slugified_store_name):
