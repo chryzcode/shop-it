@@ -5,7 +5,7 @@ from customer.models import *
 
 # Create your models here.
 class Payment(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="order_user", blank=True, null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
     full_name = models.CharField(max_length=150)
     amount = models.PositiveIntegerField()
     ref = models.CharField(max_length=200)
