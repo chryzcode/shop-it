@@ -7,7 +7,7 @@ from .forms import *
 from cart.cart import *
 
 # Create your views here.
-def initiate_payment(request: HttpRequest) -> HttpResponse:
+def initiate_payment(request: HttpRequest, id) -> HttpResponse:
     cart = Cart(request)
     grand_total = int(cart.get_grand_total(50))
     print(grand_total)

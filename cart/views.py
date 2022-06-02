@@ -12,7 +12,6 @@ from datetime import datetime, timedelta
 from order.forms import OrderForm
 
 
-# def orderform(request)
 def cart_summary(request, slugified_store_name):
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
     store_currency_symbol = store.currency.symbol
@@ -21,6 +20,7 @@ def cart_summary(request, slugified_store_name):
     cart = Cart(request)
     cart_check = cart.store_check()
     form = UseCouponForm
+    orderform = OrderForm
     expired_coupons = Coupon.objects.all()
     for coupon in expired_coupons:
         expiry_date = (datetime.now().astimezone() - coupon.created_at)
@@ -30,6 +30,7 @@ def cart_summary(request, slugified_store_name):
             coupon.delete()
     if request.method == "POST":
         form = UseCouponForm(request.POST)
+        orderform = OrderForm(request.POST)
         if form.is_valid():
             coupon_code = form.cleaned_data.get("code")
             if Coupon.objects.filter(code=coupon_code).exists():
@@ -59,6 +60,20 @@ def cart_summary(request, slugified_store_name):
             else:
                 form = UseCouponForm
                 form_feedback = 'Coupon does not exist' 
+
+        if orderform.is_valid():
+            products = cart.get_cart_items()
+            order = orderform.save(commit=False)
+            if request.user.is_authenticated:
+                order.user = request.user
+            order.store = store
+            order.amount = cart.get_grand_total()
+            order.billing_status = False
+            order.quantity = cart.__len__()
+            order.product.set(products)
+            order.save()
+            cart.clear()
+            return render
 
                       
     return render(request, "cart/cart-summary.html", {"cart": cart, "form": form, "grand_total": grand_total, "form_feedback": form_feedback, "store":store, "store_currency_symbol":store_currency_symbol, 'cart_check':cart_check})
