@@ -94,7 +94,7 @@ class Product(models.Model):
         default= 0,
     )
     wishlist = models.ManyToManyField(User, related_name="wishlist", blank=True)
-    currency = models.ForeignKey(Currency, on_delete=models.CASCADE, default=8)
+    currency = models.ForeignKey(Currency, on_delete=models.CASCADE)
 
     # pulral for the table name in the admin page
     class Meta:
