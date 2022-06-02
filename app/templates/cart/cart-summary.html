@@ -82,8 +82,13 @@
     </div>
   </div>
   {% else %}
-  You have products in this store cart
-  <a href="{% url 'cart:cart_summary' product.store.slugified_store_name %}">{{product.store}}</a>
+  
+  <div class="empty-cart-stylings">
+    <p>You don't have any product in this cart</p>
+    <p>but you have <span>{{item.qty}}</span> products in {{product.store}} cart</p>
+  <a class="get-started-btn" href="{% url 'cart:cart_summary' product.store.slugified_store_name %}">{{product.store}}</a>
+  </div>
+  
   
 {% endif %}
 {% endwith %} {% endfor %}

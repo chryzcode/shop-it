@@ -75,7 +75,6 @@ class Cart:
     def store_check(self):
         product_ids = self.cart.keys()
         products = Product.objects.filter(id__in=product_ids)
-        print(products)
         products_store = [ product.created_by for product in products ]
         result = all(store == products_store[0] for store in products_store)
         if result:
