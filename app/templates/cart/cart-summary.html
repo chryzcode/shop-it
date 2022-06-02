@@ -8,9 +8,9 @@
     <span><a href="{{product.get_absolute_url}}">{{ product.name }}</a></span>
     <span>
       {% if product.discount_percentage %}
-      <span>${{product.discount_price}}</span>
+      <span>{{product.currency.symbol}}{{product.discount_price}}</span>
       {% else %}
-      <span>{{product.price}}</span>
+      <span>{{product.currency.symbol}}{{product.price}}</span>
       {% endif %}
     </span>
 
@@ -32,7 +32,7 @@
       </button>
     </span>
 
-    <span id="item_total_price{{product.id}}">{{item.total_price}}</span>
+    <span id="item_total_price{{product.id}}">{{product.currency.symbol}}{{item.total_price}}</span>
 
     <button type="button" id="delete-from-cart-btn" data-index="{{product.id}}" class="delete-from-cart-btn delete-btn">
       <i class="fas fa-trash-alt"></i>Delete
@@ -64,14 +64,14 @@
     <div class="cart-expenses">
       <div>
         <span>Sub Total:</span>
-        <span id="subtotal">{{cart.get_total_price }}</span>
+        <span id="subtotal">{{store_currency_symbol}}{{cart.get_total_price }}</span>
       </div>
       <div>
         <span>Grand Total:</span>
         <span id="grand_total">
-          {% if grand_total %} {{grand_total}}
+          {% if grand_total %} {{store_currency_symbol}}{{grand_total}}
           {% else %}
-          {{cart.get_total_price }}
+          {{store_currency_symbol}}{{cart.get_total_price }}
           {% endif %}
         </span>
       </div>
