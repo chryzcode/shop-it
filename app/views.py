@@ -89,6 +89,7 @@ def create_product(request):
             if not store.currency:
                 error = "Please set your store currency in store settings"
                 return render(request, "store/create-product.html", {"form": form, "error": error, "product_units": product_units, "categories":categories})
+            product.currency = store.currency
             product.save()
             return redirect(
                         "app:product_detail",
