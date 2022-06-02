@@ -17,6 +17,7 @@ class Order(models.Model):
     billing_status = models.BooleanField(default=False)
     quantity = models.PositiveIntegerField(default=0)
     product = models.ManyToManyField(Product, blank=True)
+    store = models.ForeignKey(Store, on_delete=models.CASCADE)
 
     class Meta:
         ordering = ("-created",)

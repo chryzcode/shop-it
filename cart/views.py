@@ -9,15 +9,15 @@ from app.models import *
 from .cart import *
 from app.forms import UseCouponForm
 from datetime import datetime, timedelta
+from order.forms import OrderForm
 
 
-# Create your views here.
+# def orderform(request)
 def cart_summary(request, slugified_store_name):
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
     store_currency_symbol = store.currency.symbol
     grand_total = ''
     form_feedback = ''
-    #cart products filter by store
     cart = Cart(request)
     cart_check = cart.store_check()
     form = UseCouponForm

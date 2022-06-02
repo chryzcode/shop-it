@@ -4,4 +4,7 @@ from .models import *
 class OrderForm(ModelForm):
     class Meta:
         model = Order
-        fields = ['full_name', 'email', 'address_line', 'address_line2', 'phone', 'country', 'state', 'city']
+        fields = []
+    
+    def __init__(self, *args, **kwargs):
+        super(OrderForm, self).__init__(*args, **kwargs)
