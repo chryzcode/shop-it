@@ -22,8 +22,8 @@ class Payment(models.Model):
     city = models.CharField(max_length=200)
     use_address = models.ForeignKey(Address, on_delete=models.CASCADE, null=True)
     default_address = models.BooleanField(default=False, null=True, blank=True)
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
-    shipping_method = models.ForeignKey(Shipping_Method, on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, blank=True, null=True)
+    shipping_method = models.ForeignKey(Shipping_Method, on_delete=models.CASCADE, blank=True, null=True)
 
 
     class Meta:
