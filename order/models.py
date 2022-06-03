@@ -16,7 +16,7 @@ class Order(models.Model):
     amount = models.IntegerField(default=0)
     billing_status = models.BooleanField(default=False)
     quantity = models.PositiveIntegerField(default=0)
-    product = models.ManyToManyField(Product, blank=True)
+    product = models.ManyToManyField(Product)
     store = models.ForeignKey(Store, on_delete=models.CASCADE)
 
     class Meta:

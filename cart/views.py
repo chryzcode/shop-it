@@ -1,5 +1,6 @@
 from decimal import Decimal
 from distutils.log import error
+from itertools import product
 
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -10,6 +11,7 @@ from .cart import *
 from app.forms import UseCouponForm
 from datetime import datetime, timedelta
 from order.forms import OrderForm
+
 
 
 def cart_summary(request, slugified_store_name):
@@ -33,58 +35,64 @@ def cart_summary(request, slugified_store_name):
         orderform = OrderForm(request.POST)
         if form.is_valid():
             coupon_code = form.cleaned_data.get("code")
-            if Coupon.objects.filter(code=coupon_code).exists():
-                coupon = Coupon.objects.get(code=coupon_code)
-                if coupon.created_by == store:
-                    if request.user not in coupon.users.all():
-                        expiry_date = (datetime.now().astimezone() - coupon.created_at)
-                        expiry_date_seconds = expiry_date.total_seconds()
-                        minutes = expiry_date_seconds/60
-                        if int(minutes) > coupon.expiry_date:
-                            form_feedback = 'Copoun is Expired'
-                            coupon.delete()
-                        else:
-                            coupon_percentage = coupon.percentage
-                            cart.get_grand_total(coupon_percentage)
-                            # coupon.users.add(request.user)
-                            grand_total = int(cart.get_grand_total(coupon_percentage))
-                            form = UseCouponForm
-                            form_feedback = 'Coupon Successfully Used'
-                        
-                        if orderform.is_valid():
-                            products = cart.__len__()
-                            print(products)
-                            order = orderform.save(commit=False)
-                            if request.user.is_authenticated:
-                                order.user = request.user
-                            order.store = store
-                            if coupon:
-                                order.amount = cart.get_grand_total(coupon_percentage)
+            if coupon_code:
+                if Coupon.objects.filter(code=coupon_code).exists():
+                    coupon = Coupon.objects.get(code=coupon_code)
+                    if coupon.created_by == store:
+                        if request.user not in coupon.users.all():
+                            expiry_date = (datetime.now().astimezone() - coupon.created_at)
+                            expiry_date_seconds = expiry_date.total_seconds()
+                            minutes = expiry_date_seconds/60
+                            if int(minutes) > coupon.expiry_date:
+                                form_feedback = 'Copoun is Expired'
+                                coupon.delete()
                             else:
-                                order.amount = cart.get_total_price()
-                            order.billing_status = False
-                            order.quantity = cart.__len__()
-                            order.product.set(products)
-                            order.save()
-                            cart.clear()
-                            return render("payment:initiate_payment", pk=order.id)
+                                coupon_percentage = coupon.percentage
+                                cart.get_grand_total(coupon_percentage)
+                                # coupon.users.add(request.user)
+                                grand_total = int(cart.get_grand_total(coupon_percentage))
+                                form = UseCouponForm
+                                form_feedback = 'Coupon Successfully Used'
+
+                                if orderform.is_valid():
+                                    products_count = cart.__len__()
+                                    products = cart.get_cart_products()
+                                    order = orderform.save(commit=False)
+                                    if request.user.is_authenticated:
+                                        order.user = request.user
+                                        order.store = store
+                                        if coupon:
+                                            order.amount = cart.get_grand_total(coupon_percentage)
+                                        else:
+                                            order.amount = cart.get_total_price()
+                                        order.billing_status = False
+                                        order.quantity = cart.__len__()
+                                        for product in products:
+                                            product_id = product.id
+                                            products = Product.objects.get(id=product_id)
+                                            print(products.name, product.store)
+                                            print(products.id)
+                                            order.product.add(products)
+            
+                                        order.save()
+                                        # cart.clear()
+                                        # return render("payment:initiate_payment", pk=order.id)
+                                        return render("/")
+                                else:
+                                    form_feedback = 'Order Invalid'
+                                    return redirect("cart:cart_summary", slugified_store_name=slugified_store_name)
+                            
                         else:
-                            form_feedback = 'Order Invalid'
-                            return redirect("cart:cart_summary", slugified_store_name=slugified_store_name)
-                        
+                            form = UseCouponForm
+                            form_feedback = 'Copoun has been used by you'
                     else:
                         form = UseCouponForm
-                        form_feedback = 'Copoun has been used by you'
+                        form_feedback = 'Copoun is not valid for this product'
                 else:
                     form = UseCouponForm
-                    form_feedback = 'Copoun is not valid for this product'
-            else:
-                form = UseCouponForm
-                form_feedback = 'Coupon does not exist' 
+                    form_feedback = 'Coupon does not exist' 
 
-        
-
-                      
+           
     return render(request, "cart/cart-summary.html", {"cart": cart, "form": form, "grand_total": grand_total, "form_feedback": form_feedback, "store":store, "store_currency_symbol":store_currency_symbol, 'cart_check':cart_check, 'orderform':orderform})
                
 

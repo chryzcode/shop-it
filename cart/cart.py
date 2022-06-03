@@ -81,6 +81,12 @@ class Cart:
             return True
         else:
             return False
+
+    def get_cart_products(self):
+        product_ids = self.cart.keys()
+        products = Product.objects.filter(id__in=product_ids)
+        return products
+
         
     def clear(self):
         del self.session["skey"]
