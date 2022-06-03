@@ -12,7 +12,7 @@ from datetime import datetime, timedelta
 def cart_summary(request, slugified_store_name):
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
     store_currency_symbol = store.currency.symbol
-    coupon_code =''
+    coupon_code ='nil'
     grand_total = ''
     form_feedback = ''
     cart = Cart(request)

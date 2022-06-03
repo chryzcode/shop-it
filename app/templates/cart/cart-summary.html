@@ -77,12 +77,7 @@
           {% endif %}
         </span>
       </div>
-      <form action="" method="post">
-        {% csrf_token %}
-        {{orderform.as_p}}
-        <button class="checkout-btn" type="submit">Checkout</button>
-      </form>
-      <a href="" class="checkout-btn">Checkout</a>
+      <a href="{% url 'order:create_order' coupon_code %}" class="checkout-btn">Checkout</a>
     </div>
   </div>
   {% else %}
