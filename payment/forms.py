@@ -5,7 +5,7 @@ from django import forms
 class PaymentForm(ModelForm):
     class Meta:
         model = Payment
-        fields = ("full_name", "email", "phone", "address_line", "address_line2", "city", "state", "country", "use_address", "default_address")
+        fields = ("full_name", "email", "phone", "address_line", "address_line2", "city", "state", "country")
 
         widgets = {
             'full_name': forms.TextInput(attrs={'class': 'form-control'}),
@@ -16,7 +16,8 @@ class PaymentForm(ModelForm):
             'city': forms.Select(attrs={'class': 'form-control'}),
             'state': forms.Select(attrs={'class': 'form-control'}),
             'country': forms.Select(attrs={'class': 'form-control'}),
-            "use_address": forms.Select(attrs={'class': 'form-control'}),
-            "default_address": forms.CheckboxInput(),
+            # "use_address": forms.Select(attrs={'class': 'form-control'}),
+            # "default_address": forms.CheckboxInput(attrs={'class': 'form-control'}),
+            # "shipping_method": forms.Select(attrs={'class': 'form-control'}),
         }
 

@@ -20,6 +20,7 @@ class Payment(models.Model):
     country = models.CharField(max_length=200)
     state = models.CharField(max_length=200)
     city = models.CharField(max_length=200)
+    postcode = models.CharField(max_length=50, blank=True, null=True)
     use_address = models.ForeignKey(Address, on_delete=models.CASCADE, null=True)
     default_address = models.BooleanField(default=False, null=True, blank=True)
     order = models.ForeignKey(Order, on_delete=models.CASCADE, blank=True, null=True)
@@ -30,7 +31,7 @@ class Payment(models.Model):
         ordering = ['-date_created']
 
     def __str__(self):
-        return "payment" + ' ' + self.amount
+        return "payment" + ' ' + str(self.amount)
     
     def save(self, *args, **kwargs) -> None:
         while not self.ref:

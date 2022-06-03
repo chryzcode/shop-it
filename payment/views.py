@@ -8,8 +8,11 @@ from order.models import *
 
 # Create your views here.
 def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
+    address = ''
+    default_address = ''
+    address_count = 0
     order = Order.objects.get(pk=pk)
-    shipping_methods = Shipping_Method.filter(store=order.store)
+    shipping_methods = Shipping_Method.objects.filter(store=order.store)
     if request.user.is_authenticated:
         customer = Customer.objects.get(user=request.user) 
         if customer:
@@ -20,25 +23,21 @@ def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
         payment_form = PaymentForm(request.POST)
         if payment_form.is_valid():
             payment = payment_form.save(commit=False)
-            shipping_method= payment_form.cleaned_data["shipping_method"]
             if request.user.is_authenticated:
                 payment.user = request.user
-                if address:
-                    payment.address_line = address.address_line
-                    payment.address_line2 = address.address_line2
-                    payment.city = address.city
-                    payment.state = address.state
-                    payment.country = address.country
-                if default_address:
-                    payment.address_line = default_address.address_line
-                    payment.address_line2 = default_address.address_line2
-                    payment.city = default_address.city
-                    payment.state = default_address.state
-                    payment.country = default_address.country
-            payment.order = order
-            payment.shipping_method = shipping_method
-            shipping_method_price = Shipping_Method.objects.get(id=shipping_method).price
-            payment.amount = int(order.amount + shipping_method_price)
+            else:
+                payment.user = None
+            payment.order = order  
+            if address_count:
+                address = Address.objects.get(pk=payment_form.cleaned_data['address'])
+                payment.address_line = address.address_line
+                payment.address_line2 = address.address_line2
+                payment.country = address.country
+                payment.state = address.state
+                payment.city = address.city         
+            # payment.shipping_method = shipping_method
+            # shipping_method_price = Shipping_Method.objects.get(id=shipping_method).price
+            payment.amount = order.amount
             payment.save()
             render(request, 'payment/make-payment.html', {"payment":payment})
     else:
