@@ -70,7 +70,7 @@ def cart_summary(request, slugified_store_name):
             else:
                 order.user = None
             order.store = store
-            if coupon:
+            if coupon and coupon_percentage:
                 order.amount = cart.get_grand_total(coupon_percentage)
             else:
                 order.amount = cart.get_total_price()
