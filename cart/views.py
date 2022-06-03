@@ -51,6 +51,27 @@ def cart_summary(request, slugified_store_name):
                             form = UseCouponForm
                             form_feedback = 'Coupon Successfully Used'
                         
+                        if orderform.is_valid():
+                            products = cart.__len__()
+                            print(products)
+                            order = orderform.save(commit=False)
+                            if request.user.is_authenticated:
+                                order.user = request.user
+                            order.store = store
+                            if coupon:
+                                order.amount = cart.get_grand_total(coupon_percentage)
+                            else:
+                                order.amount = cart.get_total_price()
+                            order.billing_status = False
+                            order.quantity = cart.__len__()
+                            order.product.set(products)
+                            order.save()
+                            cart.clear()
+                            return render("payment:initiate_payment", pk=order.id)
+                        else:
+                            form_feedback = 'Order Invalid'
+                            return redirect("cart:cart_summary", slugified_store_name=slugified_store_name)
+                        
                     else:
                         form = UseCouponForm
                         form_feedback = 'Copoun has been used by you'
@@ -61,22 +82,10 @@ def cart_summary(request, slugified_store_name):
                 form = UseCouponForm
                 form_feedback = 'Coupon does not exist' 
 
-        if orderform.is_valid():
-            products = cart.get_cart_items()
-            order = orderform.save(commit=False)
-            if request.user.is_authenticated:
-                order.user = request.user
-            order.store = store
-            order.amount = cart.get_grand_total()
-            order.billing_status = False
-            order.quantity = cart.__len__()
-            order.product.set(products)
-            order.save()
-            cart.clear()
-            return render("payment:initiate_payment", pk=order.id)
+        
 
                       
-    return render(request, "cart/cart-summary.html", {"cart": cart, "form": form, "grand_total": grand_total, "form_feedback": form_feedback, "store":store, "store_currency_symbol":store_currency_symbol, 'cart_check':cart_check})
+    return render(request, "cart/cart-summary.html", {"cart": cart, "form": form, "grand_total": grand_total, "form_feedback": form_feedback, "store":store, "store_currency_symbol":store_currency_symbol, 'cart_check':cart_check, 'orderform':orderform})
                
 
 def add_to_cart(request, slugified_store_name):

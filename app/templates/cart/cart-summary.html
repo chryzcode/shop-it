@@ -77,8 +77,11 @@
           {% endif %}
         </span>
       </div>
-
-      <a href="{% url 'payment:initiate_payment' %}" class="checkout-btn">CheckOut</a>
+      <form action="" method="post">
+        {% csrf_token %}
+        {{order_form.as_p}}
+        <button class="checkout-btn" type="submit">Checkout</button>
+      </form>
     </div>
   </div>
   {% else %}
