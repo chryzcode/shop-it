@@ -7,8 +7,6 @@ from app.models import *
 from .cart import *
 from app.forms import UseCouponForm
 from datetime import datetime, timedelta
-from order.forms import OrderForm
-
 
 
 def cart_summary(request, slugified_store_name):
@@ -60,46 +58,7 @@ def cart_summary(request, slugified_store_name):
                     form = UseCouponForm
                     form_feedback = 'Coupon does not exist'       
     return render(request, "cart/cart-summary.html", {"cart": cart, "form": form, "grand_total": grand_total, "form_feedback": form_feedback, "store":store, "store_currency_symbol":store_currency_symbol, 'cart_check':cart_check, 'coupon_code':coupon_code})
-
-def order(request, coupon_code):
-    cart = Cart(request)
-    orderform = orderform;
-    if request.method == "POST":
-        orderform = OrderForm(request.POST)
-        if orderform.is_valid():
-            products_count = cart.__len__()
-            products = cart.get_cart_products()
-            order = orderform.save(commit=False)
-            if request.user.is_authenticated:
-                order.user = request.user
-            else:
-                order.user = None
-            order.store = store
-            print('coupon_code', coupon_code)
-            if Coupon.objects.filter(code=coupon_code).exists():
-                coupon = Coupon.objects.get(code=coupon_code)
-                if request.user not in coupon.users.all():
-                    order.amount = cart.get_grand_total(coupon_percentage)
-                else:
-                    order.amount = cart.get_total_price()
-            else:
-                order.amount = cart.get_total_price()
-            order.billing_status = False
-            order.quantity = cart.__len__()
-            for product in products:
-                product_id = product.id
-                products = Product.objects.get(id=product_id)                             
-            order.save()
-            order.set_product(products)                                       
-            # cart.clear()
-            return redirect("payment:initiate_payment", order.id)
-        else:
-            form_feedback = 'Order Invalid'
-            return redirect("cart:cart_summary", slugified_store_name=slugified_store_name)
-
-        
-
-               
+            
 
 def add_to_cart(request, slugified_store_name):
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)

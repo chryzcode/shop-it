@@ -10,5 +10,4 @@ urlpatterns = [
     path("<slugified_store_name>/delete/", views.delete_from_cart, name="delete_form_cart"),
     path("<slugified_store_name>/update/", views.update_cart, name="update_cart"),
     path("<slugified_store_name>/clear-all-cart/", views.clear_all_cart, name="clear_all_cart"),
-    path("order/<str:coupon_code>/", views.order, name="order"),
 ]
