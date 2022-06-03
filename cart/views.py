@@ -14,12 +14,12 @@ from order.forms import OrderForm
 def cart_summary(request, slugified_store_name):
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
     store_currency_symbol = store.currency.symbol
+    coupon_code =''
     grand_total = ''
     form_feedback = ''
     cart = Cart(request)
     cart_check = cart.store_check()
     form = UseCouponForm
-    orderform = OrderForm
     expired_coupons = Coupon.objects.all()
     for coupon in expired_coupons:
         expiry_date = (datetime.now().astimezone() - coupon.created_at)
@@ -29,7 +29,6 @@ def cart_summary(request, slugified_store_name):
             coupon.delete()
     if request.method == "POST":
         form = UseCouponForm(request.POST)
-        orderform = OrderForm(request.POST)
         if form.is_valid():
             coupon_code = form.cleaned_data.get("code")
             if coupon_code:
@@ -46,7 +45,7 @@ def cart_summary(request, slugified_store_name):
                             else:
                                 coupon_percentage = coupon.percentage
                                 cart.get_grand_total(coupon_percentage)
-                                coupon.users.add(request.user)
+                                # coupon.users.add(request.user)
                                 grand_total = int(cart.get_grand_total(coupon_percentage))
                                 form = UseCouponForm
                                 form_feedback = 'Coupon Successfully Used'
@@ -59,8 +58,14 @@ def cart_summary(request, slugified_store_name):
                         form_feedback = 'Copoun is not valid for this product'
                 else:
                     form = UseCouponForm
-                    form_feedback = 'Coupon does not exist' 
+                    form_feedback = 'Coupon does not exist'       
+    return render(request, "cart/cart-summary.html", {"cart": cart, "form": form, "grand_total": grand_total, "form_feedback": form_feedback, "store":store, "store_currency_symbol":store_currency_symbol, 'cart_check':cart_check, 'coupon_code':coupon_code})
 
+def order(request, coupon_code):
+    cart = Cart(request)
+    orderform = orderform;
+    if request.method == "POST":
+        orderform = OrderForm(request.POST)
         if orderform.is_valid():
             products_count = cart.__len__()
             products = cart.get_cart_products()
@@ -70,9 +75,13 @@ def cart_summary(request, slugified_store_name):
             else:
                 order.user = None
             order.store = store
-            if coupon:
-                coupon_percentage = coupon.percentage
-                order.amount = cart.get_grand_total(coupon_percentage)
+            print('coupon_code', coupon_code)
+            if Coupon.objects.filter(code=coupon_code).exists():
+                coupon = Coupon.objects.get(code=coupon_code)
+                if request.user not in coupon.users.all():
+                    order.amount = cart.get_grand_total(coupon_percentage)
+                else:
+                    order.amount = cart.get_total_price()
             else:
                 order.amount = cart.get_total_price()
             order.billing_status = False
@@ -88,8 +97,8 @@ def cart_summary(request, slugified_store_name):
             form_feedback = 'Order Invalid'
             return redirect("cart:cart_summary", slugified_store_name=slugified_store_name)
 
-           
-    return render(request, "cart/cart-summary.html", {"cart": cart, "form": form, "grand_total": grand_total, "form_feedback": form_feedback, "store":store, "store_currency_symbol":store_currency_symbol, 'cart_check':cart_check, 'orderform':orderform})
+        
+
                
 
 def add_to_cart(request, slugified_store_name):
@@ -141,7 +150,6 @@ def update_cart(request, slugified_store_name):
             cartproductqty = item_qty * a_discount_price
         else:
             cartproductqty = item_qty * Decimal(a_product_price)
-        print(cartproductqty)
         response = JsonResponse(
             {"qty": cartqty, "subtotal": carttotal, "cartproqty": cartproductqty})
         return response
