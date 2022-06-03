@@ -1,4 +1,3 @@
-from distutils.log import error
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import authenticate, login, logout
 from .forms import *
@@ -9,7 +8,8 @@ from cart.cart import *
 from django.http import JsonResponse
 from decimal import Decimal
 from django.utils.text import slugify
-# Create your views here.
+from order.models import *
+
 
 
 def custom_error_404(request, exception):
@@ -344,5 +344,14 @@ def all_customers(request):
     
     customers = Store.objects.get(store_name=store).customers.all()
     return render(request, "store/customers.html", {"customers":customers})
+
+def store_order(request):
+    if request.user.store_creator == True:
+        store = request.user.store_name
+    if request.user.store_staff == True:
+        store = store_staff.objects.get(user = request.user).store
+    orders = Order.objects.filter(store=store)
+    return render(request, "store/store-order.html", {"orders":orders})
+    
                
 
