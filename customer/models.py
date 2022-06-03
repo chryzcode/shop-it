@@ -18,7 +18,7 @@ class Address(models.Model):
     id = models.UUIDField(
         primary_key=True, default=uuid.uuid4, editable=False, unique=True
     )
-    customer = models.ForeignKey(Customer, verbose_name=_("Customer"), on_delete=models.CASCADE, default=26)
+    customer = models.ForeignKey(Customer, verbose_name=_("Customer"), on_delete=models.CASCADE)
     postcode = models.CharField(_("Postcode"), max_length=50, blank=True, null=True)
     address_line = models.CharField(_("Address Line 1"), max_length=255)
     address_line2 = models.CharField(_("Address Line 2"), max_length=255, blank=True, null=True)
