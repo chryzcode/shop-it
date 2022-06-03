@@ -73,7 +73,7 @@ def cart_summary(request, slugified_store_name):
             order.product.set(products)
             order.save()
             cart.clear()
-            return render
+            return render("payment:initiate_payment", pk=order.id)
 
                       
     return render(request, "cart/cart-summary.html", {"cart": cart, "form": form, "grand_total": grand_total, "form_feedback": form_feedback, "store":store, "store_currency_symbol":store_currency_symbol, 'cart_check':cart_check})

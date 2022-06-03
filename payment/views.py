@@ -1,16 +1,14 @@
-import imp
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 
 from customer.models import Address, Customer
 from .forms import *
 from cart.cart import *
+from order.models import *
 
 # Create your views here.
-def initiate_payment(request: HttpRequest, id) -> HttpResponse:
-    cart = Cart(request)
-    grand_total = int(cart.get_grand_total(50))
-    print(grand_total)
+def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
+    order = Order.objects.get(pk=pk)
     if request.user.is_authenticated:
         customer = Customer.objects.get(user=request.user) 
         if customer:
@@ -21,6 +19,7 @@ def initiate_payment(request: HttpRequest, id) -> HttpResponse:
         payment_form = PaymentForm(request.POST)
         if payment_form.is_valid():
             payment = payment_form.save(commit=False)
+            shipping_method= payment_form.cleaned_data["shipping_method"]
             if request.user.is_authenticated:
                 payment.user = request.user
                 if address:
@@ -35,6 +34,10 @@ def initiate_payment(request: HttpRequest, id) -> HttpResponse:
                     payment.city = default_address.city
                     payment.state = default_address.state
                     payment.country = default_address.country
+            payment.order = order
+            payment.shipping_method = shipping_method
+            shipping_method_price = Shipping_Method.objects.get(id=shipping_method).price
+            payment.amount = int(order.amount + shipping_method_price)
             payment.save()
             render(request, 'payment/make-payment.html', {"payment":payment})
     else:
