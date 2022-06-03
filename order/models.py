@@ -22,5 +22,8 @@ class Order(models.Model):
     class Meta:
         ordering = ("-created",)
 
+    def set_product(self, product):
+        self.product.add(product)
+
 
 

@@ -1,7 +1,4 @@
 from decimal import Decimal
-from distutils.log import error
-from itertools import product
-
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 
@@ -53,34 +50,6 @@ def cart_summary(request, slugified_store_name):
                                 grand_total = int(cart.get_grand_total(coupon_percentage))
                                 form = UseCouponForm
                                 form_feedback = 'Coupon Successfully Used'
-
-                                if orderform.is_valid():
-                                    products_count = cart.__len__()
-                                    products = cart.get_cart_products()
-                                    order = orderform.save(commit=False)
-                                    if request.user.is_authenticated:
-                                        order.user = request.user
-                                        order.store = store
-                                        if coupon:
-                                            order.amount = cart.get_grand_total(coupon_percentage)
-                                        else:
-                                            order.amount = cart.get_total_price()
-                                        order.billing_status = False
-                                        order.quantity = cart.__len__()
-                                        for product in products:
-                                            product_id = product.id
-                                            products = Product.objects.get(id=product_id)
-                                            print(products.name, product.store)
-                                            print(products.id)
-                                            order.product.add(products)
-            
-                                        order.save()
-                                        # cart.clear()
-                                        # return render("payment:initiate_payment", pk=order.id)
-                                        return render("/")
-                                else:
-                                    form_feedback = 'Order Invalid'
-                                    return redirect("cart:cart_summary", slugified_store_name=slugified_store_name)
                             
                         else:
                             form = UseCouponForm
@@ -91,6 +60,32 @@ def cart_summary(request, slugified_store_name):
                 else:
                     form = UseCouponForm
                     form_feedback = 'Coupon does not exist' 
+
+        if orderform.is_valid():
+            products_count = cart.__len__()
+            products = cart.get_cart_products()
+            order = orderform.save(commit=False)
+            if request.user.is_authenticated:
+                order.user = request.user
+            else:
+                order.user = None
+            order.store = store
+            if coupon:
+                order.amount = cart.get_grand_total(coupon_percentage)
+            else:
+                order.amount = cart.get_total_price()
+            order.billing_status = False
+            order.quantity = cart.__len__()
+            for product in products:
+                product_id = product.id
+                products = Product.objects.get(id=product_id)                             
+            order.save()
+            order.set_product(products)                                       
+            # cart.clear()
+            return redirect("payment:initiate_payment", order.id)
+        else:
+            form_feedback = 'Order Invalid'
+            return redirect("cart:cart_summary", slugified_store_name=slugified_store_name)
 
            
     return render(request, "cart/cart-summary.html", {"cart": cart, "form": form, "grand_total": grand_total, "form_feedback": form_feedback, "store":store, "store_currency_symbol":store_currency_symbol, 'cart_check':cart_check, 'orderform':orderform})
