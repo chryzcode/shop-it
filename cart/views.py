@@ -46,7 +46,7 @@ def cart_summary(request, slugified_store_name):
                             else:
                                 coupon_percentage = coupon.percentage
                                 cart.get_grand_total(coupon_percentage)
-                                # coupon.users.add(request.user)
+                                coupon.users.add(request.user)
                                 grand_total = int(cart.get_grand_total(coupon_percentage))
                                 form = UseCouponForm
                                 form_feedback = 'Coupon Successfully Used'
@@ -70,7 +70,8 @@ def cart_summary(request, slugified_store_name):
             else:
                 order.user = None
             order.store = store
-            if coupon and coupon_percentage:
+            if coupon:
+                coupon_percentage = coupon.percentage
                 order.amount = cart.get_grand_total(coupon_percentage)
             else:
                 order.amount = cart.get_total_price()
