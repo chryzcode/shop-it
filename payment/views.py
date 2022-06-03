@@ -9,6 +9,7 @@ from order.models import *
 # Create your views here.
 def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
     order = Order.objects.get(pk=pk)
+    shipping_methods = Shipping_Method.filter(store=order.store)
     if request.user.is_authenticated:
         customer = Customer.objects.get(user=request.user) 
         if customer:
@@ -42,4 +43,4 @@ def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
             render(request, 'payment/make-payment.html', {"payment":payment})
     else:
         payment_form  = PaymentForm()
-    return render(request, "payment/initiate-payment.html", {"payment_form":payment_form, "address":address, "default_address":default_address, "address_count":address_count})
+    return render(request, "payment/initiate-payment.html", {"payment_form":payment_form, "address":address, "default_address":default_address, "address_count":address_count, "shipping_methods":shipping_methods})
