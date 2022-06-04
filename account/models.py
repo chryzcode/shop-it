@@ -28,9 +28,6 @@ class Store(models.Model):
     store_name = models.CharField(max_length=150, unique=True)
     slugified_store_name = models.SlugField(max_length=255, unique=True)
     store_description = models.TextField(max_length=500, blank=True)
-    currency = models.ForeignKey(
-        Currency, on_delete=models.SET_NULL, blank=True, null=True, default=None
-    )
     store_image = models.ImageField(upload_to="store-images/")
     staffs = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="store_staffs", blank=True)
     customers = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="store_customers", blank=True)
@@ -68,11 +65,6 @@ class CustomAccountManager(BaseUserManager):
         store = Store.objects.create(
             store_name=store_name,
             owner= user,
-            currency = Currency.objects.create(
-                name = "Nigerian Naira",
-                code = "NGN",
-                symbol = "₦"
-            )
         )
 
 
@@ -90,11 +82,6 @@ class CustomAccountManager(BaseUserManager):
         store = Store.objects.create(
             owner=user,
             store_name=store_name,
-            currency = Currency.objects.create(
-                name = "Nigerian Naira",
-                code = "NGN",
-                symbol = "₦"
-            )
         )
         return user
 
@@ -139,7 +126,6 @@ class Bank_Info(models.Model):
     account_number = models.CharField(max_length=50)
     account_name = models.CharField(max_length=100)
     bank_name = models.CharField(max_length=100)
-    currency = models.ForeignKey(Currency, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = "Bank Info"
