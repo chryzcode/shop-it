@@ -1,6 +1,6 @@
 <div class="store-sidenav" id="store-sidenav">
     <span class="store-sidenav-seg">
-      <p>{{a_staff_store_store |capfirst }}</p>
+      {% comment %} <p>{{a_staff_store_store |capfirst }}</p> {% endcomment %}
       <ul>
         <li><a href="">My Store</a></li>
         <li><a href="{% url "app:all_customers" %}">Customers</a></li>
