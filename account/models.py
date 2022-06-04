@@ -68,6 +68,11 @@ class CustomAccountManager(BaseUserManager):
         store = Store.objects.create(
             store_name=store_name,
             owner= user,
+            currency = Currency.objects.create(
+                name = "Nigerian Naira",
+                code = "NGN",
+                symbol = "₦"
+            )
         )
 
 
@@ -85,6 +90,11 @@ class CustomAccountManager(BaseUserManager):
         store = Store.objects.create(
             owner=user,
             store_name=store_name,
+            currency = Currency.objects.create(
+                name = "Nigerian Naira",
+                code = "NGN",
+                symbol = "₦"
+            )
         )
         return user
 
