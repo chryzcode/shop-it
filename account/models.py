@@ -9,6 +9,45 @@ from django.db import models
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 
+class Currency(models.Model):
+    name = models.CharField(max_length=50)
+    code = models.CharField(max_length=10)
+    symbol = models.CharField(max_length=10)
+
+    class Meta:
+        verbose_name = "Currency"
+        verbose_name_plural = "Currencies"
+
+    def __str__(self):
+        return self.name
+        
+class Store(models.Model):
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="store_owner"
+    )
+    store_name = models.CharField(max_length=150, unique=True)
+    slugified_store_name = models.SlugField(max_length=255, unique=True)
+    store_description = models.TextField(max_length=500, blank=True)
+    currency = models.ForeignKey(
+        Currency, on_delete=models.SET_NULL, blank=True, null=True
+    )
+    store_image = models.ImageField(upload_to="store-images/")
+    staffs = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="store_staffs", blank=True)
+    customers = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="store_customers", blank=True)
+    facebook = models.CharField(max_length=100, blank=True)
+    instagram = models.CharField(max_length=100, blank=True)
+    twitter = models.CharField(max_length=100, blank=True)
+
+    class Meta:
+        verbose_name = "Store"
+        verbose_name_plural = "Stores"
+
+    def save(self, *args, **kwargs):
+        self.slugified_store_name = slugify(self.store_name)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.store_name
 
 class CustomAccountManager(BaseUserManager):
     def create_superuser(self, email, store_name, password, **other_fields):
@@ -21,6 +60,12 @@ class CustomAccountManager(BaseUserManager):
             raise ValueError("Superuser must be assigned to is_staff=True.")
         if other_fields.get("is_superuser") is not True:
             raise ValueError("Superuser must be assigned to is_superuser=True.")
+
+        store = Store.objects.create(
+            store_name=store_name,
+            owner=self.create_user(email, password, **other_fields),
+        )
+
 
         return self.create_user(email, store_name, password, **other_fields)
 
@@ -74,48 +119,6 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def store_name_slug(self):
         return slugify(self.store_name)
-
-
-class Currency(models.Model):
-    name = models.CharField(max_length=50)
-    code = models.CharField(max_length=10)
-    symbol = models.CharField(max_length=10)
-
-    class Meta:
-        verbose_name = "Currency"
-        verbose_name_plural = "Currencies"
-
-    def __str__(self):
-        return self.name
-
-
-class Store(models.Model):
-    owner = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="store_owner"
-    )
-    store_name = models.CharField(max_length=150, unique=True)
-    slugified_store_name = models.SlugField(max_length=255, unique=True)
-    store_description = models.TextField(max_length=500, blank=True)
-    currency = models.ForeignKey(
-        Currency, on_delete=models.SET_NULL, blank=True, null=True
-    )
-    store_image = models.ImageField(upload_to="store-images/")
-    staffs = models.ManyToManyField(User, related_name="store_staffs", blank=True)
-    customers = models.ManyToManyField(User, related_name="store_customers", blank=True)
-    facebook = models.CharField(max_length=100, blank=True)
-    instagram = models.CharField(max_length=100, blank=True)
-    twitter = models.CharField(max_length=100, blank=True)
-
-    class Meta:
-        verbose_name = "Store"
-        verbose_name_plural = "Stores"
-
-    def save(self, *args, **kwargs):
-        self.slugified_store_name = slugify(self.store_name)
-        super().save(*args, **kwargs)
-
-    def __str__(self):
-        return self.store_name
 
 
 class Bank_Info(models.Model):
