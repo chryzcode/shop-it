@@ -29,9 +29,9 @@ class Payment(models.Model):
     use_address = models.ForeignKey(Address, on_delete=models.CASCADE, null=True)
     default_address = models.BooleanField(default=False, null=True, blank=True)
     order = models.ForeignKey(Order, on_delete=models.CASCADE, blank=True, null=True)
-    # shipping_method = models.ForeignKey(
-    #     Shipping_Method, on_delete=models.CASCADE
-    # )
+    shipping_method = models.ForeignKey(
+        Shipping_Method, on_delete=models.CASCADE
+    )
 
     class Meta:
         ordering = ["-date_created"]

@@ -229,16 +229,16 @@ class AddStoreForm(ModelForm):
         return store_name
 
 
-# class ShippingMethodForm(ModelForm):
-#     class Meta:
-#         model = Shipping_Method
-#         fields = ["location", "price"]
+class ShippingMethodForm(ModelForm):
+    class Meta:
+        model = Shipping_Method
+        fields = ["location", "price"]
 
-#         widgets = {
-#             "location": forms.TextInput(
-#                 attrs={"class": "form-control", "placeholder": "Location Coverage"}
-#             ),
-#             "price": forms.NumberInput(
-#                 attrs={"class": "form-control", "placeholder": "Price"}
-#             ),
-#         }
+        widgets = {
+            "location": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "Location Coverage"}
+            ),
+            "price": forms.NumberInput(
+                attrs={"class": "form-control", "placeholder": "Price"}
+            ),
+        }
