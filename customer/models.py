@@ -29,4 +29,4 @@ class Address(models.Model):
     default = models.BooleanField(_("Default"), default=False)
 
     def __str__(self):
-        return self.full_name
+        return self.address_line

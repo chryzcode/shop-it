@@ -16,30 +16,28 @@ def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
     if request.user.is_authenticated:
         customer = Customer.objects.get(user=request.user) 
         if customer:
-            address_count = Address.objects.filter(customer=customer).count() > 1
-            address = Address.objects.filter(customer=customer)
-            default_address = Address.objects.filter(customer=customer, default=True)
+            addresses = Address.objects.filter(customer=customer)
+            if addresses:
+                PaymentForm = CustomerPaymentForm
+            else:
+                PaymentForm = NonCustomerPaymentForm
+        else:
+            PaymentForm = NonCustomerPaymentForm
+    else:
+        PaymentForm = NonCustomerPaymentForm
     if request.method == 'POST':
         payment_form = PaymentForm(request.POST)
+   
         if payment_form.is_valid():
             payment = payment_form.save(commit=False)
             if request.user.is_authenticated:
                 payment.user = request.user
             else:
                 payment.user = None
-            payment.order = order  
-            if address_count:
-                address = Address.objects.get(pk=payment_form.cleaned_data['address'])
-                payment.address_line = address.address_line
-                payment.address_line2 = address.address_line2
-                payment.country = address.country
-                payment.state = address.state
-                payment.city = address.city         
-            # payment.shipping_method = shipping_method
-            # shipping_method_price = Shipping_Method.objects.get(id=shipping_method).price
+            payment.order = order            
             payment.amount = order.amount
             payment.save()
             render(request, 'payment/make-payment.html', {"payment":payment})
     else:
         payment_form  = PaymentForm()
-    return render(request, "payment/initiate-payment.html", {"payment_form":payment_form, "address":address, "default_address":default_address, "address_count":address_count, "shipping_methods":shipping_methods})
+    return render(request, "payment/initiate-payment.html", {"payment_form":payment_form, "addresses":addresses, "default_address":default_address, "address_count":address_count, "shipping_methods":shipping_methods})
