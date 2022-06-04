@@ -1,10 +1,11 @@
 from django import forms
 from django.forms import ModelForm
+from django.shortcuts import get_object_or_404, redirect, render
+
+from account.models import User
 
 from .models import *
 
-from account.models import User
-from django.shortcuts import get_object_or_404, redirect, render
 
 class CustomerForm(ModelForm):
     class Meta:
@@ -29,6 +30,7 @@ class CustomerForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(CustomerForm, self).__init__(*args, **kwargs)
 
+
 class ExistingUserCustomerForm(ModelForm):
     class Meta:
         model = Customer
@@ -50,16 +52,17 @@ class ExistingUserCustomerForm(ModelForm):
             raise forms.ValidationError("User does not exist")
         return email
 
+
 class AddressForm(ModelForm):
     class Meta:
         model = Address
         exclude = ["customer"]
 
         widgets = {
-            "full_name" : forms.TextInput(
+            "full_name": forms.TextInput(
                 attrs={"class": "form-control", "placeholder": "Full Name"}
             ),
-            "phone" : forms.NumberInput(
+            "phone": forms.NumberInput(
                 attrs={"class": "form-control", "placeholder": "+349 0854 9885"}
             ),
             "postcode": forms.TextInput(
@@ -69,21 +72,15 @@ class AddressForm(ModelForm):
                 attrs={"class": "form-control", "placeholder": "Address Line"}
             ),
             "address_line2": forms.TextInput(
-                attrs={"class": "form-control", "placeholder": "Additional address(Not Compulsory)"}
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "Additional address(Not Compulsory)",
+                }
             ),
             "delivery_instructions": forms.Textarea(
                 attrs={"class": "form-control", "placeholder": "Delivery Instructions"}
             ),
-            "country" : forms.Select(
-                attrs={"class": "form-control"}
-            ),
-            "state" : forms.Select(
-                attrs={"class": "form-control"}
-            ),
-            "city" : forms.Select(
-                attrs={"class": "form-control"}
-            ),
+            "country": forms.Select(attrs={"class": "form-control"}),
+            "state": forms.Select(attrs={"class": "form-control"}),
+            "city": forms.Select(attrs={"class": "form-control"}),
         }
-
-
-        

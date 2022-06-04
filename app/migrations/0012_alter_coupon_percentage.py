@@ -7,13 +7,19 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('app', '0011_alter_category_created_by_alter_coupon_created_by'),
+        ("app", "0011_alter_category_created_by_alter_coupon_created_by"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='coupon',
-            name='percentage',
-            field=models.PositiveIntegerField(default=1, validators=[django.core.validators.MinValueValidator(1), django.core.validators.MaxValueValidator(100)]),
+            model_name="coupon",
+            name="percentage",
+            field=models.PositiveIntegerField(
+                default=1,
+                validators=[
+                    django.core.validators.MinValueValidator(1),
+                    django.core.validators.MaxValueValidator(100),
+                ],
+            ),
         ),
     ]

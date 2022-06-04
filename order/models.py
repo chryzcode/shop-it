@@ -1,9 +1,9 @@
-from django.db import models
 import uuid
+
+from django.db import models
+
 from account.models import *
 from app.models import *
-
-
 
 
 class Order(models.Model):
@@ -24,6 +24,3 @@ class Order(models.Model):
 
     def set_product(self, product):
         self.product.add(product)
-
-
-

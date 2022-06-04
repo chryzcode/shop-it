@@ -6,28 +6,34 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('app', '0001_initial'),
+        ("app", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='category',
-            name='created_by',
-            field=models.CharField(choices=[('code store', 'code store')], max_length=150),
+            model_name="category",
+            name="created_by",
+            field=models.CharField(
+                choices=[("code store", "code store")], max_length=150
+            ),
         ),
         migrations.AlterField(
-            model_name='coupon',
-            name='created_by',
-            field=models.CharField(choices=[('code store', 'code store')], max_length=150),
+            model_name="coupon",
+            name="created_by",
+            field=models.CharField(
+                choices=[("code store", "code store")], max_length=150
+            ),
         ),
         migrations.AlterField(
-            model_name='product',
-            name='category',
-            field=models.CharField(choices=[('laptop', 'laptop')], max_length=255),
+            model_name="product",
+            name="category",
+            field=models.CharField(choices=[("laptop", "laptop")], max_length=255),
         ),
         migrations.AlterField(
-            model_name='product',
-            name='created_by',
-            field=models.CharField(choices=[('code store', 'code store')], max_length=150),
+            model_name="product",
+            name="created_by",
+            field=models.CharField(
+                choices=[("code store", "code store")], max_length=150
+            ),
         ),
     ]

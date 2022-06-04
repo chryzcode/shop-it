@@ -1,13 +1,18 @@
-from django.db import models
 import secrets
+
 from django.conf import settings
+from django.db import models
+
+from account.models import *
 from customer.models import *
 from order.models import *
-from account.models import *
+
 
 # Create your models here.
 class Payment(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True
+    )
     full_name = models.CharField(max_length=150)
     amount = models.PositiveIntegerField()
     ref = models.CharField(max_length=200)
@@ -24,15 +29,16 @@ class Payment(models.Model):
     use_address = models.ForeignKey(Address, on_delete=models.CASCADE, null=True)
     default_address = models.BooleanField(default=False, null=True, blank=True)
     order = models.ForeignKey(Order, on_delete=models.CASCADE, blank=True, null=True)
-    shipping_method = models.ForeignKey(Shipping_Method, on_delete=models.CASCADE, blank=True, null=True)
-
+    shipping_method = models.ForeignKey(
+        Shipping_Method, on_delete=models.CASCADE, blank=True, null=True
+    )
 
     class Meta:
-        ordering = ['-date_created']
+        ordering = ["-date_created"]
 
     def __str__(self):
-        return "payment" + ' ' + str(self.amount)
-    
+        return "payment" + " " + str(self.amount)
+
     def save(self, *args, **kwargs) -> None:
         while not self.ref:
             ref = secrets.token_urlsafe(50)
@@ -42,7 +48,4 @@ class Payment(models.Model):
         super().save(*args, **kwargs)
 
     def amount_value(self) -> int:
-        return self.amount *100
-
-
-          
+        return self.amount * 100

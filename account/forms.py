@@ -1,11 +1,10 @@
 from django import forms
+from django.conf import settings
 from django.contrib.auth.forms import PasswordResetForm, SetPasswordForm
 from django.forms import ModelForm
 from django.utils.text import slugify
 
 from .models import *
-
-from django.conf import settings
 
 
 class RegistrationForm(ModelForm):
@@ -45,14 +44,15 @@ class RegistrationForm(ModelForm):
 
         if Store.objects.filter(slugified_store_name=slugified_store_name).exists():
             raise forms.ValidationError("Store name is already taken")
-        
+
         return store_name
+
 
 class StoreForm(ModelForm):
     class Meta:
         model = Store
         fields = [
-            "store_name", 
+            "store_name",
             "store_image",
             "store_description",
             "currency",
@@ -66,7 +66,12 @@ class StoreForm(ModelForm):
                 attrs={"class": "form-control", "placeholder": "The Shop!t Store"}
             ),
             "store_image": forms.FileInput(attrs={"class": "form-control"}),
-            "store_description": forms.Textarea(attrs={"class": "form-control", "placeholder":"This is the Shop!t store for your day to day online business......"}),
+            "store_description": forms.Textarea(
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "This is the Shop!t store for your day to day online business......",
+                }
+            ),
             "currency": forms.Select(attrs={"class": "form-control"}),
             "instagram": forms.TextInput(
                 attrs={
@@ -87,9 +92,10 @@ class StoreForm(ModelForm):
                 }
             ),
         }
-    
+
     def __init__(self, *args, **kwargs):
         super(StoreForm, self).__init__(*args, **kwargs)
+
 
 class UserProfileForm(ModelForm):
     class Meta:
@@ -135,15 +141,22 @@ class PasswordResetConfirmForm(SetPasswordForm):
             raise forms.ValidationError("Passwords do not match.")
         return cd["new_password2"]
 
+
 class StoreStaffForm(ModelForm):
     class Meta:
         model = store_staff
         fields = ["full_name", "email", "phone_number", "password", "password2"]
 
         widgets = {
-            "full_name": forms.TextInput(attrs={"class": "form-control", "placeholder": "John Doe"}),
-            "email": forms.TextInput(attrs={"class": "form-control", "placeholder": "johndoe@gmail.com"}),
-            "phone_number": forms.TextInput(attrs={"class": "form-control", "placeholder": "+1 97904095"}),
+            "full_name": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "John Doe"}
+            ),
+            "email": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "johndoe@gmail.com"}
+            ),
+            "phone_number": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "+1 97904095"}
+            ),
             "password": forms.PasswordInput(attrs={"class": "form-control"}),
             "password2": forms.PasswordInput(attrs={"class": "form-control"}),
         }
@@ -153,7 +166,7 @@ class StoreStaffForm(ModelForm):
         r = store_staff.objects.filter(email=email)
         s = User.objects.filter(email=email, store_creator=True).exists()
         if r.count():
-            raise forms.ValidationError("Email already exists") 
+            raise forms.ValidationError("Email already exists")
         if s:
             raise forms.ValidationError("Store Creator can't be staff")
         return email
@@ -167,13 +180,16 @@ class StoreStaffForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(StoreStaffForm, self).__init__(*args, **kwargs)
 
+
 class ExistingStoreStaffForm(ModelForm):
     class Meta:
         model = store_staff
         fields = ["email"]
 
         widgets = {
-            "email": forms.TextInput(attrs={"class": "form-control", "placeholder": "johndoe@gmailcom"}),
+            "email": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "johndoe@gmailcom"}
+            ),
         }
 
     def clean_email(self):
@@ -181,7 +197,7 @@ class ExistingStoreStaffForm(ModelForm):
         r = store_staff.objects.filter(email=email)
         s = User.objects.filter(email=email, store_creator=True).exists()
         if r.count():
-            raise forms.ValidationError("Email already exists") 
+            raise forms.ValidationError("Email already exists")
         if s:
             raise forms.ValidationError("Store Creator can't be staff")
         return email
@@ -189,13 +205,16 @@ class ExistingStoreStaffForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(ExistingStoreStaffForm, self).__init__(*args, **kwargs)
 
+
 class AddStoreForm(ModelForm):
     class Meta:
         model = User
         fields = ["store_name"]
 
         widgets = {
-            "store_name": forms.TextInput(attrs={"class": "form-control", "placeholder": "The Shop!t Store"}),
+            "store_name": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "The Shop!t Store"}
+            ),
         }
 
     def clean_store_name(self):
@@ -206,8 +225,9 @@ class AddStoreForm(ModelForm):
 
         if Store.objects.filter(slugified_store_name=slugified_store_name).exists():
             raise forms.ValidationError("Store name is already taken")
-        
+
         return store_name
+
 
 class ShippingMethodForm(ModelForm):
     class Meta:
@@ -215,7 +235,10 @@ class ShippingMethodForm(ModelForm):
         fields = ["location", "price"]
 
         widgets = {
-            "location":forms.TextInput(attrs={"class": "form-control", "placeholder": "Location Coverage"}),
-            "price": forms.NumberInput(attrs={"class": "form-control", "placeholder": "Price"}),
+            "location": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "Location Coverage"}
+            ),
+            "price": forms.NumberInput(
+                attrs={"class": "form-control", "placeholder": "Price"}
+            ),
         }
-

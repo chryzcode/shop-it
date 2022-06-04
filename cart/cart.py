@@ -16,7 +16,12 @@ class Cart:
         if product_id in self.cart:
             self.cart[product_id]["qty"] = qty
         else:
-            self.cart[product_id] = {"price": str(product.price - (product.price * product.discount_percentage / 100)), "qty": int(qty)}
+            self.cart[product_id] = {
+                "price": str(
+                    product.price - (product.price * product.discount_percentage / 100)
+                ),
+                "qty": int(qty),
+            }
         self.save()
 
     def __iter__(self):
@@ -35,16 +40,17 @@ class Cart:
     def __len__(self):
         return sum(item["qty"] for item in self.cart.values())
 
-    def get_total_price(self): 
-        return sum(Decimal(item["price"]) * item["qty"] for item in self.cart.values() )
+    def get_total_price(self):
+        return sum(Decimal(item["price"]) * item["qty"] for item in self.cart.values())
 
     def get_grand_total(self, coupon_percentage):
-        #add coupon percentage to cart session
-        return sum(Decimal(item["price"]) * item["qty"] for item in self.cart.values()) - (
-                sum(Decimal(item["price"]) * item["qty"] for item in self.cart.values()) * Decimal((coupon_percentage / 100))
-            )
-           
-        
+        # add coupon percentage to cart session
+        return sum(
+            Decimal(item["price"]) * item["qty"] for item in self.cart.values()
+        ) - (
+            sum(Decimal(item["price"]) * item["qty"] for item in self.cart.values())
+            * Decimal((coupon_percentage / 100))
+        )
 
     # return the sum of an item quantity
     def get_product_qty(self, product):
@@ -59,7 +65,6 @@ class Cart:
         if product_id in self.cart:
             del self.cart[product_id]
             self.save()
-    
 
     def update(self, product, qty, cartitemqty):
         product_id = str(product)
@@ -75,7 +80,7 @@ class Cart:
     def store_check(self):
         product_ids = self.cart.keys()
         products = Product.objects.filter(id__in=product_ids)
-        products_store = [ product.created_by for product in products ]
+        products_store = [product.created_by for product in products]
         result = all(store == products_store[0] for store in products_store)
         if result:
             return True
@@ -87,7 +92,6 @@ class Cart:
         products = Product.objects.filter(id__in=product_ids)
         return products
 
-        
     def clear(self):
         del self.session["skey"]
         self.session.modified = True

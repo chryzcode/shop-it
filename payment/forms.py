@@ -1,76 +1,95 @@
-from django.forms import ModelForm
-from .models import *
 from django import forms
+from django.forms import ModelForm
+
+from .models import *
+
 
 class NonCustomerPaymentForm(ModelForm):
     class Meta:
         model = Payment
-        fields = ("full_name", "email", "phone", "address_line", "postcode", "address_line2", "city", "state", "country")
+        fields = (
+            "full_name",
+            "email",
+            "phone",
+            "address_line",
+            "postcode",
+            "address_line2",
+            "city",
+            "state",
+            "country",
+        )
 
         widgets = {
-            'full_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'email': forms.EmailInput(attrs={'class': 'form-control'}),
-            'phone': forms.TextInput(attrs={'class': 'form-control'}),
-            'postcode': forms.TextInput(attrs={'class': 'form-control'}),
-            'address_line': forms.TextInput(attrs={'class': 'form-control'}),
-            'address_line2': forms.TextInput(attrs={'class': 'form-control'}),
-            'city': forms.Select(attrs={'class': 'form-control'}),
-            'state': forms.Select(attrs={'class': 'form-control'}),
-            'country': forms.Select(attrs={'class': 'form-control'}),
+            "full_name": forms.TextInput(attrs={"class": "form-control"}),
+            "email": forms.EmailInput(attrs={"class": "form-control"}),
+            "phone": forms.TextInput(attrs={"class": "form-control"}),
+            "postcode": forms.TextInput(attrs={"class": "form-control"}),
+            "address_line": forms.TextInput(attrs={"class": "form-control"}),
+            "address_line2": forms.TextInput(attrs={"class": "form-control"}),
+            "city": forms.Select(attrs={"class": "form-control"}),
+            "state": forms.Select(attrs={"class": "form-control"}),
+            "country": forms.Select(attrs={"class": "form-control"}),
         }
 
         def clean_postcode(self):
-            postcode = self.cleaned_data.get('postcode')
+            postcode = self.cleaned_data.get("postcode")
             if not postcode:
-                raise forms.ValidationError('Please enter a valid postcode')
+                raise forms.ValidationError("Please enter a valid postcode")
             return postcode
 
         def clean_address_line(self):
-            address_line = self.cleaned_data.get('address_line')
+            address_line = self.cleaned_data.get("address_line")
             if not address_line:
-                raise forms.ValidationError('Please enter a valid address')
+                raise forms.ValidationError("Please enter a valid address")
             return address_line
-        
+
         def clean_city(self):
-            city = self.cleaned_data.get('city')
+            city = self.cleaned_data.get("city")
             if not city:
-                raise forms.ValidationError('Please enter a valid city')
+                raise forms.ValidationError("Please enter a valid city")
             return city
 
         def clean_state(self):
-            state = self.cleaned_data.get('state')
+            state = self.cleaned_data.get("state")
             if not state:
-                raise forms.ValidationError('Please enter a valid state')
+                raise forms.ValidationError("Please enter a valid state")
             return state
 
         def clean_country(self):
-            country = self.cleaned_data.get('country')
+            country = self.cleaned_data.get("country")
             if not country:
-                raise forms.ValidationError('Please enter a valid country')
+                raise forms.ValidationError("Please enter a valid country")
             return country
 
 
 class CustomerPaymentForm(ModelForm):
     class Meta:
         model = Payment
-        fields = ("full_name", "email", "phone", "use_address", "address_line", "postcode", "address_line2", "city", "state", "country")
+        fields = (
+            "full_name",
+            "email",
+            "phone",
+            "use_address",
+            "address_line",
+            "postcode",
+            "address_line2",
+            "city",
+            "state",
+            "country",
+        )
 
         widgets = {
-            'full_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'email': forms.EmailInput(attrs={'class': 'form-control'}),
-            'phone': forms.TextInput(attrs={'class': 'form-control'}),
-            "use_address": forms.Select(attrs={'class': 'form-control'}),
+            "full_name": forms.TextInput(attrs={"class": "form-control"}),
+            "email": forms.EmailInput(attrs={"class": "form-control"}),
+            "phone": forms.TextInput(attrs={"class": "form-control"}),
+            "use_address": forms.Select(attrs={"class": "form-control"}),
         }
 
     def clean_use_address(self):
-        use_address = self.cleaned_data.get('use_address')
+        use_address = self.cleaned_data.get("use_address")
         if use_address is None:
             raise forms.ValidationError("Please select an address")
         return use_address
 
     def __init__(self, *args, **kwargs):
         super(CustomerPaymentForm, self).__init__(*args, **kwargs)
-        
-
-    
-        

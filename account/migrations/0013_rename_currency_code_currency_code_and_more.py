@@ -6,23 +6,23 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('account', '0012_alter_store_currency'),
+        ("account", "0012_alter_store_currency"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='currency',
-            old_name='currency_code',
-            new_name='code',
+            model_name="currency",
+            old_name="currency_code",
+            new_name="code",
         ),
         migrations.RenameField(
-            model_name='currency',
-            old_name='currency_name',
-            new_name='name',
+            model_name="currency",
+            old_name="currency_name",
+            new_name="name",
         ),
         migrations.RenameField(
-            model_name='currency',
-            old_name='currency_symbol',
-            new_name='symbol',
+            model_name="currency",
+            old_name="currency_symbol",
+            new_name="symbol",
         ),
     ]

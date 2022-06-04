@@ -1,8 +1,9 @@
 from venv import create
+
 from django import forms
 from django.forms import ModelForm
 
-from .models import Category, Product, Coupon
+from .models import Category, Coupon, Product
 
 
 class ProductForm(ModelForm):
@@ -38,7 +39,7 @@ class ProductForm(ModelForm):
             "price": forms.NumberInput(
                 attrs={"class": "form-control", "placeholder": "Product Price"}
             ),
-            "category": forms.Select(attrs={"class": "form-control" }),
+            "category": forms.Select(attrs={"class": "form-control"}),
             "availability": forms.NumberInput(
                 attrs={"class": "form-control", "placeholder": "Product Availability"}
             ),
@@ -64,11 +65,9 @@ class ProductForm(ModelForm):
             raise forms.ValidationError("Product name is already taken")
         return name
 
-
-
-
     def __init__(self, *args, **kwargs):
         super(ProductForm, self).__init__(*args, **kwargs)
+
 
 class CategoryForm(ModelForm):
     class Meta:
@@ -84,6 +83,7 @@ class CategoryForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(CategoryForm, self).__init__(*args, **kwargs)
+
 
 class CouponForm(ModelForm):
     class Meta:
@@ -121,8 +121,8 @@ class CouponForm(ModelForm):
 class UseCouponForm(ModelForm):
     class Meta:
         model = Coupon
-        fields= ["code"]
-    
+        fields = ["code"]
+
         widgets = {
             "code": forms.TextInput(
                 attrs={"class": "form-control", "placeholder": "Coupon Code"}
@@ -132,4 +132,4 @@ class UseCouponForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(UseCouponForm, self).__init__(*args, **kwargs)
         self.label_suffix = ""
-        self.fields['code'].label = "Coupon"
+        self.fields["code"].label = "Coupon"

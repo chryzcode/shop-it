@@ -6,14 +6,14 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('app', '0015_alter_coupon_code'),
-        ('order', '0005_alter_order_store'),
+        ("app", "0015_alter_coupon_code"),
+        ("order", "0005_alter_order_store"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='order',
-            name='product',
-            field=models.ManyToManyField(to='app.product'),
+            model_name="order",
+            name="product",
+            field=models.ManyToManyField(to="app.product"),
         ),
     ]

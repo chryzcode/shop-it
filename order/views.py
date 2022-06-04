@@ -1,7 +1,9 @@
 from django.shortcuts import get_object_or_404, redirect, render
-from .forms import *
-from cart.cart import *
+
 from app.models import *
+from cart.cart import *
+
+from .forms import *
 
 
 def order(request, coupon_code):
@@ -12,7 +14,7 @@ def order(request, coupon_code):
         user = request.user
     else:
         user = None
-    print('coupon_code', coupon_code)
+    print("coupon_code", coupon_code)
     if Coupon.objects.filter(code=coupon_code).exists():
         coupon = Coupon.objects.get(code=coupon_code)
         if request.user not in coupon.users.all():
@@ -26,16 +28,15 @@ def order(request, coupon_code):
     quantity = cart.__len__()
     for product in products:
         product_id = product.id
-        products = Product.objects.get(id=product_id)   
-    store = products.store                          
+        products = Product.objects.get(id=product_id)
+    store = products.store
     order = Order.objects.create(
         user=user,
         store=store,
         billing_status=billing_status,
         amount=amount,
         quantity=quantity,
-        )
-    order.set_product(products)                                       
+    )
+    order.set_product(products)
     # cart.clear()
     return redirect("payment:initiate_payment", order.id)
-

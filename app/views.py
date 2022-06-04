@@ -1,15 +1,17 @@
-from django.shortcuts import get_object_or_404, redirect, render
-from django.contrib.auth import authenticate, login, logout
-from .forms import *
-from .models import *
-from account.models import *
 from datetime import datetime, timedelta
-from cart.cart import *
-from django.http import JsonResponse
 from decimal import Decimal
+
+from django.contrib.auth import authenticate, login, logout
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.text import slugify
+
+from account.models import *
+from cart.cart import *
 from order.models import *
 
+from .forms import *
+from .models import *
 
 
 def custom_error_404(request, exception):
@@ -27,10 +29,12 @@ def home_page(request):
 def a_store_all_products(request):
     if request.user.store_creator == True:
         store = Store.objects.get(store_name=request.user.store_name)
-        all_products = Product.objects.filter(created_by= store)
+        all_products = Product.objects.filter(created_by=store)
     else:
-        store = Store.objects.get(store_name=store_staff.objects.get(user = request.user).store)
-        all_products = Product.objects.filter(created_by= store)
+        store = Store.objects.get(
+            store_name=store_staff.objects.get(user=request.user).store
+        )
+        all_products = Product.objects.filter(created_by=store)
     return render(
         request,
         "store/products.html",
@@ -45,7 +49,7 @@ def product_detail(request, slug):
         if request.user.store_creator == True:
             store_name = product.created_by
         else:
-            store_name = store_staff.objects.get(user = request.user).store
+            store_name = store_staff.objects.get(user=request.user).store
         category_product = Product.objects.filter(
             category=product.category, created_by=store_name
         ).exclude(id=product.id)[:6]
@@ -58,26 +62,39 @@ def product_detail(request, slug):
     return render(
         request,
         "product/product-detail.html",
-        {"product": product, "category_product": category_product, "store": store, "page":page},
+        {
+            "product": product,
+            "category_product": category_product,
+            "store": store,
+            "page": page,
+        },
     )
 
 
 def create_product(request):
-    error = ''
+    error = ""
     form = ProductForm
-   
+
     if request.user.store_creator == True:
         store = Store.objects.get(store_name=request.user.store_name)
     else:
-        store = Store.objects.get(store_name=store_staff.objects.get(user = request.user).store)
+        store = Store.objects.get(
+            store_name=store_staff.objects.get(user=request.user).store
+        )
     product_units = ProductUnit.objects.all()
     categories = Category.objects.filter(created_by=store)
     if request.method == "POST":
         form = ProductForm(request.POST, request.FILES)
         product_name = request.POST.get("product_name")
-        if Product.objects.filter(name=product_name, created_by=store, slug= slugify(product_name)).exists():
+        if Product.objects.filter(
+            name=product_name, created_by=store, slug=slugify(product_name)
+        ).exists():
             error = "Product already exists"
-            return render(request, "store/create-product.html", {"form": form, "error": error, "product_units": product_units})
+            return render(
+                request,
+                "store/create-product.html",
+                {"form": form, "error": error, "product_units": product_units},
+            )
         if form.is_valid():
             product = form.save(commit=False)
             product.store = Store.objects.get(store_name=store)
@@ -85,16 +102,34 @@ def create_product(request):
             product.slug = slugify(product.name)
             if Product.objects.filter(slug=product.slug, created_by=store).exists():
                 error = "Product already exists"
-                return render(request, "store/create-product.html", {"form": form, "error": error, "product_units": product_units, "categories":categories})
+                return render(
+                    request,
+                    "store/create-product.html",
+                    {
+                        "form": form,
+                        "error": error,
+                        "product_units": product_units,
+                        "categories": categories,
+                    },
+                )
             if not store.currency:
                 error = "Please set your store currency in store settings"
-                return render(request, "store/create-product.html", {"form": form, "error": error, "product_units": product_units, "categories":categories})
+                return render(
+                    request,
+                    "store/create-product.html",
+                    {
+                        "form": form,
+                        "error": error,
+                        "product_units": product_units,
+                        "categories": categories,
+                    },
+                )
             product.currency = store.currency
             product.save()
             return redirect(
-                        "app:product_detail",
-                        slug=product.slug,
-                    )
+                "app:product_detail",
+                slug=product.slug,
+            )
     context = {"form": form, "categories": categories, "product_units": product_units}
     return render(request, "store/create-product.html", context)
 
@@ -103,7 +138,7 @@ def edit_product(request, slug):
     if request.user.store_creator == True:
         store = request.user.store_name
     else:
-        store = store_staff.objects.get(user = request.user).store
+        store = store_staff.objects.get(user=request.user).store
     product = get_object_or_404(Product, slug=slug, created_by=store)
     form = ProductForm(instance=product)
     categories = Category.objects.filter(created_by=store)
@@ -129,14 +164,18 @@ def edit_product(request, slug):
 
 def delete_product(request, slug):
     if request.user.store_creator == True:
-        product = get_object_or_404(Product, slug=slug, created_by=request.user.store_name)
+        product = get_object_or_404(
+            Product, slug=slug, created_by=request.user.store_name
+        )
         product.delete()
         return redirect("app:store_products")
     else:
-       return redirect("app:store_products")
+        return redirect("app:store_products")
+
 
 def store_admin(request):
     return render(request, "store/store-admin.html")
+
 
 def store(request, slugified_store_name):
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
@@ -147,7 +186,9 @@ def store(request, slugified_store_name):
 def store_customers(request, slugified_store_name):
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
     customers = store.customers.all()
-    return render(request, "store/store-customers.html", {"store": store, "customers": customers})
+    return render(
+        request, "store/store-customers.html", {"store": store, "customers": customers}
+    )
 
 
 def add_wishlist(request, slug):
@@ -160,7 +201,7 @@ def add_wishlist(request, slug):
 def remove_wishlist(request, slug):
     user = request.user
     product = get_object_or_404(Product, slug=slug)
-    store = get_object_or_404(Store, store_name= product.created_by)
+    store = get_object_or_404(Store, store_name=product.created_by)
     product.wishlist.remove(user)
     return redirect("app:product_detail", slug=product.slug)
 
@@ -171,29 +212,36 @@ def wishlist(request):
     for product in wishlist:
         product_store = Store.objects.get(store_name=product.created_by)
         currency = product_store.currency
-    return render(request, "store/wishlist.html", {"wishlist": wishlist, "currency": currency})
+    return render(
+        request, "store/wishlist.html", {"wishlist": wishlist, "currency": currency}
+    )
+
 
 def add_category(request):
     form = CategoryForm
     if request.user.store_creator == True:
         store = Store.objects.get(store_name=request.user.store_name)
     else:
-        store = Store.objects.get(store_name=store_staff.objects.get(user = request.user).store)
+        store = Store.objects.get(
+            store_name=store_staff.objects.get(user=request.user).store
+        )
     if request.method == "POST":
         form = CategoryForm(request.POST, request.FILES)
         if form.is_valid():
             name = request.POST.get("name")
             if Category.objects.filter(name=name, created_by=store).exists():
-                error = 'Category already exists'
-                return render(request, "store/create-category.html", {"form":form, "error":error})
+                error = "Category already exists"
+                return render(
+                    request,
+                    "store/create-category.html",
+                    {"form": form, "error": error},
+                )
             else:
                 category = form.save(commit=False)
                 store = Store.objects.get(store_name=store)
                 category.created_by = store
                 category.save()
-                return redirect(
-                        "app:all_category"           
-                    )
+                return redirect("app:all_category")
     context = {"form": form}
     return render(request, "store/create-category.html", context)
 
@@ -201,11 +249,13 @@ def add_category(request):
 def edit_category(request, slug):
     if request.user.store_creator == True:
         store = Store.objects.get(store_name=request.user.store_name)
-        category = get_object_or_404(Category, slug=slug, created_by= store)
-    
+        category = get_object_or_404(Category, slug=slug, created_by=store)
+
     else:
-        store = Store.objects.get(store_name=store_staff.objects.get(user = request.user).store)
-        category = get_object_or_404(Category, slug=slug, created_by= store)
+        store = Store.objects.get(
+            store_name=store_staff.objects.get(user=request.user).store
+        )
+        category = get_object_or_404(Category, slug=slug, created_by=store)
 
     form = CategoryForm(instance=category)
     if request.method == "POST":
@@ -215,23 +265,24 @@ def edit_category(request, slug):
             if request.user.store_creator == True:
                 category.created_by = store
             else:
-                category.created_by = store_staff.objects.get(user = request.user).store
+                category.created_by = store_staff.objects.get(user=request.user).store
             category.save()
-            return redirect(
-                "app:all_category"
-            )
+            return redirect("app:all_category")
     context = {
         "form": form,
     }
     return render(request, "store/create-category.html", context)
 
+
 def delete_category(request, slug):
     if request.user.store_creator == True:
         store = Store.objects.get(store_name=request.user.store_name)
-        category = get_object_or_404(Category, slug=slug, created_by= store) 
+        category = get_object_or_404(Category, slug=slug, created_by=store)
     else:
-        store = Store.objects.get(store_name=store_staff.objects.get(user = request.user).store)
-        category = get_object_or_404(Category, slug=slug, created_by= store)
+        store = Store.objects.get(
+            store_name=store_staff.objects.get(user=request.user).store
+        )
+        category = get_object_or_404(Category, slug=slug, created_by=store)
     category.delete()
     return redirect("app:all_category")
 
@@ -240,13 +291,16 @@ def all_category(request):
     if request.user.store_creator == True:
         store = Store.objects.get(store_name=request.user.store_name)
         categories = Category.objects.filter(created_by=store)
-        context = {"categories":categories}
+        context = {"categories": categories}
         return render(request, "store/category.html", context)
     else:
-        store = Store.objects.get(store_name=store_staff.objects.get(user = request.user).store)
-        categories = Category.objects.filter(created_by= store)
-        context = {"categories":categories}
+        store = Store.objects.get(
+            store_name=store_staff.objects.get(user=request.user).store
+        )
+        categories = Category.objects.filter(created_by=store)
+        context = {"categories": categories}
         return render(request, "store/category.html", context)
+
 
 def a_store_all_categories(request, slugified_store_name):
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
@@ -256,6 +310,7 @@ def a_store_all_categories(request, slugified_store_name):
         "store/a-store-categories.html",
         {"all_categories": all_categories},
     )
+
 
 def a_store_category_products(request, slugified_store_name, slug):
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
@@ -269,22 +324,26 @@ def a_store_category_products(request, slugified_store_name, slug):
         {"category_products": category_products, "category": category},
     )
 
+
 def discount_products(request):
     if request.user.store_creator == True:
         store = Store.objects.get(store_name=request.user.store_name)
-        products = Product.objects.filter(created_by=store, discount_percentage__gt=0)  
+        products = Product.objects.filter(created_by=store, discount_percentage__gt=0)
     else:
-        store = Store.objects.get(store_name=store_staff.objects.get(user = request.user).store)
+        store = Store.objects.get(
+            store_name=store_staff.objects.get(user=request.user).store
+        )
         products = Product.objects.filter(created_by=store, discount_percentage__gt=0)
     return render(
         request,
         "product/discount-products.html",
-        {"products": products, "store": store}
+        {"products": products, "store": store},
     )
+
 
 def create_coupon(request):
     if request.user.store_creator == False:
-        error = 'You are not authorized to create coupons'
+        error = "You are not authorized to create coupons"
         return render(request, "store/coupon.html", {"error": error})
 
     else:
@@ -294,31 +353,36 @@ def create_coupon(request):
             if form.is_valid():
                 code = request.POST.get("code")
                 store = Store.objects.get(store_name=request.user.store_name)
-                if Coupon.objects.filter(code=code, created_by = store).exists():
+                if Coupon.objects.filter(code=code, created_by=store).exists():
                     error = "Coupon already exists"
-                    return render(request, "store/create-coupon.html", {"form":form, "error":error})
+                    return render(
+                        request,
+                        "store/create-coupon.html",
+                        {"form": form, "error": error},
+                    )
                 else:
                     coupon = form.save(commit=False)
                     store = Store.objects.get(store_name=request.user.store_name)
                     coupon.created_by = store
                     coupon.save()
-                    return redirect(
-                        "app:all_coupons"
-                    )
+                    return redirect("app:all_coupons")
         context = {"form": form}
         return render(request, "store/create-coupon.html", context)
+
 
 def all_coupons(request):
     if request.user.store_creator == True:
         store = Store.objects.get(store_name=request.user.store_name)
         coupons = Coupon.objects.filter(created_by=store)
     else:
-        store = Store.objects.get(store_name=store_staff.objects.get(user = request.user).store)
+        store = Store.objects.get(
+            store_name=store_staff.objects.get(user=request.user).store
+        )
         coupons = Coupon.objects.filter(created_by=store)
     for coupon in coupons:
-        expiry_date = (datetime.now().astimezone() - coupon.created_at)
+        expiry_date = datetime.now().astimezone() - coupon.created_at
         expiry_date_seconds = expiry_date.total_seconds()
-        minutes = expiry_date_seconds/60
+        minutes = expiry_date_seconds / 60
         if int(minutes) > coupon.expiry_date:
             coupon.delete()
     return render(
@@ -326,6 +390,7 @@ def all_coupons(request):
         "store/coupon.html",
         {"coupons": coupons},
     )
+
 
 def delete_coupon(request, pk):
     if request.user.store_creator == True:
@@ -336,22 +401,21 @@ def delete_coupon(request, pk):
     else:
         return redirect("app:all_coupons")
 
+
 def all_customers(request):
     if request.user.store_creator == True:
         store = request.user.store_name
     if request.user.store_staff == True:
-        store = store_staff.objects.get(user = request.user).store
-    
+        store = store_staff.objects.get(user=request.user).store
+
     customers = Store.objects.get(store_name=store).customers.all()
-    return render(request, "store/customers.html", {"customers":customers})
+    return render(request, "store/customers.html", {"customers": customers})
+
 
 def store_order(request):
     if request.user.store_creator == True:
         store = request.user.store_name
     if request.user.store_staff == True:
-        store = store_staff.objects.get(user = request.user).store
+        store = store_staff.objects.get(user=request.user).store
     orders = Order.objects.filter(store=store)
-    return render(request, "store/store-order.html", {"orders":orders})
-    
-               
-
+    return render(request, "store/store-order.html", {"orders": orders})

@@ -6,23 +6,23 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('app', '0006_alter_product_price'),
+        ("app", "0006_alter_product_price"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='category',
-            name='created_by',
+            model_name="category",
+            name="created_by",
             field=models.CharField(max_length=150),
         ),
         migrations.AlterField(
-            model_name='coupon',
-            name='created_by',
+            model_name="coupon",
+            name="created_by",
             field=models.CharField(max_length=150),
         ),
         migrations.AlterField(
-            model_name='product',
-            name='created_by',
+            model_name="product",
+            name="created_by",
             field=models.CharField(max_length=150),
         ),
     ]

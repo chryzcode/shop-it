@@ -1,6 +1,6 @@
+from datetime import datetime, timedelta
 from decimal import Decimal
 from locale import currency
-from pyexpat import model
 
 from ckeditor.fields import RichTextField
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -8,16 +8,14 @@ from django.db import models
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils.text import slugify
+from pyexpat import model
 from requests import request
 
 from account.models import *
 
-from datetime import datetime, timedelta
-
-
 
 class Category(models.Model):
-    created_by = models.ForeignKey(Store,  on_delete=models.CASCADE)
+    created_by = models.ForeignKey(Store, on_delete=models.CASCADE)
     name = models.CharField(max_length=255, db_index=True)
     slug = models.SlugField(max_length=255, unique=True)
 
@@ -49,6 +47,7 @@ class ProductUnit(models.Model):
     def __str__(self):
         return self.name
 
+
 class Coupon(models.Model):
     code = models.CharField(max_length=20, blank=True, null=True)
     percentage = models.PositiveIntegerField(
@@ -60,9 +59,9 @@ class Coupon(models.Model):
     expiry_date = models.IntegerField()
 
     users = models.ManyToManyField(User, blank=True)
-    
+
     def __str__(self):
-        return "coupon" + ' ' + self.code[:5] + "..."
+        return "coupon" + " " + self.code[:5] + "..."
 
 
 class Product(models.Model):
@@ -75,7 +74,9 @@ class Product(models.Model):
     image_3 = models.ImageField(upload_to="product-images/", null=True, blank=True)
     image_4 = models.ImageField(upload_to="product-images/", null=True, blank=True)
     slug = models.SlugField(max_length=255, unique=True)
-    price = models.DecimalField(max_digits=6, decimal_places=2, validators=[MinValueValidator(0)])
+    price = models.DecimalField(
+        max_digits=6, decimal_places=2, validators=[MinValueValidator(0)]
+    )
     in_stock = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now_add=True)
@@ -91,7 +92,7 @@ class Product(models.Model):
         null=True,
         blank=True,
         validators=[MinValueValidator(0), MaxValueValidator(100)],
-        default= 0,
+        default=0,
     )
     wishlist = models.ManyToManyField(User, related_name="wishlist", blank=True)
     currency = models.ForeignKey(Currency, on_delete=models.CASCADE)
@@ -104,7 +105,7 @@ class Product(models.Model):
     def save(self, *args, **kwargs):
         if self.availability < 1:
             self.in_stock = False
-    
+
         return super(Product, self).save(*args, **kwargs)
 
     def discount_price(self):
@@ -119,9 +120,8 @@ class Product(models.Model):
             "app:product_detail",
             kwargs={
                 "slug": self.slug,
-            }
+            },
         )
-
 
     def __str__(self):
         return self.name

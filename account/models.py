@@ -1,6 +1,6 @@
-
 from locale import currency
 from operator import mod
+
 from django.conf import settings
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
                                         PermissionsMixin)
@@ -34,9 +34,9 @@ class CustomAccountManager(BaseUserManager):
         user.set_password(password)
         user.save()
         store = Store.objects.create(
-                owner = user,
-                store_name = store_name,
-            )
+            owner=user,
+            store_name=store_name,
+        )
         return user
 
 
@@ -50,7 +50,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    store_name = models.CharField(max_length=150, blank=True, null= True)
+    store_name = models.CharField(max_length=150, blank=True, null=True)
     store_creator = models.BooleanField(default=True)
     store_staff = models.BooleanField(default=False)
 
@@ -59,7 +59,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = "email"
 
     REQUIRED_FIELDS = ["store_name"]
-
 
     def email_user(self, subject, message):
         send_mail(
@@ -76,6 +75,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     def store_name_slug(self):
         return slugify(self.store_name)
 
+
 class Currency(models.Model):
     name = models.CharField(max_length=50)
     code = models.CharField(max_length=10)
@@ -89,26 +89,27 @@ class Currency(models.Model):
         return self.name
 
 
-
 class Store(models.Model):
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="store_owner")
+    owner = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="store_owner"
+    )
     store_name = models.CharField(max_length=150, unique=True)
     slugified_store_name = models.SlugField(max_length=255, unique=True)
     store_description = models.TextField(max_length=500, blank=True)
-    currency = models.ForeignKey(Currency, on_delete= models.SET_NULL, related_name="currency", null=True)
+    currency = models.ForeignKey(
+        Currency, on_delete=models.SET_NULL, related_name="currency", null=True
+    )
     store_image = models.ImageField(upload_to="store-images/")
-    staffs =  models.ManyToManyField(User, related_name="store_staffs", blank=True)
+    staffs = models.ManyToManyField(User, related_name="store_staffs", blank=True)
     customers = models.ManyToManyField(User, related_name="store_customers", blank=True)
     facebook = models.CharField(max_length=100, blank=True)
     instagram = models.CharField(max_length=100, blank=True)
     twitter = models.CharField(max_length=100, blank=True)
 
-
     class Meta:
         verbose_name = "Store"
         verbose_name_plural = "Stores"
 
-    
     def save(self, *args, **kwargs):
         self.slugified_store_name = slugify(self.store_name)
         super().save(*args, **kwargs)
@@ -116,11 +117,12 @@ class Store(models.Model):
     def __str__(self):
         return self.store_name
 
+
 class Bank_Info(models.Model):
     account_number = models.CharField(max_length=50)
     account_name = models.CharField(max_length=100)
     bank_name = models.CharField(max_length=100)
-    currency = models.ForeignKey(Currency, on_delete=models.SET_NULL,  null=True)
+    currency = models.ForeignKey(Currency, on_delete=models.SET_NULL, null=True)
 
     class Meta:
         verbose_name = "Bank Info"
@@ -129,7 +131,6 @@ class Bank_Info(models.Model):
     def __str__(self):
         return self.name
 
-    
 
 class store_staff(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user")
@@ -142,7 +143,7 @@ class store_staff(models.Model):
     updated = models.DateTimeField(auto_now=True)
     password = models.CharField(max_length=100)
     password2 = models.CharField(max_length=100)
-    store= models.ForeignKey(Store, on_delete=models.CASCADE, related_name="store")
+    store = models.ForeignKey(Store, on_delete=models.CASCADE, related_name="store")
 
     class Meta:
         verbose_name = "Store Staff"
@@ -151,11 +152,13 @@ class store_staff(models.Model):
     def __str__(self):
         return self.full_name
 
+
 class Shipping_Method(models.Model):
-    store = models.ForeignKey(Store, on_delete=models.CASCADE, related_name="shipping_method")
+    store = models.ForeignKey(
+        Store, on_delete=models.CASCADE, related_name="shipping_method"
+    )
     location = models.CharField(max_length=250)
     price = models.PositiveIntegerField(default=0)
 
     def __str__(self):
-        return self.location  + " " + self.store.store_name
-
+        return self.location + " " + self.store.store_name

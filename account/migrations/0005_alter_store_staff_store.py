@@ -6,13 +6,15 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('account', '0004_remove_user_facebook_remove_user_instagram_and_more'),
+        ("account", "0004_remove_user_facebook_remove_user_instagram_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='store_staff',
-            name='store',
-            field=models.CharField(choices=[('code store', 'code store')], max_length=150),
+            model_name="store_staff",
+            name="store",
+            field=models.CharField(
+                choices=[("code store", "code store")], max_length=150
+            ),
         ),
     ]
