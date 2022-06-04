@@ -14,7 +14,7 @@ class Customer(models.Model):
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=300)
     password2 = models.CharField(max_length=300)
-    store = models.ForeignKey(Store, on_delete=models.CASCADE, related_name="customer")
+    # store = models.ForeignKey(Store, on_delete=models.CASCADE, related_name="customer")
 
     def __str__(self):
         return self.full_name

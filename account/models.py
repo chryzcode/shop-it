@@ -1,6 +1,3 @@
-from locale import currency
-from operator import mod
-
 from django.conf import settings
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
                                         PermissionsMixin)
@@ -9,43 +6,43 @@ from django.db import models
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 
-class Currency(models.Model):
-    name = models.CharField(max_length=50)
-    code = models.CharField(max_length=10)
-    symbol = models.CharField(max_length=10)
+# class Currency(models.Model):
+#     name = models.CharField(max_length=50)
+#     code = models.CharField(max_length=10)
+#     symbol = models.CharField(max_length=10)
 
-    class Meta:
-        verbose_name = "Currency"
-        verbose_name_plural = "Currencies"
+#     class Meta:
+#         verbose_name = "Currency"
+#         verbose_name_plural = "Currencies"
 
-    def __str__(self):
-        return self.name
+#     def __str__(self):
+#         return self.name
 
-class Store(models.Model):
-    owner = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="store_owner"
-    )
-    store_name = models.CharField(max_length=150, unique=True)
-    slugified_store_name = models.SlugField(max_length=255, unique=True)
-    store_description = models.TextField(max_length=500, blank=True)
-    store_image = models.ImageField(upload_to="store-images/")
-    currency = models.CharField(max_length=50, default="USD", blank=True, null=True)
-    staffs = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="store_staffs", blank=True)
-    customers = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="store_customers", blank=True)
-    facebook = models.CharField(max_length=100, blank=True)
-    instagram = models.CharField(max_length=100, blank=True)
-    twitter = models.CharField(max_length=100, blank=True)
+# class Store(models.Model):
+#     owner = models.ForeignKey(
+#         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="store_owner"
+#     )
+#     store_name = models.CharField(max_length=150, unique=True)
+#     slugified_store_name = models.SlugField(max_length=255, unique=True)
+#     store_description = models.TextField(max_length=500, blank=True)
+#     store_image = models.ImageField(upload_to="store-images/")
+#     currency = models.CharField(max_length=50, default="USD", blank=True, null=True)
+#     staffs = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="store_staffs", blank=True)
+#     customers = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="store_customers", blank=True)
+#     facebook = models.CharField(max_length=100, blank=True)
+#     instagram = models.CharField(max_length=100, blank=True)
+#     twitter = models.CharField(max_length=100, blank=True)
 
-    class Meta:
-        verbose_name = "Store"
-        verbose_name_plural = "Stores"
+#     class Meta:
+#         verbose_name = "Store"
+#         verbose_name_plural = "Stores"
 
-    def save(self, *args, **kwargs):
-        self.slugified_store_name = slugify(self.store_name)
-        super().save(*args, **kwargs)
+#     def save(self, *args, **kwargs):
+#         self.slugified_store_name = slugify(self.store_name)
+#         super().save(*args, **kwargs)
 
-    def __str__(self):
-        return self.store_name
+#     def __str__(self):
+#         return self.store_name
 
 class CustomAccountManager(BaseUserManager):
     def create_superuser(self, email, store_name, password, **other_fields):
@@ -63,11 +60,11 @@ class CustomAccountManager(BaseUserManager):
         user = self.model(email=email, store_name=store_name, **other_fields)
         user.set_password(password)
         user.save()
-        store = Store.objects.create(
-            store_name=store_name,
-            owner= user,
-            currency = "USD",
-        )
+        # store = Store.objects.create(
+        #     store_name=store_name,
+        #     owner= user,
+        #     currency = "USD",
+        # )
 
 
         return self.create_user(email, store_name, password, **other_fields)
@@ -81,11 +78,11 @@ class CustomAccountManager(BaseUserManager):
         user = self.model(email=email, store_name=store_name, **other_fields)
         user.set_password(password)
         user.save()
-        store = Store.objects.create(
-            owner=user,
-            store_name=store_name,
-            currency = "USD",
-        )
+        # store = Store.objects.create(
+        #     owner=user,
+        #     store_name=store_name,
+        #     currency = "USD",
+        # )
         return user
 
 
@@ -150,7 +147,7 @@ class store_staff(models.Model):
     updated = models.DateTimeField(auto_now=True)
     password = models.CharField(max_length=100)
     password2 = models.CharField(max_length=100)
-    store = models.ForeignKey(Store, on_delete=models.CASCADE, related_name="store")
+    # store = models.ForeignKey(Store, on_delete=models.CASCADE, related_name="store")
 
     class Meta:
         verbose_name = "Store Staff"
@@ -161,9 +158,9 @@ class store_staff(models.Model):
 
 
 class Shipping_Method(models.Model):
-    store = models.ForeignKey(
-        Store, on_delete=models.CASCADE, related_name="shipping_method"
-    )
+    # store = models.ForeignKey(
+    #     Store, on_delete=models.CASCADE, related_name="shipping_method"
+    # )
     location = models.CharField(max_length=250)
     price = models.PositiveIntegerField(default=0)
 
