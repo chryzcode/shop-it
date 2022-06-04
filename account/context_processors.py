@@ -42,8 +42,11 @@ def multiple_store_staff(request):
 def owner_store(request):
     if request.user.is_authenticated:
         if request.user.store_creator == True:
-            store = Store.objects.get(owner=request.user)
-            return {"owner_store": store}
+            if Store.objects.filter(owner=request.user).exists():
+                store = Store.objects.get(owner=request.user)
+                return {"owner_store": store}
+            else:
+                return {"owner_store": None}
         else:
             return {"owner_store": None}
     return {"owner_store": None}
