@@ -76,17 +76,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         return slugify(self.store_name)
 
 
-class Currency(models.Model):
-    name = models.CharField(max_length=50)
-    code = models.CharField(max_length=10)
-    symbol = models.CharField(max_length=10)
 
-    class Meta:
-        verbose_name = "Currency"
-        verbose_name_plural = "Currencies"
-
-    def __str__(self):
-        return self.name
 
 
 class Store(models.Model):
@@ -96,9 +86,9 @@ class Store(models.Model):
     store_name = models.CharField(max_length=150, unique=True)
     slugified_store_name = models.SlugField(max_length=255, unique=True)
     store_description = models.TextField(max_length=500, blank=True)
-    currency = models.ForeignKey(
-        Currency, on_delete=models.SET_NULL, related_name="currency", null=True
-    )
+    # currency = models.ForeignKey(
+    #     Currency, on_delete=models.CASCADE, related_name="store_currency", default= 7
+    # )
     store_image = models.ImageField(upload_to="store-images/")
     staffs = models.ManyToManyField(User, related_name="store_staffs", blank=True)
     customers = models.ManyToManyField(User, related_name="store_customers", blank=True)
@@ -116,6 +106,19 @@ class Store(models.Model):
 
     def __str__(self):
         return self.store_name
+
+class Currency(models.Model):
+    name = models.CharField(max_length=50)
+    code = models.CharField(max_length=10)
+    symbol = models.CharField(max_length=10)
+    store = models.ManyToManyField(Store, related_name="store_currency", blank=True)
+
+    class Meta:
+        verbose_name = "Currency"
+        verbose_name_plural = "Currencies"
+
+    def __str__(self):
+        return self.name
 
 
 class Bank_Info(models.Model):
