@@ -119,7 +119,6 @@ class Bank_Info(models.Model):
     account_number = models.CharField(max_length=50)
     account_name = models.CharField(max_length=100)
     bank_name = models.CharField(max_length=100)
-    currency = models.ForeignKey(Currency, on_delete=models.SET_NULL, null=True)
 
     class Meta:
         verbose_name = "Bank Info"
