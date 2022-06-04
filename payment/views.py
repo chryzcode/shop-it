@@ -9,9 +9,7 @@ from django import forms
 
 # Create your views here.
 def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
-    address = ''
-    default_address = ''
-    address_count = 0
+    addresses = ''
     order = Order.objects.get(pk=pk)
     shipping_methods = Shipping_Method.objects.filter(store=order.store)
     if request.user.is_authenticated:
@@ -47,13 +45,13 @@ def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
                     payment.country = address.country
 
             if payment.country == None:
-               return render(request, 'payment/initiate-payment.html', {'payment_form': payment_form, 'order': order, 'shipping_methods': shipping_methods, 'error': 'Field is required'})
+               return render(request, 'payment/initiate-payment.html', {'payment_form': payment_form, 'order': order, 'shipping_methods': shipping_methods, 'country_error': 'Field is required'})
 
             if payment.state == None:
-                return render(request, 'payment/initiate-payment.html', {'payment_form': payment_form, 'order': order, 'shipping_methods': shipping_methods, 'error': 'Field is required'})
+                return render(request, 'payment/initiate-payment.html', {'payment_form': payment_form, 'order': order, 'shipping_methods': shipping_methods, 'state_error': 'Field is required'})
             
             if payment.city == None:
-                return render(request, 'payment/initiate-payment.html', {'payment_form': payment_form, 'order': order, 'shipping_methods': shipping_methods, 'error': 'Field is required'})
+                return render(request, 'payment/initiate-payment.html', {'payment_form': payment_form, 'order': order, 'shipping_methods': shipping_methods, 'city_error': 'Field is required'})
 
             
            
@@ -63,4 +61,4 @@ def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
             render(request, 'payment/make-payment.html', {"payment":payment})
     else:
         payment_form  = PaymentForm()
-    return render(request, "payment/initiate-payment.html", {"payment_form":payment_form, "addresses":addresses, "default_address":default_address, "address_count":address_count, "shipping_methods":shipping_methods})
+    return render(request, "payment/initiate-payment.html", {"payment_form":payment_form, "addresses":addresses, "shipping_methods":shipping_methods})
