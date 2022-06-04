@@ -47,13 +47,13 @@ def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
                     payment.country = address.country
 
             if payment.country == None:
-               return render(request, 'payment/initiate-payment.html', {'payment_form': payment_form, 'order': order, 'shipping_methods': shipping_methods, 'error': 'Please fill in all the fields'})
+               return render(request, 'payment/initiate-payment.html', {'payment_form': payment_form, 'order': order, 'shipping_methods': shipping_methods, 'error': 'Field is required'})
 
             if payment.state == None:
-                return render(request, 'payment/initiate-payment.html', {'payment_form': payment_form, 'order': order, 'shipping_methods': shipping_methods, 'error': 'Please fill in all the fields'})
+                return render(request, 'payment/initiate-payment.html', {'payment_form': payment_form, 'order': order, 'shipping_methods': shipping_methods, 'error': 'Field is required'})
             
             if payment.city == None:
-                return render(request, 'payment/initiate-payment.html', {'payment_form': payment_form, 'order': order, 'shipping_methods': shipping_methods, 'error': 'Please fill in all the fields'})
+                return render(request, 'payment/initiate-payment.html', {'payment_form': payment_form, 'order': order, 'shipping_methods': shipping_methods, 'error': 'Field is required'})
 
             
            
