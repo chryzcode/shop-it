@@ -34,6 +34,15 @@ def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
                 payment.user = request.user
             else:
                 payment.user = None
+            use_address = payment_form.cleaned_data.get('use_address')
+            address = Address.objects.get(pk=use_address.id)
+            if address:
+                payment.address_line = address.address_line
+                payment.address_line2 = address.address_line2
+                payment.postcode = address.postcode
+                payment.city = address.city
+                payment.state = address.state
+                payment.country = address.country
             payment.order = order            
             payment.amount = order.amount
             payment.save()

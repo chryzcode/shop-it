@@ -48,12 +48,12 @@ class NonCustomerPaymentForm(ModelForm):
             if not country:
                 raise forms.ValidationError('Please enter a valid country')
             return country
-            
+
 
 class CustomerPaymentForm(ModelForm):
     class Meta:
         model = Payment
-        fields = ("full_name", "email", "phone", "use_address")
+        fields = ("full_name", "email", "phone", "use_address", "address_line", "postcode", "address_line2", "city", "state", "country")
 
         widgets = {
             'full_name': forms.TextInput(attrs={'class': 'form-control'}),

@@ -4,8 +4,8 @@
 <div class="auth-form-container">
     <form action="" method="post" enctype="multipart/form-data">
       {% csrf_token %}
-      {{payment_form.as_p}}
-      <!-- <div class="above-create-form">
+      
+      <div class="above-create-form">
         <p>Initiate Payment</p>
       </div>
 
@@ -29,7 +29,7 @@
           {{payment_form.phone}}
         </div>
 
-       
+       {% if addresses %}
 
         <div class="input-container">
           <label for="use_address">Address</label>
@@ -41,6 +41,8 @@
             {% endfor %}
           </select>
         </div>
+
+      {% else %}
 
     
         <div class="input-container">
@@ -84,7 +86,8 @@
             <select name="city" class="cities form-control" id="cityId">
               <option value="">Select City</option>
             </select>
-          </div> -->
+          </div>
+      {% endif %}
          
         
 
@@ -95,7 +98,7 @@
           <input type="radio" name="shipping_method" id="{{shipping_method.id}}" value="{{shipping_method.id}}">
           <label for="{{shipping_method}}">{{shipping_method.location}}</label>
           {% endfor %}
-        </div> -->
+        </div>-->
         
 
 
