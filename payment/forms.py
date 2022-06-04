@@ -19,6 +19,37 @@ class NonCustomerPaymentForm(ModelForm):
             'country': forms.Select(attrs={'class': 'form-control'}),
         }
 
+        def clean_postcode(self):
+            postcode = self.cleaned_data.get('postcode')
+            if not postcode:
+                raise forms.ValidationError('Please enter a valid postcode')
+            return postcode
+
+        def clean_address_line(self):
+            address_line = self.cleaned_data.get('address_line')
+            if not address_line:
+                raise forms.ValidationError('Please enter a valid address')
+            return address_line
+        
+        def clean_city(self):
+            city = self.cleaned_data.get('city')
+            if not city:
+                raise forms.ValidationError('Please enter a valid city')
+            return city
+
+        def clean_state(self):
+            state = self.cleaned_data.get('state')
+            if not state:
+                raise forms.ValidationError('Please enter a valid state')
+            return state
+
+        def clean_country(self):
+            country = self.cleaned_data.get('country')
+            if not country:
+                raise forms.ValidationError('Please enter a valid country')
+            return country
+            
+
 class CustomerPaymentForm(ModelForm):
     class Meta:
         model = Payment
