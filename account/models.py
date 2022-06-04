@@ -63,6 +63,8 @@ class CustomAccountManager(BaseUserManager):
        
         email = self.normalize_email(email)
         user = self.model(email=email, store_name=store_name, **other_fields)
+        user.set_password(password)
+        user.save()
         store = Store.objects.create(
             store_name=store_name,
             owner= user,
