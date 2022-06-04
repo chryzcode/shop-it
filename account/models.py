@@ -29,7 +29,7 @@ class Store(models.Model):
     slugified_store_name = models.SlugField(max_length=255, unique=True)
     store_description = models.TextField(max_length=500, blank=True)
     store_image = models.ImageField(upload_to="store-images/")
-    currency = models.CharField(max_length=50)
+    currency = models.CharField(max_length=50, default="USD")
     staffs = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="store_staffs", blank=True)
     customers = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="store_customers", blank=True)
     facebook = models.CharField(max_length=100, blank=True)
