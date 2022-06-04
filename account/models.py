@@ -1,3 +1,6 @@
+from locale import currency
+from operator import mod
+
 from django.conf import settings
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
                                         PermissionsMixin)
@@ -93,6 +96,9 @@ class Store(models.Model):
     store_name = models.CharField(max_length=150, unique=True)
     slugified_store_name = models.SlugField(max_length=255, unique=True)
     store_description = models.TextField(max_length=500, blank=True)
+    currency = models.ForeignKey(
+        Currency, on_delete=models.CASCADE, related_name="store_currency"
+    )
     store_image = models.ImageField(upload_to="store-images/")
     staffs = models.ManyToManyField(User, related_name="store_staffs", blank=True)
     customers = models.ManyToManyField(User, related_name="store_customers", blank=True)
@@ -116,6 +122,7 @@ class Bank_Info(models.Model):
     account_number = models.CharField(max_length=50)
     account_name = models.CharField(max_length=100)
     bank_name = models.CharField(max_length=100)
+    currency = models.ForeignKey(Currency, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = "Bank Info"
