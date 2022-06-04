@@ -30,7 +30,7 @@ class Payment(models.Model):
     default_address = models.BooleanField(default=False, null=True, blank=True)
     order = models.ForeignKey(Order, on_delete=models.CASCADE, blank=True, null=True)
     shipping_method = models.ForeignKey(
-        Shipping_Method, on_delete=models.CASCADE, blank=True, null=True
+        Shipping_Method, on_delete=models.CASCADE, default=4
     )
 
     class Meta:
