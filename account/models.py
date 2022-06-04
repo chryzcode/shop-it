@@ -1,6 +1,3 @@
-from locale import currency
-from operator import mod
-
 from django.conf import settings
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
                                         PermissionsMixin)
