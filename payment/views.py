@@ -5,6 +5,7 @@ from customer.models import Address, Customer
 from .forms import *
 from cart.cart import *
 from order.models import *
+from django import forms
 
 # Create your views here.
 def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
@@ -44,6 +45,21 @@ def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
                     payment.city = address.city
                     payment.state = address.state
                     payment.country = address.country
+
+            if payment.country == None:
+               return render(request, 'payment/initiate-payment.html', {'payment_form': payment_form, 'order': order, 'shipping_methods': shipping_methods, 'error': 'Please fill in all the fields'})
+
+            if payment.state == None:
+                return render(request, 'payment/initiate-payment.html', {'payment_form': payment_form, 'order': order, 'shipping_methods': shipping_methods, 'error': 'Please fill in all the fields'})
+
+            if payment.postcode == None:
+                return render(request, 'payment/initiate-payment.html', {'payment_form': payment_form, 'order': order, 'shipping_methods': shipping_methods, 'error': 'Please fill in all the fields'})
+            
+            if payment.city == None:
+                return render(request, 'payment/initiate-payment.html', {'payment_form': payment_form, 'order': order, 'shipping_methods': shipping_methods, 'error': 'Please fill in all the fields'})
+
+            
+           
             payment.order = order            
             payment.amount = order.amount
             payment.save()
