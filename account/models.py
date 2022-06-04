@@ -20,7 +20,7 @@ class Currency(models.Model):
 
     def __str__(self):
         return self.name
-        
+
 class Store(models.Model):
     owner = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="store_owner"
@@ -60,10 +60,10 @@ class CustomAccountManager(BaseUserManager):
             raise ValueError("Superuser must be assigned to is_staff=True.")
         if other_fields.get("is_superuser") is not True:
             raise ValueError("Superuser must be assigned to is_superuser=True.")
-
+       
         store = Store.objects.create(
             store_name=store_name,
-            owner=self.create_user(email, password, **other_fields),
+            owner= settings.AUTH_USER_MODEL.objects.get(email=email),
         )
 
 
