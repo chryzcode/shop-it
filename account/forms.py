@@ -206,27 +206,27 @@ class ExistingStoreStaffForm(ModelForm):
         super(ExistingStoreStaffForm, self).__init__(*args, **kwargs)
 
 
-# class AddStoreForm(ModelForm):
-#     class Meta:
-#         model = User
-#         fields = ["store_name"]
+class AddStoreForm(ModelForm):
+    class Meta:
+        model = User
+        fields = ["store_name"]
 
-#         widgets = {
-#             "store_name": forms.TextInput(
-#                 attrs={"class": "form-control", "placeholder": "The Shop!t Store"}
-#             ),
-#         }
+        widgets = {
+            "store_name": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "The Shop!t Store"}
+            ),
+        }
 
-#     def clean_store_name(self):
-#         store_name = self.cleaned_data["store_name"]
-#         slugified_store_name = slugify(store_name)
-#         if len(store_name) == 0:
-#             raise forms.ValidationError("Store name cannot be empty")
+    def clean_store_name(self):
+        store_name = self.cleaned_data["store_name"]
+        slugified_store_name = slugify(store_name)
+        if len(store_name) == 0:
+            raise forms.ValidationError("Store name cannot be empty")
 
-#         if Store.objects.filter(slugified_store_name=slugified_store_name).exists():
-#             raise forms.ValidationError("Store name is already taken")
+        if Store.objects.filter(slugified_store_name=slugified_store_name).exists():
+            raise forms.ValidationError("Store name is already taken")
 
-#         return store_name
+        return store_name
 
 
 class ShippingMethodForm(ModelForm):
