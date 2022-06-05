@@ -61,14 +61,6 @@ class CustomAccountManager(BaseUserManager):
         user = self.model(email=email, store_name=store_name, **other_fields)
         user.set_password(password)
         user.save()
-        store = Store.objects.create(
-            store_name=store_name,
-            owner= user,
-            currency = "USD",
-            slugified_store_name = slugify(store_name),
-        )
-
-
         return self.create_user(email, store_name, password, **other_fields)
 
     def create_user(self, email, store_name, password, **other_fields):
@@ -80,12 +72,6 @@ class CustomAccountManager(BaseUserManager):
         user = self.model(email=email, store_name=store_name, **other_fields)
         user.set_password(password)
         user.save()
-        store = Store.objects.create(
-            owner=user,
-            store_name=store_name,
-            currency = "USD",
-            slugified_store_name = slugify(store_name),
-        )
         return user
 
 
