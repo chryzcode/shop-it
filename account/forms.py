@@ -7,94 +7,94 @@ from django.utils.text import slugify
 from .models import *
 
 
-# class RegistrationForm(ModelForm):
-#     check = forms.BooleanField(required=True)
-#     password = forms.CharField()
-#     password2 = forms.CharField()
+class RegistrationForm(ModelForm):
+    check = forms.BooleanField(required=True)
+    password = forms.CharField()
+    password2 = forms.CharField()
 
-#     class Meta:
-#         model = User
-#         fields = ["email", "store_name", "full_name", "check"]
+    class Meta:
+        model = User
+        fields = ["email", "store_name", "full_name", "check"]
 
-#     def clean_storename(self):
-#         store_name = self.cleaned_data["store_name"].lower()
-#         r = User.objects.filter(store_name=store_name)
-#         if r.count():
-#             raise forms.ValidationError("Store already exists")
-#         return store_name
+    def clean_storename(self):
+        store_name = self.cleaned_data["store_name"].lower()
+        r = User.objects.filter(store_name=store_name)
+        if r.count():
+            raise forms.ValidationError("Store already exists")
+        return store_name
 
-#     def clean_password2(self):
-#         cd = self.cleaned_data
-#         if cd["password"] != cd["password2"]:
-#             raise forms.ValidationError("Passwords do not match.")
-#         return cd["password2"]
+    def clean_password2(self):
+        cd = self.cleaned_data
+        if cd["password"] != cd["password2"]:
+            raise forms.ValidationError("Passwords do not match.")
+        return cd["password2"]
 
-#     def clean_email(self):
-#         email = self.cleaned_data["email"]
-#         r = User.objects.filter(email=email)
-#         if r.count():
-#             raise forms.ValidationError("Email is already taken")
-#         return email
+    def clean_email(self):
+        email = self.cleaned_data["email"]
+        r = User.objects.filter(email=email)
+        if r.count():
+            raise forms.ValidationError("Email is already taken")
+        return email
 
-#     def clean_store_name(self):
-#         store_name = self.cleaned_data["store_name"]
-#         slugified_store_name = slugify(store_name)
-#         if len(store_name) == 0:
-#             raise forms.ValidationError("Store name cannot be empty")
+    def clean_store_name(self):
+        store_name = self.cleaned_data["store_name"]
+        slugified_store_name = slugify(store_name)
+        if len(store_name) == 0:
+            raise forms.ValidationError("Store name cannot be empty")
 
-#         if Store.objects.filter(slugified_store_name=slugified_store_name).exists():
-#             raise forms.ValidationError("Store name is already taken")
+        if Store.objects.filter(slugified_store_name=slugified_store_name).exists():
+            raise forms.ValidationError("Store name is already taken")
 
-#         return store_name
+        return store_name
 
 
-# class StoreForm(ModelForm):
-#     class Meta:
-#         model = Store
-#         fields = [
-#             "store_name",
-#             "store_image",
-#             "store_description",
-#             # "currency",
-#             "instagram",
-#             "twitter",
-#             "facebook",
-#         ]
+class StoreForm(ModelForm):
+    class Meta:
+        model = Store
+        fields = [
+            "store_name",
+            "store_image",
+            "store_description",
+            # "currency",
+            "instagram",
+            "twitter",
+            "facebook",
+        ]
 
-#         widgets = {
-#             "store_name": forms.TextInput(
-#                 attrs={"class": "form-control", "placeholder": "The Shop!t Store"}
-#             ),
-#             "store_image": forms.FileInput(attrs={"class": "form-control"}),
-#             "store_description": forms.Textarea(
-#                 attrs={
-#                     "class": "form-control",
-#                     "placeholder": "This is the Shop!t store for your day to day online business......",
-#                 }
-#             ),
-#             # "currency": forms.Select(attrs={"class": "form-control"}),
-#             "instagram": forms.TextInput(
-#                 attrs={
-#                     "class": "form-control",
-#                     "placeholder": "https://instagram.com/*******",
-#                 }
-#             ),
-#             "twitter": forms.TextInput(
-#                 attrs={
-#                     "class": "form-control",
-#                     "placeholder": "https://twitter.com/*******",
-#                 }
-#             ),
-#             "facebook": forms.TextInput(
-#                 attrs={
-#                     "class": "form-control",
-#                     "placeholder": "https://facebook.com/*******",
-#                 }
-#             ),
-#         }
+        widgets = {
+            "store_name": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "The Shop!t Store"}
+            ),
+            "store_image": forms.FileInput(attrs={"class": "form-control"}),
+            "store_description": forms.Textarea(
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "This is the Shop!t store for your day to day online business......",
+                }
+            ),
+            # "currency": forms.Select(attrs={"class": "form-control"}),
+            "instagram": forms.TextInput(
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "https://instagram.com/*******",
+                }
+            ),
+            "twitter": forms.TextInput(
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "https://twitter.com/*******",
+                }
+            ),
+            "facebook": forms.TextInput(
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "https://facebook.com/*******",
+                }
+            ),
+        }
 
-#     def __init__(self, *args, **kwargs):
-#         super(StoreForm, self).__init__(*args, **kwargs)
+    def __init__(self, *args, **kwargs):
+        super(StoreForm, self).__init__(*args, **kwargs)
 
 
 class UserProfileForm(ModelForm):

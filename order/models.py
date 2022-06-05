@@ -1,9 +1,9 @@
-import uuid
-
 from django.db import models
-
+import uuid
 from account.models import *
 from app.models import *
+
+
 
 
 class Order(models.Model):
@@ -17,10 +17,13 @@ class Order(models.Model):
     billing_status = models.BooleanField(default=False)
     quantity = models.PositiveIntegerField(default=0)
     product = models.ManyToManyField(Product)
-    # store = models.ForeignKey(Store, on_delete=models.CASCADE)
+    store = models.ForeignKey(Store, on_delete=models.CASCADE)
 
     class Meta:
         ordering = ("-created",)
 
     def set_product(self, product):
         self.product.add(product)
+
+
+
