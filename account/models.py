@@ -68,6 +68,7 @@ class CustomAccountManager(BaseUserManager):
         user = self.model(email=email, store_name=store_name, **other_fields)
         user.set_password(password)
         user.save()
+        store = Store.objects.create(owner=user, store_name=store_name, slugified_store_name=slugify(store_name))
         return user
 
 
