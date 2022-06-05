@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from decimal import Decimal
 
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -25,7 +26,7 @@ def custom_error_500(request):
 def home_page(request):
     return render(request, "base/index.html")
 
-
+@login_required(login_url="/account/login/")
 def a_store_all_products(request):
     if request.user.store_creator == True:
         store = Store.objects.get(store_name=request.user.store_name)
@@ -41,7 +42,7 @@ def a_store_all_products(request):
         {"all_products": all_products, "store": store},
     )
 
-
+@login_required(login_url="/account/login/")
 def product_detail(request, slug):
     page = "product_detail"
     if request.user.is_authenticated:
@@ -70,7 +71,7 @@ def product_detail(request, slug):
         },
     )
 
-
+@login_required(login_url="/account/login/")
 def create_product(request):
     error = ""
     form = ProductForm
@@ -133,7 +134,7 @@ def create_product(request):
     context = {"form": form, "categories": categories, "product_units": product_units}
     return render(request, "store/create-product.html", context)
 
-
+@login_required(login_url="/account/login/")
 def edit_product(request, slug):
     if request.user.store_creator == True:
         store = request.user.store_name
@@ -161,7 +162,7 @@ def edit_product(request, slug):
     }
     return render(request, "store/create-product.html", context)
 
-
+@login_required(login_url="/account/login/")
 def delete_product(request, slug):
     if request.user.store_creator == True:
         product = get_object_or_404(
@@ -172,7 +173,7 @@ def delete_product(request, slug):
     else:
         return redirect("app:store_products")
 
-
+@login_required(login_url="/account/login/")
 def store_admin(request):
     return render(request, "store/store-admin.html")
 
@@ -182,7 +183,7 @@ def store(request, slugified_store_name):
     products = Product.objects.filter(created_by=store).order_by("-created")
     return render(request, "store/store.html", {"store": store, "products": products})
 
-
+@login_required(login_url="/account/login/")
 def store_customers(request, slugified_store_name):
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
     customers = store.customers.all()
@@ -190,14 +191,14 @@ def store_customers(request, slugified_store_name):
         request, "store/store-customers.html", {"store": store, "customers": customers}
     )
 
-
+@login_required(login_url="/account/login/")
 def add_wishlist(request, slug):
     user = request.user
     product = get_object_or_404(Product, slug=slug)
     product.wishlist.add(user)
     return redirect("app:wishlist")
 
-
+@login_required(login_url="/account/login/")
 def remove_wishlist(request, slug):
     user = request.user
     product = get_object_or_404(Product, slug=slug)
@@ -205,7 +206,7 @@ def remove_wishlist(request, slug):
     product.wishlist.remove(user)
     return redirect("app:product_detail", slug=product.slug)
 
-
+@login_required(login_url="/account/login/")
 def wishlist(request):
     user = request.user
     wishlist = Product.objects.filter(wishlist=user)
@@ -216,7 +217,7 @@ def wishlist(request):
         request, "store/wishlist.html", {"wishlist": wishlist, "currency": currency}
     )
 
-
+@login_required(login_url="/account/login/")
 def add_category(request):
     form = CategoryForm
     if request.user.store_creator == True:
@@ -245,7 +246,7 @@ def add_category(request):
     context = {"form": form}
     return render(request, "store/create-category.html", context)
 
-
+@login_required(login_url="/account/login/")
 def edit_category(request, slug):
     if request.user.store_creator == True:
         store = Store.objects.get(store_name=request.user.store_name)
@@ -273,7 +274,7 @@ def edit_category(request, slug):
     }
     return render(request, "store/create-category.html", context)
 
-
+@login_required(login_url="/account/login/")
 def delete_category(request, slug):
     if request.user.store_creator == True:
         store = Store.objects.get(store_name=request.user.store_name)
@@ -286,7 +287,7 @@ def delete_category(request, slug):
     category.delete()
     return redirect("app:all_category")
 
-
+@login_required(login_url="/account/login/")
 def all_category(request):
     if request.user.store_creator == True:
         store = Store.objects.get(store_name=request.user.store_name)
@@ -301,7 +302,7 @@ def all_category(request):
         context = {"categories": categories}
         return render(request, "store/category.html", context)
 
-
+@login_required(login_url="/account/login/")
 def a_store_all_categories(request, slugified_store_name):
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
     all_categories = Category.objects.filter(created_by=store.store_name)
@@ -311,7 +312,7 @@ def a_store_all_categories(request, slugified_store_name):
         {"all_categories": all_categories},
     )
 
-
+@login_required(login_url="/account/login/")
 def a_store_category_products(request, slugified_store_name, slug):
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
     category = get_object_or_404(Category, slug=slug, created_by=store.store_name)
@@ -324,7 +325,7 @@ def a_store_category_products(request, slugified_store_name, slug):
         {"category_products": category_products, "category": category},
     )
 
-
+@login_required(login_url="/account/login/")
 def discount_products(request):
     if request.user.store_creator == True:
         store = Store.objects.get(store_name=request.user.store_name)
@@ -340,7 +341,7 @@ def discount_products(request):
         {"products": products, "store": store},
     )
 
-
+@login_required(login_url="/account/login/")
 def create_coupon(request):
     if request.user.store_creator == False:
         error = "You are not authorized to create coupons"
@@ -369,7 +370,7 @@ def create_coupon(request):
         context = {"form": form}
         return render(request, "store/create-coupon.html", context)
 
-
+@login_required(login_url="/account/login/")
 def all_coupons(request):
     if request.user.store_creator == True:
         store = Store.objects.get(store_name=request.user.store_name)
@@ -391,7 +392,7 @@ def all_coupons(request):
         {"coupons": coupons},
     )
 
-
+@login_required(login_url="/account/login/")
 def delete_coupon(request, pk):
     if request.user.store_creator == True:
         store = Store.objects.get(store_name=request.user.store_name)
@@ -401,7 +402,7 @@ def delete_coupon(request, pk):
     else:
         return redirect("app:all_coupons")
 
-
+@login_required(login_url="/account/login/")
 def all_customers(request):
     if request.user.store_creator == True:
         store = request.user.store_name
@@ -411,7 +412,7 @@ def all_customers(request):
     customers = Store.objects.get(store_name=store).customers.all()
     return render(request, "store/customers.html", {"customers": customers})
 
-
+@login_required(login_url="/account/login/")
 def store_order(request):
     if request.user.store_creator == True:
         store = request.user.store_name

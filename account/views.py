@@ -49,12 +49,12 @@ def account_login(request):
 
     return render(request, "account/registration/login.html", context)
 
-
+@login_required(login_url="/account/login/")
 def account_logout(request):
     logout(request)
     return redirect("/")
 
-
+@login_required(login_url="/account/login/")
 def account_delete(request):
     request.user.delete()
     return redirect("/")
@@ -110,7 +110,7 @@ def account_activate(request, uidb64, token):
     else:
         return render(request, "error-pages/404-page.html")
 
-
+@login_required(login_url="/account/login/")
 def user_profile(request):
     account = request.user
     userprofileform = UserProfileForm(instance=account)
@@ -126,7 +126,7 @@ def user_profile(request):
         {"userprofileform": userprofileform, "account": account},
     )
 
-
+@login_required(login_url="/account/login/")
 def store_account(
     request,
 ):
@@ -160,7 +160,7 @@ def store_account(
     else:
         return redirect("account:user_profile")
 
-
+@login_required(login_url="/account/login/")
 def store_staff_page(request):
     if request.user.store_creator == True:
         store = Store.objects.get(owner=request.user)
@@ -224,7 +224,7 @@ def store_staff_register(request):
         request, "account/registration/store-staff-register.html", {"form": form}
     )
 
-
+@login_required(login_url="/account/login/")
 def existing_store_staff(request):
     form = ExistingStoreStaffForm
     if request.user.store_creator != True:
@@ -285,7 +285,7 @@ def existing_store_staff(request):
         request, "account/registration/add-store-staff-exist.html", {"form": form}
     )
 
-
+@login_required(login_url="/account/login/")
 def delete_store_staff(request, pk):
     if request.user.store_creator == True:
         store = Store.objects.get(owner=request.user)
@@ -306,7 +306,7 @@ def delete_store_staff(request, pk):
         error = "You are not authorized"
         return render(request, "store/store-staff-page.html", {"error": error})
 
-
+@login_required(login_url="/account/login/")
 def staff_stores(request):
     stores = Store.objects.filter(staffs=request.user)
     if stores:
@@ -320,7 +320,7 @@ def staff_stores(request):
     error = "You are not a staff of any store"
     return render(request, "account/registration/login.html", {"error": error})
 
-
+@login_required(login_url="/account/login/")
 def select_store(request, slugified_store_name):
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
     if request.user in store.staffs.all():
@@ -329,7 +329,7 @@ def select_store(request, slugified_store_name):
         )
         return redirect("/")
 
-
+@login_required(login_url="/account/login/")
 def create_store(request):
     if request.user.store_creator == False and request.user.store_staff == False:
         form = AddStoreForm
@@ -349,7 +349,7 @@ def create_store(request):
                 return redirect("/")
     return render(request, "account/registration/add-store.html", {"form": form})
 
-
+@login_required(login_url="/account/login/")
 def shipping_method_list(request):
     if request.user.store_creator == True:
         store = Store.objects.get(owner=request.user)
@@ -362,7 +362,7 @@ def shipping_method_list(request):
         {"shipping_methods": shipping_methods, "store": store},
     )
 
-
+@login_required(login_url="/account/login/")
 def add_shipping_method(request):
     if request.user.store_creator == True:
         store = Store.objects.get(owner=request.user)
@@ -398,7 +398,7 @@ def add_shipping_method(request):
             request, "store/shipping-method.html", {"error": error, "form": form}
         )
 
-
+@login_required(login_url="/account/login/")
 def edit_shipping_method(request, pk):
     if request.user.store_creator == True:
         store = Store.objects.get(owner=request.user)
@@ -427,7 +427,7 @@ def edit_shipping_method(request, pk):
             request, "store/shipping-method.html", {"error": error, "form": form}
         )
 
-
+@login_required(login_url="/account/login/")
 def delete_shipping_method(request, pk):
     if request.user.store_creator == True:
         store = Store.objects.get(owner=request.user)

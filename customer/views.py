@@ -9,6 +9,7 @@ from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.utils.text import slugify
+from django.contrib.auth.decorators import login_required
 
 from account.forms import *
 from account.models import *
@@ -153,7 +154,7 @@ def existing_user_customer_register(request, slugified_store_name):
         {"store": store, "slugified_store_name": slugified_store_name, "form": form},
     )
 
-
+@login_required(login_url="/account/login/")
 def customer_logout(request, slugified_store_name):
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
     logout(request)
@@ -172,7 +173,7 @@ def customer_product_detail(request, slugified_store_name, slug):
         {"product": product, "category_product": category_product, "store": store},
     )
 
-
+@login_required(login_url="/account/login/")
 def customer_profile(request, slugified_store_name):
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
     if request.user in store.customers.all():
@@ -206,7 +207,7 @@ def customer_profile(request, slugified_store_name):
             "customer:customer_login", slugified_store_name=slugified_store_name
         )
 
-
+@login_required(login_url="/account/login/")
 def customer_wishlist(request, slugified_store_name):
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
     user = request.user
@@ -217,7 +218,7 @@ def customer_wishlist(request, slugified_store_name):
         {"wishlist": wishlist, "store": store},
     )
 
-
+@login_required(login_url="/account/login/")
 def address_list(request, slugified_store_name):
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
     customer = Customer.objects.get(email=request.user.email)
@@ -228,7 +229,7 @@ def address_list(request, slugified_store_name):
         {"address_list": address_list, "store": store},
     )
 
-
+@login_required(login_url="/account/login/")
 def create_address(request, slugified_store_name):
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
     customer = Customer.objects.get(email=request.user.email)
@@ -257,7 +258,7 @@ def create_address(request, slugified_store_name):
         {"address_form": address_form, "store": store},
     )
 
-
+@login_required(login_url="/account/login/")
 def edit_address(request, slugified_store_name, id):
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
     customer = Customer.objects.get(email=request.user.email)
@@ -276,7 +277,7 @@ def edit_address(request, slugified_store_name, id):
         {"address_form": address_form, "store": store},
     )
 
-
+@login_required(login_url="/account/login/")
 def delete_address(request, slugified_store_name, id):
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
     customer = Customer.objects.get(email=request.user.email)
@@ -284,7 +285,7 @@ def delete_address(request, slugified_store_name, id):
     address.delete()
     return redirect("customer:address_list", slugified_store_name=slugified_store_name)
 
-
+@login_required(login_url="/account/login/")
 def set_default_address(request, slugified_store_name, id):
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
     customer = Customer.objects.get(email=request.user.email)
@@ -293,7 +294,7 @@ def set_default_address(request, slugified_store_name, id):
     previous_url = request.META.get("HTTP_REFERER")
     return redirect("customer:address_list", slugified_store_name=slugified_store_name)
 
-
+@login_required(login_url="/account/login/")
 def customer_add_wishlist(request, slug):
     user = request.user
     product = get_object_or_404(Product, slug=slug)
@@ -301,7 +302,7 @@ def customer_add_wishlist(request, slug):
     product.wishlist.add(user)
     return redirect("customer:customer_wishlist", slugified_store_name=slugify(store))
 
-
+@login_required(login_url="/account/login/")
 def customer_remove_wishlist(request, slug):
     user = request.user
     product = get_object_or_404(Product, slug=slug)
@@ -311,7 +312,7 @@ def customer_remove_wishlist(request, slug):
         "app:product_detail", slug=product.slug, slugified_store_name=slugify(store)
     )
 
-
+@login_required(login_url="/account/login/")
 def customer_stores(request):
     customer = User.objects.get(
         email=request.user.email, store_creator=False, store_staff=False
@@ -320,7 +321,7 @@ def customer_stores(request):
         stores = Store.objects.filter(customers=customer)
         return render(request, "customer/customer-stores.html", {"stores": stores})
 
-
+@login_required(login_url="/account/login/")
 def delete_account(request, slugified_store_name):
     store = Store.objects.get(slugified_store_name=slugified_store_name)
     customer = Customer.objects.get(email=request.user.email, store=store)
