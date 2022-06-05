@@ -27,18 +27,21 @@ from .models import *
 
 # def multiple_store_staff(request):
 #     if request.user.is_authenticated:
-#         if Store.objects.filter(staffs=request.user):
-#             stores = Store.objects.filter(staffs=request.user)
-#             if stores:
-#                 if stores.count() > 1:
-#                     return {"multiple_store_staff": True}
+#         if request.user.store_staff == True:
+#             if Store.objects.filter(staffs=request.user):
+#                 stores = Store.objects.filter(staffs=request.user)
+#                 if stores:
+#                     if stores.count() > 1:
+#                         return {"multiple_store_staff": True}
+#                     else:
+#                         return {"multiple_store_staff": None}
 #                 else:
 #                     return {"multiple_store_staff": None}
 #             else:
 #                 return {"multiple_store_staff": None}
-#         else:
-#             return {"multiple_store_staff": None}
-#     return {"multiple_store_staff": None}
+#         return {"multiple_store_staff": None}
+#     else:
+#         return {"multiple_store_staff": None}
 
 
 # def owner_store(request):

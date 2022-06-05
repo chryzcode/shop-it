@@ -26,7 +26,7 @@ class Store(models.Model):
     store_name = models.CharField(max_length=150, unique=True)
     slugified_store_name = models.SlugField(max_length=255, unique=True)
     store_description = models.TextField(max_length=500, blank=True)
-    store_image = models.ImageField(upload_to="store-images/")
+    store_image = models.ImageField(upload_to="store-images/", blank=True, null=True)
     currency = models.CharField(max_length=50, default="USD", blank=True, null=True)
     staffs = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="store_staffs", blank=True)
     customers = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="store_customers", blank=True)
@@ -65,6 +65,7 @@ class CustomAccountManager(BaseUserManager):
             store_name=store_name,
             owner= user,
             currency = "USD",
+            slugified_store_name = slugify(store_name),
         )
 
 
@@ -83,6 +84,7 @@ class CustomAccountManager(BaseUserManager):
             owner=user,
             store_name=store_name,
             currency = "USD",
+            slugified_store_name = slugify(store_name),
         )
         return user
 
