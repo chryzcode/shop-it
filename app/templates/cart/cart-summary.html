@@ -80,7 +80,7 @@
       {% if store_currency_symbol %}
       <a href="{% url 'order:create_order' coupon_code %}" class="checkout-btn">Checkout</a>
       {% else %}
-      <button class="checkout-btn disable" type="button" disabled>Checkout</button>
+      <span  class="checkout-btn disable">Checkout</span>
       {% endif %}
     </div>
   </div>
