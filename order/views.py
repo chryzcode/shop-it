@@ -21,7 +21,6 @@ def order(request, coupon_code):
             user = request.user
         else:
             user = None
-        print("coupon_code", coupon_code)
         if Coupon.objects.filter(code=coupon_code).exists():
             coupon = Coupon.objects.get(code=coupon_code)
             if request.user not in coupon.users.all():

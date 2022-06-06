@@ -86,18 +86,20 @@
               <option value="">Select City</option>
             </select>
           </div>
+
+          <div class="input-container">
+              <label for="shipping_method">Shipping method</label>
+              <p>{{ payment_form.shipping_method.errors }}</p>
+              {% for shipping_method in shipping_methods %}
+              <input type="radio" name="shipping_method" id="{{shipping_method.id}}" value="{{shipping_method.id}}">
+              <label for="{{shipping_method}}">{{shipping_method.location}}</label>
+          {% endfor %}
+        </div>
       {% endif %}
          
         
 
-        <!-- <div class="input-container">
-          <label for="shipping_method">Shipping method</label>
-          <p>{{ payment_form.shipping_method.errors }}</p>
-          {% for shipping_method in shipping_methods %}
-          <input type="radio" name="shipping_method" id="{{shipping_method.id}}" value="{{shipping_method.id}}">
-          <label for="{{shipping_method}}">{{shipping_method.location}}</label>
-          {% endfor %}
-        </div>-->
+       
         
 
 
