@@ -17,6 +17,7 @@ class NonCustomerPaymentForm(ModelForm):
             "city",
             "state",
             "country",
+            "shipping_method",
         )
 
         widgets = {
@@ -76,6 +77,7 @@ class CustomerPaymentForm(ModelForm):
             "city",
             "state",
             "country",
+            "shipping_method",
         )
 
         widgets = {

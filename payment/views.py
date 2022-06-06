@@ -80,9 +80,13 @@ def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
                         "city_error": "Field is required",
                     },
                 )
-
+            shipping_method = payment_form.cleaned_data.get("shipping_method")
+            print(shipping_method)
+            shipping_price = Shipping_Method.objects.get(id=shipping_method).price
+            print(shipping_price)
             payment.order = order
-            payment.amount = order.amount
+            payment.amount = order.amount + shipping_price
+            print(payment.amount)
             payment.save()
             render(request, "payment/make-payment.html", {"payment": payment})
     else:
