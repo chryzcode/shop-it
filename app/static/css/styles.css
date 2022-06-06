@@ -1205,3 +1205,18 @@ th {
 .disable {
   cursor: not-allowed !important;
 }
+
+.radio-form {
+  display: flex;
+  /* justify-content: space-between; */
+  margin-top: 20px;
+  align-items: center;
+}
+
+.radio-form > input {
+  margin-right: 20px;
+}
+
+.radio-form > label > span:nth-child(2) {
+  margin-left: 20px;
+}

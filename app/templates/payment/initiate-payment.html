@@ -93,21 +93,15 @@
               {% for shipping_method in shipping_methods %}
               <div class="radio-form">
                 <input type="radio" name="shipping_method" id="{{shipping_method.id}}" value="{{shipping_method.id}}">
-                <label for="{{shipping_method}}">{{shipping_method.location}} - {{store.currency.symbol}}{{shipping_method.price}}</label>
+                <label for="{{shipping_method}}"><span>{{shipping_method.location}}</span> <span>{{store.currency.symbol}}{{shipping_method.price}}</span></label>
               </div>
           {% endfor %}
         </div>
         </div>
       {% endif %}
          
-        
-
-       
-        
-
-
       <div class="form-btn-container">
-        <button class="form-btn" type="submit">Update</button>
+        <button class="form-btn" type="submit">Submit</button>
       </div>
     </form>
   </div>
