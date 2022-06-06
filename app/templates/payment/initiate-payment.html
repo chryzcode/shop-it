@@ -1,111 +1,109 @@
-{% extends 'navs/base.html' %} 
-{% block title %}<title>Initiate Payment</title>{% endblock %}
-{% block content %}
+{% extends 'navs/base.html' %} {% block title %}<title>Initiate Payment</title>{% endblock %} {% block content %}
 <div class="auth-form-container">
-    <form action="" method="post" enctype="multipart/form-data">
-      {% csrf_token %}
-      
-      <div class="above-create-form">
-        <p>Initiate Payment</p>
+  <form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="above-create-form">
+      <p>Initiate Payment</p>
+    </div>
+    <div class="acc-form-seg">
+      <p>My Details</p>
+      <div class="input-container">
+        <label for="full_name">Full Name<span class="form-required">*</span></label>
+        <p>{{ payment_form.full_name.errors }}</p>
+        <div>{{ payment_form.full_name }}</div>
       </div>
 
-      <div class="acc-form-seg">
-        <p>My Details</p>
-        <div class="input-container">
-          <label for="full_name">Full Name<span class="form-required">*</span></label>
-          <p>{{ payment_form.full_name.errors }}</p>
-          <div>{{ payment_form.full_name }}</div>
-        </div>
+      <div class="input-container">
+        <label for="email">Email<span class="form-required">*</span></label>
+        <p>{{ payment_form.email.errors }}</p>
+        <div>{{ payment_form.email }}</div>
+      </div>
 
-        <div class="input-container">
-          <label for="email">Email<span class="form-required">*</span></label>
-          <p>{{ payment_form.email.errors }}</p>
-          <div>{{ payment_form.email }}</div>
-        </div>
+      <div class="input-container">
+        <label for="phone">Phone Number<span class="form-required">*</span></label>
+        <p>{{ payment_form.phone.errors }}</p>
+        {{payment_form.phone}}
+      </div>
 
-        <div class="input-container">
-          <label for="phone">Phone Number<span class="form-required">*</span></label>
-          <p>{{ payment_form.phone.errors }}</p>
-          {{payment_form.phone}}
-        </div>
+      {% if addresses %}
 
-       {% if addresses %}
-
-        <div class="input-container">
-          <label for="use_address">Address</label>
-          <p>{{ payment_form.use_address.errors }}</p>
-          <select name="use_address" id="use_address" class="form-control">
-            <option value="">Select Address</option>
-            {% for address in addresses %}
-            <option value="{{ address.id }}">{{ address.address_line }}</option>
-            {% endfor %}
-          </select>
-        </div>
+      <div class="input-container">
+        <label for="use_address">Address</label>
+        <p>{{ payment_form.use_address.errors }}</p>
+        <select name="use_address" id="use_address" class="form-control">
+          <option value="">Select Address</option>
+          {% for address in addresses %}
+          <option value="{{ address.id }}">{{ address.address_line }}</option>
+          {% endfor %}
+        </select>
+      </div>
 
       {% else %}
 
-        <div class="input-container">
-          <label for="postcode">Post code<span class="form-required">*</span></label>
-          <p class="error">{{ error }}</p>
-          {{payment_form.postcode }}
-        </div>
-
-        <div class="input-container">
-          <label for="address_line">Address Line<span class="form-required">*</span></label>
-          <p>{{ payment_form.address_line.errors }}</p>
-          {{payment_form.address_line}}
-        </div>
-
-        <div class="input-container">
-          <label for="address_line2">Address Line 2</label>
-          <p>{{ payment_form.address_line2.errors }}</p>
-          {{payment_form.address_line2}}
-        </div>
-
-        <div class="input-container">
-          <label for="country">Country<span class="form-required">*</span></label>
-          <p class="error">{{ country_error }}</p>
-          <select name="country" class="countries form-control" id="countryId">
-              <option value="">Select Country</option>
-            </select>
-        </div>
-
-        <div class="input-container">
-            <label for="state">State<span class="form-required">*</span></label>
-            <p class="error">{{ state_error }}</p>
-            <select name="state" class="states form-control" id="stateId">
-              <option value="">Select State</option>
-            </select>
-          </div>
-      
-
-          <div class="input-container">
-            <label for="city">City<span class="form-required">*</span></label>
-            <p class="error"> {{ city_error }}</p>
-            <select name="city" class="cities form-control" id="cityId">
-              <option value="">Select City</option>
-            </select>
-          </div>
-
-          <div class="input-container">
-              <label for="shipping_method">Shipping method</label>
-              <p>{{ payment_form.shipping_method.errors }}</p>
-              {% for shipping_method in shipping_methods %}
-              <div class="radio-form">
-                <input type="radio" name="shipping_method" id="{{shipping_method.id}}" value="{{shipping_method.id}}">
-                <label for="{{shipping_method}}"><span>{{shipping_method.location}}</span> <span>{{store.currency.symbol}}{{shipping_method.price}}</span></label>
-              </div>
-          {% endfor %}
-        </div>
-        </div>
-      {% endif %}
-         
-      <div class="form-btn-container">
-        <button class="form-btn" type="submit">Submit</button>
+      <div class="input-container">
+        <label for="postcode">Post code<span class="form-required">*</span></label>
+        <p class="error">{{ error }}</p>
+        {{payment_form.postcode }}
       </div>
-    </form>
-  </div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> 
+
+      <div class="input-container">
+        <label for="address_line">Address Line<span class="form-required">*</span></label>
+        <p>{{ payment_form.address_line.errors }}</p>
+        {{payment_form.address_line}}
+      </div>
+
+      <div class="input-container">
+        <label for="address_line2">Address Line 2</label>
+        <p>{{ payment_form.address_line2.errors }}</p>
+        {{payment_form.address_line2}}
+      </div>
+
+      <div class="input-container">
+        <label for="country">Country<span class="form-required">*</span></label>
+        <p class="error">{{ country_error }}</p>
+        <select name="country" class="countries form-control" id="countryId">
+          <option value="">Select Country</option>
+        </select>
+      </div>
+
+      <div class="input-container">
+        <label for="state">State<span class="form-required">*</span></label>
+        <p class="error">{{ state_error }}</p>
+        <select name="state" class="states form-control" id="stateId">
+          <option value="">Select State</option>
+        </select>
+      </div>
+
+      <div class="input-container">
+        <label for="city">City<span class="form-required">*</span></label>
+        <p class="error">{{ city_error }}</p>
+        <select name="city" class="cities form-control" id="cityId">
+          <option value="">Select City</option>
+        </select>
+      </div>
+
+      <div class="input-container">
+        <label for="shipping_method">Shipping method</label>
+        <p>{{ payment_form.shipping_method.errors }}</p>
+        {% for shipping_method in shipping_methods %}
+        <div class="radio-form">
+          <input type="radio" name="shipping_method" id="{{shipping_method.id}}" value="{{shipping_method.id}}" />
+          <label for="{{shipping_method}}"
+            ><span>{{shipping_method.location}}</span>
+            <span>{{store.currency.symbol}}{{shipping_method.price}}</span></label
+          >
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <div class="form-btn-container">
+      <button class="form-btn" type="submit">Submit</button>
+    </div>
+  </form>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="https://geodata.solutions/includes/countrystatecity.js"></script>
 
 {% endblock %}
