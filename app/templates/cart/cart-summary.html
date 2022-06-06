@@ -1,11 +1,11 @@
 {% extends 'navs/customer-nav.html' %} {% load static %} {% block title %}<title>Shop !t - Cart</title>{% endblock %} {% block content %}
 <div class="shopping-cart-container">
- 
+ <h1 class="error">{{error}}</h1>
   {% if cart %}
 
   {% for item in cart %} {% with product=item.product %}
    {% if product.store == store %}
-
+    
   <div data-index="{{product.id}}" class="product-item">
     <img class="product-image" src="{{ product.image_1.url }}" alt="" />
     <span><a href="{{product.get_absolute_url}}">{{ product.name }}</a></span>
