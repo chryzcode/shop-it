@@ -125,6 +125,7 @@
         $('.product-item[data-index="' + prodid + '"]').remove();
         document.getElementById("subtotal").innerHTML = json.subtotal;
         document.getElementById("product-cart-qty").innerHTML = json.qty;
+        document.getElementById("grand_total").innerHTML = json.qty;
       },
       error: function (xhr, errmsg, err) {},
     });
