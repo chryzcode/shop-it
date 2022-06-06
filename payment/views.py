@@ -89,7 +89,7 @@ def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
             payment.order = order
             payment.amount = order.amount + shipping_price
             payment.save()
-            render(request, "payment/make-payment.html", {"payment": payment})
+            render(request, "payment/make-payment.html", {"payment": payment, "store":store})
     else:
         payment_form = PaymentForm()
     return render(
