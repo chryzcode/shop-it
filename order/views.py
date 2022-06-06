@@ -8,8 +8,14 @@ from .forms import *
 
 def order(request, coupon_code):
     cart = Cart(request)
-    products_count = cart.__len__()
     products = cart.get_cart_products()
+    for product in products:
+        product_id = product.id
+        products = Product.objects.get(id=product_id)
+    store = Store.objects.get(store_name=products.store)
+    if not store.currency:
+        error = "Store does'nt have a set currency for payment, drop a review for the store"
+        return redirect('cart_summary', store.slugified_store_name)
     if request.user.is_authenticated:
         user = request.user
     else:
@@ -26,10 +32,6 @@ def order(request, coupon_code):
         amount = cart.get_total_price()
     billing_status = False
     quantity = cart.__len__()
-    for product in products:
-        product_id = product.id
-        products = Product.objects.get(id=product_id)
-    store = products.store
     order = Order.objects.create(
         user=user,
         store=store,
