@@ -14,8 +14,8 @@ def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
     order = Order.objects.get(pk=pk)
     shipping_methods = Shipping_Method.objects.filter(store=order.store)
     if request.user.is_authenticated:
-        customer = Customer.objects.get(user=request.user)
-        if customer:
+        if Customer.objects.filter(user=request.user):
+            customer = Customer.objects.get(user=request.user)
             addresses = Address.objects.filter(customer=customer)
             if addresses:
                 PaymentForm = CustomerPaymentForm
