@@ -6,13 +6,16 @@ from customer.models import Address, Customer
 from order.models import *
 
 from .forms import *
+from django.core import serializers
+json_serializer = serializers.get_serializer("json")()
 
 
 # Create your views here.
 def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
     addresses = ""
     order = Order.objects.get(pk=pk)
-    shipping_methods = Shipping_Method.objects.filter(store=order.store)
+    store = order.store
+    shipping_methods = Shipping_Method.objects.filter(store=store)
     if request.user.is_authenticated:
         if Customer.objects.filter(user=request.user):
             customer = Customer.objects.get(user=request.user)
@@ -96,5 +99,6 @@ def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
             "payment_form": payment_form,
             "addresses": addresses,
             "shipping_methods": shipping_methods,
+            "store": store,
         },
     )

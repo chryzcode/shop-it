@@ -91,9 +91,12 @@
               <label for="shipping_method">Shipping method</label>
               <p>{{ payment_form.shipping_method.errors }}</p>
               {% for shipping_method in shipping_methods %}
-              <input type="radio" name="shipping_method" id="{{shipping_method.id}}" value="{{shipping_method.id}}">
-              <label for="{{shipping_method}}">{{shipping_method.location}}</label>
+              <div class="radio-form">
+                <input type="radio" name="shipping_method" id="{{shipping_method.id}}" value="{{shipping_method.id}}">
+                <label for="{{shipping_method}}">{{shipping_method.location}} - {{store.currency.symbol}}{{shipping_method.price}}</label>
+              </div>
           {% endfor %}
+        </div>
         </div>
       {% endif %}
          
@@ -110,4 +113,7 @@
   </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> 
 <script src="https://geodata.solutions/includes/countrystatecity.js"></script>
+<script>
+ 
+</script>
 {% endblock %}
