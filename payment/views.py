@@ -18,6 +18,9 @@ def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
     addresses = ""
     order = Order.objects.get(pk=pk)
     store = order.store
+    if Payment.objects.filter(order=order).exists():
+        payment = Payment.objects.get(order=order)
+        return render(request, "payment/make-payment.html", {"payment": payment, "store":store, "paystack_public_key":settings.PAYSTACK_PUBLIC_KEY})
     shipping_methods = Shipping_Method.objects.filter(store=store)
     if request.user.is_authenticated:
         if Customer.objects.filter(user=request.user):

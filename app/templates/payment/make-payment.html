@@ -1,8 +1,12 @@
 {% extends 'navs/base.html' %} {% block title %}<title>Initiate Payment</title>{% endblock %} {% block content %}
 <div class="auth-form-container">
-      <p>Make Payment {{store.curency.symbol}} {{payment.amount}}</p> 
+      <div class="above-create-form">
+          <p>Make Payment {{store.currency.symbol}} {{payment.amount}}</p> 
+      </div>
       <script src="https://js.paystack.co/v1/inline.js"></script>   
-      <button  onclick="payWithPayStack()" id="django-paystack-button">Make Payment</button>  
+      <div class="form-btn-container">
+          <button class="form-btn" onclick="payWithPayStack()" id="django-paystack-button">Make Payment</button> 
+      </div> 
 </div>
 <script>
     function payWithPayStack(){
