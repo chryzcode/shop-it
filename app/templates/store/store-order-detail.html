@@ -7,7 +7,7 @@
   <div class="store-content-container">
     <span class="store-products-container">
       <p>Order Details</p>
-      <p>
+      <p class="order-details-content-container">
         <div>
           <div>Order Id</div>
           <p>{{order.id}}</p>
@@ -55,6 +55,60 @@
           </p>
         </div>
       </p>
+
+      {% if payment %}
+      <p>
+          <p>Order Shipping Details</p>
+          <div>
+              <div>Full Name</div>
+              <p>{{payment.full_name}}</p>
+          </div>
+
+          <div>
+              <div>Email</div>
+              <p>{{payment.email}}</p>
+          </div>
+
+          <div>
+              <div>Address</div>
+              <p>{{payment.address_line}}</p>
+          </div>
+
+          <div>
+              <div>Address 2</div>
+              {% if payment.address_line2 %}
+              <p>{{payment.address_line2}}</p>
+              {% else %}
+              <p>Nil</p>
+              {% endif %}
+          </div>
+
+          <div>
+              <div>Post Code</div>
+              {% if payment.postcode %}
+                <p>{{payment.postcode}}</p>
+                {% else %}
+                <p>Nil</p>
+                {% endif %}
+          </div>
+
+            <div>
+                <div>City</div>
+                <p>{{payment.city}}</p>
+            </div>
+
+            <div>
+                <div>State</div>
+                <p>{{payment.state}}</p>
+            </div>
+
+            <div>
+                <div>Country</div>
+                <p>{{payment.country}}</p>
+            </div>
+
+        </p>
+        {% endif %}
     </span>
   </div>
   {% endblock %}

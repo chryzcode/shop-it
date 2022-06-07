@@ -1234,3 +1234,7 @@ th {
     left: 50%;
     transform: translate(-50%, -50%);
   }
+
+  /* .order-details-content-container > * {
+    margin: 20px !important;
+  } */
