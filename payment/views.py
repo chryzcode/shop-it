@@ -114,6 +114,7 @@ def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
     )
 
 def verify_payment(request: HttpRequest, ref:str) -> HttpResponse:
+    cart = Cart(request)
     payment = get_object_or_404(Payment, ref=ref)
     verified = payment.verify_payment()
     if verified:
@@ -121,6 +122,7 @@ def verify_payment(request: HttpRequest, ref:str) -> HttpResponse:
         order.billing_status = True
         order.save()
         messages.success(request, "Verification Successful")
+        cart.clear()
     else:
         messages.error(request, "Verification Failed")
     return redirect('/')

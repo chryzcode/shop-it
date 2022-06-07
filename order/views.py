@@ -9,6 +9,7 @@ from .forms import *
 def order(request, coupon_code):
     cart = Cart(request)
     products = cart.get_cart_products()
+    coupon = Coupon.objects.get(code=coupon_code, created_by=store)
     for product in products:
         product_id = product.id
         products = Product.objects.get(id=product_id)
@@ -19,6 +20,7 @@ def order(request, coupon_code):
     else:
         if request.user.is_authenticated:
             user = request.user
+            coupon.users.add(user)
         else:
             user = None
         if Coupon.objects.filter(code=coupon_code).exists():
@@ -40,5 +42,4 @@ def order(request, coupon_code):
             quantity=quantity,
         )
         order.set_product(products)
-        # cart.clear()
         return redirect("payment:initiate_payment", order.id)

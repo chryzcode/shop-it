@@ -1,6 +1,3 @@
-from cmath import log
-from distutils.log import error
-
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.sites.shortcuts import get_current_site
@@ -15,6 +12,8 @@ from account.forms import *
 from account.models import *
 from account.tokens import account_activation_token
 from app.models import *
+from payment.models import *
+from order.models import *
 
 from .forms import *
 from .models import *
@@ -334,3 +333,11 @@ def delete_account(request, slugified_store_name):
         else:
             request.user.delete()
             return redirect("/")
+
+@login_required(login_url="/account/login/")
+def customer_orders(request, slugified_store_name):
+    store = Store.objects.get(slugified_store_name=slugified_store_name)
+    customer = Customer.objects.get(email=request.user.email, store=store)
+    orders = Order.objects.filter(customer=customer, store=store)
+    payments = Payment.objects.filter(customer=customer, store=store)
+    return render(request, "customer/customer-order.html", {"orders": orders, "payments": payments})
