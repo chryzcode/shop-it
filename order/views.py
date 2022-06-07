@@ -36,7 +36,6 @@ def order(request, coupon_code):
             coupon = Coupon.objects.get(code=coupon_code, created_by=store)
         else:
             coupon = ''
-        print('coupon: ', coupon.code)
         billing_status = False
         quantity = cart.__len__()
         order = Order.objects.create(
@@ -45,6 +44,7 @@ def order(request, coupon_code):
             billing_status=billing_status,
             amount=amount,
             quantity=quantity,
+            coupon=coupon,
         )
         order.set_product(products)
         return redirect("payment:initiate_payment", order.id)
