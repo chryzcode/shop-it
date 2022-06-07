@@ -20,7 +20,11 @@
         <div>
           <div>Products</div>
           {% for product in order_products %}
-          <p>{{product}} {% endfor %}</p>
+            {% if product.discount_percentage > 1 %}
+            <p>Discount Product</p>
+          <p>{{product}}</p>
+          {% endif %}
+          {% endfor %}
         </div>
 
         <div>
@@ -39,8 +43,8 @@
         </div>
 
         <div class="order-payments-amount-seg">
-          <p><span>Order:</span> <span>{% if payment.currency %}{{payment.currency.symbol}}{% else %}{{ order.store.currency.symbol}}{% endif %}{{order.amount}}</span></p>
-          <p><span>Logistics:</span>
+          <p><span>Order: </span> <span>{% if payment.currency %}{{payment.currency.symbol}}{% else %}{{ order.store.currency.symbol}}{% endif %}{{order.amount}}</span></p>
+          <p><span>Logistics: </span>
               <span>
                 {% if payment %}
               {{payment.currency.symbol}}{{payment.shipping_method.price}}
@@ -50,7 +54,7 @@
               </span>
             </p>
           <p>
-              <span>Total:</span><span>{% if payment.currency %}{{payment.currency.symbol}}{% else %}{{ order.store.currency.symbol}}{% endif %}{% if payment %}{{ payment.amount}}{% else %}{{order.amount}}{% endif %}
+              <span>Total: </span><span>{% if payment.currency %}{{payment.currency.symbol}}{% else %}{{ order.store.currency.symbol}}{% endif %}{% if payment %}{{ payment.amount}}{% else %}{{order.amount}}{% endif %}
             </span>
           </p>
         </div>

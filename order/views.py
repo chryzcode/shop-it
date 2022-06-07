@@ -32,6 +32,11 @@ def order(request, coupon_code):
                 amount = cart.get_total_price()
         else:
             amount = cart.get_total_price()
+        if Coupon.objects.filter(code=coupon_code, created_by=store).exists():
+            coupon = Coupon.objects.get(code=coupon_code, created_by=store)
+        else:
+            coupon = ''
+        print('coupon: ', coupon.code)
         billing_status = False
         quantity = cart.__len__()
         order = Order.objects.create(

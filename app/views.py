@@ -432,8 +432,6 @@ def store_order_detail(request, pk):
         store = Store.objects.get(store_name=store_staff.objects.get(user=request.user).store)
     order = Order.objects.get(id=pk, store=store.id)
     order_products = order.product.all()
-    print(order)
     if Payment.objects.get(order=order, store=store.id):
         payment = Payment.objects.get(order=order, store=store.id)
-        print(payment)
     return render(request, "store/store-order-detail.html", {"order": order, "payment": payment, "order_products": order_products})

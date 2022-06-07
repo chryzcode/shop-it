@@ -109,9 +109,6 @@ class CouponForm(ModelForm):
             raise forms.ValidationError("Coupon code is required")
         if len(code) < 3:
             raise forms.ValidationError("Coupon code must be at least 3 characters")
-        coupon = Coupon.objects.filter(code=code, created_by=self.instance.created_by)
-        if coupon.exists():
-            raise forms.ValidationError("Coupon code is already taken")
         return code
 
     def __init__(self, *args, **kwargs):
