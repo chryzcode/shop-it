@@ -10,7 +10,7 @@
 
     <div class="acc-form-seg"></div>
     <div class="form-btn-container">
-      <button class="form-btn" type="submit" id="django-paystack-button">Make Payment</button>
+      <button class="form-btn" type="submit" id="django-paystack-button" onclick="payWithPaystack()">Make Payment</button>
     </div>
   </form>
 </div>
@@ -28,6 +28,18 @@
                 window.location.href = "{% url 'payment:verify_payment' payment.ref %}"
             }
         }
+
+        if (Boolean(curency)){
+            obj.currency = currency.toUpperCase()
+        }
+
+        if (Boolean(plan)){
+            obj.plan = plan;
+        }
+
+        var handler = PaystackPop.setup(obj);
+        handler.openIframe();
+    
     }
 </script>
 {% endblock %}
