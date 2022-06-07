@@ -17,7 +17,7 @@ json_serializer = serializers.get_serializer("json")()
 def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
     addresses = ""
     order = Order.objects.get(pk=pk)
-    store = order.store
+    store = Store.objects.get(pk=order.store.pk)
     if Payment.objects.filter(order=order).exists():
         payment = Payment.objects.get(order=order)
         if payment.verified:

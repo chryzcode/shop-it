@@ -421,5 +421,5 @@ def store_orders(request):
     if request.user.store_staff == True:
         store = Store.objects.get(store_name=store_staff.objects.get(user=request.user).store)
     orders = Order.objects.filter(store=store.id)
-    payment = Payment.objects.filter(store=store, order__in=orders)
-    return render(request, "store/store-order.html", {"orders": orders, "payment": payment})
+    payments = Payment.objects.filter(store=store, order__in=orders)
+    return render(request, "store/store-order.html", {"orders": orders, "payments": payments})

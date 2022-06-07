@@ -16,6 +16,7 @@
           <th>Billing Status</th>
         </tr>
         {% for order in orders %}
+        {% for payment in payments %}
         <tr class="table-rows">
           <td><a href="">{{order.id|truncatechars:7}}</a></td>
           <td> {% if order.user %}
@@ -25,7 +26,7 @@
             {% endif %}
           </td>
           <td>
-            {% if order .user %}
+            {% if order.user %}
             {{ order.user.email }}
             {% else %}
             {{payment.email}}
@@ -39,6 +40,7 @@
             {% endif %}
           </td>
         </tr>
+        {% endfor %}
         {% endfor %}
       </table>
     </span>
