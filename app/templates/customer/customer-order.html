@@ -16,19 +16,33 @@
             <th>Amount</th>
             <th>Billing Status</th>
           </tr>
-          {% for product in wishlist %}
+          {% for order in orders %}
+        {% for payment in payments %}
           <tr class="table-rows">
-            <td><a href="{{product.get_absolute_url}}">{{ product.name }}</a></td>
-            <td>{{product.currency.symbol}}{{ product.price }}</td>
-            <td>{{ product.category }}</td>
-            <td>{{ product.availability }}</td>
-            <td>
-              <button type="button" class="delete-btn">
-                <a href="{% url 'app:remove_wishlist' product.slug %}"><i class="fas fa-trash-alt"></i>Delete</a>
-              </button>
-            </td>
+            <td><a href="">{{order.id|truncatechars:12}}</a></td>
+          <td> {% if order.user %}
+            {{ order.user.full_name }}
+            {% else %}
+            {{payment.full_name}}
+            {% endif %}
+          </td>
+          <td>
+            {% if order.user %}
+            {{ order.user.email }}
+            {% else %}
+            {{payment.email}}
+            {% endif %}
+          </td>
+          <td>{{payment.currency.symbol}}{{ payment.amount }}</td>
+          <td>{% if order.billing_status == True %}
+            Paid
+            {% else %}
+            Unpaid
+            {% endif %}
+          </td>
           </tr>
           {% endfor %}
+        {% endfor %}
         </table>
       </span>
     </div>

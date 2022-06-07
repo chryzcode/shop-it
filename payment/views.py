@@ -126,7 +126,7 @@ def verify_payment(request: HttpRequest, ref:str) -> HttpResponse:
         cart.clear()
     else:
         messages.error(request, "Verification Failed")
-    if request.user.is_authenticated:
+    if Customer.objects.filter(user=request.user, store=store).exists():
         return redirect("customer:customer_orders", store.slugified_store_name)
     else:
         return redirect("app:store", store.slugified_store_name)
