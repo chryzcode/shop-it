@@ -6,12 +6,55 @@
   {% include 'navs/store-side-nav.html' %}
   <div class="store-content-container">
     <span class="store-products-container">
+      <p>Order Details</p>
       <p>
-        Order Details
+        <div>
+          <div>Order Id</div>
+          <p>{{order.id}}</p>
+        </div>
+
+        <div>
+          <div>Date</div>
+          <p>{{order.date_created}}</p>
+        </div>
+
+        <div>
+          <div>Products</div>
+          {% for product in order_products %}
+          <p>{{product}} {% endfor %}</p>
+        </div>
+
+        <div>
+            <div>Products Count</div>
+            <p>{{order.quantity}} Products</p>
+        </div>
+
+        <div>
+            <div>Payment Status</div>
+            <p>{% if order.billing_status == True %}
+                Paid
+                {% else %}
+                Not Paid
+                {% endif %}
+            </p>
+        </div>
+
+        <div>
+          <div>Amount</div>
+          <p>Order Amount: {% if payment.currency %}{{payment.currency.symbol}}{% else %}{{ order.store.currency.symbol}}{% endif %}{{order.amount}} </p>
+          <p>Logistics: 
+              {% if payment %}
+              {{payment.currency.symbol}}{{payment.shipping_method.price}}
+              {% else %}
+              Not paid yet
+              {% endif %}
+            </p>
+          <p>Total:
+            {% if payment.currency %}{{payment.currency.symbol}}{% else %}{{ order.store.currency.symbol}}{% endif %} 
+            {% if payment %}{{ payment.amount }}{% else %}{{order.amount}}{% endif %}
+          </p>
+        </div>
       </p>
-      <div>
-          
-      </div>
     </span>
   </div>
   {% endblock %}
