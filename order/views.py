@@ -9,11 +9,11 @@ from .forms import *
 def order(request, coupon_code):
     cart = Cart(request)
     products = cart.get_cart_products()
-    coupon = Coupon.objects.get(code=coupon_code, created_by=store)
     for product in products:
         product_id = product.id
         products = Product.objects.get(id=product_id)
     store = Store.objects.get(store_name=products.store)
+    coupon = Coupon.objects.get(code=coupon_code, created_by=store)
     if not store.currency:
         error = "Store does'nt have a set currency for payment, drop a review for the store"
         return redirect('cart:cart_summary', store.slugified_store_name)

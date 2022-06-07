@@ -116,6 +116,7 @@ def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
 def verify_payment(request: HttpRequest, ref:str) -> HttpResponse:
     cart = Cart(request)
     payment = get_object_or_404(Payment, ref=ref)
+    store = Store.objects.get(pk=payment.store.pk)
     verified = payment.verify_payment()
     if verified:
         order = Order.objects.get(pk=payment.order.pk)
@@ -125,4 +126,7 @@ def verify_payment(request: HttpRequest, ref:str) -> HttpResponse:
         cart.clear()
     else:
         messages.error(request, "Verification Failed")
-    return redirect('/')
+    if request.user.is_authenticated:
+        return redirect("customer:customer_orders", store.slugified_store_name)
+    else:
+        return redirect("app:store", store.slugified_store_name)
