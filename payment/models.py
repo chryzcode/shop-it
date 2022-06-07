@@ -33,6 +33,7 @@ class Payment(models.Model):
     shipping_method = models.ForeignKey(
         Shipping_Method, on_delete=models.CASCADE
     )
+    store = models.ForeignKey(Store, on_delete=models.CASCADE)
 
     class Meta:
         ordering = ["-date_created"]

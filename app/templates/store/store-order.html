@@ -10,14 +10,34 @@
       <table class="store-products-table">
         <tr class="table-rows">
           <th>Order Id</th>
+          <th>Name</th>
           <th>Email</th>
-          <th>Phone</th>
+          <th>Amount</th>
+          <th>Billing Status</th>
         </tr>
         {% for order in orders %}
         <tr class="table-rows">
-          <td>{{ order.id }}</td>
-          <td>{{ staff.email }}</td>
-          <td>{{ staff.phone_number }}</td>
+          <td><a href="">{{order.id|truncatechars:7}}</a></td>
+          <td> {% if order.user %}
+            {{ order.user.full_name }}
+            {% else %}
+            {{payment.full_name}}
+            {% endif %}
+          </td>
+          <td>
+            {% if order .user %}
+            {{ order.user.email }}
+            {% else %}
+            {{payment.email}}
+            {% endif %}
+          </td>
+          <td>{{ payment.amount }}</td>
+          <td>{% if order.billing_status == True %}
+            Paid
+            {% else %}
+            Unpaid
+            {% endif %}
+          </td>
         </tr>
         {% endfor %}
       </table>

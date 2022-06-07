@@ -10,6 +10,8 @@ from django.utils.text import slugify
 from account.models import *
 from cart.cart import *
 from order.models import *
+from order.views import order
+from payment.models import Payment
 
 from .forms import *
 from .models import *
@@ -413,10 +415,11 @@ def all_customers(request):
     return render(request, "store/customers.html", {"customers": customers})
 
 @login_required(login_url="/account/login/")
-def store_order(request):
+def store_orders(request):
     if request.user.store_creator == True:
-        store = request.user.store_name
+        store = Store.objects.get(store_name=request.user.store_name)
     if request.user.store_staff == True:
-        store = store_staff.objects.get(user=request.user).store
-    orders = Order.objects.filter(store=store)
-    return render(request, "store/store-order.html", {"orders": orders})
+        store = Store.objects.get(store_name=store_staff.objects.get(user=request.user).store)
+    orders = Order.objects.filter(store=store.id)
+    payment = Payment.objects.filter(store=store, order__in=orders)
+    return render(request, "store/store-order.html", {"orders": orders, "payment": payment})

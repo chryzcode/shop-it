@@ -44,4 +44,5 @@ urlpatterns = [
     path("create-coupon/", views.create_coupon, name="create_coupon"),
     path("delete-coupon/<str:pk>/", views.delete_coupon, name="delete_coupon"),
     path("customers/", views.all_customers, name="all_customers"),
+    path("orders/", views.store_orders, name="store_orders"),
 ]
