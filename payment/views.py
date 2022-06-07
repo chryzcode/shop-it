@@ -1,6 +1,7 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.conf import settings
+from django.contrib import messages
 
 from cart.cart import *
 from customer.models import Address, Customer
@@ -91,7 +92,7 @@ def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
             payment.order = order
             payment.amount = order.amount + shipping_price
             payment.save()
-            render(request, "payment/make-payment.html", {"payment": payment, "store":store, "paystack_public_key":settings.PAYSTACK_PUBLIC_KEY})
+            return render(request, "payment/make-payment.html", {"payment": payment, "store":store, "paystack_public_key":settings.PAYSTACK_PUBLIC_KEY})
     else:
         payment_form = PaymentForm()
     return render(
@@ -108,4 +109,8 @@ def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
 def verify_payment(request: HttpRequest, ref:str) -> HttpResponse:
     payment = get_object_or_404(Payment, ref=ref)
     verified = payment.verify_payment()
+    if verified:
+        messages.success(request, "Verification Successful")
+    else:
+        messages.error(request, "Verification Failed")
     return redirect('/')
