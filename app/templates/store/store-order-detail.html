@@ -5,9 +5,8 @@
 <div class="store-page-container">
   {% include 'navs/store-side-nav.html' %}
   <div class="store-content-container">
-    <span class="store-products-container">
+    <span class="order-detail-content">
       <p>Order Details</p>
-      <p class="order-details-content-container">
         <div>
           <div>Order Id</div>
           <p>{{order.id}}</p>
@@ -39,22 +38,23 @@
             </p>
         </div>
 
-        <div>
-          <div>Amount</div>
-          <p>Order Amount: {% if payment.currency %}{{payment.currency.symbol}}{% else %}{{ order.store.currency.symbol}}{% endif %}{{order.amount}} </p>
-          <p>Logistics: 
-              {% if payment %}
+        <div class="order-payments-amount-seg">
+          <p><span>Order:</span> <span>{% if payment.currency %}{{payment.currency.symbol}}{% else %}{{ order.store.currency.symbol}}{% endif %}{{order.amount}}</span></p>
+          <p><span>Logistics:</span>
+              <span>
+                {% if payment %}
               {{payment.currency.symbol}}{{payment.shipping_method.price}}
               {% else %}
               Not paid yet
               {% endif %}
+              </span>
             </p>
-          <p>Total:
-            {% if payment.currency %}{{payment.currency.symbol}}{% else %}{{ order.store.currency.symbol}}{% endif %} 
-            {% if payment %}{{ payment.amount }}{% else %}{{order.amount}}{% endif %}
+          <p>
+              <span>Total:</span><span>{% if payment.currency %}{{payment.currency.symbol}}{% else %}{{ order.store.currency.symbol}}{% endif %}{% if payment %}{{ payment.amount}}{% else %}{{order.amount}}{% endif %}
+            </span>
           </p>
         </div>
-      </p>
+      
 
       {% if payment %}
       <p>
