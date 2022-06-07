@@ -97,6 +97,7 @@ def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
             payment.order = order
             payment.amount = order.amount + shipping_price
             payment.currency = currency
+            payment.store = store
             payment.save()
             return render(request, "payment/make-payment.html", {"payment": payment, "store":store, "paystack_public_key":settings.PAYSTACK_PUBLIC_KEY})
     else:

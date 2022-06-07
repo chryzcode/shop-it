@@ -18,7 +18,7 @@
         {% for order in orders %}
         {% for payment in payments %}
         <tr class="table-rows">
-          <td><a href="">{{order.id|truncatechars:7}}</a></td>
+          <td><a href="">{{order.id|truncatechars:12}}</a></td>
           <td> {% if order.user %}
             {{ order.user.full_name }}
             {% else %}
