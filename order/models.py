@@ -19,7 +19,7 @@ class Order(models.Model):
     product = models.ManyToManyField(Product)
     store = models.ForeignKey(Store, on_delete=models.CASCADE)
     date_created = models.DateTimeField(auto_now_add=True)
-    coupon = models.CharField(max_length=50, blank=True, null=True)
+    coupon = models.BooleanField(default=False)
     
 
     class Meta:

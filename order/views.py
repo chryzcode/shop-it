@@ -33,9 +33,9 @@ def order(request, coupon_code):
         else:
             amount = cart.get_total_price()
         if Coupon.objects.filter(code=coupon_code, created_by=store).exists():
-            coupon = Coupon.objects.get(code=coupon_code, created_by=store)
+            coupon = True
         else:
-            coupon = ''
+            coupon = False
         billing_status = False
         quantity = cart.__len__()
         order = Order.objects.create(
