@@ -32,10 +32,10 @@ def order(request, coupon_code):
                 amount = cart.get_total_price()
         else:
             amount = cart.get_total_price()
-        if Coupon.objects.filter(code=coupon_code, created_by=store).exists():
-            coupon = True
-        else:
-            coupon = False
+        # if Coupon.objects.filter(code=coupon_code, created_by=store).exists():
+        #     coupon = True
+        # else:
+        #     coupon = False
         billing_status = False
         quantity = cart.__len__()
         order = Order.objects.create(
@@ -44,7 +44,7 @@ def order(request, coupon_code):
             billing_status=billing_status,
             amount=amount,
             quantity=quantity,
-            coupon=coupon,
+            # coupon=coupon,
         )
         order.set_product(products)
         return redirect("payment:initiate_payment", order.id)
