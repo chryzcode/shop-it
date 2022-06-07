@@ -114,6 +114,9 @@ def verify_payment(request: HttpRequest, ref:str) -> HttpResponse:
     payment = get_object_or_404(Payment, ref=ref)
     verified = payment.verify_payment()
     if verified:
+        order = Order.objects.get(pk=payment.order.pk)
+        order.billing_status = True
+        order.save()
         messages.success(request, "Verification Successful")
     else:
         messages.error(request, "Verification Failed")
