@@ -18,6 +18,7 @@ class Order(models.Model):
     quantity = models.PositiveIntegerField(default=0)
     product = models.ManyToManyField(Product)
     store = models.ForeignKey(Store, on_delete=models.CASCADE)
+    date_created = models.DateTimeField(auto_now_add=True)
     
 
     class Meta:

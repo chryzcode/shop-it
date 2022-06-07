@@ -421,5 +421,15 @@ def store_orders(request):
     if request.user.store_staff == True:
         store = Store.objects.get(store_name=store_staff.objects.get(user=request.user).store)
     orders = Order.objects.filter(store=store.id)
-    payments = Order.objects.filter(store=store.id)
+    payments = Payment.objects.filter(store=store.id)
     return render(request, "store/store-order.html", {"orders": orders, "payments": payments})
+
+@login_required(login_url="/account/login/")
+def store_order_detail(request, pk):
+    if request.user.store_creator == True:
+        store = Store.objects.get(store_name=request.user.store_name)
+    if request.user.store_staff == True:
+        store = Store.objects.get(store_name=store_staff.objects.get(user=request.user).store)
+    order = Order.objects.get(id=pk, store=store.id)
+    payment = Payment.objects.filter(order=order, store=store.id)
+    return render(request, "store/store-order-detail.html", {"order": order, "payment": payment})
