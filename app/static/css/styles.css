@@ -705,7 +705,7 @@ div.product-info > p:nth-child(2) {
 }
 
 .above-create-form > p {
-  font-size: 25px;
+  font-size: 20px;
   color: #3d5170;
 }
 
@@ -1220,3 +1220,17 @@ th {
 .radio-form > label > span:nth-child(2) {
   margin-left: 20px;
 }
+
+.form-contents {
+  text-align: center;
+  color: #3d5170;
+  margin-top: 25px;
+  font-size: 19px;
+}
+
+.position-absolute-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }

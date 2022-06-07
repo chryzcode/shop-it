@@ -21,8 +21,7 @@ def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
     if Payment.objects.filter(order=order).exists():
         payment = Payment.objects.get(order=order)
         if payment.verified:
-            messages.error(request, "Payment Already Verified")
-        return render(request, "payment/make-payment.html", {"payment": payment, "store":store, "paystack_public_key":settings.PAYSTACK_PUBLIC_KEY})
+            return render(request, "payment/make-payment.html", {"payment": payment, "store":store, "paystack_public_key":settings.PAYSTACK_PUBLIC_KEY})
     shipping_methods = Shipping_Method.objects.filter(store=store)
     if request.user.is_authenticated:
         if Customer.objects.filter(user=request.user):
