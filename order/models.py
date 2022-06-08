@@ -16,7 +16,6 @@ class Order(models.Model):
     amount = models.IntegerField(default=0)
     billing_status = models.BooleanField(default=False)
     quantity = models.PositiveIntegerField(default=0)
-    product = models.ManyToManyField(Product)
     store = models.ForeignKey(Store, on_delete=models.CASCADE)
     date_created = models.DateTimeField(auto_now_add=True)
     coupon = models.BooleanField(default=False)
@@ -27,6 +26,15 @@ class Order(models.Model):
 
     def set_product(self, product):
         self.product.add(product)
+
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField()
+
+    def __str__(self):
+        return f"{self.quantity} of {self.product.name}"
 
 
 

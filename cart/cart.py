@@ -33,9 +33,10 @@ class Cart:
 
     def get_cart_qty(self):
         all_products = self.cart.keys()
-        all_qty = [self.cart[product]["qty"] for product in all_products]
-        all_ids = [product for product in all_products]
-        return all_qty, all_ids
+        # get a product and it specific quantity from the cart
+        products = Product.objects.filter(id__in=all_products)
+        cart_qty = [self.cart[str(product.id)]["qty"] for product in products]
+        return cart_qty, products
 
     def __iter__(self):
         product_ids = self.cart.keys()

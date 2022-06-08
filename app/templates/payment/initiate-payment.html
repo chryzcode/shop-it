@@ -5,9 +5,15 @@
     <div class="above-create-form">
       <p>Initiate Payment</p>
     </div>
+    {% for product in products_qty%}
+        <p>
+          {% for a_product in product %}
+        <span>{{a_product}}</span>
+        {% endfor %}
+        </p>
+    {% endfor %}
     <div class="acc-form-seg">
       <p>My Details</p>
-      <h1>{{products_qty}}</h1>
       <div class="input-container">
         <label for="full_name">Full Name<span class="form-required">*</span></label>
         <p>{{ payment_form.full_name.errors }}</p>

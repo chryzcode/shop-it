@@ -1,7 +1,7 @@
-from venv import create
 from django.shortcuts import get_object_or_404, redirect, render
 
 from app.models import *
+from .models import *
 from cart.cart import *
 
 from .forms import *
@@ -49,9 +49,12 @@ def order(request, coupon_code):
         for product in products:
             product_id = product.id
             products = Product.objects.get(id=product_id)  
-            order.set_product(products)
-            products_qty = cart.get_cart_qty()
-            print(products_qty)
-            #pass products_qty data to the template of the url
-            return redirect("payment:initiate_payment", order.id
-            )
+
+            # order_item = OrderItem.objects.create(
+            #     order=order,
+            #     product=products,
+
+            # )  
+        return redirect("payment:initiate_payment", order.id
+                )
+        
