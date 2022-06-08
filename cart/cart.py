@@ -24,19 +24,6 @@ class Cart:
             }
         self.save()
 
- 
-    # def get_item_qty(self, product):
-    #     product_id = str(product)
-    #     if product_id in self.cart:
-    #         return self.cart[product_id]["qty"]
-
-
-    def get_cart_qty(self):
-        all_products = self.cart.keys()
-        # get a product and it specific quantity from the cart
-        products = Product.objects.filter(id__in=all_products)
-        cart_qty = [self.cart[str(product.id)]["qty"] for product in products]
-        return cart_qty, products
 
     def __iter__(self):
         product_ids = self.cart.keys()
@@ -58,7 +45,6 @@ class Cart:
         return sum(Decimal(item["price"]) * item["qty"] for item in self.cart.values())
 
     def get_grand_total(self, coupon_percentage):
-        # add coupon percentage to cart session
         return sum(
             Decimal(item["price"]) * item["qty"] for item in self.cart.values()
         ) - (

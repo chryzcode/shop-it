@@ -115,7 +115,6 @@ def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
 
 def verify_payment(request: HttpRequest, ref:str) -> HttpResponse:
     cart = Cart(request)
-    products = cart.get_cart_products()
     payment = get_object_or_404(Payment, ref=ref)
     store = Store.objects.get(pk=payment.store.pk)
     verified = payment.verify_payment()
