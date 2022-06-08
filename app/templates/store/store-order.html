@@ -15,8 +15,8 @@
           <th>Amount</th>
           <th>Billing Status</th>
         </tr>
+        
         {% for order in orders %}
-        {% for payment in payments %}
         <tr class="table-rows">
           <td><a href="{% url 'app:store_order_detail' order.pk %}">{{order.id|truncatechars:12}}</a></td>
           <td> {% if payment.order.user %}
@@ -39,10 +39,12 @@
           <td> 
             {% if payment.currency %}
               {{payment.currency.symbol}}
+              {{ payment.amount }}
             {% else %}
             {{ order.store.currency.symbol}}
-              {% endif %}
-              {{ payment.amount }}
+            {{ order.amount }}
+            {% endif %}
+              
           </td>
           <td>{% if order.billing_status == True %}
             Paid
@@ -51,7 +53,6 @@
             {% endif %}
           </td>
         </tr>
-        {% endfor %}
         {% endfor %}
       </table>
     </span>

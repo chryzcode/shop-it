@@ -420,7 +420,8 @@ def store_orders(request):
         store = Store.objects.get(store_name=request.user.store_name)
     if request.user.store_staff == True:
         store = Store.objects.get(store_name=store_staff.objects.get(user=request.user).store)
-    orders = Order.objects.filter(store=store.id)
+    orders = Order.objects.filter(store=store)
+    print(orders)
     payments = Payment.objects.filter(store=store.id)
     return render(request, "store/store-order.html", {"orders": orders, "payments": payments})
 
@@ -432,6 +433,8 @@ def store_order_detail(request, pk):
         store = Store.objects.get(store_name=store_staff.objects.get(user=request.user).store)
     order = Order.objects.get(id=pk, store=store.id)
     order_items = OrderItem.objects.filter(order=order)
-    if Payment.objects.get(order=order, store=store.id):
+    if Payment.objects.filter(order=order, store=store.id).exists():
         payment = Payment.objects.get(order=order, store=store.id)
+    else:
+        payment = None
     return render(request, "store/store-order-detail.html", {"order": order, "payment": payment, "order_items": order_items})

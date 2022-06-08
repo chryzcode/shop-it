@@ -19,15 +19,32 @@
 
         <div class="order-detail-products-block">
           <div>Products</div>
-          {% for product in order_items %}
-            <ul>
-              <li>{{product}}
-              {% if product.discount_percentage > 1 %}
-              - Discount Product
-             {% endif %}
-              </li>
-            </ul>
-          {% endfor %}
+          <table class="store-products-table">
+            <thead>
+              <tr class="table-rows">
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Discount Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for order_item in order_items %}
+              <tr class="table-rows">
+                <td>{{order_item.product}}</td>
+                <td>{{order_item.quantity}}</td>
+                <td>{% if payment.currency %}{{payment.currency.symbol}}{% else %}{{ order.store.currency.symbol}}{% endif %}{{order_item.price}}</td>
+                <td>
+                  {% if order_item.product.discount_percentage > 1 %}
+                True
+                {% else %}
+                False
+               {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
         </div>
 
         <div>

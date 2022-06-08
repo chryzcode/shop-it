@@ -1238,7 +1238,7 @@ th {
 .order-detail-content > div {
   display: flex;
   justify-content: space-between;
-  margin: 50px;
+  padding: 20px;
   flex-wrap: wrap;
 }
 
@@ -1269,8 +1269,6 @@ th {
   display: block !important;
 }
 
-.order-detail-products-block > ul  {
-list-style: none;
-padding: 0 !important;
-text-align: right;
+.order-detail-products-block > table {
+  margin-top: 20px;
 }
