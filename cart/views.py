@@ -12,11 +12,12 @@ from .cart import *
 
 def cart_summary(request, slugified_store_name):
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
-    
     coupon_code = "nil"
     grand_total = ""
     form_feedback = ""
     cart = Cart(request)
+    cart_store_name = cart.get_store_name()
+    cart_store = get_object_or_404(Store, slugified_store_name=slugify(cart_store_name))
     cart_check = cart.store_check()
     form = UseCouponForm
     expired_coupons = Coupon.objects.all()
@@ -95,6 +96,7 @@ def cart_summary(request, slugified_store_name):
             "store_currency_symbol": store_currency_symbol,
             "cart_check": cart_check,
             "coupon_code": coupon_code,
+            "cart_store": cart_store,
         },
     )
 

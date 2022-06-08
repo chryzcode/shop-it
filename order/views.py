@@ -12,10 +12,8 @@ def order(request, coupon_code):
     products = cart.get_cart_products()
     for product in products:
         product_id = product.id
-        products = Product.objects.get(id=product_id)  
-        products_qty = cart.get_item_qty(product_id)
-    print(products_qty)
-    store = Store.objects.get(store_name=products.store)
+        product = Product.objects.get(id=product_id)
+    store = Store.objects.get(store_name=product.store)
     if not store.currency:
         error = "Store does'nt have a set currency for payment, drop a review for the store"
         return redirect('cart:cart_summary', store.slugified_store_name)
@@ -48,5 +46,11 @@ def order(request, coupon_code):
             quantity=quantity,
             coupon=coupon,
         )
-        order.set_product(products)
+        for product in products:
+            product_id = product.id
+            products = Product.objects.get(id=product_id)  
+            print(products)
+            products_qty = cart.get_item_qty(product_id)
+            print(products_qty)
+            order.set_product(products)
         return redirect("payment:initiate_payment", order.id)

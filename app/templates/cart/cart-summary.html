@@ -3,8 +3,9 @@
  <h1 class="error">{{error}}</h1>
   {% if cart %}
 
+  {% if cart_store == store %}
   {% for item in cart %} {% with product=item.product %}
-   {% if product.store == store %}
+   
     
   <div data-index="{{product.id}}" class="product-item">
     <img class="product-image" src="{{ product.image_1.url }}" alt="" />
@@ -41,7 +42,10 @@
       <i class="fas fa-trash-alt"></i>Delete
     </button>
   </div>
-  
+
+{% endwith %} {% endfor %}
+
+
   <div class="cart-table-bottom">
     <span
       ><a href="" class="cart-table-bottom-contents">Continue Shopping<i class="far fa-angle-double-right"></i></a
@@ -51,6 +55,7 @@
         >Clear cart<i class="fas fa-trash-alt"></i></a
     ></span>
   </div>
+
   
   <div class="note-checkout-section">
     <span>
@@ -84,17 +89,17 @@
       {% endif %}
     </div>
   </div>
-  {% else %}
+
+    {% else %}
   
   <div class="empty-cart-stylings">
     <p>You don't have any product in this cart</p>
     <p>but you have <span>{{item.qty}}</span> products in {{product.store}} cart</p>
-  <a class="get-started-btn" href="{% url 'cart:cart_summary' product.store.slugified_store_name %}">{{product.store}}</a>
+  <a class="get-started-btn" href="{% url 'cart:cart_summary' cart_store.slugified_store_name %}">{{cart_store.store_name}}</a>
   </div>
   
-  
 {% endif %}
-{% endwith %} {% endfor %}
+
 {% else %}
    
 

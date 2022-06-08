@@ -93,6 +93,16 @@ class Cart:
         else:
             return False
 
+    #get store name of product
+    def get_store_name(self):
+        product_ids = self.cart.keys()
+        products = Product.objects.filter(id__in=product_ids)
+        store_name = [product.created_by for product in products]
+        result = all(store == store_name[0] for store in store_name)
+        if result:
+            return store_name[0]
+     
+
     def get_cart_products(self):
         product_ids = self.cart.keys()
         products = Product.objects.filter(id__in=product_ids)

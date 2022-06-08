@@ -22,8 +22,10 @@
           {% for product in order_products %}
             {% if product.discount_percentage > 1 %}
             <p>Discount Product</p>
-          <p>{{product}}</p>
-          {% endif %}
+             {% endif %}
+            <ul style="display: block;">
+              <li>{{product}}</li>
+            </ul>
           {% endfor %}
         </div>
 
