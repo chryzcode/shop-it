@@ -13,7 +13,7 @@
         </div>
 
         <div>
-          <div>Date</div>
+          <div>Order Created</div>
           <p>{{order.date_created}}</p>
         </div>
 
@@ -75,6 +75,12 @@
       {% if payment %}
       <p>
           <p>Order Shipping Details</p>
+
+          <div>
+              <div>Payment Created</div>
+              <p>{{payment.date_created}}</p>
+          </div>
+
           <div>
               <div>Full Name</div>
               <p>{{payment.full_name}}</p>

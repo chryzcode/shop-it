@@ -136,7 +136,15 @@
       </span>
       <div class="product-info-container">
         <p>{{ product.name }}</p>
-        <p>{{ product.price }}</p>
+        <p>
+            {% if product.discount_price != product.price %}
+              <span>
+                <span style="text-decoration: line-through">{{product.currency.symbol}}{{ product.price }}</span>
+                <span>{{product.currency.symbol}}{{ product.discount_price }}</span>
+              </span>
+              {% else %}
+            </p>
+            <div>{{product.currency.symbol}}{{ product.price }}</div>
       </div>
     </a>
     {% endfor %}
