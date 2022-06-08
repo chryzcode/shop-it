@@ -19,7 +19,7 @@
 
         <div class="order-detail-products-block">
           <div>Products</div>
-          {% for product in order_products %}
+          {% for product in order_items %}
             <ul>
               <li>{{product}}
               {% if product.discount_percentage > 1 %}
