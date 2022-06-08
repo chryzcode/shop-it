@@ -1255,12 +1255,19 @@ th {
   color: #6b69f8;
 }
 
-.order-payments-amount-seg > p > span:nth-child(1) {
+.order-payments-amount-seg > span {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 15px 0;
+  flex-wrap: wrap;
+}
+.order-payments-amount-seg > span > span:nth-child(1) {
   font-size: 20px;
   color: #6b69f8;
 }
 
-.order-payments-amount-seg > p > span:nth-child(2) {
+.order-payments-amount-seg > span > span:nth-child(2) {
   font-size: 21px;
   color: #3d5170;
 }

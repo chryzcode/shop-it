@@ -72,10 +72,10 @@
             </p>
         </div>
 
-        
-        <div class="order-payments-amount-seg">
-          <p><span>Order: </span> <span>{% if payment.currency %}{{payment.currency.symbol}}{% else %}{{ order.store.currency.symbol}}{% endif %}{{order.amount}}</span></p>
-          <p><span>Logistics: </span>
+        <div class="order-detail-products-block">
+          <div class="order-payments-amount-seg">
+          <span><span>Order: </span> <span>{% if payment.currency %}{{payment.currency.symbol}}{% else %}{{ order.store.currency.symbol}}{% endif %}{{order.amount}}</span></span>
+          <span><span>Logistics: </span>
               <span>
                 {% if payment %}
               {{payment.currency.symbol}}{{payment.shipping_method.price}}
@@ -83,13 +83,15 @@
               Not paid yet
               {% endif %}
               </span>
-            </p>
+            </span>
 
-          <p>
+          <span>
               <span>Total: </span><span>{% if payment.currency %}{{payment.currency.symbol}}{% else %}{{ order.store.currency.symbol}}{% endif %}{% if payment %}{{ payment.amount}}{% else %}{{order.amount}}{% endif %}
             </span>
-          </p>
+          </span>
         </div>
+        </div>
+        
       
 
       {% if payment %}
