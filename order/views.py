@@ -46,15 +46,15 @@ def order(request, coupon_code):
             quantity=quantity,
             coupon=coupon,
         )
-        for product in products:
-            product_id = product.id
-            products = Product.objects.get(id=product_id)  
-
-            # order_item = OrderItem.objects.create(
-            #     order=order,
-            #     product=products,
-
-            # )  
+        order_id = order.id
+        for item in cart:
+            product = get_object_or_404(Product, id=item["product_id"])
+            OrderItem.objects.create(
+                order=order,
+                product=product,
+                quantity=item["quantity"],
+                price=item["price"],
+            ) 
         return redirect("payment:initiate_payment", order.id
                 )
         
