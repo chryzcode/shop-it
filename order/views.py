@@ -12,7 +12,9 @@ def order(request, coupon_code):
     products = cart.get_cart_products()
     for product in products:
         product_id = product.id
-        products = Product.objects.get(id=product_id)
+        products = Product.objects.get(id=product_id)  
+        products_qty = cart.get_item_qty(product_id)
+    print(products_qty)
     store = Store.objects.get(store_name=products.store)
     if not store.currency:
         error = "Store does'nt have a set currency for payment, drop a review for the store"
