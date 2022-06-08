@@ -49,8 +49,9 @@ def order(request, coupon_code):
         for product in products:
             product_id = product.id
             products = Product.objects.get(id=product_id)  
-            print(products)
-            products_qty = cart.get_item_qty(product_id)
-            print(products_qty)
             order.set_product(products)
-        return redirect("payment:initiate_payment", order.id)
+            products_qty = cart.get_cart_qty()
+            print(products_qty)
+            #pass products_qty data to the template of the url
+            return redirect("payment:initiate_payment", order.id
+            )

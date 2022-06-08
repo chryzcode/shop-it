@@ -24,11 +24,18 @@ class Cart:
             }
         self.save()
 
-    #get the quantity of an item
-    def get_item_qty(self, product):
-        product_id = str(product)
-        if product_id in self.cart:
-            return self.cart[product_id]["qty"]
+ 
+    # def get_item_qty(self, product):
+    #     product_id = str(product)
+    #     if product_id in self.cart:
+    #         return self.cart[product_id]["qty"]
+
+
+    def get_cart_qty(self):
+        all_products = self.cart.keys()
+        all_qty = [self.cart[product]["qty"] for product in all_products]
+        all_ids = [product for product in all_products]
+        return all_qty, all_ids
 
     def __iter__(self):
         product_ids = self.cart.keys()
