@@ -1265,3 +1265,12 @@ th {
   color: #3d5170;
 }
 
+.order-detail-products-block {
+  display: block !important;
+}
+
+.order-detail-products-block > ul  {
+list-style: none;
+padding: 0 !important;
+text-align: right;
+}

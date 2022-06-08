@@ -17,14 +17,15 @@
           <p>{{order.date_created}}</p>
         </div>
 
-        <div>
+        <div class="order-detail-products-block">
           <div>Products</div>
           {% for product in order_products %}
-            {% if product.discount_percentage > 1 %}
-            <p>Discount Product</p>
+            <ul>
+              <li>{{product}}
+              {% if product.discount_percentage > 1 %}
+              - Discount Product
              {% endif %}
-            <ul style="display: block;">
-              <li>{{product}}</li>
+              </li>
             </ul>
           {% endfor %}
         </div>
