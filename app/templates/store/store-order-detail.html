@@ -42,6 +42,17 @@
             </p>
         </div>
 
+        <div>
+            <div>Coupoun Use</div>
+            <p>{% if order.coupon == True %}
+                True
+                {% else %}
+                False
+                {% endif %}
+            </p>
+        </div>
+
+        
         <div class="order-payments-amount-seg">
           <p><span>Order: </span> <span>{% if payment.currency %}{{payment.currency.symbol}}{% else %}{{ order.store.currency.symbol}}{% endif %}{{order.amount}}</span></p>
           <p><span>Logistics: </span>
@@ -53,6 +64,7 @@
               {% endif %}
               </span>
             </p>
+
           <p>
               <span>Total: </span><span>{% if payment.currency %}{{payment.currency.symbol}}{% else %}{{ order.store.currency.symbol}}{% endif %}{% if payment %}{{ payment.amount}}{% else %}{{order.amount}}{% endif %}
             </span>
