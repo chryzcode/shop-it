@@ -1,0 +1,162 @@
+{% extends 'navs/customer-nav.html' %} {% load static %}{% block title %}<title>
+  Shop !t - {{request.user.full_name }} Order detail
+</title>
+{% endblock %} {% block content %}
+<div class="store-page-container">
+  <span class="customer-profile-container">
+    {% include 'navs/customer-side-nav.html' %}
+    <div class="store-content-container">
+      <span class="order-detail-content">
+      <p>Order Details</p>
+        <div>
+          <div>Order Id</div>
+          <p>{{order.id}}</p>
+        </div>
+
+        <div>
+          <div>Order Created</div>
+          <p>{{order.date_created}}</p>
+        </div>
+
+        <div class="order-detail-products-block">
+          <div>Products</div>
+          <table class="store-products-table">
+            <thead>
+              <tr class="table-rows">
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Discount Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for order_item in order_items %}
+              <tr class="table-rows">
+                <td>{{order_item.product}}</td>
+                <td>{{order_item.quantity}}</td>
+                <td>{% if payment.currency %}{{payment.currency.symbol}}{% else %}{{ order.store.currency.symbol}}{% endif %}{{order_item.price}}</td>
+                <td>
+                  {% if order_item.product.discount_percentage > 1 %}
+                True
+                {% else %}
+                False
+               {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <div>
+            <div>Products Count</div>
+            <p>{{order.quantity}} Products</p>
+        </div>
+
+        <div>
+            <div>Coupoun Use</div>
+            <p>{% if order.coupon == True %}
+                True
+                {% else %}
+                False
+                {% endif %}
+            </p>
+        </div>
+
+        <div class="order-detail-products-block">
+          <div class="order-payments-amount-seg">
+          <span><span>Order: </span> <span>{% if payment.currency %}{{payment.currency.symbol}}{% else %}{{ order.store.currency.symbol}}{% endif %}{{order.amount}}</span></span>
+          <span><span>Logistics: </span>
+              <span>
+                {% if payment %}
+              {{payment.currency.symbol}}{{payment.shipping_method.price}}
+              {% else %}
+              Not paid yet
+              {% endif %}
+              </span>
+            </span>
+
+          <span>
+              <span>Total: </span><span>{% if payment.currency %}{{payment.currency.symbol}}{% else %}{{ order.store.currency.symbol}}{% endif %}{% if payment %}{{ payment.amount}}{% else %}{{order.amount}}{% endif %}
+            </span>
+          </span>
+
+          <span>
+            <span>Payment Status: </span>
+            <span>
+              {% if order.billing_status == True %}
+                Paid
+                {% else %}
+                Not Paid
+                {% endif %}
+            </span>
+          </span>
+        </div>
+        </div>
+        
+      
+
+      {% if payment %}
+      <p>
+          <p>Order Shipping Details</p>
+
+          <div>
+              <div>Payment Created</div>
+              <p>{{payment.date_created}}</p>
+          </div>
+
+          <div>
+              <div>Full Name</div>
+              <p>{{payment.full_name}}</p>
+          </div>
+
+          <div>
+              <div>Email</div>
+              <p>{{payment.email}}</p>
+          </div>
+
+          <div>
+              <div>Address</div>
+              <p>{{payment.address_line}}</p>
+          </div>
+
+          <div>
+              <div>Address 2</div>
+              {% if payment.address_line2 %}
+              <p>{{payment.address_line2}}</p>
+              {% else %}
+              <p>Nil</p>
+              {% endif %}
+          </div>
+
+          <div>
+              <div>Post Code</div>
+              {% if payment.postcode %}
+                <p>{{payment.postcode}}</p>
+                {% else %}
+                <p>Nil</p>
+                {% endif %}
+          </div>
+
+            <div>
+                <div>City</div>
+                <p>{{payment.city}}</p>
+            </div>
+
+            <div>
+                <div>State</div>
+                <p>{{payment.state}}</p>
+            </div>
+
+            <div>
+                <div>Country</div>
+                <p>{{payment.country}}</p>
+            </div>
+
+        </p>
+        {% endif %}
+    </span>
+    </div>
+  </span>
+  {% endblock %}
+</div>

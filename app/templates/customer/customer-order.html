@@ -18,7 +18,7 @@
           </tr>
           {% for order in orders %}
           <tr class="table-rows">
-            <td><a href="{% url 'app:store_order_detail' order.pk %}">{{order.id|truncatechars:12}}</a></td>
+            <td><a href="{% url 'customer:customer_order_detail' store.slugified_store_name order.pk %}">{{order.id|truncatechars:12}}</a></td>
           <td> {% if payment.full_name %}
             {{ payment.full_name }}
             {% elif payment.order.user %}

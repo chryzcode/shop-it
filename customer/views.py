@@ -180,7 +180,7 @@ def customer_product_detail(request, slugified_store_name, slug):
 
 
 def customer_profile(request, slugified_store_name):
-    if request.user.is_autheticated:
+    if request.user.is_authenticated:
         store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
         if request.user in store.customers.all():
             account = Customer.objects.get(store=store, email=request.user.email)
@@ -244,7 +244,7 @@ def address_list(request, slugified_store_name):
 
 
 def create_address(request, slugified_store_name):
-    if request.user.is_aythenticated:
+    if request.user.is_authenticated:
         store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
         customer = Customer.objects.get(email=request.user.email)
         default_address = Address.objects.filter(customer=customer, default=True)
@@ -391,8 +391,8 @@ def customer_order_detail(request, slugified_store_name, pk):
         customer = Customer.objects.get(email=request.user.email, store=store)
         order = Order.objects.get(id=pk, store=store.id)
         order_items = OrderItem.objects.filter(order=order)
-        if Payment.objects.filter(user=request.user, store=store, order__in=orders).exists():
-            payment = Payment.objects.get(user=request.user, store=store, order__in=orders)
+        if Payment.objects.filter(user=request.user, store=store, order=order).exists():
+            payment = Payment.objects.get(user=request.user, store=store, order=order)
         else:
             payment = None
         return render(request, "customer/customer-order-detail.html", {"order": order, "order_items": order_items, "payment": payment, "store": store, "customer": customer})
