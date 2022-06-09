@@ -1,4 +1,5 @@
-{% extends 'navs/base.html' %} {% block title %}<title>Make Payment</title>{% endblock %} {% block content %}
+{% extends 'navs/base.html' %} {% load humanize %}
+{% block title %}<title>Make Payment</title>{% endblock %} {% block content %}
 <div class="auth-form-container position-absolute-center">
       <div class="above-create-form">
           <p>Make Payment</p> 
@@ -6,7 +7,7 @@
       <script src="https://js.paystack.co/v1/inline.js"></script> 
       <div class="form-contents">
           <p>
-              You are paying {{store.currency.symbol}}{{payment.amount}} to {{store.store_name|capfirst}}
+              You are paying {{store.currency.symbol}}{{payment.amount|intcomma}} to {{store.store_name|capfirst}}
           </p>
       </div>  
       <div class="form-btn-container">

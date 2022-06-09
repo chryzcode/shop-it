@@ -1,4 +1,4 @@
-{% extends 'navs/customer-nav.html' %} {% load static %}{% block title %}<title>
+{% extends 'navs/customer-nav.html' %} {% load static %}{% load humanize %}{% block title %}<title>
   Shop !t - {{request.user.full_name }} WishList
 </title>
 {% endblock %} {% block content %}
@@ -39,10 +39,10 @@
           <td> 
             {% if payment.currency %}
               {{payment.currency.symbol}}
-              {{ payment.amount }}
+              {{ payment.amount|intcomma}}
             {% else %}
             {{ order.store.currency.symbol}}
-            {{ order.amount }}
+            {{ order.amount|intcomma }}
             {% endif %}         
           </td>
           <td>{% if order.billing_status == True %}
