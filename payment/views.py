@@ -102,6 +102,7 @@ def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
             return render(request, "payment/make-payment.html", {"payment": payment, "store":store, "paystack_public_key":settings.PAYSTACK_PUBLIC_KEY})
     else:
         payment_form = PaymentForm()
+        order = Order.objects.get(pk=pk)
     return render(
         request,
         "payment/initiate-payment.html",
@@ -110,6 +111,7 @@ def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
             "addresses": addresses,
             "shipping_methods": shipping_methods,
             "store": store,
+            "order": order,
         },
     )
 

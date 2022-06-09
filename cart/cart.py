@@ -80,7 +80,7 @@ class Cart:
     def store_check(self):
         product_ids = self.cart.keys()
         products = Product.objects.filter(id__in=product_ids)
-        products_store = [product.created_by for product in products]
+        products_store = [product.store for product in products]
         result = all(store == products_store[0] for store in products_store)
         if result:
             return True
@@ -92,7 +92,7 @@ class Cart:
         product_ids = self.cart.keys()
         products = Product.objects.filter(id__in=product_ids)
         if products:
-            store_name = [product.created_by for product in products]
+            store_name = [product.store for product in products]
             result = all(store == store_name[0] for store in store_name)
             if result:
                 return store_name[0]
