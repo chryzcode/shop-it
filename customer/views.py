@@ -384,4 +384,17 @@ def customer_orders(request, slugified_store_name):
     else:
         return redirect("customer:customer_login", slugified_store_name=slugified_store_name)
 
-# @login_required(login_url="/account/login/")
+
+def customer_order_detail(request, slugified_store_name, pk):
+    if request.user.is_authenticated:
+        store = Store.objects.get(slugified_store_name=slugified_store_name)
+        customer = Customer.objects.get(email=request.user.email, store=store)
+        order = Order.objects.get(id=pk, store=store.id)
+        order_items = OrderItem.objects.filter(order=order)
+        if Payment.objects.filter(user=request.user, store=store, order__in=orders).exists():
+            payment = Payment.objects.get(user=request.user, store=store, order__in=orders)
+        else:
+            payment = None
+        return render(request, "customer/customer-order-detail.html", {"order": order, "order_items": order_items, "payment": payment, "store": store, "customer": customer})
+    else:
+        return redirect("customer:customer_login", slugified_store_name=slugified_store_name)
