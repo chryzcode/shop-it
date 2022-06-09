@@ -36,7 +36,7 @@ def a_store_all_products(request):
         store = Store.objects.get(
             store_name=store_staff.objects.get(user=request.user).store
         )
-    all_products = Product.objects.filter(created_by=store.id)
+    all_products = Product.objects.filter(store=store)
     return render(
         request,
         "store/products.html",
@@ -55,12 +55,12 @@ def product_detail(request, slug):
                 store_name=store_staff.objects.get(user=request.user).store
             )
         category_product = Product.objects.filter(
-            category=product.category, created_by=store
+            category=product.category, store=store
         ).exclude(id=product.id)[:6]
     else:
         product = get_object_or_404(Product, slug=slug)
         category_product = Product.objects.filter(
-            category=product.category, created_by=store
+            category=product.category, store=store
         ).exclude(id=product.id)[:6]
     return render(
         request,
@@ -90,7 +90,7 @@ def create_product(request):
         form = ProductForm(request.POST, request.FILES)
         product_name = request.POST.get("product_name")
         if Product.objects.filter(
-            name=product_name, created_by=store, slug=slugify(product_name)
+            name=product_name, store=store, slug=slugify(product_name)
         ).exists():
             error = "Product already exists"
             return render(
@@ -219,7 +219,7 @@ def add_wishlist(request, slug):
 def remove_wishlist(request, slug):
     user = request.user
     product = get_object_or_404(Product, slug=slug)
-    store = get_object_or_404(Store, store_name=product.created_by)
+    store = get_object_or_404(Store, store_name=product.store.store_name)
     product.wishlist.remove(user)
     return redirect("app:product_detail", slug=product.slug)
 
@@ -228,10 +228,9 @@ def wishlist(request):
     user = request.user
     wishlist = Product.objects.filter(wishlist=user)
     for product in wishlist:
-        product_store = Store.objects.get(store_name=product.created_by)
-        currency = product_store.currency
+        product_store = Store.objects.get(store_name=product.store.store_name)
     return render(
-        request, "store/wishlist.html", {"wishlist": wishlist, "currency": currency}
+        request, "store/wishlist.html", {"wishlist": wishlist, "store": store}
     )
 
 @login_required(login_url="/account/login/")
@@ -332,9 +331,9 @@ def a_store_all_categories(request, slugified_store_name):
 @login_required(login_url="/account/login/")
 def a_store_category_products(request, slugified_store_name, slug):
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
-    category = get_object_or_404(Category, slug=slug, created_by=store.store_name)
+    category = get_object_or_404(Category, slug=slug, created_by=store)
     category_products = Product.objects.filter(
-        category=category, created_by=store.store_name, in_stock=True
+        category=category, store=store, in_stock=True
     )
     return render(
         request,
@@ -346,12 +345,11 @@ def a_store_category_products(request, slugified_store_name, slug):
 def discount_products(request):
     if request.user.store_creator == True:
         store = Store.objects.get(store_name=request.user.store_name)
-        products = Product.objects.filter(created_by=store, discount_percentage__gt=0)
     else:
         store = Store.objects.get(
             store_name=store_staff.objects.get(user=request.user).store
         )
-        products = Product.objects.filter(created_by=store, discount_percentage__gt=0)
+    products = Product.objects.filter(store=store, discount_percentage__gt=0)
     return render(
         request,
         "product/discount-products.html",

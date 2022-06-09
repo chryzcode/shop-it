@@ -20,7 +20,6 @@ class ProductAdmin(admin.ModelAdmin):
         "in_stock",
         "created",
         "updated",
-        "created_by",
         "category",
         "image_1",
         "image_2",

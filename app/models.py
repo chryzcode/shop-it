@@ -66,7 +66,6 @@ class Coupon(models.Model):
 
 class Product(models.Model):
     store = models.ForeignKey(Store, on_delete=models.CASCADE)
-    created_by = models.CharField(max_length=150)
     name = models.CharField(max_length=255)
     description = models.TextField()
     image_1 = models.ImageField(upload_to="product-images/")
