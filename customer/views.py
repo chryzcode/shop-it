@@ -260,41 +260,48 @@ def create_address(request, slugified_store_name):
         {"address_form": address_form, "store": store},
     )
 
-@login_required(login_url="/account/login/")
 def edit_address(request, slugified_store_name, id):
-    store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
-    customer = Customer.objects.get(email=request.user.email)
-    address = get_object_or_404(Address, id=id, customer=customer)
-    address_form = AddressForm(instance=address)
-    if request.method == "POST":
-        address_form = AddressForm(request.POST, instance=address)
-        if address_form.is_valid():
-            address_form.save()
-            return redirect(
-                "customer:address_list", slugified_store_name=slugified_store_name
-            )
-    return render(
-        request,
-        "customer/address-create.html",
-        {"address_form": address_form, "store": store},
-    )
+    if request.user.is_authenticated:
+        store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
+        customer = Customer.objects.get(email=request.user.email)
+        address = get_object_or_404(Address, id=id, customer=customer)
+        address_form = AddressForm(instance=address)
+        if request.method == "POST":
+            address_form = AddressForm(request.POST, instance=address)
+            if address_form.is_valid():
+                address_form.save()
+                return redirect(
+                    "customer:address_list", slugified_store_name=slugified_store_name
+                )
+        return render(
+            request,
+            "customer/address-create.html",
+            {"address_form": address_form, "store": store},
+        )
+    else:
+        return redirect("customer:customer_login", slugified_store_name=slugified_store_name)
 
-@login_required(login_url="/account/login/")
 def delete_address(request, slugified_store_name, id):
-    store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
-    customer = Customer.objects.get(email=request.user.email)
-    address = get_object_or_404(Address, id=id, customer=customer)
-    address.delete()
-    return redirect("customer:address_list", slugified_store_name=slugified_store_name)
+    if request.user.is_authenticated:
+        store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
+        customer = Customer.objects.get(email=request.user.email)
+        address = get_object_or_404(Address, id=id, customer=customer)
+        address.delete()
+        return redirect("customer:address_list", slugified_store_name=slugified_store_name)
+    else:
+        return redirect("customer:customer_login", slugified_store_name=slugified_store_name)
 
-@login_required(login_url="/account/login/")
+
 def set_default_address(request, slugified_store_name, id):
-    store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
-    customer = Customer.objects.get(email=request.user.email)
-    Address.objects.filter(customer=customer, default=True).update(default=False)
-    Address.objects.filter(id=id, customer=customer).update(default=True)
-    previous_url = request.META.get("HTTP_REFERER")
-    return redirect("customer:address_list", slugified_store_name=slugified_store_name)
+    if request.user.is_authenticated:
+        store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
+        customer = Customer.objects.get(email=request.user.email)
+        Address.objects.filter(customer=customer, default=True).update(default=False)
+        Address.objects.filter(id=id, customer=customer).update(default=True)
+        previous_url = request.META.get("HTTP_REFERER")
+        return redirect("customer:address_list", slugified_store_name=slugified_store_name)
+    else:
+        return redirect("customer:customer_login", slugified_store_name=slugified_store_name)
 
 
 def customer_add_wishlist(request, slug):
