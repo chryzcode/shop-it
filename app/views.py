@@ -32,12 +32,11 @@ def home_page(request):
 def a_store_all_products(request):
     if request.user.store_creator == True:
         store = Store.objects.get(store_name=request.user.store_name)
-        all_products = Product.objects.filter(created_by=store)
     else:
         store = Store.objects.get(
             store_name=store_staff.objects.get(user=request.user).store
         )
-        all_products = Product.objects.filter(created_by=store)
+    all_products = Product.objects.filter(created_by=store.id)
     return render(
         request,
         "store/products.html",
@@ -50,18 +49,19 @@ def product_detail(request, slug):
     if request.user.is_authenticated:
         product = get_object_or_404(Product, slug=slug)
         if request.user.store_creator == True:
-            store_name = product.created_by
+            store = Store.objects.get(store_name=request.user.store_name)
         else:
-            store_name = store_staff.objects.get(user=request.user).store
+            store = Store.objects.get(
+                store_name=store_staff.objects.get(user=request.user).store
+            )
         category_product = Product.objects.filter(
-            category=product.category, created_by=store_name
+            category=product.category, created_by=store
         ).exclude(id=product.id)[:6]
     else:
         product = get_object_or_404(Product, slug=slug)
         category_product = Product.objects.filter(
-            category=product.category, created_by=product.created_by
+            category=product.category, created_by=store
         ).exclude(id=product.id)[:6]
-    store = Store.objects.get(store_name=product.created_by)
     return render(
         request,
         "product/product-detail.html",
@@ -156,9 +156,9 @@ def edit_product(request, slug):
         store = Store.objects.get(
             store_name=store_staff.objects.get(user=request.user).store
         )
-    product = get_object_or_404(Product, slug=slug, created_by=store)
+    product = get_object_or_404(Product, slug=slug, created_by=store.id)
     form = ProductForm(instance=product)
-    categories = Category.objects.filter(created_by=store)
+    categories = Category.objects.filter(created_by=store.id)
     product_units = ProductUnit.objects.all()
     if request.method == "POST":
         form = ProductForm(request.POST, request.FILES, instance=product)
