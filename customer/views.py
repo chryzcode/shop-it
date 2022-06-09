@@ -91,23 +91,26 @@ def customer_login(request, slugified_store_name):
     if request.method == "POST":
         email = request.POST.get("email")
         password = request.POST.get("password")
-        user = User.objects.get(email=email)
-        if user.store_name == store.store_name:
-            messages.error(request, "You can/'t be a customer of your store.")
-        if user:
-            user = authenticate(request, email=email, password=password)
+        if User.objects.filter(email=email).exists():
+            user = User.objects.get(email=email)     
+            if user.store_name == store.store_name:
+                messages.error(request, "You can't be a customer of your store.")
             if user:
-                if user in store.customers.all():
-                    login(request, user)
-                    return redirect(
-                        "app:store", slugified_store_name=store.slugified_store_name
-                    )
+                user = authenticate(request, email=email, password=password)
+                if user:
+                    if user in store.customers.all():
+                        login(request, user)
+                        return redirect(
+                            "app:store", slugified_store_name=store.slugified_store_name
+                        )
+                    else:
+                        messages.error(request, "You are not a customer of this store.")
                 else:
-                    messages.error(request, "You are not a customer of this store.")
+                    messages.error(request, "Password is incorrect")
             else:
-                messages.error(request, "Password is incorrect")
+                messages.error(request, "User does not exist")
         else:
-            messages.error(request, "User does not exist")
+            messages.error(request, "Account doesn't exists.")
 
     return render(
         request,
