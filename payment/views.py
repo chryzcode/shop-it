@@ -18,15 +18,14 @@ json_serializer = serializers.get_serializer("json")()
 def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
     cart = Cart(request)
     addresses = ""
-    currency_symbol = cart.get_currency_symbol()
-    currency_code = cart.get_currency_code()
     order = Order.objects.get(pk=pk)
     store = Store.objects.get(pk=order.store.pk)
-    currency = Currency.objects.get(pk=store.currency.pk)
+    currency_symbol = order.currency_symbol
+    currency_code = order.currency_code
     if Payment.objects.filter(order=order).exists():
         payment = Payment.objects.get(order=order)
         if payment.verified:
-            return render(request, "payment/make-payment.html", {"payment": payment, "store":store, "paystack_public_key":settings.PAYSTACK_PUBLIC_KEY})
+            return render(request, "payment/make-payment.html", {"payment": payment, "currency_symbol":currency_symbol, "currency_code":currency_code, "paystack_public_key":settings.PAYSTACK_PUBLIC_KEY})
     shipping_methods = Shipping_Method.objects.filter(store=store)
     if request.user.is_authenticated:
         if Customer.objects.filter(user=request.user):
@@ -100,7 +99,6 @@ def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
             shipping_price = shipping_method.price
             payment.order = order
             payment.amount = order.amount + shipping_price
-            payment.currency = currency
             payment.store = store
             payment.save()
             return render(request, "payment/make-payment.html", {"payment": payment, "store":store, "paystack_public_key":settings.PAYSTACK_PUBLIC_KEY, "currency_symbol":currency_symbol, "currency_code":currency_code})

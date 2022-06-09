@@ -7,7 +7,7 @@
       <script src="https://js.paystack.co/v1/inline.js"></script> 
       <div class="form-contents">
           <p>
-              You are paying {{store.currency.symbol}}{{payment.amount|intcomma}} to {{store.store_name|capfirst}}
+              You are paying {{currency_symbol}}{{payment.amount|intcomma}} to {{store.store_name|capfirst}}
           </p>
       </div>  
       <div class="form-btn-container">
@@ -16,7 +16,7 @@
 </div>
 <script>
     function payWithPayStack(){
-        let currency = '{{store.curency.code}}';
+        let currency = '{{currency_code}}';
         let plan = "";
         let ref = "{{payment.ref}}";
         let obj = {

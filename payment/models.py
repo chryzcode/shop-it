@@ -34,7 +34,6 @@ class Payment(models.Model):
         Shipping_Method, on_delete=models.CASCADE
     )
     store = models.ForeignKey(Store, on_delete=models.CASCADE)
-    currency = models.ForeignKey(Currency, on_delete=models.SET_NULL, null=True)
 
     class Meta:
         ordering = ["-date_created"]
