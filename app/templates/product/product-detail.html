@@ -1,4 +1,5 @@
-{% extends 'navs/customer-nav.html' %} {% load static %}{% block title %}<title>
+{% extends 'navs/customer-nav.html' %} {% load static %}{% load humanize %}
+{% block title %}<title>
   Shop !t - {{product.created_by}} {{product.name}}
 </title>
 {% endblock %} {% block content %}
@@ -61,11 +62,11 @@
 
     <div class="">
       {% if product.discount_percentage %}
-      <span>{{product.currency.symbol}}{{product.discount_price}}</span>
-      <span class="discount-precentage">{{product.discount_percentage}}%</span>
-      <p class="price-with-discount">{{product.currency.symbol}}{{product.price}}</p>
+      <span>{{product.currency.symbol}}{{product.discount_price|intcomma }}</span>
+      <span class="discount-precentage">{{product.discount_percentage|intcomma }}%</span>
+      <p class="price-with-discount">{{product.currency.symbol}}{{product.price|intcomma }}</p>
       {% else %}
-      <span><b>{{product.currency.symbol}}{{product.price}}</b></span>
+      <span><b>{{product.currency.symbol}}{{product.price|intcomma }}</b></span>
       {% endif %}
     </div>
   
@@ -139,12 +140,12 @@
         <p>
             {% if product.discount_price != product.price %}
               <span>
-                <span style="text-decoration: line-through">{{product.currency.symbol}}{{ product.price }}</span>
-                <span>{{product.currency.symbol}}{{ product.discount_price }}</span>
+                <span style="text-decoration: line-through">{{product.currency.symbol}}{{ product.price|intcomma }}</span>
+                <span>{{product.currency.symbol}}{{ product.discount_price|intcomma }}</span>
               </span>
               {% else %}
             </p>
-            <div>{{product.currency.symbol}}{{ product.price }}</div>
+            <div>{{product.currency.symbol}}{{ product.price|intcomma }}</div>
             {% endif %}
       </div>
     </a>
