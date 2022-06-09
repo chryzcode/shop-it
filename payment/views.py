@@ -1,16 +1,16 @@
-from django.http import HttpRequest, HttpResponse
-from django.shortcuts import get_object_or_404, render
 from django.conf import settings
 from django.contrib import messages
+from django.core import serializers
+from django.http import HttpRequest, HttpResponse
+from django.shortcuts import get_object_or_404, render
 
+from app.models import *
 from cart.cart import *
 from customer.models import Address, Customer
 from order.models import *
-from .models import *
-from app.models import *
 
 from .forms import *
-from django.core import serializers
+from .models import *
 
 json_serializer = serializers.get_serializer("json")()
 

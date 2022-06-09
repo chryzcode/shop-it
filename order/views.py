@@ -1,10 +1,10 @@
 from django.shortcuts import get_object_or_404, redirect, render
 
 from app.models import *
-from .models import *
 from cart.cart import *
 
 from .forms import *
+from .models import *
 
 
 def order(request, coupon_code):

@@ -1,5 +1,7 @@
-from django.db import models
 import uuid
+
+from django.db import models
+
 from account.models import *
 from app.models import *
 
