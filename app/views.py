@@ -421,8 +421,10 @@ def store_orders(request):
     if request.user.store_staff == True:
         store = Store.objects.get(store_name=store_staff.objects.get(user=request.user).store)
     orders = Order.objects.filter(store=store)
-    print(orders)
-    payments = Payment.objects.filter(store=store.id)
+    if Payment.objects.filter(store=store.id, order__in=orders).exists():
+        payments = Payment.objects.get(store=store.id, order__in=orders)
+    else:
+        payments = None
     return render(request, "store/store-order.html", {"orders": orders, "payments": payments})
 
 @login_required(login_url="/account/login/")
