@@ -181,8 +181,9 @@ def edit_product(request, slug):
 @login_required(login_url="/account/login/")
 def delete_product(request, slug):
     if request.user.store_creator == True:
+        store = Store.objects.get(store_name=request.user.store_name)
         product = get_object_or_404(
-            Product, slug=slug, created_by=request.user.store_name
+            Product, slug=slug, created_by=store.id
         )
         product.delete()
         return redirect("app:store_products")
