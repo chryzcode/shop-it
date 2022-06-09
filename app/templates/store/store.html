@@ -1,4 +1,4 @@
-{% extends 'navs/customer-nav.html' %} {% load static %} {% block title %}
+{% extends 'navs/customer-nav.html' %} {% load humanize %} {% load static %} {% block title %}
 <title>{{store.store_name}}</title> {%endblock%} {% block content %}
 <div class="store-page-container">
   <div>
@@ -19,12 +19,12 @@
             <p>
               {% if product.discount_price != product.price %}
               <span>
-                <span style="text-decoration: line-through">{{product.currency.symbol}}{{ product.price }}</span>
-                <span>{{product.currency.symbol}}{{ product.discount_price }}</span>
+                <span style="text-decoration: line-through">{{product.currency.symbol}}{{ product.price|intcomma }}</span>
+                <span>{{product.currency.symbol}}{{ product.discount_price|intcomma }}</span>
               </span>
               {% else %}
             </p>
-            <div>{{product.currency.symbol}}{{ product.price }}</div>
+            <div>{{product.currency.symbol}}{{ product.price|intcomma }}</div>
             {% endif %}
           </div>
         </a>

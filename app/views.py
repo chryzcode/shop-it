@@ -151,9 +151,11 @@ def create_product(request):
 @login_required(login_url="/account/login/")
 def edit_product(request, slug):
     if request.user.store_creator == True:
-        store = request.user.store_name
+        store = Store.objects.get(store_name=request.user.store_name)
     else:
-        store = store_staff.objects.get(user=request.user).store
+        store = Store.objects.get(
+            store_name=store_staff.objects.get(user=request.user).store
+        )
     product = get_object_or_404(Product, slug=slug, created_by=store)
     form = ProductForm(instance=product)
     categories = Category.objects.filter(created_by=store)
@@ -162,7 +164,7 @@ def edit_product(request, slug):
         form = ProductForm(request.POST, request.FILES, instance=product)
         if form.is_valid():
             product = form.save(commit=False)
-            product.created_by = store
+            product.created_by = store.id
             product.save()
             return redirect(
                 "app:product_detail",
