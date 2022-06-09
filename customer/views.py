@@ -347,4 +347,4 @@ def customer_orders(request, slugified_store_name):
         payment = Payment.objects.get(user=request.user, store=store, order__in=orders)
     else:
         payment = None
-    return render(request, "customer/customer-order.html", {"orders": orders, "payment": payment, "store": store})
+    return render(request, "customer/customer-order.html", {"orders": orders, "payment": payment, "store": store, "customer": customer})

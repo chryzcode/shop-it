@@ -24,7 +24,7 @@
             {% elif payment.order.user %}
             {{payment.order.user.full_name}}
             {% else %}
-            Non user/ customer
+           {{customer.full_name}}
             {% endif %}
           </td>
           <td>
@@ -33,7 +33,7 @@
             {% elif payment.email %}
             {{ payment.email}}
             {% else %}
-            Non user/ customer
+            {{customer.email}}
             {% endif %}
           </td>
           <td> 
