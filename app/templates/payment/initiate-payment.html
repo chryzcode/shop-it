@@ -89,10 +89,10 @@
         <p>{{ payment_form.shipping_method.errors }}</p>
         {% for shipping_method in shipping_methods %}
         <div class="radio-form">
-          <input type="radio" name="shipping_method" id="{{shipping_method.id}}" value="{{shipping_method.price}}" />
+          <input type="radio" name="shipping_method" id="{{shipping_method.id}}" value="{{shipping_method.id}}" class="{{shipping_method.price}}"  />
           <label for="{{shipping_method}}"
             ><span>{{shipping_method.location}}</span>
-            <span>{{store.currency.symbol}}{{shipping_method.price|intcomma}}</span></label
+            <span>{{store.currency.symbol}}<span class="shipping_method_price" id="{{shipping_method.id}}">{{shipping_method.price|intcomma}}</span></span></label
           >
         </div>
         {% endfor %}
@@ -108,14 +108,16 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="https://geodata.solutions/includes/countrystatecity.js"></script>
 <script>
+
 $( document ).ready(function() {
 
+    
+
     $("input[name='shipping_method']").on('change', function(event) {
-        var result = $(this).val();
+       var shipping_method_price = $(this).attr('class');
         var order_amount = "{{order.amount}}";
-        var total = parseInt(order_amount) + parseInt(result);
+        var total = parseInt(order_amount) + parseInt(shipping_method_price);
         var total = total.toLocaleString("en-US");
-        console.log(total);
          $('#result').html(total);
     });
 });
