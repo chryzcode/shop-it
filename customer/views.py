@@ -178,39 +178,42 @@ def customer_product_detail(request, slugified_store_name, slug):
         {"product": product, "category_product": category_product, "store": store},
     )
 
-@login_required(login_url="/account/login/")
-def customer_profile(request, slugified_store_name):
-    store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
-    if request.user in store.customers.all():
-        account = Customer.objects.get(store=store, email=request.user.email)
-        if account:
-            userprofileform = UserProfileForm(instance=account)
-            if request.method == "POST":
-                userprofileform = UserProfileForm(
-                    request.POST, request.FILES, instance=account
-                )
-                if userprofileform.is_valid():
-                    userprofileform.save()
-                    return redirect("/")
 
-            return render(
-                request,
-                "customer/customer-profile.html",
-                {
-                    "userprofileform": userprofileform,
-                    "account": account,
-                    "store": store,
-                },
-            )
+def customer_profile(request, slugified_store_name):
+    if request.user.is_autheticated:
+        store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
+        if request.user in store.customers.all():
+            account = Customer.objects.get(store=store, email=request.user.email)
+            if account:
+                userprofileform = UserProfileForm(instance=account)
+                if request.method == "POST":
+                    userprofileform = UserProfileForm(
+                        request.POST, request.FILES, instance=account
+                    )
+                    if userprofileform.is_valid():
+                        userprofileform.save()
+                        return redirect("/")
+
+                return render(
+                    request,
+                    "customer/customer-profile.html",
+                    {
+                        "userprofileform": userprofileform,
+                        "account": account,
+                        "store": store,
+                    },
+                )
+            else:
+                return redirect(
+                    "customer:customer_login", slugified_store_name=slugified_store_name
+                )
         else:
+            logout(request)
             return redirect(
                 "customer:customer_login", slugified_store_name=slugified_store_name
             )
     else:
-        logout(request)
-        return redirect(
-            "customer:customer_login", slugified_store_name=slugified_store_name
-        )
+        return redirect("customer:customer_login", slugified_store_name=slugified_store_name)
 
 
 def customer_wishlist(request, slugified_store_name):
