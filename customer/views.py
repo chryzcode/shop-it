@@ -123,6 +123,9 @@ def existing_user_customer_register(request, slugified_store_name):
     form = ExistingUserCustomerForm
     store = Store.objects.get(slugified_store_name=slugified_store_name)
     slugified_store_name = store.slugified_store_name
+    if request.user.is_authenticated:
+        logout(request)
+        return redirect('customer:existing_user_customer_register', slugified_store_name=slugified_store_name)
     if request.method == "POST":
         form = ExistingUserCustomerForm(request.POST)
         if form.is_valid():
