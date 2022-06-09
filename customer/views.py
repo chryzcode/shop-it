@@ -305,7 +305,7 @@ def set_default_address(request, slugified_store_name, id):
 
 
 def customer_add_wishlist(request, slug):
-    if request.user.is_authenticated:``
+    if request.user.is_authenticated:
         user = request.user
         product = get_object_or_404(Product, slug=slug)
         store = get_object_or_404(Store, store_name=product.created_by)
