@@ -19,10 +19,10 @@
         {% for order in orders %}
         <tr class="table-rows">
           <td><a href="{% url 'app:store_order_detail' order.pk %}">{{order.id|truncatechars:12}}</a></td>
-          <td> {% if payment.order.user %}
-            {{ order.user.full_name }}
-            {% elif payment.full_name %}
-            {{payment.full_name}}
+          <td> {% if payment.full_name %}
+            {{ payment.full_name }}
+            {% elif payment.order.user %}
+            {{payment.order.user.full_name}}
             {% else %}
             Non user/ customer
             {% endif %}
