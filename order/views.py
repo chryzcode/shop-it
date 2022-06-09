@@ -47,6 +47,8 @@ def order(request, coupon_code):
             amount=amount,
             quantity=quantity,
             coupon=coupon,
+            currency_symbol=currency_symbol,
+            currency_code=currency_code,
         )
         order_id = order.id
         for item in cart:

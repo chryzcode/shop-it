@@ -20,7 +20,7 @@ class Order(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     coupon = models.BooleanField(default=False)
     currency_symbol = models.CharField(max_length=10)
-    currency_name = models.CharField(max_length=50)
+    currency_code = models.CharField(max_length=50)
     
 
     class Meta:
