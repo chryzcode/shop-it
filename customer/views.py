@@ -341,9 +341,10 @@ def delete_account(request, slugified_store_name):
 def customer_orders(request, slugified_store_name):
     store = Store.objects.get(slugified_store_name=slugified_store_name)
     customer = Customer.objects.get(email=request.user.email, store=store)
-    orders = Order.objects.filter(customer=customer, store=store)
-    if Payment.objects.filter(customer=customer, store=store, order__in=orders):
-        payment = Payment.objects.get(customer=customer, store=store, order__in=orders)
+    orders = Order.objects.filter(user=request.user, store=store)
+    print(orders)
+    if Payment.objects.filter(user=request.user, store=store, order__in=orders):
+        payment = Payment.objects.get(user=request.user, store=store, order__in=orders)
     else:
         payment = None
-    return render(request, "customer/customer-order.html", {"orders": orders, "payment": payment})
+    return render(request, "customer/customer-order.html", {"orders": orders, "payment": payment, "store": store})

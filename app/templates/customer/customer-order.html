@@ -17,23 +17,34 @@
             <th>Billing Status</th>
           </tr>
           {% for order in orders %}
-        {% for payment in payments %}
           <tr class="table-rows">
-            <td><a href="">{{order.id|truncatechars:12}}</a></td>
-          <td> {% if order.user %}
-            {{ order.user.full_name }}
+            <td><a href="{% url 'app:store_order_detail' order.pk %}">{{order.id|truncatechars:12}}</a></td>
+          <td> {% if payment.full_name %}
+            {{ payment.full_name }}
+            {% elif payment.order.user %}
+            {{payment.order.user.full_name}}
             {% else %}
-            {{payment.full_name}}
+            Non user/ customer
             {% endif %}
           </td>
           <td>
-            {% if order.user %}
+            {% if payment.order.user %}
             {{ order.user.email }}
+            {% elif payment.email %}
+            {{ payment.email}}
             {% else %}
-            {{payment.email}}
+            Non user/ customer
             {% endif %}
           </td>
-          <td>{{payment.currency.symbol}}{{ payment.amount }}</td>
+          <td> 
+            {% if payment.currency %}
+              {{payment.currency.symbol}}
+              {{ payment.amount }}
+            {% else %}
+            {{ order.store.currency.symbol}}
+            {{ order.amount }}
+            {% endif %}         
+          </td>
           <td>{% if order.billing_status == True %}
             Paid
             {% else %}
@@ -42,7 +53,6 @@
           </td>
           </tr>
           {% endfor %}
-        {% endfor %}
         </table>
       </span>
     </div>
