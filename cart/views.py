@@ -16,8 +16,12 @@ def cart_summary(request, slugified_store_name):
     grand_total = ""
     form_feedback = ""
     cart = Cart(request)
-    cart_store_name = cart.get_store_name()
-    cart_store = get_object_or_404(Store, slugified_store_name=slugify(cart_store_name))
+    if  cart.get_store_name():
+        cart_store_name = cart.get_store_name()
+        cart_store = get_object_or_404(Store, slugified_store_name=slugify(cart_store_name))
+    else:
+        cart_store_name = store.store_name
+        cart_store = store
     cart_check = cart.store_check()
     form = UseCouponForm
     expired_coupons = Coupon.objects.all()
