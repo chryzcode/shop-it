@@ -434,7 +434,7 @@ def store_orders(request):
         store = Store.objects.get(store_name=store_staff.objects.get(user=request.user).store)
     orders = Order.objects.filter(store=store)
     if Payment.objects.filter(store=store.id, order__in=orders).exists():
-        payment = Payment.objects.get(store=store.id, order__in=orders)
+        payment = Payment.objects.filter(store=store.id, order__in=orders)
     else:
         payment = None
     return render(request, "store/store-order.html", {"orders": orders, "payment": payment})

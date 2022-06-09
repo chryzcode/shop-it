@@ -376,7 +376,7 @@ def customer_orders(request, slugified_store_name):
         customer = Customer.objects.get(email=request.user.email, store=store)
         orders = Order.objects.filter(user=request.user, store=store)
         if Payment.objects.filter(user=request.user, store=store, order__in=orders):
-            payment = Payment.objects.get(user=request.user, store=store, order__in=orders)
+            payment = Payment.objects.filter(user=request.user, store=store, order__in=orders)
         else:
             payment = None
         return render(request, "customer/customer-order.html", {"orders": orders, "payment": payment, "store": store, "customer": customer})
