@@ -92,9 +92,10 @@ class Product(models.Model):
         default=0,
     )
     wishlist = models.ManyToManyField(User, related_name="wishlist", blank=True)
-    currency = models.ForeignKey(Currency, on_delete=models.SET_NULL, null=True, blank=True)
+    currency = models.ForeignKey(
+        Currency, on_delete=models.SET_NULL, null=True, blank=True
+    )
 
-    # pulral for the table name in the admin page
     class Meta:
         verbose_name_plural = "Products"
         ordering = ("-created",)

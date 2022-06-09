@@ -6,18 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('order', '0010_alter_orderitem_price'),
+        ("order", "0010_alter_orderitem_price"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='order',
-            name='currency_name',
-            field=models.CharField(default='USD', max_length=50),
+            model_name="order",
+            name="currency_name",
+            field=models.CharField(default="USD", max_length=50),
         ),
         migrations.AddField(
-            model_name='order',
-            name='currency_symbol',
-            field=models.CharField(default='$', max_length=10),
+            model_name="order",
+            name="currency_symbol",
+            field=models.CharField(default="$", max_length=10),
         ),
     ]

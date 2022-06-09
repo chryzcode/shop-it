@@ -1,11 +1,14 @@
-
 from django.conf import settings
-from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
-                                        PermissionsMixin)
+from django.contrib.auth.models import (
+    AbstractBaseUser,
+    BaseUserManager,
+    PermissionsMixin,
+)
 from django.core.mail import send_mail
 from django.db import models
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
+
 
 class Currency(models.Model):
     name = models.CharField(max_length=50)
@@ -19,6 +22,7 @@ class Currency(models.Model):
     def __str__(self):
         return self.name
 
+
 class Store(models.Model):
     owner = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="store_owner"
@@ -27,9 +31,15 @@ class Store(models.Model):
     slugified_store_name = models.SlugField(max_length=255, unique=True)
     store_description = models.TextField(max_length=500, blank=True)
     store_image = models.ImageField(upload_to="store-images/", blank=True, null=True)
-    currency = models.ForeignKey(Currency, on_delete=models.SET_NULL, null=True, blank=True)
-    staffs = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="store_staffs", blank=True)
-    customers = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="store_customers", blank=True)
+    currency = models.ForeignKey(
+        Currency, on_delete=models.SET_NULL, null=True, blank=True
+    )
+    staffs = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, related_name="store_staffs", blank=True
+    )
+    customers = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, related_name="store_customers", blank=True
+    )
     facebook = models.CharField(max_length=100, blank=True)
     instagram = models.CharField(max_length=100, blank=True)
     twitter = models.CharField(max_length=100, blank=True)
@@ -45,6 +55,7 @@ class Store(models.Model):
     def __str__(self):
         return self.store_name
 
+
 class CustomAccountManager(BaseUserManager):
     def create_superuser(self, email, store_name, password, **other_fields):
 
@@ -56,7 +67,7 @@ class CustomAccountManager(BaseUserManager):
             raise ValueError("Superuser must be assigned to is_staff=True.")
         if other_fields.get("is_superuser") is not True:
             raise ValueError("Superuser must be assigned to is_superuser=True.")
-       
+
         return self.create_user(email, store_name, password, **other_fields)
 
     def create_user(self, email, store_name, password, **other_fields):
@@ -68,7 +79,9 @@ class CustomAccountManager(BaseUserManager):
         user = self.model(email=email, store_name=store_name, **other_fields)
         user.set_password(password)
         user.save()
-        store = Store.objects.create(owner=user, store_name=store_name, slugified_store_name=slugify(store_name))
+        store = Store.objects.create(
+            owner=user, store_name=store_name, slugified_store_name=slugify(store_name)
+        )
         return user
 
 

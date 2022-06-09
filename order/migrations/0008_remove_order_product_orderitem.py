@@ -7,22 +7,40 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('app', '0002_alter_product_currency'),
-        ('order', '0007_order_coupon'),
+        ("app", "0002_alter_product_currency"),
+        ("order", "0007_order_coupon"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='order',
-            name='product',
+            model_name="order",
+            name="product",
         ),
         migrations.CreateModel(
-            name='OrderItem',
+            name="OrderItem",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('quantity', models.PositiveIntegerField()),
-                ('order', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='order.order')),
-                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='app.product')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("quantity", models.PositiveIntegerField()),
+                (
+                    "order",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="order.order"
+                    ),
+                ),
+                (
+                    "product",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="app.product"
+                    ),
+                ),
             ],
         ),
     ]

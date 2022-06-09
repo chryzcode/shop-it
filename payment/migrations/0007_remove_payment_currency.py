@@ -6,12 +6,12 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('payment', '0006_payment_order'),
+        ("payment", "0006_payment_order"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='payment',
-            name='currency',
+            model_name="payment",
+            name="currency",
         ),
     ]

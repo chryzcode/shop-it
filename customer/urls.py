@@ -10,7 +10,11 @@ urlpatterns = [
         views.customer_register,
         name="customer_register",
     ),
-    path("login/<slug:slugified_store_name>/", views.customer_login, name="customer_login"),
+    path(
+        "login/<slug:slugified_store_name>/",
+        views.customer_login,
+        name="customer_login",
+    ),
     path(
         "logout/<slugified_store_name>/", views.customer_logout, name="customer_logout"
     ),
@@ -68,6 +72,12 @@ urlpatterns = [
     ),
     path("stores/", views.customer_stores, name="customer_stores"),
     path("<slugified_store_name>/delete", views.delete_account, name="delete_account"),
-    path("<slugified_store_name>/orders/", views.customer_orders, name="customer_orders"),
-    path("<slugified_store_name>/order/<uuid:pk>/", views.customer_order_detail, name="customer_order_detail"),
+    path(
+        "<slugified_store_name>/orders/", views.customer_orders, name="customer_orders"
+    ),
+    path(
+        "<slugified_store_name>/order/<uuid:pk>/",
+        views.customer_order_detail,
+        name="customer_order_detail",
+    ),
 ]

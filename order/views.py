@@ -17,8 +17,10 @@ def order(request, coupon_code):
         product = Product.objects.get(id=product_id)
     store = Store.objects.get(store_name=product.store)
     if not store.currency:
-        error = "Store does'nt have a set currency for payment, drop a review for the store"
-        return redirect('cart:cart_summary', store.slugified_store_name)
+        error = (
+            "Store does'nt have a set currency for payment, drop a review for the store"
+        )
+        return redirect("cart:cart_summary", store.slugified_store_name)
     else:
         if request.user.is_authenticated:
             user = request.user
@@ -57,7 +59,5 @@ def order(request, coupon_code):
                 product=item["product"],
                 quantity=item["qty"],
                 price=item["price"],
-            ) 
-        return redirect("payment:initiate_payment", order.id
-                )
-        
+            )
+        return redirect("payment:initiate_payment", order.id)

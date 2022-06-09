@@ -16,9 +16,11 @@ def cart_summary(request, slugified_store_name):
     grand_total = ""
     form_feedback = ""
     cart = Cart(request)
-    if  cart.get_store_name():
+    if cart.get_store_name():
         cart_store_name = cart.get_store_name()
-        cart_store = get_object_or_404(Store, slugified_store_name=slugify(cart_store_name))
+        cart_store = get_object_or_404(
+            Store, slugified_store_name=slugify(cart_store_name)
+        )
     else:
         cart_store_name = store.store_name
         cart_store = store
@@ -32,9 +34,11 @@ def cart_summary(request, slugified_store_name):
         if int(minutes) > coupon.expiry_date:
             coupon.delete()
     if store.currency:
-            store_currency_symbol = store.currency.symbol
+        store_currency_symbol = store.currency.symbol
     else:
-        error = "Store does'nt have a set currency for payment, drop a review for the store"
+        error = (
+            "Store does'nt have a set currency for payment, drop a review for the store"
+        )
         return render(
             request,
             "cart/cart-summary.html",
@@ -44,7 +48,7 @@ def cart_summary(request, slugified_store_name):
                 "grand_total": grand_total,
                 "form_feedback": form_feedback,
                 "store": store,
-                "error":error,
+                "error": error,
                 "cart_check": cart_check,
                 "coupon_code": coupon_code,
             },

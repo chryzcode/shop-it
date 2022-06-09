@@ -92,7 +92,7 @@ def customer_login(request, slugified_store_name):
         email = request.POST.get("email")
         password = request.POST.get("password")
         if User.objects.filter(email=email).exists():
-            user = User.objects.get(email=email)     
+            user = User.objects.get(email=email)
             if user.store_name == store.store_name:
                 messages.error(request, "You can't be a customer of your store.")
             if user:
@@ -125,7 +125,10 @@ def existing_user_customer_register(request, slugified_store_name):
     slugified_store_name = store.slugified_store_name
     if request.user.is_authenticated:
         logout(request)
-        return redirect('customer:existing_user_customer_register', slugified_store_name=slugified_store_name)
+        return redirect(
+            "customer:existing_user_customer_register",
+            slugified_store_name=slugified_store_name,
+        )
     if request.method == "POST":
         form = ExistingUserCustomerForm(request.POST)
         if form.is_valid():
@@ -158,6 +161,7 @@ def existing_user_customer_register(request, slugified_store_name):
         "customer/existing-user-register.html",
         {"store": store, "slugified_store_name": slugified_store_name, "form": form},
     )
+
 
 @login_required(login_url="/account/login/")
 def customer_logout(request, slugified_store_name):
@@ -213,7 +217,9 @@ def customer_profile(request, slugified_store_name):
                 "customer:customer_login", slugified_store_name=slugified_store_name
             )
     else:
-        return redirect("customer:customer_login", slugified_store_name=slugified_store_name)
+        return redirect(
+            "customer:customer_login", slugified_store_name=slugified_store_name
+        )
 
 
 def customer_wishlist(request, slugified_store_name):
@@ -227,7 +233,10 @@ def customer_wishlist(request, slugified_store_name):
             {"wishlist": wishlist, "store": store},
         )
     else:
-        return redirect("customer:customer_login", slugified_store_name=slugified_store_name)
+        return redirect(
+            "customer:customer_login", slugified_store_name=slugified_store_name
+        )
+
 
 def address_list(request, slugified_store_name):
     if request.user.is_authenticated:
@@ -240,7 +249,9 @@ def address_list(request, slugified_store_name):
             {"address_list": address_list, "store": store},
         )
     else:
-        return redirect("customer:customer_login", slugified_store_name=slugified_store_name)
+        return redirect(
+            "customer:customer_login", slugified_store_name=slugified_store_name
+        )
 
 
 def create_address(request, slugified_store_name):
@@ -258,13 +269,15 @@ def create_address(request, slugified_store_name):
                     address_form.default = False
                     address_form.save()
                     return redirect(
-                        "customer:address_list", slugified_store_name=slugified_store_name
+                        "customer:address_list",
+                        slugified_store_name=slugified_store_name,
                     )
                 else:
                     address_form.default = True
                     address_form.save()
                     return redirect(
-                        "customer:address_list", slugified_store_name=slugified_store_name
+                        "customer:address_list",
+                        slugified_store_name=slugified_store_name,
                     )
         return render(
             request,
@@ -272,7 +285,10 @@ def create_address(request, slugified_store_name):
             {"address_form": address_form, "store": store},
         )
     else:
-        return redirect("customer:customer_login", slugified_store_name=slugified_store_name)
+        return redirect(
+            "customer:customer_login", slugified_store_name=slugified_store_name
+        )
+
 
 def edit_address(request, slugified_store_name, id):
     if request.user.is_authenticated:
@@ -293,7 +309,10 @@ def edit_address(request, slugified_store_name, id):
             {"address_form": address_form, "store": store},
         )
     else:
-        return redirect("customer:customer_login", slugified_store_name=slugified_store_name)
+        return redirect(
+            "customer:customer_login", slugified_store_name=slugified_store_name
+        )
+
 
 def delete_address(request, slugified_store_name, id):
     if request.user.is_authenticated:
@@ -301,9 +320,13 @@ def delete_address(request, slugified_store_name, id):
         customer = Customer.objects.get(email=request.user.email)
         address = get_object_or_404(Address, id=id, customer=customer)
         address.delete()
-        return redirect("customer:address_list", slugified_store_name=slugified_store_name)
+        return redirect(
+            "customer:address_list", slugified_store_name=slugified_store_name
+        )
     else:
-        return redirect("customer:customer_login", slugified_store_name=slugified_store_name)
+        return redirect(
+            "customer:customer_login", slugified_store_name=slugified_store_name
+        )
 
 
 def set_default_address(request, slugified_store_name, id):
@@ -313,9 +336,13 @@ def set_default_address(request, slugified_store_name, id):
         Address.objects.filter(customer=customer, default=True).update(default=False)
         Address.objects.filter(id=id, customer=customer).update(default=True)
         previous_url = request.META.get("HTTP_REFERER")
-        return redirect("customer:address_list", slugified_store_name=slugified_store_name)
+        return redirect(
+            "customer:address_list", slugified_store_name=slugified_store_name
+        )
     else:
-        return redirect("customer:customer_login", slugified_store_name=slugified_store_name)
+        return redirect(
+            "customer:customer_login", slugified_store_name=slugified_store_name
+        )
 
 
 def customer_add_wishlist(request, slug):
@@ -324,9 +351,13 @@ def customer_add_wishlist(request, slug):
         product = get_object_or_404(Product, slug=slug)
         store = get_object_or_404(Store, store_name=product.store.store_name)
         product.wishlist.add(user)
-        return redirect("customer:customer_wishlist", slugified_store_name=slugify(store))
+        return redirect(
+            "customer:customer_wishlist", slugified_store_name=slugify(store)
+        )
     else:
-        return redirect("customer:customer_login", slugified_store_name=slugified_store_name)
+        return redirect(
+            "customer:customer_login", slugified_store_name=slugified_store_name
+        )
 
 
 def customer_remove_wishlist(request, slug):
@@ -339,7 +370,9 @@ def customer_remove_wishlist(request, slug):
             "app:product_detail", slug=product.slug, slugified_store_name=slugify(store)
         )
     else:
-        return redirect("customer:customer_login", slugified_store_name=slugified_store_name)
+        return redirect(
+            "customer:customer_login", slugified_store_name=slugified_store_name
+        )
 
 
 def customer_stores(request):
@@ -351,7 +384,9 @@ def customer_stores(request):
             stores = Store.objects.filter(customers=customer)
             return render(request, "customer/customer-stores.html", {"stores": stores})
     else:
-        return redirect("customer:customer_login", slugified_store_name=slugified_store_name)
+        return redirect(
+            "customer:customer_login", slugified_store_name=slugified_store_name
+        )
 
 
 def delete_account(request, slugified_store_name):
@@ -368,7 +403,10 @@ def delete_account(request, slugified_store_name):
                 request.user.delete()
                 return redirect("/")
     else:
-        return redirect("customer:customer_login", slugified_store_name=slugified_store_name)
+        return redirect(
+            "customer:customer_login", slugified_store_name=slugified_store_name
+        )
+
 
 def customer_orders(request, slugified_store_name):
     if request.user.is_authenticated:
@@ -376,12 +414,25 @@ def customer_orders(request, slugified_store_name):
         customer = Customer.objects.get(email=request.user.email, store=store)
         orders = Order.objects.filter(user=request.user, store=store)
         if Payment.objects.filter(user=request.user, store=store, order__in=orders):
-            payment = Payment.objects.filter(user=request.user, store=store, order__in=orders)
+            payment = Payment.objects.filter(
+                user=request.user, store=store, order__in=orders
+            )
         else:
             payment = None
-        return render(request, "customer/customer-order.html", {"orders": orders, "payment": payment, "store": store, "customer": customer})
+        return render(
+            request,
+            "customer/customer-order.html",
+            {
+                "orders": orders,
+                "payment": payment,
+                "store": store,
+                "customer": customer,
+            },
+        )
     else:
-        return redirect("customer:customer_login", slugified_store_name=slugified_store_name)
+        return redirect(
+            "customer:customer_login", slugified_store_name=slugified_store_name
+        )
 
 
 def customer_order_detail(request, slugified_store_name, pk):
@@ -394,6 +445,18 @@ def customer_order_detail(request, slugified_store_name, pk):
             payment = Payment.objects.get(user=request.user, store=store, order=order)
         else:
             payment = None
-        return render(request, "customer/customer-order-detail.html", {"order": order, "order_items": order_items, "payment": payment, "store": store, "customer": customer})
+        return render(
+            request,
+            "customer/customer-order-detail.html",
+            {
+                "order": order,
+                "order_items": order_items,
+                "payment": payment,
+                "store": store,
+                "customer": customer,
+            },
+        )
     else:
-        return redirect("customer:customer_login", slugified_store_name=slugified_store_name)
+        return redirect(
+            "customer:customer_login", slugified_store_name=slugified_store_name
+        )

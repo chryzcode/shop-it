@@ -49,10 +49,12 @@ def account_login(request):
 
     return render(request, "account/registration/login.html", context)
 
+
 @login_required(login_url="/account/login/")
 def account_logout(request):
     logout(request)
     return redirect("/")
+
 
 @login_required(login_url="/account/login/")
 def account_delete(request):
@@ -110,6 +112,7 @@ def account_activate(request, uidb64, token):
     else:
         return render(request, "error-pages/404-page.html")
 
+
 @login_required(login_url="/account/login/")
 def user_profile(request):
     account = request.user
@@ -125,6 +128,7 @@ def user_profile(request):
         "account/user/user-profile.html",
         {"userprofileform": userprofileform, "account": account},
     )
+
 
 @login_required(login_url="/account/login/")
 def store_account(
@@ -159,6 +163,7 @@ def store_account(
         )
     else:
         return redirect("account:user_profile")
+
 
 @login_required(login_url="/account/login/")
 def store_staff_page(request):
@@ -224,6 +229,7 @@ def store_staff_register(request):
         request, "account/registration/store-staff-register.html", {"form": form}
     )
 
+
 @login_required(login_url="/account/login/")
 def existing_store_staff(request):
     form = ExistingStoreStaffForm
@@ -285,6 +291,7 @@ def existing_store_staff(request):
         request, "account/registration/add-store-staff-exist.html", {"form": form}
     )
 
+
 @login_required(login_url="/account/login/")
 def delete_store_staff(request, pk):
     if request.user.store_creator == True:
@@ -306,6 +313,7 @@ def delete_store_staff(request, pk):
         error = "You are not authorized"
         return render(request, "store/store-staff-page.html", {"error": error})
 
+
 @login_required(login_url="/account/login/")
 def staff_stores(request):
     stores = Store.objects.filter(staffs=request.user)
@@ -320,6 +328,7 @@ def staff_stores(request):
     error = "You are not a staff of any store"
     return render(request, "account/registration/login.html", {"error": error})
 
+
 @login_required(login_url="/account/login/")
 def select_store(request, slugified_store_name):
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
@@ -328,6 +337,7 @@ def select_store(request, slugified_store_name):
             store=store.store_name
         )
         return redirect("/")
+
 
 @login_required(login_url="/account/login/")
 def create_store(request):
@@ -349,6 +359,7 @@ def create_store(request):
                 return redirect("/")
     return render(request, "account/registration/add-store.html", {"form": form})
 
+
 @login_required(login_url="/account/login/")
 def shipping_method_list(request):
     if request.user.store_creator == True:
@@ -361,6 +372,7 @@ def shipping_method_list(request):
         "store/all-shipping-method.html",
         {"shipping_methods": shipping_methods, "store": store},
     )
+
 
 @login_required(login_url="/account/login/")
 def add_shipping_method(request):
@@ -398,6 +410,7 @@ def add_shipping_method(request):
             request, "store/shipping-method.html", {"error": error, "form": form}
         )
 
+
 @login_required(login_url="/account/login/")
 def edit_shipping_method(request, pk):
     if request.user.store_creator == True:
@@ -426,6 +439,7 @@ def edit_shipping_method(request, pk):
         return render(
             request, "store/shipping-method.html", {"error": error, "form": form}
         )
+
 
 @login_required(login_url="/account/login/")
 def delete_shipping_method(request, pk):

@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('app', '0002_alter_product_currency'),
+        ("app", "0002_alter_product_currency"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='product',
-            name='price',
+            model_name="product",
+            name="price",
             field=models.PositiveIntegerField(default=1),
         ),
     ]

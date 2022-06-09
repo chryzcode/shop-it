@@ -7,14 +7,18 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('account', '0002_alter_bank_info_currency_alter_store_currency'),
-        ('payment', '0003_alter_payment_store'),
+        ("account", "0002_alter_bank_info_currency_alter_store_currency"),
+        ("payment", "0003_alter_payment_store"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='payment',
-            name='currency',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='account.currency'),
+            model_name="payment",
+            name="currency",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                to="account.currency",
+            ),
         ),
     ]
