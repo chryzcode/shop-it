@@ -1,4 +1,4 @@
-{% extends 'navs/store-nav.html' %} {% load static %}{% block title %}<title>
+{% extends 'navs/store-nav.html' %} {% load static %}{% load humanize %}{% block title %}<title>
   Shop !t - {{request.user.store_name }} Order details
 </title>
 {% endblock %} {% block content %}
@@ -33,7 +33,7 @@
               <tr class="table-rows">
                 <td>{{order_item.product}}</td>
                 <td>{{order_item.quantity}}</td>
-                <td>{% if payment.currency %}{{payment.currency.symbol}}{% else %}{{ order.store.currency.symbol}}{% endif %}{{order_item.price}}</td>
+                <td>{{order.currency_symbol}}{{order_item.price|intcomma}}</td>
                 <td>
                   {% if order_item.product.discount_percentage > 1 %}
                 True
@@ -64,11 +64,11 @@
 
         <div class="order-detail-products-block">
           <div class="order-payments-amount-seg">
-          <span><span>Order: </span> <span>{% if payment.currency %}{{payment.currency.symbol}}{% else %}{{ order.store.currency.symbol}}{% endif %}{{order.amount}}</span></span>
+          <span><span>Order: </span> <span>{{order.currency_symbol}}{{order.amount|intcomma}}</span></span>
           <span><span>Logistics: </span>
               <span>
                 {% if payment %}
-              {{payment.currency.symbol}}{{payment.shipping_method.price}}
+              {{order.currency_symbol}}{{payment.shipping_method.price|intcomma}}
               {% else %}
               Not paid yet
               {% endif %}
@@ -76,7 +76,7 @@
             </span>
 
           <span>
-              <span>Total: </span><span>{% if payment.currency %}{{payment.currency.symbol}}{% else %}{{ order.store.currency.symbol}}{% endif %}{% if payment %}{{ payment.amount}}{% else %}{{order.amount}}{% endif %}
+              <span>Total: </span><span>{{order.currency_symbol}}{% if payment %}{{ payment.amount|intcomma}}{% else %}{{order.amount|intcomma}}{% endif %}
             </span>
           </span>
 

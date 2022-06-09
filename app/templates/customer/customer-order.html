@@ -37,11 +37,10 @@
             {% endif %}
           </td>
           <td> 
+            {{order.currency_symbol}}
             {% if payment.currency %}
-              {{payment.currency.symbol}}
               {{ payment.amount|intcomma}}
             {% else %}
-            {{ order.store.currency.symbol}}
             {{ order.amount|intcomma }}
             {% endif %}         
           </td>
