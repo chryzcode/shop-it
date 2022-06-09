@@ -74,9 +74,7 @@ class Product(models.Model):
     image_3 = models.ImageField(upload_to="product-images/", null=True, blank=True)
     image_4 = models.ImageField(upload_to="product-images/", null=True, blank=True)
     slug = models.SlugField(max_length=255, unique=True)
-    price = models.DecimalField(
-        max_digits=6, decimal_places=2, validators=[MinValueValidator(0)]
-    )
+    price = models.PositiveIntegerField(default=1)
     in_stock = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now_add=True)
