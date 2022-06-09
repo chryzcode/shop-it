@@ -1,4 +1,4 @@
-{% extends 'navs/store-nav.html' %} {% load static %}{% block title %}<title>
+{% extends 'navs/store-nav.html' %}{% load humanize %} {% load static %}{% block title %}<title>
   Shop !t - Store Orders
 </title>
 {% endblock %} {% block content %}
@@ -39,10 +39,10 @@
           <td> 
             {% if payment.currency %}
               {{payment.currency.symbol}}
-              {{ payment.amount }}
+              {{ payment.amount|intcomma }}
             {% else %}
             {{ order.store.currency.symbol}}
-            {{ order.amount }}
+            {{ order.amount|intcomma }}
             {% endif %}
               
           </td>

@@ -1,4 +1,4 @@
-{% extends 'navs/store-nav.html' %} {% load static %}{% block title %}<title>
+{% extends 'navs/store-nav.html' %} {% load static %}{% load humanize %}{% block title %}<title>
   Shop !t - {{request.user }} WishList
 </title>
 {% endblock %} {% block content %}
@@ -18,7 +18,7 @@
         {% for product in wishlist %}
         <tr class="table-rows">
           <td><a href="{{product.get_absolute_url}}">{{ product.name }}</a></td>
-          <td>{{product.currency.symbol}}{{ product.price }}</td>
+          <td>{{product.currency.symbol}}{{ product.price|intcomma }}</td>
           <td>{{ product.category }}</td>
           <td>{{ product.availability }}</td>
           <td>

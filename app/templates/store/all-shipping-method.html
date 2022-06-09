@@ -1,4 +1,4 @@
-{% extends 'navs/store-nav.html' %} {% load static %}{% block title %}<title>
+{% extends 'navs/store-nav.html' %} {% load static %}{% load humanize %}{% block title %}<title>
   Shop !t - {{store }} Shipping Method
 </title>
 {% endblock %} {% block content %}
@@ -20,7 +20,7 @@
         {% for shipping_method in shipping_methods %}
         <tr class="table-rows">
           <td>{{ shipping_method.location }}</td>
-          <td>{{store.currency.symbol}}{{ shipping_method.price }}</td>
+          <td>{{store.currency.symbol}}{{ shipping_method.price|intcomma }}</td>
           {% if request.user.store_creator == True %}
           <td>
             <button type="button" class="update-btn">
