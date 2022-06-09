@@ -209,56 +209,64 @@ def customer_profile(request, slugified_store_name):
             "customer:customer_login", slugified_store_name=slugified_store_name
         )
 
-@login_required(login_url="/account/login/")
+
 def customer_wishlist(request, slugified_store_name):
-    store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
-    user = request.user
-    wishlist = Product.objects.filter(wishlist=user)
-    return render(
-        request,
-        "customer/customer-wishlist.html",
-        {"wishlist": wishlist, "store": store},
-    )
+    if request.user.is_authenticated:
+        store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
+        user = request.user
+        wishlist = Product.objects.filter(wishlist=user)
+        return render(
+            request,
+            "customer/customer-wishlist.html",
+            {"wishlist": wishlist, "store": store},
+        )
+    else:
+        return redirect("customer:customer_login", slugified_store_name=slugified_store_name)
 
-@login_required(login_url="/account/login/")
 def address_list(request, slugified_store_name):
-    store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
-    customer = Customer.objects.get(email=request.user.email)
-    address_list = Address.objects.filter(customer=customer).order_by("-default")
-    return render(
-        request,
-        "customer/address-list.html",
-        {"address_list": address_list, "store": store},
-    )
+    if request.user.is_authenticated:
+        store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
+        customer = Customer.objects.get(email=request.user.email)
+        address_list = Address.objects.filter(customer=customer).order_by("-default")
+        return render(
+            request,
+            "customer/address-list.html",
+            {"address_list": address_list, "store": store},
+        )
+    else:
+        return redirect("customer:customer_login", slugified_store_name=slugified_store_name)
 
-@login_required(login_url="/account/login/")
+
 def create_address(request, slugified_store_name):
-    store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
-    customer = Customer.objects.get(email=request.user.email)
-    default_address = Address.objects.filter(customer=customer, default=True)
-    address_form = AddressForm()
-    if request.method == "POST":
-        address_form = AddressForm(data=request.POST)
-        if address_form.is_valid():
-            address_form = address_form.save(commit=False)
-            address_form.customer = customer
-            if default_address:
-                address_form.default = False
-                address_form.save()
-                return redirect(
-                    "customer:address_list", slugified_store_name=slugified_store_name
-                )
-            else:
-                address_form.default = True
-                address_form.save()
-                return redirect(
-                    "customer:address_list", slugified_store_name=slugified_store_name
-                )
-    return render(
-        request,
-        "customer/address-create.html",
-        {"address_form": address_form, "store": store},
-    )
+    if request.user.is_aythenticated:
+        store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
+        customer = Customer.objects.get(email=request.user.email)
+        default_address = Address.objects.filter(customer=customer, default=True)
+        address_form = AddressForm()
+        if request.method == "POST":
+            address_form = AddressForm(data=request.POST)
+            if address_form.is_valid():
+                address_form = address_form.save(commit=False)
+                address_form.customer = customer
+                if default_address:
+                    address_form.default = False
+                    address_form.save()
+                    return redirect(
+                        "customer:address_list", slugified_store_name=slugified_store_name
+                    )
+                else:
+                    address_form.default = True
+                    address_form.save()
+                    return redirect(
+                        "customer:address_list", slugified_store_name=slugified_store_name
+                    )
+        return render(
+            request,
+            "customer/address-create.html",
+            {"address_form": address_form, "store": store},
+        )
+    else:
+        return redirect("customer:customer_login", slugified_store_name=slugified_store_name)
 
 def edit_address(request, slugified_store_name, id):
     if request.user.is_authenticated:
