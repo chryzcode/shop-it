@@ -438,6 +438,7 @@ def store_orders(request):
         payment = Payment.objects.filter(store=store.id, order__in=orders)
     else:
         payment = None
+    print(payment)
     return render(request, "store/store-order.html", {"orders": orders, "payment": payment})
 
 @login_required(login_url="/account/login/")
