@@ -342,5 +342,8 @@ def customer_orders(request, slugified_store_name):
     store = Store.objects.get(slugified_store_name=slugified_store_name)
     customer = Customer.objects.get(email=request.user.email, store=store)
     orders = Order.objects.filter(customer=customer, store=store)
-    payments = Payment.objects.filter(customer=customer, store=store)
-    return render(request, "customer/customer-order.html", {"orders": orders, "payments": payments})
+    if Payment.objects.filter(customer=customer, store=store, order__in=orders):
+        payment = Payment.objects.get(customer=customer, store=store, order__in=orders)
+    else:
+        payment = None
+    return render(request, "customer/customer-order.html", {"orders": orders, "payment": payment})
