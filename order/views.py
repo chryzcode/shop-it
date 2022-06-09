@@ -9,6 +9,8 @@ from .forms import *
 
 def order(request, coupon_code):
     cart = Cart(request)
+    currency_symbol = cart.get_currency_symbol()
+    currency_code = cart.get_currency_code()
     products = cart.get_cart_products()
     for product in products:
         product_id = product.id

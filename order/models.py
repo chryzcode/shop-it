@@ -19,6 +19,8 @@ class Order(models.Model):
     store = models.ForeignKey(Store, on_delete=models.CASCADE)
     date_created = models.DateTimeField(auto_now_add=True)
     coupon = models.BooleanField(default=False)
+    currency_symbol = models.CharField(max_length=10)
+    currency_name = models.CharField(max_length=50)
     
 
     class Meta:

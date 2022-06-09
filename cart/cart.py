@@ -21,6 +21,7 @@ class Cart:
                     product.price - (product.price * product.discount_percentage / 100)
                 ),
                 "qty": int(qty),
+                "currency": str(product.currency.symbol),
             }
         self.save()
 
@@ -87,7 +88,7 @@ class Cart:
         else:
             return False
 
-    #get store name of product
+
     def get_store_name(self):
         product_ids = self.cart.keys()
         products = Product.objects.filter(id__in=product_ids)
@@ -103,6 +104,20 @@ class Cart:
         product_ids = self.cart.keys()
         products = Product.objects.filter(id__in=product_ids)
         return products
+
+    def get_currency_symbol(self):
+        product_ids = self.cart.keys()
+        products = Product.objects.filter(id__in=product_ids)
+        currency = [product.currency.symbol for product in products]
+        if currency:
+            return currency[0]
+
+    def get_currency_code(self):
+        product_ids = self.cart.keys()
+        products = Product.objects.filter(id__in=product_ids)
+        currency = [product.currency.code for product in products]
+        if currency:
+            return currency[0]
 
     def clear(self):
         del self.session["skey"]
