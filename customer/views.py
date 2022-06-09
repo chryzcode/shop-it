@@ -168,9 +168,9 @@ def customer_logout(request, slugified_store_name):
 
 def customer_product_detail(request, slugified_store_name, slug):
     store = Store.objects.get(slugified_store_name=slugified_store_name)
-    product = get_object_or_404(Product, created_by=store.store_name, slug=slug)
+    product = get_object_or_404(Product, store=store, slug=slug)
     category_product = Product.objects.filter(
-        category=product.category, created_by=store.store_name
+        category=product.category, store=store
     ).exclude(id=product.id)[:6]
     return render(
         request,
@@ -322,7 +322,7 @@ def customer_add_wishlist(request, slug):
     if request.user.is_authenticated:
         user = request.user
         product = get_object_or_404(Product, slug=slug)
-        store = get_object_or_404(Store, store_name=product.created_by)
+        store = get_object_or_404(Store, store_name=product.store.store_name)
         product.wishlist.add(user)
         return redirect("customer:customer_wishlist", slugified_store_name=slugify(store))
     else:
@@ -333,7 +333,7 @@ def customer_remove_wishlist(request, slug):
     if request.user.is_authenticated:
         user = request.user
         product = get_object_or_404(Product, slug=slug)
-        store = get_object_or_404(Store, store_name=product.created_by)
+        store = get_object_or_404(Store, store_name=product.store.store_name)
         product.wishlist.remove(user)
         return redirect(
             "app:product_detail", slug=product.slug, slugified_store_name=slugify(store)

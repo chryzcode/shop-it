@@ -197,7 +197,7 @@ def store_admin(request):
 
 def store(request, slugified_store_name):
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
-    products = Product.objects.filter(created_by=store).order_by("-created")
+    products = Product.objects.filter(store=store).order_by("-created")
     return render(request, "store/store.html", {"store": store, "products": products})
 
 @login_required(login_url="/account/login/")
