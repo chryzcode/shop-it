@@ -296,55 +296,71 @@ def set_default_address(request, slugified_store_name, id):
     previous_url = request.META.get("HTTP_REFERER")
     return redirect("customer:address_list", slugified_store_name=slugified_store_name)
 
-@login_required(login_url="/account/login/")
+
 def customer_add_wishlist(request, slug):
-    user = request.user
-    product = get_object_or_404(Product, slug=slug)
-    store = get_object_or_404(Store, store_name=product.created_by)
-    product.wishlist.add(user)
-    return redirect("customer:customer_wishlist", slugified_store_name=slugify(store))
-
-@login_required(login_url="/account/login/")
-def customer_remove_wishlist(request, slug):
-    user = request.user
-    product = get_object_or_404(Product, slug=slug)
-    store = get_object_or_404(Store, store_name=product.created_by)
-    product.wishlist.remove(user)
-    return redirect(
-        "app:product_detail", slug=product.slug, slugified_store_name=slugify(store)
-    )
-
-@login_required(login_url="/account/login/")
-def customer_stores(request):
-    customer = User.objects.get(
-        email=request.user.email, store_creator=False, store_staff=False
-    )
-    if customer:
-        stores = Store.objects.filter(customers=customer)
-        return render(request, "customer/customer-stores.html", {"stores": stores})
-
-@login_required(login_url="/account/login/")
-def delete_account(request, slugified_store_name):
-    store = Store.objects.get(slugified_store_name=slugified_store_name)
-    customer = Customer.objects.get(email=request.user.email, store=store)
-    customer_stores = Store.objects.filter(customers=request.user)
-    if customer:
-        store.customers.remove(customer.user)
-        customer.delete()
-        if customer_stores or request.user.store_creator == True:
-            return redirect("app:store", store.slugified_store_name)
-        else:
-            request.user.delete()
-            return redirect("/")
-
-@login_required(login_url="/account/login/")
-def customer_orders(request, slugified_store_name):
-    store = Store.objects.get(slugified_store_name=slugified_store_name)
-    customer = Customer.objects.get(email=request.user.email, store=store)
-    orders = Order.objects.filter(user=request.user, store=store)
-    print(orders)
-    if Payment.objects.filter(user=request.user, store=store, order__in=orders):
-        payment = Payment.objects.get(user=request.user, store=store, order__in=orders)
+    if request.user.is_authenticated:``
+        user = request.user
+        product = get_object_or_404(Product, slug=slug)
+        store = get_object_or_404(Store, store_name=product.created_by)
+        product.wishlist.add(user)
+        return redirect("customer:customer_wishlist", slugified_store_name=slugify(store))
     else:
-        payment = None
-    return render(request, "customer/customer-order.html", {"orders": orders, "payment": payment, "store": store, "customer": customer})
+        return redirect("customer:customer_login", slugified_store_name=slugified_store_name)
+
+
+def customer_remove_wishlist(request, slug):
+    if request.user.is_authenticated:
+        user = request.user
+        product = get_object_or_404(Product, slug=slug)
+        store = get_object_or_404(Store, store_name=product.created_by)
+        product.wishlist.remove(user)
+        return redirect(
+            "app:product_detail", slug=product.slug, slugified_store_name=slugify(store)
+        )
+    else:
+        return redirect("customer:customer_login", slugified_store_name=slugified_store_name)
+
+
+def customer_stores(request):
+    if request.user.is_authenticated:
+        customer = User.objects.get(
+            email=request.user.email, store_creator=False, store_staff=False
+        )
+        if customer:
+            stores = Store.objects.filter(customers=customer)
+            return render(request, "customer/customer-stores.html", {"stores": stores})
+    else:
+        return redirect("customer:customer_login", slugified_store_name=slugified_store_name)
+
+
+def delete_account(request, slugified_store_name):
+    if request.user.is_authenticated:
+        store = Store.objects.get(slugified_store_name=slugified_store_name)
+        customer = Customer.objects.get(email=request.user.email, store=store)
+        customer_stores = Store.objects.filter(customers=request.user)
+        if customer:
+            store.customers.remove(customer.user)
+            customer.delete()
+            if customer_stores or request.user.store_creator == True:
+                return redirect("app:store", store.slugified_store_name)
+            else:
+                request.user.delete()
+                return redirect("/")
+    else:
+        return redirect("customer:customer_login", slugified_store_name=slugified_store_name)
+
+def customer_orders(request, slugified_store_name):
+    if request.user.is_authenticated:
+        store = Store.objects.get(slugified_store_name=slugified_store_name)
+        customer = Customer.objects.get(email=request.user.email, store=store)
+        orders = Order.objects.filter(user=request.user, store=store)
+        print(orders)
+        if Payment.objects.filter(user=request.user, store=store, order__in=orders):
+            payment = Payment.objects.get(user=request.user, store=store, order__in=orders)
+        else:
+            payment = None
+        return render(request, "customer/customer-order.html", {"orders": orders, "payment": payment, "store": store, "customer": customer})
+    else:
+        return redirect("customer:customer_login", slugified_store_name=slugified_store_name)
+
+# @login_required(login_url="/account/login/")

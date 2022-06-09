@@ -10,7 +10,7 @@ urlpatterns = [
         views.customer_register,
         name="customer_register",
     ),
-    path("login/<slugified_store_name>/", views.customer_login, name="customer_login"),
+    path("login/<slug:slugified_store_name>/", views.customer_login, name="customer_login"),
     path(
         "logout/<slugified_store_name>/", views.customer_logout, name="customer_logout"
     ),
