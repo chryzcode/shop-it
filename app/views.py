@@ -77,7 +77,6 @@ def product_detail(request, slug):
 def create_product(request):
     error = ""
     form = ProductForm
-
     if request.user.store_creator == True:
         store = Store.objects.get(store_name=request.user.store_name)
     else:
@@ -85,6 +84,7 @@ def create_product(request):
             store_name=store_staff.objects.get(user=request.user).store
         )
     product_units = ProductUnit.objects.all()
+    shipping_methods = ShippingMethod.objects.filter(store=store)
     categories = Category.objects.filter(created_by=store)
     if request.method == "POST":
         form = ProductForm(request.POST, request.FILES)
@@ -117,6 +117,18 @@ def create_product(request):
                 )
             if not store.currency:
                 error = "Please set your store currency in store settings"
+                return render(
+                    request,
+                    "store/create-product.html",
+                    {
+                        "form": form,
+                        "error": error,
+                        "product_units": product_units,
+                        "categories": categories,
+                    },
+                )
+            if not shipping_methods:
+                error = "Please set your store shipping methods"
                 return render(
                     request,
                     "store/create-product.html",

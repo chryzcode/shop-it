@@ -122,6 +122,11 @@ def verify_payment(request: HttpRequest, ref:str) -> HttpResponse:
         order = Order.objects.get(pk=payment.order.pk)
         order.billing_status = True
         order.save()
+        order_items = Order_Item.objects.filter(order=order)
+        for order_item in order_items:
+            product = Product.objects.get(pk=order_item.product.pk)
+            product.availability -= order_item.quantity
+            product.save()
         messages.success(request, "Verification Successful")
         cart.clear()
     else:
