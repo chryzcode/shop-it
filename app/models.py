@@ -1,7 +1,5 @@
 from datetime import datetime, timedelta
 from decimal import Decimal
-from locale import currency
-from turtle import title
 
 from ckeditor.fields import RichTextField
 from django.core.validators import MaxValueValidator, MinValueValidator
