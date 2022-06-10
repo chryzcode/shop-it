@@ -13,6 +13,7 @@ from account.models import *
 from account.tokens import account_activation_token
 from app.models import *
 from app.forms import *
+from app.views import store
 from order.models import *
 from payment.models import *
 

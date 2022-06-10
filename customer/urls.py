@@ -81,4 +81,5 @@ urlpatterns = [
         name="customer_order_detail",
     ),
     path("<slugified_store_name>/reviews/", views.customer_reviews, name="customer_reviews"),
+    path("<slugified_store_name>/review/<str:pk>/", views.customer_review_detail, name="customer_review_detail"),
 ]

@@ -1,0 +1,35 @@
+{% extends 'navs/customer-nav.html' %} {% load static %} {% block title %}<title>
+  Shop !t - {{request.user.full_name }} Review
+</title>
+{% endblock %} {% block content %}
+<div class="store-page-container">
+  <span class="customer-profile-container">
+    {% include 'navs/customer-side-nav.html' %}
+    <div class="store-content-container">
+    <span class="review-container">
+      <p>{{review.full_name }} Review</p>
+      <div>
+        {% if review.email %}
+        <div>
+          <span>{{review.email}}</span>
+        </div>
+        {% endif %}
+
+        {% if review.product %}
+        <div class="review-realated-product">
+          <p>Related Product</p>
+        <div><a href="{% url 'app:product_detail' review.product.slug %}">{{review.product}}</a></div>
+        </div>
+        {% endif %}
+
+        <div>
+            <p>Review</p>
+            {{review.comment}}
+        </div>
+
+      </div>
+    </span>
+  </div>
+  </span>
+  {% endblock %}
+</div>
