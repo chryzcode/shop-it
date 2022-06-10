@@ -9,11 +9,16 @@
       <p>{{review.full_name }} Review</p>
       <div>
         {% if review.email %}
-        <p>{{review.email}}</p>
+        <div>
+          <span>{{review.email}}</span>
+        </div>
         {% endif %}
 
         {% if review.product %}
-        <p><a href="{% url 'app:product_detail' review.product.slug %}">{{review.product}}</a></p>
+        <div class="review-realated-product">
+          <p>Related Product</p>
+        <div><a href="{% url 'app:product_detail' review.product.slug %}">{{review.product}}</a></div>
+        </div>
         {% endif %}
 
         <div>
