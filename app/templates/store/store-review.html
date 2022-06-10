@@ -3,14 +3,18 @@
   <form action="" method="post">
     {% csrf_token %}
     <div class="above-create-form">
+      {% if 'product' in request.get_full_path %}
+      <p>Store Product Review</p>
+      {% else %}
       <p>Store Review</p>
+      {% endif %}
     </div>
-    {% if messages %} {% for message in messages %}
-    <p class="login-errors">{{message}}</p>
-    {% endfor %} {% endif %}
-    {% if error %}
-    <p class="login-errors">{{error}}</p>
-    {% endif %}
+    
+    <div class="input-container">
+      <label for="title">Title<span class="form-required">*</span></label>
+      <p>{{form.title.errors}}</p>
+      <input class="form-control" type="text" name="title" id="title" placeholder="Title" />
+    </div>
 
     {% if request.user.is_authenticated %}
     {% else %}
