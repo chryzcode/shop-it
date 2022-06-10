@@ -177,7 +177,7 @@ def customer_product_detail(request, slugified_store_name, slug):
     category_product = Product.objects.filter(
         category=product.category, store=store
     ).exclude(id=product.id)[:6]
-    reviews = Review.objects.filter(product=product, store=store)[:3]
+    reviews = Review.objects.filter(product=product, store=store)[:2]
     return render(
         request,
         "product/product-detail.html",
