@@ -126,7 +126,7 @@ class Product(models.Model):
         return self.name
 
 class Review(models.Model):
-    title = models.CharField(max_length=200, default='')
+    title = models.CharField(max_length=200)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, blank=True, null=True)
     comment = models.TextField()
     store = models.ForeignKey(Store, on_delete=models.CASCADE)
