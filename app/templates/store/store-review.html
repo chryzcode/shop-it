@@ -4,9 +4,9 @@
     {% csrf_token %}
     <div class="above-create-form">
       {% if 'product' in request.get_full_path %}
-      <p>Store Product Review</p>
+      <p>{% if 'edit' in request.get_full_path %} Edit {% endif %} Store Product Review</p>
       {% else %}
-      <p>Store Review</p>
+      <p>{% if 'edit' in request.get_full_path %} Edit {% endif %}Store Review</p>
       {% endif %}
     </div>
     
