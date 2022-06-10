@@ -1,5 +1,5 @@
 {% extends 'navs/store-nav.html' %} {% load static %}{% block title %}<title>
-  Shop !t - {{request.user.store_name }} Reews
+  Shop !t - {{request.user.store_name }} Reviews
 </title>
 {% endblock %} {% block content %}
 <div class="store-page-container">
@@ -17,11 +17,20 @@
         <tr class="table-rows">
           <th>Name</th>
           <th>Email</th>
+          <th>Review</th>
         </tr>
         {% for customer in customers %}
         <tr class="table-rows">
           <td>{{ customer.full_name }}</a></td>
-          <td>{{ customer.email }}</td>
+          <td>{% if customer.email %}
+            {{ customer.email }}
+            {% else %}
+            Nil 
+            {% endif %}
+        </td>
+        <td>
+            {{customer.comment|truncatechars:40}}
+        </td>
         </tr>
         {% endfor %}
       </table>

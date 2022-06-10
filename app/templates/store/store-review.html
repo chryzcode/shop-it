@@ -1,0 +1,41 @@
+{% extends 'navs/base.html' %} {% load static %} {% block title %} <title>Shop!t - Sign In</title> {% endblock %} {%block content %}
+<div class="auth-form-container position-absolute-center">
+  <form action="" method="post">
+    {% csrf_token %}
+    <div class="above-create-form">
+      <p>Store Review</p>
+    </div>
+    {% if messages %} {% for message in messages %}
+    <p class="login-errors">{{message}}</p>
+    {% endfor %} {% endif %}
+    {% if error %}
+    <p class="login-errors">{{error}}</p>
+    {% endif %}
+
+    <div class="input-container">
+      <label for="full_name">Full Name<span class="form-required">*</span></label>
+      <p>{{ form.full_name.error }}</p>
+      <input class="form-control" type="text" name="full_name" id="full_name" placeholder="John Doe" />
+    </div>
+
+    <div class="input-container">
+      <label for="email">Email</label>
+      <p>{{form.email.error}}</p>
+      <input class="form-control" type="email" name="email" id="email" placeholder="johndoe@gmail.com" />
+    </div>
+
+    <div class="input-container">
+        <label for="comment">Comment<span class="form-required">*</span></label>
+        <p>{{form.comment.error}}</p>
+        {{form.comment}}
+    </div>
+
+    <button class="form-btn" type="submit">Sign In</button>
+  </form>
+
+  <div class="form-bottom">
+    <a href="{% url 'account:password_reset' %}">Forgot Password?</a>
+  </div>
+</div>
+
+{% endblock %}

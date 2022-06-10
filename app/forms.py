@@ -136,13 +136,19 @@ class UseCouponForm(ModelForm):
 class ReviewForm(ModelForm):
     class Meta:
         model = Review
-        fields = ["comment"]
+        fields = ["comment",  "full_name", "email"]
 
         widgets = {
             "comment": forms.Textarea(
                 attrs={"class": "form-control", "placeholder": "Comment"}
             ),
         }
+
+    def clean_full_name(self):
+        name = self.cleaned_data.get("full_name")
+        if name is None:
+            raise forms.ValidationError("Field is required")
+        return name
 
     def __init__(self, *args, **kwargs):
         super(ReviewForm, self).__init__(*args, **kwargs)
@@ -152,13 +158,19 @@ class ReviewForm(ModelForm):
 class ProductReviewForm(ModelForm):
     class Meta:
         model = Review
-        fields = ["comment"]
+        fields = ["comment", "full_name", "email"]
 
         widgets = {
             "comment": forms.Textarea(
                 attrs={"class": "form-control", "placeholder": "Comment"}
             ),
         }
+
+    def clean_full_name(self):
+        name = self.cleaned_data.get("full_name")
+        if name is None:
+            raise forms.ValidationError("Field is required")
+        return name
 
     def __init__(self, *args, **kwargs):
         super(ProductReviewForm, self).__init__(*args, **kwargs)

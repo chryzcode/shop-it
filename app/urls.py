@@ -46,4 +46,6 @@ urlpatterns = [
     path("customers/", views.all_customers, name="all_customers"),
     path("orders/", views.store_orders, name="store_orders"),
     path("order/<uuid:pk>/", views.store_order_detail, name="store_order_detail"),
+    path("<slugified_store_name>/review/", views.store_review, name="store_review"),
+    path("<slugified_store_name>/create/review/product/<slug:slug>/", views.store_review, name="store_review"),
 ]
