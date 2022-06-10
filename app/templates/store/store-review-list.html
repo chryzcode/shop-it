@@ -7,7 +7,7 @@
   <div class="store-content-container">
     <span class="store-products-container">
       <p>
-        {{reviews.count}}{% if customers.count > 1 %}
+        {{reviews.count}}{% if reviews.count > 1 %}
         Reviews
         {% else %}
         Review
@@ -19,17 +19,17 @@
           <th>Email</th>
           <th>Review</th>
         </tr>
-        {% for customer in customers %}
+        {% for review in reviews %}
         <tr class="table-rows">
-          <td>{{ customer.full_name }}</a></td>
-          <td>{% if customer.email %}
-            {{ customer.email }}
+          <td>{{ review.full_name }}</a></td>
+          <td>{% if review.email %}
+            {{ review.email }}
             {% else %}
             Nil 
             {% endif %}
         </td>
         <td>
-            {{customer.comment|truncatechars:40}}
+            <a href="{% url 'app:store_review_detail' review.id %}">{{review.comment|truncatechars:40}}</a>
         </td>
         </tr>
         {% endfor %}

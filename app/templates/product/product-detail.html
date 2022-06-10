@@ -120,6 +120,10 @@
     {% endif %}
     <div class="reviews">
       <h2>Reviews</h2>
+      <a href="{% url 'app:product_store_review' store.slugified_store_name product.slug %}" class="add-review-link">Add a product review</a>
+      {% for review in reviews %}store_review_detail
+     <p>{{ review.comment|truncatechars:40}}</p>
+      {% endfor %}
     </div>
     </div>
   

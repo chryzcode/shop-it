@@ -64,6 +64,7 @@ def product_detail(request, slug):
         category_product = Product.objects.filter(
             category=product.category, store=store
         ).exclude(id=product.id)[:6]
+    reviews = Review.objects.filter(product=product, store=store)[:3]
     return render(
         request,
         "product/product-detail.html",
@@ -72,6 +73,7 @@ def product_detail(request, slug):
             "category_product": category_product,
             "store": store,
             "page": page,
+            "reviews":reviews
         },
     )
 
@@ -160,7 +162,7 @@ def edit_product(request, slug):
         store = Store.objects.get(
             store_name=store_staff.objects.get(user=request.user).store
         )
-    product = get_object_or_404(Product, slug=slug, created_by=store.id)
+    product = get_object_or_404(Product, slug=slug, store=store)
     form = ProductForm(instance=product)
     categories = Category.objects.filter(created_by=store.id)
     product_units = ProductUnit.objects.all()
@@ -187,7 +189,7 @@ def edit_product(request, slug):
 def delete_product(request, slug):
     if request.user.store_creator == True:
         store = Store.objects.get(store_name=request.user.store_name)
-        product = get_object_or_404(Product, slug=slug, created_by=store.id)
+        product = get_object_or_404(Product, slug=slug, store=store)
         product.delete()
         return redirect("app:store_products")
     else:
@@ -534,7 +536,18 @@ def product_store_review(request, slugified_store_name, slug):
                 review.full_name = request.user.full_name
             review.store = store
             review.save()
-            return redirect("app:product", slugified_store_name=slugified_store_name, slug=slug)
+            return redirect("customer:customer_product_detail", slugified_store_name=slugified_store_name, slug=slug)
     context = {"form": form, "store": store}
     return render(request, "store/store-review.html", context)
+
+
+def store_review_detail(request, pk):
+    if request.user.store_creator == True:
+        store = Store.objects.get(store_name=request.user.store_name)
+    if request.user.store_staff == True:
+        store = Store.objects.get(
+            store_name=store_staff.objects.get(user=request.user).store
+        )
+    review = Review.objects.get(id=pk, store=store)
+    return render(request, "store/store-review-detail.html", {"review":review})
 

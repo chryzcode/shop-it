@@ -311,7 +311,6 @@ footer {
 .delete-btn:hover {
   background-color: red;
   color: #ffffff;
-  /* transition: all 1.5s ease-in-out; */
 }
 
 .update-btn > a {
@@ -973,7 +972,6 @@ button {
   text-align: center;
   text-decoration: none;
   margin: 0 15px 10px auto;
-  /* float: right; */
   border-radius: 5px;
   width: max-content;
 }
@@ -1215,7 +1213,6 @@ th {
 
 .radio-form {
   display: flex;
-  /* justify-content: space-between; */
   margin-top: 20px;
   align-items: center;
 }
@@ -1285,4 +1282,11 @@ th {
 
 .order-detail-products-block > table {
   margin-top: 20px;
+}
+
+.add-review-link {
+  color: #6b69f8;
+  font-size: 15px;
+  margin: 7px 0;
+  display: inline-block;
 }

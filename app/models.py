@@ -132,6 +132,10 @@ class Review(models.Model):
     updated = models.DateTimeField(auto_now_add=True)
     full_name = models.CharField(max_length=255, blank=True, null=True)
     email = models.EmailField(blank=True, null=True)
+
+    class Meta:
+        verbose_name_plural = "Reviews"
+        ordering = ("-created",)
     
     def __str__(self):
         return self.full_name + ' ' + self.store.store_name

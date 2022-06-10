@@ -177,10 +177,11 @@ def customer_product_detail(request, slugified_store_name, slug):
     category_product = Product.objects.filter(
         category=product.category, store=store
     ).exclude(id=product.id)[:6]
+    reviews = Review.objects.filter(product=product, store=store)[:3]
     return render(
         request,
         "product/product-detail.html",
-        {"product": product, "category_product": category_product, "store": store},
+        {"product": product, "category_product": category_product, "store": store, "reviews":reviews}
     )
 
 
@@ -524,4 +525,17 @@ def edit_review(request, slugified_store_name, pk):
         return redirect(
             "customer:customer_login", slugified_store_name=slugified_store_name
         )
+
+def delete_review(request, slugified_store_name, pk):
+    if request.user.is_authenticated:
+        store = Store.objects.get(slugified_store_name=slugified_store_name)
+        review = Review.objects.get(id=pk, store=store.id)
+        review.delete()
+        return redirect("app:store", slugified_store_name=slugified_store_name)
+    else:
+        return redirect(
+            "customer:customer_login", slugified_store_name=slugified_store_name
+        )
+    
+
 # def customer_order_cancel(request, slugified_store_name, pk):
