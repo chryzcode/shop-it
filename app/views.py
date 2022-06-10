@@ -514,3 +514,22 @@ def store_review_list(request):
         )
     reviews = Review.objects.filter(store=store)
     return render(request, "store/store-review-list.html", {"reviews": reviews})
+
+def product_store_review(request, slugified_store_name, slug):
+    store = Store.objects.get(slugified_store_name=slugified_store_name)
+    product = Product.objects.get(slug=slug, store=store)
+    form = ReviewForm
+    if request.method == "POST":
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.product = product
+            if request.user.is_authenticated:
+                review.user = request.user
+            else:
+                review.user = None
+            review.store = store
+            review.save()
+            return redirect("app:product", slugified_store_name=slugified_store_name, slug=slug)
+    context = {"form": form, "store": store}
+    return render(request, "store/store-review.html", context)
