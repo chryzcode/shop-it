@@ -80,4 +80,5 @@ urlpatterns = [
         views.customer_order_detail,
         name="customer_order_detail",
     ),
+    path("<slugified_store_name>/reviews/", views.customer_reviews, name="customer_reviews"),
 ]

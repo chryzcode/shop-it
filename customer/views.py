@@ -462,7 +462,7 @@ def customer_reviews(request, slugified_store_name):
     if request.user.is_authenticated:
         store = Store.objects.get(slugified_store_name=slugified_store_name)
         customer = Customer.objects.get(email=request.user.email, store=store)
-        reviews = Review.objects.filter(user=request.user, store=store)
+        reviews = Review.objects.filter(email=request.user.email, store=store)
         return render(
             request,
             "customer/customer-reviews.html",

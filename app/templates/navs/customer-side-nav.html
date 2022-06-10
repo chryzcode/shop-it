@@ -2,6 +2,7 @@
   <ul>
     <li><a href="{% url 'customer:customer_wishlist' store.slugified_store_name %}">My Wishlist</a></li>
     <li><a href="{% url 'customer:customer_orders' store.slugified_store_name %}">Order</a></li>
+    <li><a href="{% url 'customer:customer_reviews' store.slugified_store_name %}">Reviews</a></li>
     <li><a href="{% url 'customer:address_list' store.slugified_store_name%}">Address</a></li>
     <li><a href="{% url 'customer:customer_logout' store.slugified_store_name %}">Sign Out</a></li>
   </ul>
