@@ -1,9 +1,10 @@
 from venv import create
+from attr import fields
 
 from django import forms
 from django.forms import ModelForm
 
-from .models import Category, Coupon, Product
+from .models import Category, Coupon, Product, Review
 
 
 class ProductForm(ModelForm):
@@ -130,3 +131,9 @@ class UseCouponForm(ModelForm):
         super(UseCouponForm, self).__init__(*args, **kwargs)
         self.label_suffix = ""
         self.fields["code"].label = "Coupon"
+
+
+class ReviewForm(ModelForm):
+    class Meta:
+        model = Review
+        fields 
