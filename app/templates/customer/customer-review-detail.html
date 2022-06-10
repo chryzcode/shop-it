@@ -18,7 +18,7 @@
         {% if review.product %}
         <div class="review-realated-product">
           <p>Related Product</p>
-        <div><a href="{% url 'app:product_detail' review.product.slug %}">{{review.product}}</a></div>
+        <div><a href="{% url 'customer:customer_product_detail' slugified_store_name=store.slugified_store_name slug=review.product.slug %}">{{review.product}}</a></div>
         </div>
         {% endif %}
 
