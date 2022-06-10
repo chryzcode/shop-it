@@ -131,6 +131,8 @@ class Review(models.Model):
     store = models.ForeignKey(Store, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now_add=True)
+    full_name = models.CharField(max_length=255, default='')
+    email = models.EmailField(blank=True, null=True)
     
     def __str__(self):
         return self.comment[:16] + "..."

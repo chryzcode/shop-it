@@ -1,0 +1,31 @@
+{% extends 'navs/store-nav.html' %} {% load static %}{% block title %}<title>
+  Shop !t - {{request.user.store_name }} Reews
+</title>
+{% endblock %} {% block content %}
+<div class="store-page-container">
+  {% include 'navs/store-side-nav.html' %}
+  <div class="store-content-container">
+    <span class="store-products-container">
+      <p>
+        {{reviews.count}}{% if customers.count > 1 %}
+        Reviews
+        {% else %}
+        Review
+        {% endif %}
+      </p>
+      <table class="store-products-table">
+        <tr class="table-rows">
+          <th>Name</th>
+          <th>Email</th>
+        </tr>
+        {% for customer in customers %}
+        <tr class="table-rows">
+          <td>{{ customer.full_name }}</a></td>
+          <td>{{ customer.email }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    </span>
+  </div>
+  {% endblock %}
+</div>

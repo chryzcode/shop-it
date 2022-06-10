@@ -533,3 +533,4 @@ def product_store_review(request, slugified_store_name, slug):
             return redirect("app:product", slugified_store_name=slugified_store_name, slug=slug)
     context = {"form": form, "store": store}
     return render(request, "store/store-review.html", context)
+
