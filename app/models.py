@@ -126,7 +126,6 @@ class Product(models.Model):
 
 class Review(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, blank=True, null=True)
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     comment = models.TextField()
     store = models.ForeignKey(Store, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)

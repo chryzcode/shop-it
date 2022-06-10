@@ -497,8 +497,8 @@ def store_review(request, slugified_store_name):
             review.store = store
             if request.user.is_authenticated:
                 review.user = request.user
-            else:
-                review.user = None
+                review.email = request.user.email
+                review.full_name = request.user.full_name
             review.save()
             return redirect("app:store", slugified_store_name=slugified_store_name)
     context = {"form": form, "store": store}
@@ -525,9 +525,8 @@ def product_store_review(request, slugified_store_name, slug):
             review = form.save(commit=False)
             review.product = product
             if request.user.is_authenticated:
-                review.user = request.user
-            else:
-                review.user = None
+                review.email = request.user.email
+                review.full_name = request.user.full_name
             review.store = store
             review.save()
             return redirect("app:product", slugified_store_name=slugified_store_name, slug=slug)
