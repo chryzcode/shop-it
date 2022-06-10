@@ -140,4 +140,4 @@ class Review(models.Model):
         ordering = ("-created",)
     
     def __str__(self):
-        return self.full_name + ' ' + self.store.store_name
+        return  self.title + ' ' + self.full_name + ' ' + self.store.store_name

@@ -18,6 +18,7 @@
           <th>Name</th>
           <th>Email</th>
           <th>Review</th>
+          <th>Date Created</th>
         </tr>
         {% for review in reviews %}
         <tr class="table-rows">
@@ -29,8 +30,9 @@
             {% endif %}
         </td>
         <td>
-            <a href="{% url 'app:store_review_detail' review.id %}">{{review.comment|truncatechars:40}}</a>
+            <a href="{% url 'app:store_review_detail' review.id %}">{{review.title|truncatechars:40}}</a>
         </td>
+        <td>{{ review.created }}</td>
         </tr>
         {% endfor %}
       </table>
