@@ -12,6 +12,7 @@ from account.forms import *
 from account.models import *
 from account.tokens import account_activation_token
 from app.models import *
+from app.forms import *
 from order.models import *
 from payment.models import *
 
@@ -356,7 +357,7 @@ def customer_add_wishlist(request, slug):
         )
     else:
         return redirect(
-            "customer:customer_login", slugified_store_name=slugified_store_name
+            "customer:customer_login", slugified_store_name=store.slugified_store_name
         )
 
 
@@ -371,22 +372,17 @@ def customer_remove_wishlist(request, slug):
         )
     else:
         return redirect(
-            "customer:customer_login", slugified_store_name=slugified_store_name
+            "customer:customer_login", slugified_store_name=store.slugified_store_name
         )
 
-
+@login_required(login_url="/account/login/")
 def customer_stores(request):
-    if request.user.is_authenticated:
-        customer = User.objects.get(
+    customer = User.objects.get(
             email=request.user.email, store_creator=False, store_staff=False
         )
-        if customer:
-            stores = Store.objects.filter(customers=customer)
-            return render(request, "customer/customer-stores.html", {"stores": stores})
-    else:
-        return redirect(
-            "customer:customer_login", slugified_store_name=slugified_store_name
-        )
+    if customer:
+        stores = Store.objects.filter(customers=customer)
+        return render(request, "customer/customer-stores.html", {"stores": stores})
 
 
 def delete_account(request, slugified_store_name):
@@ -460,3 +456,72 @@ def customer_order_detail(request, slugified_store_name, pk):
         return redirect(
             "customer:customer_login", slugified_store_name=slugified_store_name
         )
+
+def customer_reviews(request, slugified_store_name):
+    if request.user.is_authenticated:
+        store = Store.objects.get(slugified_store_name=slugified_store_name)
+        customer = Customer.objects.get(email=request.user.email, store=store)
+        reviews = Review.objects.filter(user=request.user, store=store)
+        return render(
+            request,
+            "customer/customer-reviews.html",
+            {
+                "reviews": reviews,
+                "store": store,
+                "customer": customer,
+            },
+        )
+    else:
+        return redirect(
+            "customer:customer_login", slugified_store_name=slugified_store_name
+        )
+
+def customer_review_detail(request, slugified_store_name, pk):
+    if request.user.is_authenticated:
+        store = Store.objects.get(slugified_store_name=slugified_store_name)
+        customer = Customer.objects.get(email=request.user.email, store=store)
+        review = Review.objects.get(id=pk, store=store.id)
+        return render(
+            request,
+            "customer/customer-review-detail.html",
+            {
+                "review": review,
+                "store": store,
+                "customer": customer,
+            },
+        )
+    else:
+        return redirect(
+            "customer:customer_login", slugified_store_name=slugified_store_name
+        )
+
+def edit_review(request, slugified_store_name, pk):
+    if request.user.is_authenticated:
+        store = Store.objects.get(slugified_store_name=slugified_store_name)
+        customer = Customer.objects.get(email=request.user.email, store=store)
+        review = Review.objects.get(id=pk, store=store.id)
+        if request.method == "POST":
+            form = AuthReviewForm(request.POST, instance=review)
+            if form.is_valid():
+                form.save()
+                return redirect(
+                    "customer:customer_review_detail",
+                    slugified_store_name=slugified_store_name,
+                    pk=pk,
+                )
+        else:
+            form = AuthReviewForm(instance=review)
+        return render(
+            request,
+            "customer/customer-review-edit.html",
+            {
+                "form": form,
+                "store": store,
+                "customer": customer,
+            },
+        )
+    else:
+        return redirect(
+            "customer:customer_login", slugified_store_name=slugified_store_name
+        )
+# def customer_order_cancel(request, slugified_store_name, pk):
