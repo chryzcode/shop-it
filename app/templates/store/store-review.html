@@ -1,5 +1,5 @@
-{% extends 'navs/base.html' %} {% load static %} {% block title %} <title>Shop!t - Sign In</title> {% endblock %} {%block content %}
-<div class="auth-form-container position-absolute-center">
+{% extends 'navs/base.html' %} {% load static %} {% block title %} <title>Shop!t - {{store.store_name}} Review</title> {% endblock %} {%block content %}
+<div class="auth-form-container">
   <form action="" method="post">
     {% csrf_token %}
     <div class="above-create-form">
@@ -12,30 +12,29 @@
     <p class="login-errors">{{error}}</p>
     {% endif %}
 
+    {% if request.user.is_authenticated %}
+    {% else %}
     <div class="input-container">
       <label for="full_name">Full Name<span class="form-required">*</span></label>
-      <p>{{ form.full_name.error }}</p>
+      <p>{{ form.full_name.errors }}</p>
       <input class="form-control" type="text" name="full_name" id="full_name" placeholder="John Doe" />
     </div>
 
     <div class="input-container">
       <label for="email">Email</label>
-      <p>{{form.email.error}}</p>
+      <p>{{form.email.errors}}</p>
       <input class="form-control" type="email" name="email" id="email" placeholder="johndoe@gmail.com" />
     </div>
+    {% endif %}
 
     <div class="input-container">
         <label for="comment">Comment<span class="form-required">*</span></label>
-        <p>{{form.comment.error}}</p>
-        {{form.comment}}
+        <p>{{form.comment.errors}}</p>
+            {{form.comment}}
     </div>
 
-    <button class="form-btn" type="submit">Sign In</button>
+    <button class="form-btn" type="submit">Submit</button>
   </form>
-
-  <div class="form-bottom">
-    <a href="{% url 'account:password_reset' %}">Forgot Password?</a>
-  </div>
 </div>
 
 {% endblock %}

@@ -488,15 +488,17 @@ def store_order_detail(request, pk):
 
 
 def store_review(request, slugified_store_name):
-    store = get_object_or_404(Store, slug=slugified_store_name)
-    form = ReviewForm
+    store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
+    if request.user.is_authenticated:
+        form = AuthReviewForm
+    else:
+        form = nonAuthReviewForm
     if request.method == "POST":
-        form = ReviewForm(request.POST)
+        form = form(request.POST)
         if form.is_valid():
             review = form.save(commit=False)
             review.store = store
             if request.user.is_authenticated:
-                review.user = request.user
                 review.email = request.user.email
                 review.full_name = request.user.full_name
             review.save()
@@ -518,9 +520,12 @@ def store_review_list(request):
 def product_store_review(request, slugified_store_name, slug):
     store = Store.objects.get(slugified_store_name=slugified_store_name)
     product = Product.objects.get(slug=slug, store=store)
-    form = ReviewForm
+    if request.user.is_authenticated:
+        form = authProductReviewForm
+    else:
+        form = nonAuthProductReviewForm
     if request.method == "POST":
-        form = ReviewForm(request.POST)
+        form = form(request.POST)
         if form.is_valid():
             review = form.save(commit=False)
             review.product = product

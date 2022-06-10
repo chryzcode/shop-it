@@ -133,7 +133,7 @@ class UseCouponForm(ModelForm):
         self.fields["code"].label = "Coupon"
 
 
-class ReviewForm(ModelForm):
+class nonAuthReviewForm(ModelForm):
     class Meta:
         model = Review
         fields = ["comment",  "full_name", "email"]
@@ -150,12 +150,47 @@ class ReviewForm(ModelForm):
             raise forms.ValidationError("Field is required")
         return name
 
+    def clean_comment(self):
+        comment = self.cleaned_data.get("comment")
+        if comment is None:
+            raise forms.ValidationError("Field is required") 
+        if len(comment) <= 5:
+            raise forms.ValidationError("Field is requires more than 5 characters")        
+        return comment
+
+
     def __init__(self, *args, **kwargs):
-        super(ReviewForm, self).__init__(*args, **kwargs)
+        super(nonAuthReviewForm, self).__init__(*args, **kwargs)
         self.label_suffix = ""
         self.fields["comment"].label = "Comment"
 
-class ProductReviewForm(ModelForm):
+
+class AuthReviewForm(ModelForm):
+    class Meta:
+        model = Review
+        fields = ["comment"]
+
+        widgets = {
+            "comment": forms.Textarea(
+                attrs={"class": "form-control", "placeholder": "Comment"}
+            ),
+        }
+
+    def clean_comment(self):
+        comment = self.cleaned_data.get("comment")
+        if comment is None:
+            raise forms.ValidationError("Field is required") 
+        if len(comment) <= 5:
+            raise forms.ValidationError("Field is requires more than 5 characters")        
+        return comment
+
+
+    def __init__(self, *args, **kwargs):
+        super(AuthReviewForm, self).__init__(*args, **kwargs)
+        self.label_suffix = ""
+        self.fields["comment"].label = "Comment"
+
+class nonAuthProductReviewForm(ModelForm):
     class Meta:
         model = Review
         fields = ["comment", "full_name", "email"]
@@ -172,7 +207,41 @@ class ProductReviewForm(ModelForm):
             raise forms.ValidationError("Field is required")
         return name
 
+    def clean_comment(self):
+        comment = self.cleaned_data.get("comment")
+        if comment is None:
+            raise forms.ValidationError("Field is required") 
+        if len(comment) <= 5:
+            raise forms.ValidationError("Field is requires more than 5 characters")        
+        return comment
+
     def __init__(self, *args, **kwargs):
-        super(ProductReviewForm, self).__init__(*args, **kwargs)
+        super(nonProductReviewForm, self).__init__(*args, **kwargs)
+        self.label_suffix = ""
+        self.fields["comment"].label = "Comment"
+
+
+class authProductReviewForm(ModelForm):
+    class Meta:
+        model = Review
+        fields = ["comment"]
+
+        widgets = {
+            "comment": forms.Textarea(
+                attrs={"class": "form-control", "placeholder": "Comment"}
+            ),
+        }
+
+
+    def clean_comment(self):
+        comment = self.cleaned_data.get("comment")
+        if comment is None:
+            raise forms.ValidationError("Field is required") 
+        if len(comment) <= 5:
+            raise forms.ValidationError("Field is requires more than 5 characters")        
+        return comment
+
+    def __init__(self, *args, **kwargs):
+        super(authProductReviewForm, self).__init__(*args, **kwargs)
         self.label_suffix = ""
         self.fields["comment"].label = "Comment"

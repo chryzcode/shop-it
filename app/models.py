@@ -134,4 +134,4 @@ class Review(models.Model):
     email = models.EmailField(blank=True, null=True)
     
     def __str__(self):
-        return self.comment[:16] + "..."
+        return self.full_name + ' ' + self.store.store_name
