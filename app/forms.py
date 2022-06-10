@@ -1,6 +1,3 @@
-from venv import create
-from attr import fields
-
 from django import forms
 from django.forms import ModelForm
 
