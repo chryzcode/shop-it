@@ -485,3 +485,32 @@ def store_order_detail(request, pk):
         "store/store-order-detail.html",
         {"order": order, "payment": payment, "order_items": order_items},
     )
+
+
+def store_review(request, slugified_store_name):
+    store = get_object_or_404(Store, slug=slugified_store_name)
+    form = ReviewForm
+    if request.method == "POST":
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.store = store
+            if request.user.is_authenticated:
+                review.user = request.user
+            else:
+                review.user = None
+            review.save()
+            return redirect("app:store", slugified_store_name=slugified_store_name)
+    context = {"form": form, "store": store}
+    return render(request, "store/store-review.html", context)
+
+
+def store_review_list(request):
+    if request.user.store_creator == True:
+        store = Store.objects.get(store_name=request.user.store_name)
+    else:
+        store = Store.objects.get(
+            store_name=store_staff.objects.get(user=request.user).store
+        )
+    reviews = Review.objects.filter(store=store)
+    return render(request, "store/store-review-list.html", {"reviews": reviews})

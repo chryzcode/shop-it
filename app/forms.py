@@ -136,4 +136,31 @@ class UseCouponForm(ModelForm):
 class ReviewForm(ModelForm):
     class Meta:
         model = Review
-        fields 
+        fields = ["comment"]
+
+        widgets = {
+            "comment": forms.Textarea(
+                attrs={"class": "form-control", "placeholder": "Comment"}
+            ),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(ReviewForm, self).__init__(*args, **kwargs)
+        self.label_suffix = ""
+        self.fields["comment"].label = "Comment"
+
+class ProductReviewForm(ModelForm):
+    class Meta:
+        model = Review
+        fields = ["comment"]
+
+        widgets = {
+            "comment": forms.Textarea(
+                attrs={"class": "form-control", "placeholder": "Comment"}
+            ),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(ProductReviewForm, self).__init__(*args, **kwargs)
+        self.label_suffix = ""
+        self.fields["comment"].label = "Comment"
