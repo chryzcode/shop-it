@@ -216,7 +216,7 @@ class nonAuthProductReviewForm(ModelForm):
         return comment
 
     def __init__(self, *args, **kwargs):
-        super(nonProductReviewForm, self).__init__(*args, **kwargs)
+        super(nonAuthProductReviewForm, self).__init__(*args, **kwargs)
         self.label_suffix = ""
         self.fields["comment"].label = "Comment"
 

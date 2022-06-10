@@ -87,7 +87,7 @@ def create_product(request):
             store_name=store_staff.objects.get(user=request.user).store
         )
     product_units = ProductUnit.objects.all()
-    shipping_methods = ShippingMethod.objects.filter(store=store)
+    shipping_methods = Shipping_Method.objects.filter(store=store)
     categories = Category.objects.filter(created_by=store)
     if request.method == "POST":
         form = ProductForm(request.POST, request.FILES)
