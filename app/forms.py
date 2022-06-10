@@ -136,9 +136,12 @@ class UseCouponForm(ModelForm):
 class nonAuthReviewForm(ModelForm):
     class Meta:
         model = Review
-        fields = ["comment",  "full_name", "email"]
+        fields = ["title", "comment",  "full_name", "email"]
 
-        widgets = {
+        widgets = {      
+            "title": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "Review Title"}
+            ),
             "comment": forms.Textarea(
                 attrs={"class": "form-control", "placeholder": "Comment"}
             ),
@@ -168,9 +171,12 @@ class nonAuthReviewForm(ModelForm):
 class AuthReviewForm(ModelForm):
     class Meta:
         model = Review
-        fields = ["comment"]
+        fields = ["title", "comment"]
 
         widgets = {
+            "title": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "Title"}
+            ),
             "comment": forms.Textarea(
                 attrs={"class": "form-control", "placeholder": "Comment"}
             ),
@@ -193,9 +199,12 @@ class AuthReviewForm(ModelForm):
 class nonAuthProductReviewForm(ModelForm):
     class Meta:
         model = Review
-        fields = ["comment", "full_name", "email"]
+        fields = ["title", "comment", "full_name", "email"]
 
         widgets = {
+            "title": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "Title"}
+            ),
             "comment": forms.Textarea(
                 attrs={"class": "form-control", "placeholder": "Comment"}
             ),
@@ -224,9 +233,12 @@ class nonAuthProductReviewForm(ModelForm):
 class authProductReviewForm(ModelForm):
     class Meta:
         model = Review
-        fields = ["comment"]
+        fields = ["title", "comment"]
 
         widgets = {
+            "title": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "Title"}
+            ),
             "comment": forms.Textarea(
                 attrs={"class": "form-control", "placeholder": "Comment"}
             ),

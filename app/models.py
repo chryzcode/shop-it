@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from decimal import Decimal
 from locale import currency
+from turtle import title
 
 from ckeditor.fields import RichTextField
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -125,6 +126,7 @@ class Product(models.Model):
         return self.name
 
 class Review(models.Model):
+    title = models.CharField(max_length=200, default='')
     product = models.ForeignKey(Product, on_delete=models.CASCADE, blank=True, null=True)
     comment = models.TextField()
     store = models.ForeignKey(Store, on_delete=models.CASCADE)
