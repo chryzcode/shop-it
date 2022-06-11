@@ -13,7 +13,7 @@
     <div class="input-container">
       <label for="title">Title<span class="form-required">*</span></label>
       <p>{{form.title.errors}}</p>
-      <input class="form-control" type="text" name="title" id="title" placeholder="Title" />
+     {{ form.title }}
     </div>
 
     {% if request.user.is_authenticated %}

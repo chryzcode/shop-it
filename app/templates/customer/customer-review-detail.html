@@ -7,6 +7,7 @@
     {% include 'navs/customer-side-nav.html' %}
     <div class="store-content-container">
       <span class="review-container">
+        <p>{{review.title}}</p>
         <div>
           {% if review.product %}
           <div class="review-realated-product">
@@ -23,7 +24,7 @@
           <div>
             <span>
               <button type="button" class="update-btn">
-                <a href=""><i class="far fa-edit"></i>Update</a>
+                <a href="{% url 'customer:edit_review' slugified_store_name=store.slugified_store_name pk=review.id %}"><i class="far fa-edit"></i>Update</a>
               </button>
               <button type="button" class="delete-btn">
                 <a href=""><i class="fas fa-trash-alt"></i>Delete</a>

@@ -515,7 +515,7 @@ def edit_review(request, slugified_store_name, pk):
             form = AuthReviewForm(instance=review)
         return render(
             request,
-            "customer/customer-review-edit.html",
+            "store/store-review.html",
             {
                 "form": form,
                 "store": store,
