@@ -532,7 +532,7 @@ def delete_review(request, slugified_store_name, pk):
         store = Store.objects.get(slugified_store_name=slugified_store_name)
         review = Review.objects.get(id=pk, store=store.id)
         review.delete()
-        return redirect("app:store", slugified_store_name=slugified_store_name)
+        return redirect("customer:customer_reviews", slugified_store_name=slugified_store_name)
     else:
         return redirect(
             "customer:customer_login", slugified_store_name=slugified_store_name
