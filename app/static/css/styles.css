@@ -996,13 +996,12 @@ button {
 
 .store-products-table {
   width: 100%;
+  padding: 0 8px;
 }
 
 .store-products-table > * {
   text-align: center;
 }
-
-
 
 .store-image-banner {
   width: 100%;
@@ -1329,7 +1328,7 @@ button {
   font-size: 19px;
 }
 
-.reviews ul li a{
+.reviews ul li a {
   list-style: circle;
   font-size: 20px;
   text-decoration: none;
@@ -1340,12 +1339,20 @@ button {
   height: max-content;
 }
 
-.table-rows > td >  a {
+.table-rows > td > a {
   color: #6b69f8;
   text-decoration: none;
 }
 
-td, th {
+td,
+th {
   border: 1px solid #999;
   padding: 0.5rem;
+}
+
+.review-content-container {
+    box-shadow: rgb(0 0 0 / 35%) 0px 5px 15px;
+    width: calc(70% - 40px);
+    margin: 0 auto;
+    display: block;
 }

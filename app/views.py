@@ -544,7 +544,7 @@ def product_store_review(request, slugified_store_name, slug):
 def store_review_detail(request, pk):
     if request.user.store_creator == True:
         store = Store.objects.get(store_name=request.user.store_name)
-    if request.user.store_staff == True:
+    elif request.user.store_staff == True:
         store = Store.objects.get(
             store_name=store_staff.objects.get(user=request.user).store
         )

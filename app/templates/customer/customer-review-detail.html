@@ -4,8 +4,10 @@
 {% endblock %} {% block content %}
 <div class="store-page-container">
   <span class="customer-profile-container">
+    {% if request.user.is_authenticated %}
     {% include 'navs/customer-side-nav.html' %}
-    <div class="store-content-container">
+    {% endif %}
+    <div class="review-content-container">
       <span class="review-container">
         <p>{{review.title}}</p>
         <div>
@@ -22,6 +24,7 @@
           {% endif %}
 
           <div>
+            {% if request.user.is_authenticated %}
             {% if request.user.email == review.email %}
             <span>
               <button type="button" class="update-btn">
@@ -30,6 +33,7 @@
               <button type="button" class="delete-btn">
                 <a href="{% url 'customer:delete_review' slugified_store_name=store.slugified_store_name pk=review.id %}"><i class="fas fa-trash-alt"></i>Delete</a>
               </button>
+              {% endif %}
               {% endif %}
             </span>
             <p>Comment</p>

@@ -123,7 +123,12 @@
       <a href="{% url 'app:product_store_review' store.slugified_store_name product.slug %}" class="add-review-link">Add a product review</a>
       {% for review in reviews %}
      <ul>
-      <li><a href="{% url 'app:store_review_detail' review.pk %}">{{ review.title|truncatechars:40}}</a>
+      <li>
+        {% if review.store.store_name == request.user.store_name or request.user in store.staffs %}
+        <a href="{% url 'app:store_review_detail' review.pk %}">{{ review.title|truncatechars:40}}</a>
+        {% else %}
+        <a href="{% url 'customer:customer_review_detail' slugified_store_name=review.store.slugified_store_name pk=review.pk %}">{{ review.title|truncatechars:40}}</a>
+        {% endif %}
         <p><span>{{review.full_name}}</span> - <span>{{review.created|timesince}}</span></p>
       </li>
      </ul>

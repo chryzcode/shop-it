@@ -49,7 +49,7 @@
 
   <div class="cart-table-bottom">
     <span
-      ><a href="" class="cart-table-bottom-contents">Continue Shopping<i class="far fa-angle-double-right"></i></a
+      ><a href="{% url 'app:store' store.slugified_store_name %}" class="cart-table-bottom-contents">Continue Shopping<i class="far fa-angle-double-right"></i></a
     ></span>
     <span
       ><a href="{% url 'cart:clear_all_cart' store.slugified_store_name %}" class="cart-table-bottom-contents"

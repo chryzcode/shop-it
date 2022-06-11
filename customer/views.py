@@ -479,23 +479,25 @@ def customer_reviews(request, slugified_store_name):
         )
 
 def customer_review_detail(request, slugified_store_name, pk):
+    store = Store.objects.get(slugified_store_name=slugified_store_name)
     if request.user.is_authenticated:
-        store = Store.objects.get(slugified_store_name=slugified_store_name)
         customer = Customer.objects.get(email=request.user.email, store=store)
-        review = Review.objects.get(id=pk, store=store.id)
-        return render(
-            request,
-            "customer/customer-review-detail.html",
-            {
-                "review": review,
-                "store": store,
-                "customer": customer,
-            },
-        )
     else:
-        return redirect(
-            "customer:customer_login", slugified_store_name=slugified_store_name
-        )
+        customer = None
+    review = Review.objects.get(id=pk, store=store.id)
+    return render(
+        request,
+        "customer/customer-review-detail.html",
+        {
+            "review": review,
+            "store": store,
+            "customer": customer,
+        },
+    )
+    # else:
+    #     return redirect(
+    #         "customer:customer_login", slugified_store_name=slugified_store_name
+    #     )
 
 def edit_review(request, slugified_store_name, pk):
     if request.user.is_authenticated:
