@@ -7,7 +7,11 @@
     {% if request.user.is_authenticated %}
     {% include 'navs/customer-side-nav.html' %}
     {% endif %}
+    {% if request.user %}
+    <div class="store-content-container">
+      {% else %}
     <div class="review-content-container">
+      {% endif %}
       <span class="review-container">
         <p>{{review.title}}</p>
         <div>
