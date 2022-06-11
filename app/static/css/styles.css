@@ -1299,8 +1299,8 @@ th {
   font-size: 25px;
   font-weight: 500;
   text-align: center;
-  color: #3d5170;
-  padding: 30px 0;
+  color: #6b69f8;
+  padding: 20px 0;
 }
 
 .review-container > div > * {
@@ -1313,7 +1313,7 @@ th {
 }
 
 .review-realated-product > p {
-  font-size: 22px;
+  font-size: 21px;
   font-weight: 500;
   text-align: center;
   color: #3d5170;
@@ -1326,7 +1326,7 @@ th {
 }
 
 .review-container > div > div > p {
-  font-size: 25px;
+  font-size: 21px;
   font-weight: 500;
   text-align: center;
   color: #3d5170;
