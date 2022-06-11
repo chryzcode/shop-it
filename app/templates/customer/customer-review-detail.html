@@ -28,7 +28,7 @@
                 <a href="{% url 'customer:edit_review' slugified_store_name=store.slugified_store_name pk=review.id %}"><i class="far fa-edit"></i>Update</a>
               </button>
               <button type="button" class="delete-btn">
-                <a href=""><i class="fas fa-trash-alt"></i>Delete</a>
+                <a href="{% url 'customer:delete_review' slugified_store_name=store.slugified_store_name pk=review.id %}"><i class="fas fa-trash-alt"></i>Delete</a>
               </button>
               {% endif %}
             </span>

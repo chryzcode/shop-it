@@ -37,7 +37,11 @@
             {{form.comment}}
     </div>
 
-    <button class="form-btn" type="submit">Submit</button>
+    <button class="form-btn" type="submit">
+      {% if 'edit' in request.get_full_path %} Edit
+      {% else %} Submit
+      {% endif %}
+    </button>
   </form>
 </div>
 
