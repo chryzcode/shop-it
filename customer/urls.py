@@ -76,6 +76,9 @@ urlpatterns = [
         "<slugified_store_name>/orders/", views.customer_orders, name="customer_orders"
     ),
     path(
+        "<slugified_store_name>/unpaid-orders/", views.unpaid_customer_orders, name="unpaid_customer_orders"
+    ),
+    path(
         "<slugified_store_name>/order/<uuid:pk>/",
         views.customer_order_detail,
         name="customer_order_detail",

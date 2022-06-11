@@ -432,6 +432,33 @@ def customer_orders(request, slugified_store_name):
             "customer:customer_login", slugified_store_name=slugified_store_name
         )
 
+def unpaid_customer_orders(request, slugified_store_name):
+    if request.user.is_authenticated:
+        store = Store.objects.get(slugified_store_name=slugified_store_name)
+        customer = Customer.objects.get(email=request.user.email, store=store)
+        orders = Order.objects.filter(user=request.user, store=store, billing_status= False)
+        if Payment.objects.filter(user=request.user, store=store, order__in=orders):
+            payment = Payment.objects.filter(
+                user=request.user, store=store, order__in=orders
+            )
+        else:
+            payment = None
+        return render(
+            request,
+            "customer/customer-order.html",
+            {
+                "orders": orders,
+                "payment": payment,
+                "store": store,
+                "customer": customer,
+            },
+        )
+    else:
+        return redirect(
+            "customer:customer_login", slugified_store_name=slugified_store_name
+        )
+
+
 
 def customer_order_detail(request, slugified_store_name, pk):
     if request.user.is_authenticated:
@@ -494,10 +521,6 @@ def customer_review_detail(request, slugified_store_name, pk):
             "customer": customer,
         },
     )
-    # else:
-    #     return redirect(
-    #         "customer:customer_login", slugified_store_name=slugified_store_name
-    #     )
 
 def edit_review(request, slugified_store_name, pk):
     if request.user.is_authenticated:
