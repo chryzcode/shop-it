@@ -1351,8 +1351,20 @@ th {
 }
 
 .review-content-container {
-    box-shadow: rgb(0 0 0 / 35%) 0px 5px 15px;
-    width: calc(70% - 40px);
-    margin: 0 auto;
-    display: block;
+  box-shadow: rgb(0 0 0 / 35%) 0px 5px 15px;
+  width: calc(70% - 40px);
+  margin: 0 auto;
+  display: block;
+}
+
+.store-add-review-link {
+  width: max-content;
+  margin: 20px 30px 0 auto;
+  padding-top: 20px;
+}
+
+.store-add-review-link > a {
+  text-decoration: none;
+  font-size: 19px;
+  color: #3d5170;
 }
