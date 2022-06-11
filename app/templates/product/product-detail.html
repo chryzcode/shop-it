@@ -122,7 +122,11 @@
       <h2>Reviews</h2>
       <a href="{% url 'app:product_store_review' store.slugified_store_name product.slug %}" class="add-review-link">Add a product review</a>
       {% for review in reviews %}
-     <p><a href="{% url 'app:store_review_detail' review.pk %}">{{ review.title|truncatechars:40}}</a></p>
+     <ul>
+      <li><a href="{% url 'app:store_review_detail' review.pk %}">{{ review.title|truncatechars:40}}</a>
+        <p><span>{{review.full_name}}</span> - <span>{{review.created|timesince}}</span></p>
+      </li>
+     </ul>
       {% endfor %}
     </div>
     </div>
