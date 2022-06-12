@@ -63,11 +63,11 @@
             Unpaid
             {% endif %}
           </td>
+           {% if 'unpaid' in request.get_full_path %}
           <td>
-            {% if 'unpaid' in request.get_full_path %}
             <a href="{% url 'customer:delete_unpaid_order' slugified_store_name=store.slugified_store_name pk=order.pk %}">Delete</a>
-            {% endif %}
           </td>
+           {% endif %}
           </tr>
           {% endfor %}
         </table>

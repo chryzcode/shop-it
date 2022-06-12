@@ -447,7 +447,7 @@ def unpaid_customer_orders(request, slugified_store_name):
         else:
             payment = None
         for order in orders:
-            if order.date_created < timezone.now() - timedelta(days=30):
+            if order.date_created < timezone.now() - timedelta(minutes=5):
                 order.delete()
         return render(
             request,
@@ -573,7 +573,7 @@ def delete_review(request, slugified_store_name, pk):
 def delete_unpaid_order(request, slugified_store_name, pk):
     if request.user.is_authenticated:
         store = Store.objects.get(slugified_store_name=slugified_store_name)
-        order = Order.objects.get(id=pk, store=store.id, blilling_status=False)
+        order = Order.objects.get(id=pk, store=store.id, billing_status=False)
         if Payment.objects.filter(user=request.user, store=store, order=order).exists():
             payment = Payment.objects.get(user=request.user, store=store, order=order)
             payment.delete()
