@@ -7,6 +7,8 @@ from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.utils.text import slugify
+from datetime import datetime, timedelta
+from django.utils import timezone
 
 from account.forms import *
 from account.models import *
@@ -443,6 +445,10 @@ def unpaid_customer_orders(request, slugified_store_name):
             )
         else:
             payment = None
+        for order in orders:
+            #delete order after 30 days of order creation
+            if order.created_at < timezone.now() - timedelta(days=30):
+                order.delete()
         return render(
             request,
             "customer/customer-order.html",
