@@ -1,5 +1,5 @@
 {% extends 'navs/customer-nav.html' %} {% load static %}{% load humanize %}{% block title %}<title>
-  Shop !t - {{request.user.full_name }} WishList
+  Shop !t - {{request.user.full_name }} - {% if 'unpaid' in request.get_full_path %}Unpaid{% endif %} Order
 </title>
 {% endblock %} {% block content %}
 <div class="store-page-container">
@@ -7,8 +7,17 @@
     {% include 'navs/customer-side-nav.html' %}
     <div class="store-content-container">
       <span class="store-products-container">
-        <p>My Orders</p>
+        <p>My {% if 'unpaid' in request.get_full_path %}Unpaid{% endif %} Orders</p>
         <table class="store-products-table">
+          
+          <p>
+            {% if 'unpaid' in request.get_full_path %}
+            <a href="{% url 'customer:customer_orders' store.slugified_store_name %}">Paid Orders</a>
+            {% else %}
+            <a href="{% url 'customer:unpaid_customer_orders' store.slugified_store_name %}">Unpaid Orders</a>
+            <small>Unpaid orders will be deleted after 30 days</small>
+            {% endif %}
+          </p>
           <tr class="table-rows">
             <th>Order Id</th>
             <th>Name</th>
