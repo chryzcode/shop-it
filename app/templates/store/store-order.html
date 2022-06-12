@@ -36,8 +36,8 @@
             Non user/ customer {% endif %}
           </td>
           <td>
-            {{order.currency_symbol}} {% if payment.currency %} {{ payment.amount|intcomma }} {% else %} {{
-            order.amount|intcomma }} {% endif %}
+            {{order.currency_symbol}} {% if payment.currency %} {{ payment.amount|intcomma }} {% else %} 
+            {{order.amount|intcomma }} {% endif %}
           </td>
           <td>{% if order.billing_status == True %} Paid {% else %} Unpaid {% endif %}</td>
         </tr>
