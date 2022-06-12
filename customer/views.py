@@ -570,4 +570,16 @@ def delete_review(request, slugified_store_name, pk):
         )
     
 
-# def customer_order_cancel(request, slugified_store_name, pk):
+def delete_unpaid_order(request, slugified_store_name, pk):
+    if request.user.is_authenticated:
+        store = Store.objects.get(slugified_store_name=slugified_store_name)
+        order = Order.objects.get(id=pk, store=store.id, blilling_status=False)
+        if Payment.objects.filter(user=request.user, store=store, order=order).exists():
+            payment = Payment.objects.get(user=request.user, store=store, order=order)
+            payment.delete()
+        order.delete()
+        return redirect("customer:unpaid_customer_orders", slugified_store_name=slugified_store_name)
+    else:
+        return redirect(
+            "customer:customer_login", slugified_store_name=slugified_store_name
+        )
