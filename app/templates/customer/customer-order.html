@@ -24,6 +24,9 @@
             <th>Email</th>
             <th>Amount</th>
             <th>Billing Status</th>
+            {% if 'unpaid' in request.get_full_path %}
+            <th>Delete</th>
+            {% endif %}
           </tr>
           {% for order in orders %}
            {% for payment in payment %}
@@ -58,6 +61,11 @@
             Paid
             {% else %}
             Unpaid
+            {% endif %}
+          </td>
+          <td>
+            {% if 'unpaid' in request.get_full_path %}
+            <a href="{% url 'customer:delete_customer_order' slugified_store_name=store.slugified_store_name pk=order.pk %}">Delete</a>
             {% endif %}
           </td>
           </tr>
