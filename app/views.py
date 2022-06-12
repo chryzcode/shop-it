@@ -481,7 +481,7 @@ def unpaid_store_orders(request):
     else:
         payment = None
     for order in orders:
-        if order.date_created < datetime.now() - timedelta(minutes=5):
+        if order.date_created < datetime.now() - timedelta(days=30):
             order.delete()
     return render(
         request, "store/store-order.html", {"orders": orders, "payment": payment}

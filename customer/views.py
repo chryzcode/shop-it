@@ -447,7 +447,7 @@ def unpaid_customer_orders(request, slugified_store_name):
         else:
             payment = None
         for order in orders:
-            if order.date_created < timezone.now() - timedelta(minutes=5):
+            if order.date_created < timezone.now() - timedelta(days=30):
                 order.delete()
         return render(
             request,
