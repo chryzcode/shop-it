@@ -1368,3 +1368,7 @@ th {
   font-size: 19px;
   color: #3d5170;
 }
+
+small {
+  display: block;
+}

@@ -13,9 +13,11 @@
           <p>
             {% if 'unpaid' in request.get_full_path %}
             <a href="{% url 'customer:customer_orders' store.slugified_store_name %}">Paid Orders</a>
+            
+              <small>Unpaid orders will be deleted after 30 days</small>
+      
             {% else %}
             <a href="{% url 'customer:unpaid_customer_orders' store.slugified_store_name %}">Unpaid Orders</a>
-            <small>Unpaid orders will be deleted after 30 days</small>
             {% endif %}
           </p>
           <tr class="table-rows">
