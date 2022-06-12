@@ -5,7 +5,7 @@
     {% csrf_token %}
     <div class="above-create-form">
       <p>Initiate Payment</p>
-      <h3 id="result">{{currency_symbol}}{{order.amount|intcomma}}</h3>
+      <p id="result">{{currency_symbol}}{{order.amount|intcomma}}</p>
     </div>
     <div class="acc-form-seg">
       <p>My Details</p>
