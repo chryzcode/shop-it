@@ -1,13 +1,21 @@
 {% extends 'navs/store-nav.html' %}{% load humanize %} {% load static %}{% block title %}<title>
-  Shop !t - Store Orders
+  Shop !t - Store {% if 'unpaid' in request.get_full_path %} Unpaid {% endif %}Orders
 </title>
 {% endblock %} {% block content %}
 <div class="store-page-container">
   {% include 'navs/store-side-nav.html' %}
   <div class="store-content-container">
     <span class="store-products-container">
-      <p>Store Orders</p>
+      <p>Store {% if 'unpaid' in request.get_full_path %}Unpaid{% endif %} Orders</p>
       <table class="store-products-table">
+        <p>
+          {% if 'unpaid' in request.get_full_path %}
+          <a href="{% url 'app:store_orders' %}">Paid Orders</a>
+          <small>Unpaid orders will be deleted after 30 days</small>
+          {% else %}
+          <a href="{% url 'app:unpaid_store_orders'%}">Unpaid Orders</a>
+          {% endif %}
+        </p>
         <tr class="table-rows">
           <th>Order Id</th>
           <th>Name</th>
@@ -15,46 +23,25 @@
           <th>Amount</th>
           <th>Billing Status</th>
         </tr>
-  
-        {% for order in orders %}
-        {% for payment in payment %}
+
+        {% for order in orders %} {% for payment in payment %}
         <tr class="table-rows">
           <td><a href="{% url 'app:store_order_detail' order.pk %}">{{order.id|truncatechars:12}}</a></td>
-          <td> {% if payment.full_name %}
-            {{ payment.full_name }}
-            {% elif payment.order.user %}
-            {{payment.order.user.full_name}}
-            {% else %}
-            Non user/ customer
-            {% endif %}
+          <td>
+            {% if payment.full_name %} {{ payment.full_name }} {% elif payment.order.user %}
+            {{payment.order.user.full_name}} {% else %} Non user/ customer {% endif %}
           </td>
           <td>
-            {% if payment.order.user %}
-            {{ order.user.email }}
-            {% elif payment.email %}
-            {{ payment.email}}
-            {% else %}
-            Non user/ customer
-            {% endif %}
+            {% if payment.order.user %} {{ order.user.email }} {% elif payment.email %} {{ payment.email}} {% else %}
+            Non user/ customer {% endif %}
           </td>
-          <td> 
-            {{order.currency_symbol}}
-            {% if payment.currency %}
-              {{ payment.amount|intcomma }}
-            {% else %}
-            {{ order.amount|intcomma }}
-            {% endif %}
-              
+          <td>
+            {{order.currency_symbol}} {% if payment.currency %} {{ payment.amount|intcomma }} {% else %} {{
+            order.amount|intcomma }} {% endif %}
           </td>
-          <td>{% if order.billing_status == True %}
-            Paid
-            {% else %}
-            Unpaid
-            {% endif %}
-          </td>
+          <td>{% if order.billing_status == True %} Paid {% else %} Unpaid {% endif %}</td>
         </tr>
-        {% endfor %}
-        {% endfor %}
+        {% endfor %} {% endfor %}
       </table>
     </span>
   </div>
