@@ -439,6 +439,7 @@ def unpaid_customer_orders(request, slugified_store_name):
         store = Store.objects.get(slugified_store_name=slugified_store_name)
         customer = Customer.objects.get(email=request.user.email, store=store)
         orders = Order.objects.filter(user=request.user, store=store, billing_status= False)
+        print(orders)
         if Payment.objects.filter(user=request.user, store=store, order__in=orders):
             payment = Payment.objects.filter(
                 user=request.user, store=store, order__in=orders
@@ -446,8 +447,7 @@ def unpaid_customer_orders(request, slugified_store_name):
         else:
             payment = None
         for order in orders:
-            #delete order after 30 days of order creation
-            if order.created_at < timezone.now() - timedelta(days=30):
+            if order.date_created < timezone.now() - timedelta(days=30):
                 order.delete()
         return render(
             request,
