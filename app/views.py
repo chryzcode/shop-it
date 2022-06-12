@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.text import slugify
+from django.utils import timezone
 
 from account.models import *
 from cart.cart import *
@@ -462,7 +463,6 @@ def store_orders(request):
         payment = Payment.objects.filter(store=store.id, order__in=orders)
     else:
         payment = None
-    print(payment)
     return render(
         request, "store/store-order.html", {"orders": orders, "payment": payment}
     )
@@ -480,7 +480,9 @@ def unpaid_store_orders(request):
         payment = Payment.objects.filter(store=store.id, order__in=orders)
     else:
         payment = None
-    print(payment)
+    for order in orders:
+        if order.created_at < datetime.now() - timedelta(days=30):
+            order.delete()
     return render(
         request, "store/store-order.html", {"orders": orders, "payment": payment}
     )
