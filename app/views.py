@@ -467,6 +467,24 @@ def store_orders(request):
         request, "store/store-order.html", {"orders": orders, "payment": payment}
     )
 
+@login_required(login_url="/account/login/")
+def unpaid_store_orders(request):
+    if request.user.store_creator == True:
+        store = Store.objects.get(store_name=request.user.store_name)
+    if request.user.store_staff == True:
+        store = Store.objects.get(
+            store_name=store_staff.objects.get(user=request.user).store
+        )
+    orders = Order.objects.filter(store=store, billing_status= False )
+    if Payment.objects.filter(store=store.id, order__in=orders).exists():
+        payment = Payment.objects.filter(store=store.id, order__in=orders)
+    else:
+        payment = None
+    print(payment)
+    return render(
+        request, "store/store-order.html", {"orders": orders, "payment": payment}
+    )
+
 
 @login_required(login_url="/account/login/")
 def store_order_detail(request, pk):
