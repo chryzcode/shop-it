@@ -87,5 +87,5 @@ urlpatterns = [
     path("<slugified_store_name>/review/<str:pk>/", views.customer_review_detail, name="customer_review_detail"),
     path("<slugified_store_name>/review/edit/<str:pk>", views.edit_review, name="edit_review"),
     path("<slugified_store_name>/review/delete/<str:pk>", views.delete_review, name="delete_review"),
-    path("<slugified_store_name>/delete/unpaid-order/<str:pk>/", views.delete_unpaid_order, name="create_review"),
+    path("<slugified_store_name>/delete/unpaid-order/<str:pk>/", views.delete_unpaid_order, name="delete_unpaid_order"),
 ]
