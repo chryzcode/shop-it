@@ -465,8 +465,13 @@ def bank_details(request):
         for bank in result:
             name, code = bank.get('name'), bank.get('code')
             banks.append((name, code))
-            # for bank in banks:
-            #     bank_name, bank_code = bank[0], bank[1]
+
+        bank_name = []
+        for bank in banks:
+            bank_name.append(bank[0])
+            bank_code = bank[1]
+            print(bank_code)
+
         store = Store.objects.get(owner=request.user)
         form = BankForm
         if request.method == "POST":
@@ -477,6 +482,5 @@ def bank_details(request):
                 bank_details.save()
                 return redirect("account:bank_details")
         else:
-            if store.bank_details:
-                form = BankForm(instance=store.bank_details)
-        return render(request, "store/bank-details.html", {"form": form, "banks": banks})
+            form = BankForm(instance=store)
+        return render(request, "store/bank-details.html", {"form": form, "bank": bank_name})
