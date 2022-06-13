@@ -78,4 +78,5 @@ urlpatterns = [
         views.delete_shipping_method,
         name="delete_shipping_method",
     ),
+    path("bank-details/", views.bank_details, name="bank_details"),
 ]
