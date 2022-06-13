@@ -110,9 +110,6 @@
 <script>
 
 $( document ).ready(function() {
-
-    
-
     $("input[name='shipping_method']").on('change', function(event) {
        var shipping_method_price = $(this).attr('class');
         var order_amount = "{{order.amount}}";

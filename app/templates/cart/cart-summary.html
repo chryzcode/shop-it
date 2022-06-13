@@ -156,8 +156,6 @@
         document.getElementById("subtotal").innerHTML = json.subtotal;
         document.getElementById("item_total_price" + prodid).innerHTML = json.cartproqty;
         document.getElementById("grand_total").innerHTML = json.subtotal;
-        console.log(json.cartproqty);
-        console.log(prodid);
       },
       error: function (xhr, errmsg, err) {},
     });
