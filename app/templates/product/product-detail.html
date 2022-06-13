@@ -181,6 +181,7 @@
       success: function (json) {
         console.log(json);
         document.getElementById("product-cart-qty").innerHTML = json.qty;
+        
       },
       error: function (xhr, errmsg, err) {},
     });
