@@ -1,3 +1,5 @@
+from attr import field
+from black import Mode
 from django import forms
 from django.conf import settings
 from django.contrib.auth.forms import PasswordResetForm, SetPasswordForm
@@ -227,6 +229,9 @@ class AddStoreForm(ModelForm):
             raise forms.ValidationError("Store name is already taken")
 
         return store_name
+    
+    def __init__(self, *args, **kwargs):
+        super(AddStoreForm, self).__init__(*args, **kwargs)
 
 
 class ShippingMethodForm(ModelForm):
@@ -242,3 +247,27 @@ class ShippingMethodForm(ModelForm):
                 attrs={"class": "form-control", "placeholder": "Price"}
             ),
         }
+
+    def __init__(self, *args, **kwargs):
+        super(ShippingMethodForm, self).__init__(*args, **kwargs)
+
+class BankForm(ModelForm):
+    class Meta:
+        model = store_bank_details
+        fields = ["bank_name", "account_number", "account_name"]
+
+        widgets = {
+            "bank_name": forms.Select(
+                attrs={"class": "form-control", "placeholder": "Bank Name"}
+            ),
+            "account_number": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "Account Number"}
+            ),
+            "account_name": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "Account Name"}
+            ),
+        }
+
+
+    def __ini__ (self, *args, **kwargs):
+        super(BankForm, self).__init__(*args, **kwargs)
