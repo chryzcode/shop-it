@@ -151,11 +151,9 @@
       },
       success: function (json) {
         document.getElementById("product-cart-qty").innerHTML = json.qty;
-        document.getElementById("subtotal").innerHTML = json.subtotal;
-        document.getElementById("item_total_price" + prodid).innerHTML = json.cartproqty;
-        document.getElementById("grand_total").innerHTML = json.subtotal;
-        // document.getElementById("currency").innerHTML = json.currency;
-        console.log(json);
+        document.getElementById("subtotal").innerHTML = json.currency + json.subtotal;
+        document.getElementById("item_total_price" + prodid).innerHTML = json.currency + json.cartproqty;
+        document.getElementById("grand_total").innerHTML = json.currency + json.subtotal;
       },
       error: function (xhr, errmsg, err) {},
     });
