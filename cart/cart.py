@@ -52,7 +52,6 @@ class Cart:
             * Decimal((coupon_percentage / 100))
         ))
 
-    # return the sum of an item quantity
     def get_product_qty(self, product):
         product_id = str(product)
         if product_id in self.item:

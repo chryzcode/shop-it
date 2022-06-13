@@ -162,3 +162,15 @@ class Shipping_Method(models.Model):
 
     def __str__(self):
         return self.location + " " + self.store.store_name
+
+
+class store_bank_details(models.Model):
+    store = models.ForeignKey(
+        Store, on_delete=models.CASCADE, related_name="store_bank_details"
+    )
+    bank_name = models.CharField(max_length=100)
+    account_number = models.CharField(max_length=10)
+    account_name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.bank_name + " " + self.store.store_name
