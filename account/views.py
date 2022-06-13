@@ -1,5 +1,4 @@
-from locale import currency
-
+import requests
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -8,6 +7,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.conf import settings
 
 from customer.models import Customer
 
@@ -457,6 +457,16 @@ def delete_shipping_method(request, pk):
 @login_required(login_url="/account/login/")
 def bank_details(request):
     if request.user.store_creator == True:
+        access_token = settings.PAYSTACK_SECRET_KEY
+        get_bank_info = requests.get('https://api.paystack.co/bank',
+        headers={'Content-Type': 'application/json', 'Authorization': f'Bearer {access_token}'})
+        result = get_bank_info.json().get('data')
+        banks = []
+        for bank in result:
+            name, code = bank.get('name'), bank.get('code')
+            banks.append((name, code))
+            # for bank in banks:
+            #     bank_name, bank_code = bank[0], bank[1]
         store = Store.objects.get(owner=request.user)
         form = BankForm
         if request.method == "POST":
@@ -469,4 +479,4 @@ def bank_details(request):
         else:
             if store.bank_details:
                 form = BankForm(instance=store.bank_details)
-        return render(request, "store/bank-details.html", {"form": form})
+        return render(request, "store/bank-details.html", {"form": form, "banks": banks})
