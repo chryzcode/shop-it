@@ -89,6 +89,7 @@ WSGI_APPLICATION = "core.wsgi.application"
 
 AUTH_USER_MODEL = "account.User"
 
+
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
