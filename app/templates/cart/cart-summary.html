@@ -77,9 +77,8 @@
       <div>
         <span>Grand Total:</span>
         <span id="grand_total">
-          {% if grand_total %} {{store_currency_symbol}}{{grand_total|intcomma}}
-          {% else %}
-          {{cart.get_total_price|intcomma }}
+          {{store_currency_symbol}}{% if grand_total %}{{grand_total|intcomma}}
+          {% else %}{{cart.get_total_price|intcomma }}
           {% endif %}
         </span>
       </div>
