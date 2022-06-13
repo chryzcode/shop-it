@@ -452,3 +452,21 @@ def delete_shipping_method(request, pk):
     else:
         error = "You are not authorized"
         return render(request, "store/shipping-method.html", {"error": error})
+
+
+@login_required(login_url="/account/login/")
+def bank_details(request):
+    if request.user.store_creator == True:
+        store = Store.objects.get(owner=request.user)
+        form = BankForm
+        if request.method == "POST":
+            form = BankForm(request.POST)
+            if form.is_valid():
+                bank_details = form.save(commit=False)
+                bank_details.store = store
+                bank_details.save()
+                return redirect("account:bank_details")
+        else:
+            if store.bank_details:
+                form = BankForm(instance=store.bank_details)
+        return render(request, "store/bank-details.html", {"form": form})
