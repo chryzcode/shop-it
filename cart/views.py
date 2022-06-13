@@ -110,6 +110,7 @@ def cart_summary(request, slugified_store_name):
 
 
 def add_to_cart(request, slugified_store_name):
+    currency = cart.get_currency_symbol()
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
     cart = Cart(request)
     if request.POST.get("action") == "post":
@@ -119,12 +120,12 @@ def add_to_cart(request, slugified_store_name):
         cart.add(product=product, qty=product_qty)
         if cart.store_check():
             product_qty = cart.__len__()
-            response = JsonResponse({"qty": product_qty})
+            response = JsonResponse({"qty": product_qty, "currency": currency})
             return response
         else:
             cart.delete(product=product_id)
             product_qty = cart.__len__()
-            response = JsonResponse({"qty": product_qty})
+            response = JsonResponse({"qty": product_qty, "currency": currency})
             return response
 
 
@@ -143,6 +144,7 @@ def delete_from_cart(request, slugified_store_name):
 def update_cart(request, slugified_store_name):
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
     cart = Cart(request)
+    currency = cart.get_currency_symbol()
     if request.POST.get("action") == "post":
         product_id = int(request.POST.get("productid"))
         product_qty = int(request.POST.get("productqty"))
@@ -158,7 +160,7 @@ def update_cart(request, slugified_store_name):
         else:
             cartproductqty = item_qty * Decimal(a_product_price)
         response = JsonResponse(
-            {"qty": cartqty, "subtotal": carttotal, "cartproqty": cartproductqty}
+            {"qty": cartqty, "subtotal": carttotal, "cartproqty": cartproductqty, "currency": currency}
         )
         return response
 

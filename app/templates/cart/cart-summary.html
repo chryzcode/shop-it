@@ -13,9 +13,9 @@
     <span><a href="{{product.get_absolute_url}}">{{ product.name }}</a></span>
     <span>
       {% if product.discount_percentage %}
-      <span>{{product.currency.symbol}}{{product.discount_price|intcomma}}</span>
+      <span>{{product.discount_price|intcomma}}</span>
       {% else %}
-      <span>{{product.currency.symbol}}{{product.price|intcomma}}</span>
+      <span>{{currency}}{{product.price|intcomma}}</span>
       {% endif %}
     </span>
 
@@ -37,7 +37,7 @@
       </button>
     </span>
 
-    <span id="item_total_price{{product.id}}">{{product.currency.symbol}}{{item.total_price|intcomma}}</span>
+    <span id="item_total_price{{product.id}}">{{currency}}{{item.total_price|intcomma}}</span>
 
     <button type="button" id="delete-from-cart-btn" data-index="{{product.id}}" class="delete-from-cart-btn delete-btn">
       <i class="fas fa-trash-alt"></i>Delete
@@ -72,14 +72,15 @@
     <div class="cart-expenses">
       <div>
         <span>Sub Total:</span>
-        <span id="subtotal">{{store_currency_symbol}}{{cart.get_total_price|intcomma }}</span>
+        <span id="subtotal">{{currency}}{{cart.get_total_price|intcomma }}</span>
       </div>
       <div>
         <span>Grand Total:</span>
         <span id="grand_total">
-          {% if grand_total %} {{store_currency_symbol}}{{grand_total|intcomma}}
+          {{currency}}
+          {% if grand_total %}{{grand_total|intcomma}}
           {% else %}
-          {{store_currency_symbol}}{{cart.get_total_price|intcomma }}
+          {{cart.get_total_price|intcomma }}
           {% endif %}
         </span>
       </div>
@@ -114,7 +115,6 @@
  
 </div>
 <script>
-  //add item
 
   $(document).on("click", ".delete-from-cart-btn", function (e) {
     e.preventDefault();
@@ -153,9 +153,9 @@
       },
       success: function (json) {
         document.getElementById("product-cart-qty").innerHTML = json.qty;
-        document.getElementById("subtotal").innerHTML = json.subtotal;
-        document.getElementById("item_total_price" + prodid).innerHTML = json.cartproqty;
-        document.getElementById("grand_total").innerHTML = json.subtotal;
+        document.getElementById("subtotal").innerHTML = json.subtotal.toLocaleString("en-US");
+        document.getElementById("item_total_price" + prodid).innerHTML = json.cartproqty.toLocaleString("en-US");
+        document.getElementById("grand_total").innerHTML = json.subtotal.toLocaleString("en-US");
       },
       error: function (xhr, errmsg, err) {},
     });
