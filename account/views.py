@@ -458,23 +458,22 @@ def delete_shipping_method(request, pk):
 def bank_details(request):
     if request.user.store_creator == True:
         store = Store.objects.get(owner=request.user)
-        store_currency_code = store.currency.code
-        print(store_currency_code)
-        url = 'https://api.flutterwave.com/v3/banks/NG'
+        flutterwave_currency_code = store.currency.flutterwave_code
+        url = f'https://api.flutterwave.com/v3/banks/{flutterwave_currency_code}'
         headers = {'Content-Type': 'application/json', 'Authorization': settings.FLUTTERWAVE_SECRET_KEY}
         response = requests.get(url, headers=headers)
         result = response.json().get('data')
-        for i in result:
-            print(i.get('name'), i.get('code'))
-
-            store = request.user
-            form = BankForm(instance=store)
-            if request.method == "POST":
-                form = BankForm(request.POST, instance=store)
-                if form.is_valid():
-                    bank_details = form.save(commit=False)
-                    bank_details.store = store
-                    bank_details.save()
-                    return redirect("account:bank_details")
-
-        return render(request, "store/bank-details.html", {"form": form})
+        all_banks = {}
+        for bank in result:
+            all_banks[bank.get('name')] = bank.get('code')
+        print(all_banks)
+        store = request.user
+        form = BankForm(instance=store)
+        if request.method == "POST":
+            form = BankForm(request.POST, instance=store)
+            if form.is_valid():
+                bank_details = form.save(commit=False)
+                bank_details.store = store
+                bank_details.save()
+                return redirect("account:bank_details")
+        return render(request, "store/bank-details.html", {"form": form, "all_banks":all_banks})

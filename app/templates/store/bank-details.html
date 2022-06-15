@@ -13,8 +13,8 @@
         <label for="bank_name">Bank Name<span class="form-required">*</span></label>
         <p>{{ form.bank_name.errors }}</p>
         <select class="form-control" name="bank_name" id="bank_name">
-          {% for bank in banks %}
-          <option value="{{bank}}">{{bank}}</option>
+          {% for bank, code in all_banks.items %}
+          <option value="{{code}}">{{bank}}</option>
           {% endfor %}
         </select>
       </div>
