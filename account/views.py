@@ -1,3 +1,4 @@
+from distutils.command.install_data import install_data
 import requests
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -458,6 +459,7 @@ def delete_shipping_method(request, pk):
 def bank_details(request):
     if request.user.store_creator == True:
         store = Store.objects.get(owner=request.user)
+        print(store)
         flutterwave_currency_code = store.currency.flutterwave_code
         url = f'https://api.flutterwave.com/v3/banks/{flutterwave_currency_code}'
         headers = {'Content-Type': 'application/json', 'Authorization': settings.FLUTTERWAVE_SECRET_KEY}
@@ -466,9 +468,6 @@ def bank_details(request):
         all_banks = {}
         for bank in result:
             all_banks[bank.get('name')] = bank.get('code')
-        print(all_banks)
-        store = request.user
-        form = BankForm(instance=store)
         if request.method == "POST":
             form = BankForm(request.POST, instance=store)
             if form.is_valid():
@@ -476,4 +475,6 @@ def bank_details(request):
                 bank_details.store = store
                 bank_details.save()
                 return redirect("account:bank_details")
+        bank_details = Bank_Info.objects.get(store=store)
+        form = BankForm(instance=bank_details)
         return render(request, "store/bank-details.html", {"form": form, "all_banks":all_banks})
