@@ -133,7 +133,7 @@ class Bank_Info(models.Model):
         verbose_name_plural = "Bank Info"
 
     def __str__(self):
-        return self.name
+        return self.account_name
 
 
 class store_staff(models.Model):

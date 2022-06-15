@@ -265,4 +265,3 @@ class BankForm(ModelForm):
                 attrs={"class": "form-control", "placeholder": "Account Name"}
             ),
         }
-

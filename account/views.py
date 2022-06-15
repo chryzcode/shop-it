@@ -468,12 +468,19 @@ def bank_details(request):
         all_banks = {}
         for bank in result:
             all_banks[bank.get('name')] = bank.get('code')
-        form = BankForm(instance=store)
+        #use instance to get the bank details if ie exist else create a new one and save it and only for update use instance
+        if Bank_Info.objects.filter(store=store).exists():
+            bank_info = Bank_Info.objects.get(store=store)
+            form = BankForm(instance=bank_info)
+        else:
+            form = BankForm()
         if request.method == "POST":
-            form = BankForm(request.POST, instance=store)
+            form = BankForm(request.POST)
             if form.is_valid():
-                bank_details = form.save(commit=False)
-                bank_details.store = store
-                bank_details.save()
-                form.save
+                bank_info = form.save(commit=False)
+                bank_info.store = store
+                bank_info.save()
+                #de;ete bankinfo excluding the one that is being updated
+                Bank_Info.objects.exclude(pk=bank_info.pk).filter(store=store).delete()
+                return redirect("account:bank_details")
         return render(request, "store/bank-details.html", {"form": form, "all_banks":all_banks})
