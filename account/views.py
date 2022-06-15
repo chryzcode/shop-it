@@ -475,5 +475,5 @@ def bank_details(request):
                 bank_details = form.save(commit=False)
                 bank_details.store = store
                 bank_details.save()
-                return redirect("account:bank_details")
+                form.save
         return render(request, "store/bank-details.html", {"form": form, "all_banks":all_banks})

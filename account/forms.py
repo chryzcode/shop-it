@@ -251,8 +251,8 @@ class ShippingMethodForm(ModelForm):
 
 class BankForm(ModelForm):
     class Meta:
-        model = store_bank_details
-        fields = ["bank_name", "account_number", "account_name", "store"]
+        model = Bank_Info
+        fields = ["bank_name", "account_number", "account_name"]
 
         widgets = {
             "bank_name": forms.Select(
@@ -266,6 +266,3 @@ class BankForm(ModelForm):
             ),
         }
 
-
-    def __ini__ (self, *args, **kwargs):
-        super(BankForm, self).__init__(*args, **kwargs)
