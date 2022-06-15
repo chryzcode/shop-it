@@ -252,7 +252,7 @@ class ShippingMethodForm(ModelForm):
 class BankForm(ModelForm):
     class Meta:
         model = store_bank_details
-        fields = ["bank_name", "account_number", "account_name"]
+        fields = ["bank_name", "account_number", "account_name", "store"]
 
         widgets = {
             "bank_name": forms.Select(
