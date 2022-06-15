@@ -457,30 +457,24 @@ def delete_shipping_method(request, pk):
 @login_required(login_url="/account/login/")
 def bank_details(request):
     if request.user.store_creator == True:
-        access_token = settings.PAYSTACK_SECRET_KEY
-        get_bank_info = requests.get('https://api.paystack.co/bank',
-        headers={'Content-Type': 'application/json', 'Authorization': f'Bearer {access_token}'})
-        result = get_bank_info.json().get('data')
-        banks = []
-        for bank in result:
-            name, code = bank.get('name'), bank.get('code')
-            banks.append((name, code))
-
-        bank_name = []
-        for bank in banks:
-            bank_name.append(bank[0])
-            bank_code = bank[1]
-            print(bank_code)
-
         store = Store.objects.get(owner=request.user)
-        form = BankForm
-        if request.method == "POST":
-            form = BankForm(request.POST)
-            if form.is_valid():
-                bank_details = form.save(commit=False)
-                bank_details.store = store
-                bank_details.save()
-                return redirect("account:bank_details")
-        else:
+        store_currency_code = store.currency.code
+        print(store_currency_code)
+        url = 'https://api.flutterwave.com/v3/banks/NG'
+        headers = {'Content-Type': 'application/json', 'Authorization': settings.FLUTTERWAVE_SECRET_KEY}
+        response = requests.get(url, headers=headers)
+        result = response.json().get('data')
+        for i in result:
+            print(i.get('name'), i.get('code'))
+
+            store = request.user
             form = BankForm(instance=store)
-        return render(request, "store/bank-details.html", {"form": form, "bank": bank_name})
+            if request.method == "POST":
+                form = BankForm(request.POST, instance=store)
+                if form.is_valid():
+                    bank_details = form.save(commit=False)
+                    bank_details.store = store
+                    bank_details.save()
+                    return redirect("account:bank_details")
+
+        return render(request, "store/bank-details.html", {"form": form})
