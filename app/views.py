@@ -9,6 +9,7 @@ from django.utils.text import slugify
 from django.utils import timezone
 
 from account.models import *
+from account.views import bank_details
 from cart.cart import *
 from order.models import *
 from order.views import order
@@ -91,6 +92,7 @@ def create_product(request):
         )
     product_units = ProductUnit.objects.all()
     shipping_methods = Shipping_Method.objects.filter(store=store)
+    bank_info = Bank_Info.objects.filter(store=store)
     categories = Category.objects.filter(created_by=store)
     if request.method == "POST":
         form = ProductForm(request.POST, request.FILES)
@@ -135,6 +137,18 @@ def create_product(request):
                 )
             if not shipping_methods:
                 error = "Please set your store shipping methods"
+                return render(
+                    request,
+                    "store/create-product.html",
+                    {
+                        "form": form,
+                        "error": error,
+                        "product_units": product_units,
+                        "categories": categories,
+                    },
+                )
+            if not bank_info:
+                error = "Please set your store bank info"
                 return render(
                     request,
                     "store/create-product.html",
