@@ -124,7 +124,7 @@ class Bank_Info(models.Model):
     account_name = models.CharField(max_length=100)
     bank_name = models.CharField(max_length=100)
     store = models.ForeignKey(
-        Store, on_delete=models.CASCADE, default=1
+        Store, on_delete=models.CASCADE,
     )
  
 
