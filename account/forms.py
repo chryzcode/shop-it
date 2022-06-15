@@ -265,3 +265,12 @@ class BankForm(ModelForm):
                 attrs={"class": "form-control", "placeholder": "Account Name"}
             ),
         }
+
+    def clean_account_number(self):
+        account_number = self.cleaned_data["account_number"]
+        if len(account_number) < 10:
+            raise forms.ValidationError("Account number must be 10 digits")
+        return account_number
+
+    def __init__(self, *args, **kwargs):
+        super(BankForm, self).__init__(*args, **kwargs)
