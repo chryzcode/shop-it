@@ -19,6 +19,17 @@ class Currency(models.Model):
     def __str__(self):
         return self.name
 
+class Country(models.Model):
+    name = models.CharField(max_length=50)
+    code = models.CharField(max_length=10)
+
+    class Meta:
+        verbose_name = "Country"
+        verbose_name_plural = "Countries"
+
+    def __str__(self):
+        return self.name
+
 
 class Store(models.Model):
     owner = models.ForeignKey(
@@ -40,6 +51,9 @@ class Store(models.Model):
     facebook = models.CharField(max_length=100, blank=True)
     instagram = models.CharField(max_length=100, blank=True)
     twitter = models.CharField(max_length=100, blank=True)
+    country = models.ForeignKey(
+        Country, on_delete=models.CASCADE, null=True, blank=True
+    )
 
     class Meta:
         verbose_name = "Store"
