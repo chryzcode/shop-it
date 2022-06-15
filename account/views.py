@@ -468,6 +468,7 @@ def bank_details(request):
         all_banks = {}
         for bank in result:
             all_banks[bank.get('name')] = bank.get('code')
+        form = BankForm(instance=store)
         if request.method == "POST":
             form = BankForm(request.POST, instance=store)
             if form.is_valid():
@@ -475,6 +476,4 @@ def bank_details(request):
                 bank_details.store = store
                 bank_details.save()
                 return redirect("account:bank_details")
-        bank_details = Bank_Info.objects.get(store=store)
-        form = BankForm(instance=bank_details)
         return render(request, "store/bank-details.html", {"form": form, "all_banks":all_banks})
