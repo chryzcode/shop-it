@@ -126,6 +126,7 @@ class Bank_Info(models.Model):
     store = models.ForeignKey(
         Store, on_delete=models.CASCADE,
     )
+    bank_code = models.CharField(max_length=10, default="")
  
 
     class Meta:

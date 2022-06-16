@@ -15,7 +15,7 @@
         <p>{{ form.bank_name.errors }}</p>
         <select class="form-control" name="bank_name" id="bank_name">
           {% if bank_info %}
-          <option value="{{code}}" selected>{{bank_info.bank_name}}</option>
+          <option value="{{bank_info.bank_name}}" selected>{{bank_info.bank_name}}</option>
           {% endif %}
           {% for bank, code in all_banks.items %}
           <option value="{{code}}">{{bank}}</option>
