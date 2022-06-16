@@ -11,7 +11,6 @@ from order.models import *
 from .forms import *
 from .models import *
 from rave_python import Rave
-import os
 
 RAVE_SECRET_KEY = settings.RAVE_SECRET_KEY
 RAVE_PUBLIC_KEY = settings.RAVE_PUBLIC_KEY
