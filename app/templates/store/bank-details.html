@@ -4,12 +4,7 @@
 <div class="store-page-container">
   {% include 'navs/store-side-nav.html' %}
   <div class="store-content-container">
-    <form
-      action="{% url 'account:bank_details' %}"
-      method="post"
-      enctype="multipart/form-data"
-      class="create-product-form"
-    >
+    <form action="{% url 'account:bank_details' %}" method="post" enctype="multipart/form-data" class="create-product-form">
       <div class="above-create-form">
         <p>Bank Details</p>
       </div>
@@ -19,6 +14,9 @@
         <label for="bank_name">Bank Name<span class="form-required">*</span></label>
         <p>{{ form.bank_name.errors }}</p>
         <select class="form-control" name="bank_name" id="bank_name">
+          {% if bank_info %}
+          <option value="{{code}}" selected>{{bank_info.bank_name}}</option>
+          {% endif %}
           {% for bank, code in all_banks.items %}
           <option value="{{code}}">{{bank}}</option>
           {% endfor %}
@@ -28,13 +26,13 @@
       <div class="input-container">
         <label for="account_name">Account Name<span class="form-required">*</span></label>
         <p>{{ form.account_name.errors }}</p>
-        <input type="text" class="form-control" name="account_name" id="account_name" placeholder="Account Name" />
+        {{form.account_name}}
       </div>
 
       <div class="input-container">
         <label for="account_number">Account Number<span class="form-required">*</span></label>
         <p>{{ form.account_number.errors }}</p>
-        <input type="text" class="form-control" name="account_number" id="account_number" placeholder="Account Number" />
+        {{form.account_number}}
       </div>
       <div class="form-btn-container">
         <button class="form-btn" type="submit">Submit</button>

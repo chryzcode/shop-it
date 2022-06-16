@@ -462,8 +462,9 @@ def bank_details(request):
         if store.currency:
             flutterwave_currency_code = store.currency.flutterwave_code
         else:
+            form = BankForm()
             error = "Please select a currency in your store settings"
-            return render(request, "store/bank-details.html", {"error": error})
+            return render(request, "store/bank-details.html", {"error": error, "form": form})
         url = f'https://api.flutterwave.com/v3/banks/{flutterwave_currency_code}'
         headers = {'Content-Type': 'application/json', 'Authorization': settings.FLUTTERWAVE_SECRET_KEY}
         response = requests.get(url, headers=headers)
@@ -484,4 +485,4 @@ def bank_details(request):
                 bank_info.save()
                 Bank_Info.objects.exclude(pk=bank_info.pk).filter(store=store).delete()
                 return redirect("account:bank_details")
-        return render(request, "store/bank-details.html", {"form": form, "all_banks":all_banks})
+        return render(request, "store/bank-details.html", {"form": form, "all_banks":all_banks, "bank_info":bank_info})
