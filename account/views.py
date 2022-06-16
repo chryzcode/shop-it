@@ -482,7 +482,6 @@ def bank_details(request):
                 bank_info = form.save(commit=False)
                 bank_info.store = store
                 bank_info.save()
-                #de;ete bankinfo excluding the one that is being updated
                 Bank_Info.objects.exclude(pk=bank_info.pk).filter(store=store).delete()
                 return redirect("account:bank_details")
         return render(request, "store/bank-details.html", {"form": form, "all_banks":all_banks})
