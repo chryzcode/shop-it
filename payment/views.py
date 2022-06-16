@@ -1,6 +1,5 @@
 from django.conf import settings
 from django.contrib import messages
-from django.core import serializers
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, render
 
@@ -11,8 +10,12 @@ from order.models import *
 
 from .forms import *
 from .models import *
+from rave_python import Rave
+import os
 
-json_serializer = serializers.get_serializer("json")()
+RAVE_SECRET_KEY = settings.RAVE_SECRET_KEY
+RAVE_PUBLIC_KEY = settings.RAVE_PUBLIC_KEY
+rave = Rave(secretKey=RAVE_SECRET_KEY, publicKey=RAVE_PUBLIC_KEY, production=False, usingEnv=False)
 
 
 # Create your views here.
