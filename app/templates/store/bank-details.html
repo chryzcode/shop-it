@@ -4,11 +4,17 @@
 <div class="store-page-container">
   {% include 'navs/store-side-nav.html' %}
   <div class="store-content-container">
-    <form action="{% url 'account:bank_details' %}" method="post" enctype="multipart/form-data" class="create-product-form">
+    <form
+      action="{% url 'account:bank_details' %}"
+      method="post"
+      enctype="multipart/form-data"
+      class="create-product-form"
+    >
       <div class="above-create-form">
         <p>Bank Details</p>
       </div>
       {% csrf_token %}
+      <p class="error">{{error}}</p>
       <div class="input-container">
         <label for="bank_name">Bank Name<span class="form-required">*</span></label>
         <p>{{ form.bank_name.errors }}</p>
@@ -22,13 +28,13 @@
       <div class="input-container">
         <label for="account_name">Account Name<span class="form-required">*</span></label>
         <p>{{ form.account_name.errors }}</p>
-        {{form.account_name}}
+        <input type="text" class="form-control" name="account_name" id="account_name" placeholder="Account Name" />
       </div>
 
       <div class="input-container">
         <label for="account_number">Account Number<span class="form-required">*</span></label>
         <p>{{ form.account_number.errors }}</p>
-        {{form.account_number}}
+        <input type="text" class="form-control" name="account_number" id="account_number" placeholder="Account Number" />
       </div>
       <div class="form-btn-container">
         <button class="form-btn" type="submit">Submit</button>

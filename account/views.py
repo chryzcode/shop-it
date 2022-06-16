@@ -459,8 +459,11 @@ def delete_shipping_method(request, pk):
 def bank_details(request):
     if request.user.store_creator == True:
         store = Store.objects.get(owner=request.user)
-        print(store)
-        flutterwave_currency_code = store.currency.flutterwave_code
+        if store.currency:
+            flutterwave_currency_code = store.currency.flutterwave_code
+        else:
+            error = "Please select a currency in your store settings"
+            return render(request, "store/bank-details.html", {"error": error})
         url = f'https://api.flutterwave.com/v3/banks/{flutterwave_currency_code}'
         headers = {'Content-Type': 'application/json', 'Authorization': settings.FLUTTERWAVE_SECRET_KEY}
         response = requests.get(url, headers=headers)
@@ -468,7 +471,6 @@ def bank_details(request):
         all_banks = {}
         for bank in result:
             all_banks[bank.get('name')] = bank.get('code')
-        #use instance to get the bank details if ie exist else create a new one and save it and only for update use instance
         if Bank_Info.objects.filter(store=store).exists():
             bank_info = Bank_Info.objects.get(store=store)
             form = BankForm(instance=bank_info)
