@@ -459,6 +459,7 @@ def delete_shipping_method(request, pk):
 def bank_details(request):
     if request.user.store_creator == True:
         store = Store.objects.get(owner=request.user)
+        bank_info = ''
         if store.currency:
             flutterwave_currency_code = store.currency.flutterwave_code
         else:
@@ -482,7 +483,6 @@ def bank_details(request):
             if form.is_valid():
                 bank_info = form.save(commit=False)
                 bank_info.store = store
-                #get bank code from name
                 bank_info.bank_code = all_banks[bank_info.bank_name]
                 bank_info.save()
                 Bank_Info.objects.exclude(pk=bank_info.pk).filter(store=store).delete()
