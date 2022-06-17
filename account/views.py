@@ -480,10 +480,12 @@ def bank_details(request):
             form = BankForm()
         if request.method == "POST":
             form = BankForm(request.POST)
+            bank_name = request.POST.get("bank_name")
             if form.is_valid():
                 bank_info = form.save(commit=False)
+                bank_name = form.cleaned_data["bank_name"]
                 bank_info.store = store
-                bank_info.bank_code = all_banks[bank_info.bank_name]
+                bank_info.bank_code = all_banks[bank_name]
                 bank_info.save()
                 Bank_Info.objects.exclude(pk=bank_info.pk).filter(store=store).delete()
                 return redirect("account:bank_details")
