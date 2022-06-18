@@ -473,6 +473,7 @@ def bank_details(request):
         all_banks = {}
         for bank in result:
             all_banks[bank.get('name')] = bank.get('code')
+        print(all_banks)
         if Bank_Info.objects.filter(store=store).exists():
             bank_info = Bank_Info.objects.get(store=store)
             form = BankForm(instance=bank_info)
