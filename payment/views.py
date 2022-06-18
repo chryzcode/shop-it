@@ -166,7 +166,7 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
                 "amount": payment.amount,
                 "currency": order.currency_code,
                 "beneficiary_name": store_bank.account_name,
-                "narration": f"Hello {store.store_name}, the total sum of {order.currency_symbol}{payment.amount} hs been sent to your bank account through the purchase made by {payment.full_name} in your Shop!t store"
+                "narration": f"Hello {store.store_name}, the total sum of {order.currency_symbol}{payment.amount} hs been sent to your bank account through the purchase made by {payment.full_name} in your Shop!t store",
                 "bank_name": store_bank.bank_name,
             })
             print(res)
