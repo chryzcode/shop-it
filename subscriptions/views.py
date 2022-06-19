@@ -12,7 +12,9 @@ def initiate_subscription_payment(request: HttpRequest, pk) -> HttpResponse:
             return redirect("/")
         else:
             return render(
-                
+                request, "subscriptions/make-subscription-payments.html", 
+                {"subscription": subscription, "store": store}
+            )
     else:
         return redirect("/")
 

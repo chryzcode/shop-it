@@ -1,3 +1,4 @@
+from locale import currency
 from django.db import models
 import secrets
 from payment.paystack import Paystack
@@ -21,7 +22,8 @@ class Subscription(models.Model):
     ref = models.CharField(max_length=200)
     verified = models.BooleanField(default=False)
     subscribers = models.ManyToManyField(Store, related_name="subscriptions")
-    duration = models.ForeignKey(Duration, on_delete=models.CASCADE)       
+    duration = models.ForeignKey(Duration, on_delete=models.CASCADE)     
+    currency = models.ForeignKey(Currency, on_delete=models.CASCADE)
 
     class Meta:
         ordering = ["-created_at"]
