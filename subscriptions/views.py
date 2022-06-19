@@ -10,6 +10,9 @@ def initiate_subscription_payment(request: HttpRequest, pk) -> HttpResponse:
         subscription = Subscription.objects.get(pk=pk)
         if subscription.subscribers.filter(pk=store.pk).exists():
             return redirect("/")
+        else:
+            return render(
+                
     else:
         return redirect("/")
 
