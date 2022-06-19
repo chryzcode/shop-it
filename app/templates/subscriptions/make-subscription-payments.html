@@ -26,7 +26,7 @@
             amount: '{{subscription.amount_value}}',
             ref: ref,
             callback: function(response){
-                window.location.href = "{% url 'payment:verify_payment' payment.ref %}"
+                window.location.href = "{% url 'subscription:verify_subscription_payment' subscription.ref %}"
             }
         }
 
