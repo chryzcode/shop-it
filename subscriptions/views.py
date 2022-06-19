@@ -1,8 +1,9 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.http import HttpRequest, HttpResponse
 from .models import *
 from account.models import *
 from django.conf import settings
+from django.contrib import messages
 
 # Create your views here.
 def initiate_subscription_payment(request: HttpRequest, pk) -> HttpResponse:
@@ -18,4 +19,14 @@ def initiate_subscription_payment(request: HttpRequest, pk) -> HttpResponse:
             )
     else:
         return redirect("/")
+
+
+def verify_subscription_payment(request: HttpRequest, ref: str) -> HttpResponse:
+    subscription = get_object_or_404(Subscription, ref=ref)
+    store = Store.objects.get(store_name= request.user.store_name)
+    verified = subscription.verify_payment()
+    if verified:
+        messages.success(request, "Verification Successful")
+    else:
+        messages.error(request, "Verification Failed")
 
