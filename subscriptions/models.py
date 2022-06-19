@@ -1,6 +1,6 @@
 from django.db import models
 import secrets
-from paystack.paystack import Paystack
+from payment.paystack import Paystack
 
 # Create your models here.
 
