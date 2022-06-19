@@ -9,11 +9,10 @@ from django.utils.text import slugify
 from django.utils import timezone
 
 from account.models import *
-from account.views import bank_details
 from cart.cart import *
 from order.models import *
-from order.views import order
 from payment.models import Payment
+from subscriptions.models import *
 
 from .forms import *
 from .models import *
@@ -584,4 +583,19 @@ def store_review_detail(request, pk):
         )
     review = Review.objects.get(id=pk, store=store)
     return render(request, "store/store-review-detail.html", {"review":review})
+
+
+def subscription_plans(request):
+    if request.user.store_creator == True:
+        store = Store.objects.get(store_name=request.user.store_name)
+    else:
+        store = Store.objects.get(
+            store_name=store_staff.objects.get(user=request.user).store
+        )
+    plans = Subscription.objects.all()
+    store_plan = Subscription.subscribers.filter(pk=store.id)
+    monthly_plans = Subscription.objects.filter(duration="monthly")
+    yearly_plans = Subscription.objects.filter(duration="yearly")
+    return render(request, "store/subscription-plans.html", {"plans": plans, "store_plan": store_plan, "monthly_plans": monthly_plans, "yearly_plans": yearly_plans})
+    
 
