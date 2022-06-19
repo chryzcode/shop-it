@@ -26,6 +26,7 @@ def verify_subscription_payment(request: HttpRequest, ref: str) -> HttpResponse:
     store = Store.objects.get(store_name= request.user.store_name)
     verified = subscription.verify_payment()
     if verified:
+        subscription.subscribers.add(store)
         messages.success(request, "Verification Successful")
     else:
         messages.error(request, "Verification Failed")
