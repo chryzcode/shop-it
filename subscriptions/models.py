@@ -31,6 +31,20 @@ class Subscription(models.Model):
     def __str__(self):
         return self.name
 
+    def amount_value(self) -> int:
+        return self.amount * 100
+
+    def verify_payment(self):
+        paystack = Paystack()
+        status, result = paystack.verify_payment(self.ref, self.amount)
+        if status:
+            if result["amount"] / 100 == self.amount:
+                self.verified = True
+            self.save()
+        if self.verified:
+            return True
+        return False
+
     def save(self, *args, **kwargs) -> None:
         while not self.ref:
             ref = secrets.token_urlsafe(50)

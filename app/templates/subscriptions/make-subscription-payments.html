@@ -1,5 +1,5 @@
 {% extends 'navs/base.html' %} {% load humanize %}
-{% block title %}<title>Make Payment</title>{% endblock %} {% block content %}
+{% block title %}<title>Make Subscription Payment</title>{% endblock %} {% block content %}
 <div class="auth-form-container position-absolute-center">
       <div class="above-create-form">
           <p>Make Subscription Payment</p> 
@@ -7,7 +7,8 @@
       <script src="https://js.paystack.co/v1/inline.js"></script> 
       <div class="form-contents">
           <p>
-              You are paying {{currency_symbol}}{{payment.amount|intcomma}} to {{store.store_name|capfirst}}
+            {{store.store_name|capfirst}} is paying {{subscription.currency.symbol}}{{subscription.price|intcomma}} for the 
+            {{subscription.name|capfirst}} subscription plan.
           </p>
       </div>  
       <div class="form-btn-container">
@@ -16,13 +17,13 @@
 </div>
 <script>
     function payWithPayStack(){
-        let currency = '{{currency_code}}';
+        let currency = '{{subscription.currency.code}}';
         let plan = "";
-        let ref = "{{payment.ref}}";
+        let ref = "{{subscription.ref}}";
         let obj = {
             key: "{{paystack_public_key}}",
-            email: '{{payment.email}}',
-            amount: '{{payment.amount_value}}',
+            email: '{{email}}',
+            amount: '{{subscription.amount_value}}',
             ref: ref,
             callback: function(response){
                 window.location.href = "{% url 'payment:verify_payment' payment.ref %}"
