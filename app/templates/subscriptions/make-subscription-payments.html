@@ -7,7 +7,7 @@
       <script src="https://js.paystack.co/v1/inline.js"></script> 
       <div class="form-contents">
           <p>
-            {{store.store_name|capfirst}} is paying {{subscription.currency.symbol}}{{subscription.price|intcomma}} for the 
+            {{store.store_name|capfirst}} is paying {{subscription.currency.symbol}}{{subscription.amount|intcomma}} for the 
             {{subscription.name|capfirst}} subscription plan.
           </p>
       </div>  

@@ -12,8 +12,10 @@ def initiate_subscription_payment(request: HttpRequest, pk) -> HttpResponse:
         store = Store.objects.get(store_name=request.user.store_name)
         subscription = Subscription.objects.get(pk=pk)
         all_subscriptions = Subscription.objects.all()
-        if store in all_subscriptions.subscribers.all():
-            return redirect("/")
+        for subscription in all_subscriptions:
+            if store in subscription.subscribers.all():
+                messages.error(request, "You are already subscribed to this subscription")
+                return redirect("/subscriptions/")
         if subscription.subscribers.filter(pk=store.pk).exists():
             return redirect("/")
         else:

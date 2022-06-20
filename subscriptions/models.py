@@ -15,7 +15,7 @@ class Duration(models.Model):
 
 class Subscription(models.Model):
     name = models.CharField(max_length=100)
-    price = models.PositiveIntegerField()
+    amount = models.PositiveIntegerField()
     description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -29,7 +29,7 @@ class Subscription(models.Model):
         ordering = ["-created_at"]
 
     def __str__(self):
-        return self.name
+        return self.name + ' ' + str(self.duration.name)
 
     def amount_value(self) -> int:
         return self.amount * 100
