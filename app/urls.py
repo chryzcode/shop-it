@@ -52,4 +52,5 @@ urlpatterns = [
     path("reviews/", views.store_review_list, name="store_review_list"),
     path("review/<str:pk>/", views.store_review_detail, name="store_review_detail"),
     path("yearly/subscriptions/", views.yearly_subscription_plans, name="yearly_subscription_plans"),
+    path("monthly/subscriptions/", views.monthly_subscription_plans, name="monthly_subscription_plans"),
 ]

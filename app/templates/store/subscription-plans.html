@@ -9,9 +9,9 @@
       <p>Shop!t {% if 'monthly' in request.get_full_path %} Monthly {% else %} Yearly {% endif %} Subscriptions </p>
       <p>
           {% if 'monthly' in request.get_full_path %}
-          <a href="{% url 'app:store_orders' %}">Yearly Subscriptions</a>
+          <a href="{% url 'app:yearly_subscription_plans' %}">Yearly Subscriptions</a>
           {% else %}
-          <a href="{% url 'app:unpaid_store_orders'%}">Monthly Subscriptions</a>
+          <a href="{% url 'app:monthly_subscription_plans'%}">Monthly Subscriptions</a>
           {% endif %}
         </p>
     </span>
