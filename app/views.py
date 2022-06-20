@@ -1,3 +1,4 @@
+from calendar import month
 from datetime import datetime, timedelta
 from decimal import Decimal
 
@@ -593,9 +594,12 @@ def subscription_plans(request):
             store_name=store_staff.objects.get(user=request.user).store
         )
     plans = Subscription.objects.all()
-    store_plan = Subscription.subscribers.filter(pk=store.id)
-    monthly_plans = Subscription.objects.filter(duration="monthly")
-    yearly_plans = Subscription.objects.filter(duration="yearly")
+    #get the the subscription plan of the store through the subscribers
+    store_plan = Subscription.subscribers.through.objects.filter(store=store)
+    monthly_duration = Duration.objects.get(name="monthly")
+    yearly_duration = Duration.objects.get(name="yearly")
+    monthly_plans = Subscription.objects.filter(duration=monthly_duration)
+    yearly_plans = Subscription.objects.filter(duration=yearly_duration)
     return render(request, "store/subscription-plans.html", {"plans": plans, "store_plan": store_plan, "monthly_plans": monthly_plans, "yearly_plans": yearly_plans})
     
 

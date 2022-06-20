@@ -1,0 +1,20 @@
+{% extends 'navs/store-nav.html' %}{% load humanize %} {% load static %}{% block title %}<title>
+  Shop!t - {% if 'monthly' in request.get_full_path %} Monthly {% else %} Yearly {% endif %} Subscriptions 
+</title>
+{% endblock %} {% block content %}
+<div class="store-page-container">
+  {% include 'navs/store-side-nav.html' %}
+  <div class="store-content-container">
+    <span class="store-products-container">
+      <p>Shop!t {% if 'monthly' in request.get_full_path %} Monthly {% else %} Yearly {% endif %} Subscriptions </p>
+      <p>
+          {% if 'monthly' in request.get_full_path %}
+          <a href="{% url 'app:store_orders' %}">Yearly Subscriptions</a>
+          {% else %}
+          <a href="{% url 'app:unpaid_store_orders'%}">Yearly Subscriptions</a>
+          {% endif %}
+        </p>
+    </span>
+  </div>
+  {% endblock %}
+</div>
