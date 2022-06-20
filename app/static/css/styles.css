@@ -1213,8 +1213,9 @@ button {
 }
 
 .error {
-  color: red;
-  font-size: 13px;
+  color: red !important;
+  font-size: 13px !important;
+  text-align: center;
 }
 
 .disable {

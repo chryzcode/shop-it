@@ -7,6 +7,9 @@
   <div class="store-content-container">
     <span class="store-products-container">
       <p>Shop!t {% if 'monthly' in request.get_full_path %} Monthly {% else %} Yearly {% endif %} Subscriptions </p>
+       {% if messages %} {% for message in messages %}
+    <small class="error">{{message}}</small>
+    {% endfor %} {% endif %}
       <p>
           {% if 'monthly' in request.get_full_path %}
           <a href="{% url 'app:yearly_subscription_plans' %}">Yearly Subscriptions</a>
