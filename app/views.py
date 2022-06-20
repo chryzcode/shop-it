@@ -593,13 +593,33 @@ def yearly_subscription_plans(request):
         store = Store.objects.get(
             store_name=store_staff.objects.get(user=request.user).store
         )
-    plans = Subscription.objects.all()
-    #get the the subscription plan of the store through the subscribers
-    store_plan = Subscription.subscribers.through.objects.filter(store=store)
-    # monthly_duration = Duration.objects.get(name="monthly")
+    all_subscription = Subscription.objects.all()
+    for subscription in all_subscription:
+        if store in subscription.subscribers.all():
+            store_plan = subscription
+        else:
+            store_plan = None
     duration = Duration.objects.get(name="yearly")
-    # monthly_plans = Subscription.objects.filter(duration=monthly_duration)
     plans = Subscription.objects.filter(duration=duration)
     return render(request, "store/subscription-plans.html", {"plans": plans, "store_plan": store_plan, "plans":plans})
+
+
+def monthly_subscription_plans(request):
+    if request.user.store_creator == True:
+        store = Store.objects.get(store_name=request.user.store_name)
+    else:
+        store = Store.objects.get(
+            store_name=store_staff.objects.get(user=request.user).store
+        )
+    all_subscription = Subscription.objects.all()
+    for subscription in all_subscription:
+        if store in subscription.subscribers.all():
+            store_plan = subscription
+        else:
+            store_plan = None
+    duration = Duration.objects.get(name="monthly")
+    plans = Subscription.objects.filter(duration=duration)
+    return render(request, "store/subscription-plans.html", {"plans": plans, "store_plan": store_plan, "plans":plans})
+
     
 
