@@ -586,7 +586,7 @@ def store_review_detail(request, pk):
     return render(request, "store/store-review-detail.html", {"review":review})
 
 
-def subscription_plans(request):
+def yearly_subscription_plans(request):
     if request.user.store_creator == True:
         store = Store.objects.get(store_name=request.user.store_name)
     else:
@@ -596,10 +596,10 @@ def subscription_plans(request):
     plans = Subscription.objects.all()
     #get the the subscription plan of the store through the subscribers
     store_plan = Subscription.subscribers.through.objects.filter(store=store)
-    monthly_duration = Duration.objects.get(name="monthly")
-    yearly_duration = Duration.objects.get(name="yearly")
-    monthly_plans = Subscription.objects.filter(duration=monthly_duration)
-    yearly_plans = Subscription.objects.filter(duration=yearly_duration)
-    return render(request, "store/subscription-plans.html", {"plans": plans, "store_plan": store_plan, "monthly_plans": monthly_plans, "yearly_plans": yearly_plans})
+    # monthly_duration = Duration.objects.get(name="monthly")
+    duration = Duration.objects.get(name="yearly")
+    # monthly_plans = Subscription.objects.filter(duration=monthly_duration)
+    plans = Subscription.objects.filter(duration=duration)
+    return render(request, "store/subscription-plans.html", {"plans": plans, "store_plan": store_plan, "plans":plans})
     
 

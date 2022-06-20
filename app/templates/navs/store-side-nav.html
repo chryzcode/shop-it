@@ -30,7 +30,7 @@
       <ul>
         {% if request.user.store_creator == True %}
         <li><a href="{% url 'account:store_account' %}">Store Settings</a></li>
-        <li><a href="{% url 'app:subscription_plans' %}">Subscription</a></li>
+        <li><a href="{% url 'app:yearly_subscription_plans' %}">Subscription</a></li>
         <li><a href="">Store Custmization</a></li>
         {% endif %}
         <li><a href="{% url 'account:user_profile' %}">User Account</a></li>
