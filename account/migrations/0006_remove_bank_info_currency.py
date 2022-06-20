@@ -6,12 +6,12 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('account', '0005_alter_currency_flutterwave_code'),
+        ("account", "0005_alter_currency_flutterwave_code"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='bank_info',
-            name='currency',
+            model_name="bank_info",
+            name="currency",
         ),
     ]

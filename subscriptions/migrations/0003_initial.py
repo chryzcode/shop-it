@@ -9,32 +9,54 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('subscriptions', '0002_delete_subscription'),
+        ("subscriptions", "0002_delete_subscription"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='SubscriptionDuration',
+            name="SubscriptionDuration",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('duration', models.CharField(max_length=50)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("duration", models.CharField(max_length=50)),
             ],
         ),
         migrations.CreateModel(
-            name='Subscription',
+            name="Subscription",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=100)),
-                ('price', models.PositiveIntegerField()),
-                ('description', models.TextField()),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('ref', models.CharField(max_length=200)),
-                ('verified', models.BooleanField(default=False)),
-                ('duration', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='subscriptions.subscriptionduration')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=100)),
+                ("price", models.PositiveIntegerField()),
+                ("description", models.TextField()),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                ("ref", models.CharField(max_length=200)),
+                ("verified", models.BooleanField(default=False)),
+                (
+                    "duration",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="subscriptions.subscriptionduration",
+                    ),
+                ),
             ],
             options={
-                'ordering': ['-created_at'],
+                "ordering": ["-created_at"],
             },
         ),
     ]

@@ -6,17 +6,17 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('app', '0010_remove_review_user'),
+        ("app", "0010_remove_review_user"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='review',
-            options={'ordering': ('-created',), 'verbose_name_plural': 'Reviews'},
+            name="review",
+            options={"ordering": ("-created",), "verbose_name_plural": "Reviews"},
         ),
         migrations.AddField(
-            model_name='review',
-            name='title',
-            field=models.CharField(default='', max_length=200),
+            model_name="review",
+            name="title",
+            field=models.CharField(default="", max_length=200),
         ),
     ]

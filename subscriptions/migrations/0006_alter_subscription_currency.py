@@ -7,14 +7,16 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('account', '0011_alter_bank_info_bank_code'),
-        ('subscriptions', '0005_subscription_currency'),
+        ("account", "0011_alter_bank_info_bank_code"),
+        ("subscriptions", "0005_subscription_currency"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='subscription',
-            name='currency',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='account.currency'),
+            model_name="subscription",
+            name="currency",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="account.currency"
+            ),
         ),
     ]

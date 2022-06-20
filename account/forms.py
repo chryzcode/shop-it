@@ -227,7 +227,7 @@ class AddStoreForm(ModelForm):
             raise forms.ValidationError("Store name is already taken")
 
         return store_name
-    
+
     def __init__(self, *args, **kwargs):
         super(AddStoreForm, self).__init__(*args, **kwargs)
 
@@ -248,6 +248,7 @@ class ShippingMethodForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(ShippingMethodForm, self).__init__(*args, **kwargs)
+
 
 class BankForm(ModelForm):
     class Meta:

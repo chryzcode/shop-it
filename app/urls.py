@@ -48,9 +48,21 @@ urlpatterns = [
     path("unpaid-orders/", views.unpaid_store_orders, name="unpaid_store_orders"),
     path("order/<uuid:pk>/", views.store_order_detail, name="store_order_detail"),
     path("<slugified_store_name>/review/", views.store_review, name="store_review"),
-    path("<slugified_store_name>/create/review/product/<slug:slug>/", views.product_store_review, name="product_store_review"),
+    path(
+        "<slugified_store_name>/create/review/product/<slug:slug>/",
+        views.product_store_review,
+        name="product_store_review",
+    ),
     path("reviews/", views.store_review_list, name="store_review_list"),
     path("review/<str:pk>/", views.store_review_detail, name="store_review_detail"),
-    path("yearly/subscriptions/", views.yearly_subscription_plans, name="yearly_subscription_plans"),
-    path("monthly/subscriptions/", views.monthly_subscription_plans, name="monthly_subscription_plans"),
+    path(
+        "yearly/subscriptions/",
+        views.yearly_subscription_plans,
+        name="yearly_subscription_plans",
+    ),
+    path(
+        "monthly/subscriptions/",
+        views.monthly_subscription_plans,
+        name="monthly_subscription_plans",
+    ),
 ]

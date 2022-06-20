@@ -76,16 +76,38 @@ urlpatterns = [
         "<slugified_store_name>/orders/", views.customer_orders, name="customer_orders"
     ),
     path(
-        "<slugified_store_name>/unpaid-orders/", views.unpaid_customer_orders, name="unpaid_customer_orders"
+        "<slugified_store_name>/unpaid-orders/",
+        views.unpaid_customer_orders,
+        name="unpaid_customer_orders",
     ),
     path(
         "<slugified_store_name>/order/<uuid:pk>/",
         views.customer_order_detail,
         name="customer_order_detail",
     ),
-    path("<slugified_store_name>/reviews/", views.customer_reviews, name="customer_reviews"),
-    path("<slugified_store_name>/review/<str:pk>/", views.customer_review_detail, name="customer_review_detail"),
-    path("<slugified_store_name>/review/edit/<str:pk>", views.edit_review, name="edit_review"),
-    path("<slugified_store_name>/review/delete/<str:pk>", views.delete_review, name="delete_review"),
-    path("<slugified_store_name>/delete/unpaid-order/<str:pk>/", views.delete_unpaid_order, name="delete_unpaid_order"),
+    path(
+        "<slugified_store_name>/reviews/",
+        views.customer_reviews,
+        name="customer_reviews",
+    ),
+    path(
+        "<slugified_store_name>/review/<str:pk>/",
+        views.customer_review_detail,
+        name="customer_review_detail",
+    ),
+    path(
+        "<slugified_store_name>/review/edit/<str:pk>",
+        views.edit_review,
+        name="edit_review",
+    ),
+    path(
+        "<slugified_store_name>/review/delete/<str:pk>",
+        views.delete_review,
+        name="delete_review",
+    ),
+    path(
+        "<slugified_store_name>/delete/unpaid-order/<str:pk>/",
+        views.delete_unpaid_order,
+        name="delete_unpaid_order",
+    ),
 ]

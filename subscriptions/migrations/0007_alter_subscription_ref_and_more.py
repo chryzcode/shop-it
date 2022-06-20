@@ -6,19 +6,21 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('account', '0011_alter_bank_info_bank_code'),
-        ('subscriptions', '0006_alter_subscription_currency'),
+        ("account", "0011_alter_bank_info_bank_code"),
+        ("subscriptions", "0006_alter_subscription_currency"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='subscription',
-            name='ref',
+            model_name="subscription",
+            name="ref",
             field=models.CharField(blank=True, max_length=200, null=True),
         ),
         migrations.AlterField(
-            model_name='subscription',
-            name='subscribers',
-            field=models.ManyToManyField(blank=True, related_name='subscriptions', to='account.store'),
+            model_name="subscription",
+            name="subscribers",
+            field=models.ManyToManyField(
+                blank=True, related_name="subscriptions", to="account.store"
+            ),
         ),
     ]

@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('account', '0004_currency_flutterwave_code'),
+        ("account", "0004_currency_flutterwave_code"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='currency',
-            name='flutterwave_code',
+            model_name="currency",
+            name="flutterwave_code",
             field=models.CharField(max_length=10),
         ),
     ]

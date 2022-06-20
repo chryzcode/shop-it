@@ -7,10 +7,9 @@ from account.models import *
 # Create your models here.
 class Duration(models.Model):
     name = models.CharField(max_length=100)
-    
+
     def __str__(self):
         return self.name
-
 
 
 class Subscription(models.Model):
@@ -21,15 +20,17 @@ class Subscription(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     ref = models.CharField(max_length=200, blank=True, null=True)
     verified = models.BooleanField(default=False)
-    subscribers = models.ManyToManyField(Store, related_name="subscriptions", blank=True)
-    duration = models.ForeignKey(Duration, on_delete=models.CASCADE)     
+    subscribers = models.ManyToManyField(
+        Store, related_name="subscriptions", blank=True
+    )
+    duration = models.ForeignKey(Duration, on_delete=models.CASCADE)
     currency = models.ForeignKey(Currency, on_delete=models.CASCADE)
 
     class Meta:
         ordering = ["-created_at"]
 
     def __str__(self):
-        return self.name + ' ' + str(self.duration.name)
+        return self.name + " " + str(self.duration.name)
 
     def amount_value(self) -> int:
         return self.amount * 100
@@ -52,4 +53,3 @@ class Subscription(models.Model):
             if not objects_with_similar_ref:
                 self.ref = ref
         super().save(*args, **kwargs)
-

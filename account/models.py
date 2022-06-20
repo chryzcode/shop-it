@@ -1,6 +1,9 @@
 from django.conf import settings
-from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
-                                        PermissionsMixin)
+from django.contrib.auth.models import (
+    AbstractBaseUser,
+    BaseUserManager,
+    PermissionsMixin,
+)
 from django.core.mail import send_mail
 from django.db import models
 from django.utils.text import slugify
@@ -124,10 +127,10 @@ class Bank_Info(models.Model):
     account_name = models.CharField(max_length=100)
     bank_name = models.CharField(max_length=100)
     store = models.ForeignKey(
-        Store, on_delete=models.CASCADE,
+        Store,
+        on_delete=models.CASCADE,
     )
     bank_code = models.CharField(max_length=10)
- 
 
     class Meta:
         verbose_name = "Bank Info"

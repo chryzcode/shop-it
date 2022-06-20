@@ -123,9 +123,12 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
+
 class Review(models.Model):
     title = models.CharField(max_length=200)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, blank=True, null=True)
+    product = models.ForeignKey(
+        Product, on_delete=models.CASCADE, blank=True, null=True
+    )
     comment = models.TextField()
     store = models.ForeignKey(Store, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
@@ -136,6 +139,6 @@ class Review(models.Model):
     class Meta:
         verbose_name_plural = "Reviews"
         ordering = ("-created",)
-    
+
     def __str__(self):
-        return  self.title + ' ' + self.full_name + ' ' + self.store.store_name
+        return self.title + " " + self.full_name + " " + self.store.store_name

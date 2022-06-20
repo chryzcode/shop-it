@@ -133,9 +133,9 @@ class UseCouponForm(ModelForm):
 class nonAuthReviewForm(ModelForm):
     class Meta:
         model = Review
-        fields = ["title", "comment",  "full_name", "email"]
+        fields = ["title", "comment", "full_name", "email"]
 
-        widgets = {      
+        widgets = {
             "title": forms.TextInput(
                 attrs={"class": "form-control", "placeholder": "Review Title"}
             ),
@@ -153,11 +153,10 @@ class nonAuthReviewForm(ModelForm):
     def clean_comment(self):
         comment = self.cleaned_data.get("comment")
         if comment is None:
-            raise forms.ValidationError("Field is required") 
+            raise forms.ValidationError("Field is required")
         if len(comment) <= 5:
-            raise forms.ValidationError("Field is requires more than 5 characters")        
+            raise forms.ValidationError("Field is requires more than 5 characters")
         return comment
-
 
     def __init__(self, *args, **kwargs):
         super(nonAuthReviewForm, self).__init__(*args, **kwargs)
@@ -182,16 +181,16 @@ class AuthReviewForm(ModelForm):
     def clean_comment(self):
         comment = self.cleaned_data.get("comment")
         if comment is None:
-            raise forms.ValidationError("Field is required") 
+            raise forms.ValidationError("Field is required")
         if len(comment) <= 5:
-            raise forms.ValidationError("Field is requires more than 5 characters")        
+            raise forms.ValidationError("Field is requires more than 5 characters")
         return comment
-
 
     def __init__(self, *args, **kwargs):
         super(AuthReviewForm, self).__init__(*args, **kwargs)
         self.label_suffix = ""
         self.fields["comment"].label = "Comment"
+
 
 class nonAuthProductReviewForm(ModelForm):
     class Meta:
@@ -216,9 +215,9 @@ class nonAuthProductReviewForm(ModelForm):
     def clean_comment(self):
         comment = self.cleaned_data.get("comment")
         if comment is None:
-            raise forms.ValidationError("Field is required") 
+            raise forms.ValidationError("Field is required")
         if len(comment) <= 5:
-            raise forms.ValidationError("Field is requires more than 5 characters")        
+            raise forms.ValidationError("Field is requires more than 5 characters")
         return comment
 
     def __init__(self, *args, **kwargs):
@@ -241,13 +240,12 @@ class authProductReviewForm(ModelForm):
             ),
         }
 
-
     def clean_comment(self):
         comment = self.cleaned_data.get("comment")
         if comment is None:
-            raise forms.ValidationError("Field is required") 
+            raise forms.ValidationError("Field is required")
         if len(comment) <= 5:
-            raise forms.ValidationError("Field is requires more than 5 characters")        
+            raise forms.ValidationError("Field is requires more than 5 characters")
         return comment
 
     def __init__(self, *args, **kwargs):

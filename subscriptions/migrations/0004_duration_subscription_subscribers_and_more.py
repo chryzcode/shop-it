@@ -7,29 +7,41 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('account', '0011_alter_bank_info_bank_code'),
-        ('subscriptions', '0003_initial'),
+        ("account", "0011_alter_bank_info_bank_code"),
+        ("subscriptions", "0003_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Duration',
+            name="Duration",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=100)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=100)),
             ],
         ),
         migrations.AddField(
-            model_name='subscription',
-            name='subscribers',
-            field=models.ManyToManyField(related_name='subscriptions', to='account.store'),
+            model_name="subscription",
+            name="subscribers",
+            field=models.ManyToManyField(
+                related_name="subscriptions", to="account.store"
+            ),
         ),
         migrations.AlterField(
-            model_name='subscription',
-            name='duration',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='subscriptions.duration'),
+            model_name="subscription",
+            name="duration",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="subscriptions.duration"
+            ),
         ),
         migrations.DeleteModel(
-            name='SubscriptionDuration',
+            name="SubscriptionDuration",
         ),
     ]

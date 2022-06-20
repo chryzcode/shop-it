@@ -14,7 +14,12 @@ from rave_python import Rave
 
 RAVE_SECRET_KEY = settings.RAVE_SECRET_KEY
 RAVE_PUBLIC_KEY = settings.RAVE_PUBLIC_KEY
-rave = Rave(secretKey=RAVE_SECRET_KEY, publicKey=RAVE_PUBLIC_KEY, production=False, usingEnv=False)
+rave = Rave(
+    secretKey=RAVE_SECRET_KEY,
+    publicKey=RAVE_PUBLIC_KEY,
+    production=False,
+    usingEnv=False,
+)
 
 
 # Create your views here.
@@ -159,15 +164,17 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
             product.save()
         messages.success(request, "Verification Successful")
         cart.clear()
-    
-        res = rave.Transfer.initiate({
-            "account_bank": store_bank.bank_code,
-            "account_number": store_bank.account_number,
-            "amount": payment.amount,
-            "currency": order.currency_code,
-            "beneficiary_name": store_bank.account_name,
-            "narration": f"Hello {store.store_name}, the total sum of {order.currency_symbol}{payment.amount} hs been sent to your bank account through the purchase made by {payment.full_name} in your Shop!t store",
-        })
+
+        res = rave.Transfer.initiate(
+            {
+                "account_bank": store_bank.bank_code,
+                "account_number": store_bank.account_number,
+                "amount": payment.amount,
+                "currency": order.currency_code,
+                "beneficiary_name": store_bank.account_name,
+                "narration": f"Hello {store.store_name}, the total sum of {order.currency_symbol}{payment.amount} hs been sent to your bank account through the purchase made by {payment.full_name} in your Shop!t store",
+            }
+        )
         print(res)
 
     else:

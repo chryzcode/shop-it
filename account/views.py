@@ -459,20 +459,25 @@ def delete_shipping_method(request, pk):
 def bank_details(request):
     if request.user.store_creator == True:
         store = Store.objects.get(owner=request.user)
-        bank_info = ''
+        bank_info = ""
         if store.currency:
             flutterwave_currency_code = store.currency.flutterwave_code
         else:
             form = BankForm()
             error = "Please select a currency in your store settings"
-            return render(request, "store/bank-details.html", {"error": error, "form": form})
-        url = f'https://api.flutterwave.com/v3/banks/{flutterwave_currency_code}'
-        headers = {'Content-Type': 'application/json', 'Authorization': settings.FLUTTERWAVE_SECRET_KEY}
+            return render(
+                request, "store/bank-details.html", {"error": error, "form": form}
+            )
+        url = f"https://api.flutterwave.com/v3/banks/{flutterwave_currency_code}"
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": settings.FLUTTERWAVE_SECRET_KEY,
+        }
         response = requests.get(url, headers=headers)
-        result = response.json().get('data')
+        result = response.json().get("data")
         all_banks = {}
         for bank in result:
-            all_banks[bank.get('name')] = bank.get('code')
+            all_banks[bank.get("name")] = bank.get("code")
         print(all_banks)
         if Bank_Info.objects.filter(store=store).exists():
             bank_info = Bank_Info.objects.get(store=store)
@@ -490,4 +495,8 @@ def bank_details(request):
                 bank_info.save()
                 Bank_Info.objects.exclude(pk=bank_info.pk).filter(store=store).delete()
                 return redirect("account:bank_details")
-        return render(request, "store/bank-details.html", {"form": form, "all_banks":all_banks, "bank_info":bank_info})
+        return render(
+            request,
+            "store/bank-details.html",
+            {"form": form, "all_banks": all_banks, "bank_info": bank_info},
+        )

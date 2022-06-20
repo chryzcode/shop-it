@@ -161,7 +161,12 @@ def update_cart(request, slugified_store_name):
         currency = cart.get_currency_symbol()
         print(currency)
         response = JsonResponse(
-            {"qty": cartqty, "subtotal": f"{carttotal:,}", "cartproqty": (f"{cartproductqty:,}"), "currency": currency}
+            {
+                "qty": cartqty,
+                "subtotal": f"{carttotal:,}",
+                "cartproqty": (f"{cartproductqty:,}"),
+                "currency": currency,
+            }
         )
         return response
 

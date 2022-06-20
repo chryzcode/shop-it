@@ -35,29 +35,32 @@ class Cart:
 
         for item in cart.values():
             item["price"] = Decimal(item["price"])
-            item["total_price"] =   int(item["price"] * item["qty"])
+            item["total_price"] = int(item["price"] * item["qty"])
             yield item
 
     def __len__(self):
         return sum(item["qty"] for item in self.cart.values())
 
     def get_total_price(self):
-        return int(sum(Decimal(item["price"]) * item["qty"] for item in self.cart.values()))
+        return int(
+            sum(Decimal(item["price"]) * item["qty"] for item in self.cart.values())
+        )
 
     def get_grand_total(self, coupon_percentage):
-        return int(sum(
-            Decimal(item["price"]) * item["qty"] for item in self.cart.values()
-        ) - (
+        return int(
             sum(Decimal(item["price"]) * item["qty"] for item in self.cart.values())
-            * Decimal((coupon_percentage / 100))
-        ))
+            - (
+                sum(Decimal(item["price"]) * item["qty"] for item in self.cart.values())
+                * Decimal((coupon_percentage / 100))
+            )
+        )
 
     def get_product_qty(self, product):
         product_id = str(product)
         if product_id in self.item:
-            return int( self.item[product_id]["qty"] * Decimal(
-                self.item[product_id]["price"]
-            ))
+            return int(
+                self.item[product_id]["qty"] * Decimal(self.item[product_id]["price"])
+            )
 
     def delete(self, product):
         product_id = str(product)

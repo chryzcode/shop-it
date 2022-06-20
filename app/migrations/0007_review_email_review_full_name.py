@@ -6,18 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('app', '0006_review_created_review_updated'),
+        ("app", "0006_review_created_review_updated"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='review',
-            name='email',
+            model_name="review",
+            name="email",
             field=models.EmailField(blank=True, max_length=254, null=True),
         ),
         migrations.AddField(
-            model_name='review',
-            name='full_name',
-            field=models.CharField(default='', max_length=255),
+            model_name="review",
+            name="full_name",
+            field=models.CharField(default="", max_length=255),
         ),
     ]

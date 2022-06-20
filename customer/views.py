@@ -184,7 +184,12 @@ def customer_product_detail(request, slugified_store_name, slug):
     return render(
         request,
         "product/product-detail.html",
-        {"product": product, "category_product": category_product, "store": store, "reviews":reviews}
+        {
+            "product": product,
+            "category_product": category_product,
+            "store": store,
+            "reviews": reviews,
+        },
     )
 
 
@@ -379,11 +384,12 @@ def customer_remove_wishlist(request, slug):
             "customer:customer_login", slugified_store_name=store.slugified_store_name
         )
 
+
 @login_required(login_url="/account/login/")
 def customer_stores(request):
     customer = User.objects.get(
-            email=request.user.email, store_creator=False, store_staff=False
-        )
+        email=request.user.email, store_creator=False, store_staff=False
+    )
     if customer:
         stores = Store.objects.filter(customers=customer)
         return render(request, "customer/customer-stores.html", {"stores": stores})
@@ -434,11 +440,14 @@ def customer_orders(request, slugified_store_name):
             "customer:customer_login", slugified_store_name=slugified_store_name
         )
 
+
 def unpaid_customer_orders(request, slugified_store_name):
     if request.user.is_authenticated:
         store = Store.objects.get(slugified_store_name=slugified_store_name)
         customer = Customer.objects.get(email=request.user.email, store=store)
-        orders = Order.objects.filter(user=request.user, store=store, billing_status= False)
+        orders = Order.objects.filter(
+            user=request.user, store=store, billing_status=False
+        )
         print(orders)
         if Payment.objects.filter(user=request.user, store=store, order__in=orders):
             payment = Payment.objects.filter(
@@ -463,7 +472,6 @@ def unpaid_customer_orders(request, slugified_store_name):
         return redirect(
             "customer:customer_login", slugified_store_name=slugified_store_name
         )
-
 
 
 def customer_order_detail(request, slugified_store_name, pk):
@@ -492,6 +500,7 @@ def customer_order_detail(request, slugified_store_name, pk):
             "customer:customer_login", slugified_store_name=slugified_store_name
         )
 
+
 def customer_reviews(request, slugified_store_name):
     if request.user.is_authenticated:
         store = Store.objects.get(slugified_store_name=slugified_store_name)
@@ -511,6 +520,7 @@ def customer_reviews(request, slugified_store_name):
             "customer:customer_login", slugified_store_name=slugified_store_name
         )
 
+
 def customer_review_detail(request, slugified_store_name, pk):
     store = Store.objects.get(slugified_store_name=slugified_store_name)
     if request.user.is_authenticated:
@@ -527,6 +537,7 @@ def customer_review_detail(request, slugified_store_name, pk):
             "customer": customer,
         },
     )
+
 
 def edit_review(request, slugified_store_name, pk):
     if request.user.is_authenticated:
@@ -558,17 +569,20 @@ def edit_review(request, slugified_store_name, pk):
             "customer:customer_login", slugified_store_name=slugified_store_name
         )
 
+
 def delete_review(request, slugified_store_name, pk):
     if request.user.is_authenticated:
         store = Store.objects.get(slugified_store_name=slugified_store_name)
         review = Review.objects.get(id=pk, store=store.id)
         review.delete()
-        return redirect("customer:customer_reviews", slugified_store_name=slugified_store_name)
+        return redirect(
+            "customer:customer_reviews", slugified_store_name=slugified_store_name
+        )
     else:
         return redirect(
             "customer:customer_login", slugified_store_name=slugified_store_name
         )
-    
+
 
 def delete_unpaid_order(request, slugified_store_name, pk):
     if request.user.is_authenticated:
@@ -578,7 +592,9 @@ def delete_unpaid_order(request, slugified_store_name, pk):
             payment = Payment.objects.get(user=request.user, store=store, order=order)
             payment.delete()
         order.delete()
-        return redirect("customer:unpaid_customer_orders", slugified_store_name=slugified_store_name)
+        return redirect(
+            "customer:unpaid_customer_orders", slugified_store_name=slugified_store_name
+        )
     else:
         return redirect(
             "customer:customer_login", slugified_store_name=slugified_store_name

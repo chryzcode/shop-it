@@ -75,7 +75,7 @@ def product_detail(request, slug):
             "category_product": category_product,
             "store": store,
             "page": page,
-            "reviews":reviews
+            "reviews": reviews,
         },
     )
 
@@ -481,6 +481,7 @@ def store_orders(request):
         request, "store/store-order.html", {"orders": orders, "payment": payment}
     )
 
+
 @login_required(login_url="/account/login/")
 def unpaid_store_orders(request):
     if request.user.store_creator == True:
@@ -489,7 +490,7 @@ def unpaid_store_orders(request):
         store = Store.objects.get(
             store_name=store_staff.objects.get(user=request.user).store
         )
-    orders = Order.objects.filter(store=store, billing_status= False )
+    orders = Order.objects.filter(store=store, billing_status=False)
     if Payment.objects.filter(store=store.id, order__in=orders).exists():
         payment = Payment.objects.filter(store=store.id, order__in=orders)
     else:
@@ -553,6 +554,7 @@ def store_review_list(request):
     reviews = Review.objects.filter(store=store)
     return render(request, "store/store-review-list.html", {"reviews": reviews})
 
+
 def product_store_review(request, slugified_store_name, slug):
     store = Store.objects.get(slugified_store_name=slugified_store_name)
     product = Product.objects.get(slug=slug, store=store)
@@ -570,7 +572,11 @@ def product_store_review(request, slugified_store_name, slug):
                 review.full_name = request.user.full_name
             review.store = store
             review.save()
-            return redirect("customer:customer_product_detail", slugified_store_name=slugified_store_name, slug=slug)
+            return redirect(
+                "customer:customer_product_detail",
+                slugified_store_name=slugified_store_name,
+                slug=slug,
+            )
     context = {"form": form, "store": store}
     return render(request, "store/store-review.html", context)
 
@@ -583,7 +589,7 @@ def store_review_detail(request, pk):
             store_name=store_staff.objects.get(user=request.user).store
         )
     review = Review.objects.get(id=pk, store=store)
-    return render(request, "store/store-review-detail.html", {"review":review})
+    return render(request, "store/store-review-detail.html", {"review": review})
 
 
 def yearly_subscription_plans(request):
@@ -602,7 +608,11 @@ def yearly_subscription_plans(request):
             store_plan = None
     duration = Duration.objects.get(name="yearly")
     plans = Subscription.objects.filter(duration=duration)
-    return render(request, "store/subscription-plans.html", {"plans": plans, "store_plan": store_plan, "plans":plans})
+    return render(
+        request,
+        "store/subscription-plans.html",
+        {"plans": plans, "store_plan": store_plan, "plans": plans},
+    )
 
 
 def monthly_subscription_plans(request):
@@ -621,7 +631,8 @@ def monthly_subscription_plans(request):
             store_plan = None
     duration = Duration.objects.get(name="monthly")
     plans = Subscription.objects.filter(duration=duration)
-    return render(request, "store/subscription-plans.html", {"plans": plans, "store_plan": store_plan, "plans":plans})
-
-    
-
+    return render(
+        request,
+        "store/subscription-plans.html",
+        {"plans": plans, "store_plan": store_plan, "plans": plans},
+    )

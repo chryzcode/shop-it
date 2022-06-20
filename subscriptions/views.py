@@ -14,12 +14,22 @@ def initiate_subscription_payment(request: HttpRequest, pk) -> HttpResponse:
         subscription = Subscription.objects.get(pk=pk)
         all_subscriptions = Subscription.objects.all()
         for subscription in all_subscriptions:
-            if store in subscription.subscribers.all()  or subscription.subscribers.filter(pk=store.pk).exists():
+            if (
+                store in subscription.subscribers.all()
+                or subscription.subscribers.filter(pk=store.pk).exists()
+            ):
                 messages.error(request, "You are active on a subscription plan")
                 return redirect("app:yearly_subscription_plans")
             else:
-                return render(request, "subscriptions/make-subscription-payments.html", 
-                    {"subscription": subscription, "store": store, "paystack_public_key":settings.PAYSTACK_PUBLIC_KEY, "email":email}
+                return render(
+                    request,
+                    "subscriptions/make-subscription-payments.html",
+                    {
+                        "subscription": subscription,
+                        "store": store,
+                        "paystack_public_key": settings.PAYSTACK_PUBLIC_KEY,
+                        "email": email,
+                    },
                 )
     else:
         return redirect("/")
@@ -27,7 +37,7 @@ def initiate_subscription_payment(request: HttpRequest, pk) -> HttpResponse:
 
 def verify_subscription_payment(request: HttpRequest, ref: str) -> HttpResponse:
     subscription = get_object_or_404(Subscription, ref=ref)
-    store = Store.objects.get(store_name= request.user.store_name)
+    store = Store.objects.get(store_name=request.user.store_name)
     verified = subscription.verify_payment()
     if verified:
         subscription.subscribers.add(store)
@@ -38,4 +48,3 @@ def verify_subscription_payment(request: HttpRequest, ref: str) -> HttpResponse:
         return redirect("app:store_admin")
     else:
         messages.error(request, "Verification Failed")
-
