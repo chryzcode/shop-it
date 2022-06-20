@@ -1,8 +1,11 @@
-from locale import currency
-from django.db import models
 import secrets
-from payment.paystack import Paystack
+from locale import currency
+
+from django.db import models
+
 from account.models import *
+from payment.paystack import Paystack
+
 
 # Create your models here.
 class Duration(models.Model):

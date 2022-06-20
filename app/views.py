@@ -6,8 +6,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
-from django.utils.text import slugify
 from django.utils import timezone
+from django.utils.text import slugify
 
 from account.models import *
 from cart.cart import *

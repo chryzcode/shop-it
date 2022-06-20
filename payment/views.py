@@ -2,6 +2,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, render
+from rave_python import Rave
 
 from app.models import *
 from cart.cart import *
@@ -10,7 +11,6 @@ from order.models import *
 
 from .forms import *
 from .models import *
-from rave_python import Rave
 
 RAVE_SECRET_KEY = settings.RAVE_SECRET_KEY
 RAVE_PUBLIC_KEY = settings.RAVE_PUBLIC_KEY
