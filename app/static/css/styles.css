@@ -550,6 +550,13 @@ body > nav > span:nth-child(2) > i {
   grid-row-gap: 10px;
 }
 
+.subscription-grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
 .a-related-container {
   width: 300px;
   height: 300px;

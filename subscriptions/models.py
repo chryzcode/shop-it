@@ -19,9 +19,9 @@ class Subscription(models.Model):
     description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    ref = models.CharField(max_length=200)
+    ref = models.CharField(max_length=200, blank=True, null=True)
     verified = models.BooleanField(default=False)
-    subscribers = models.ManyToManyField(Store, related_name="subscriptions")
+    subscribers = models.ManyToManyField(Store, related_name="subscriptions", blank=True)
     duration = models.ForeignKey(Duration, on_delete=models.CASCADE)     
     currency = models.ForeignKey(Currency, on_delete=models.CASCADE)
 

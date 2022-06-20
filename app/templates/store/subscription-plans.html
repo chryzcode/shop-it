@@ -14,6 +14,18 @@
           <a href="{% url 'app:monthly_subscription_plans'%}">Monthly Subscriptions</a>
           {% endif %}
         </p>
+
+        <div class="subscription-grid-container">
+            {% for plan in plans %}
+            <div class="a-related-container">
+                <p>{{plan.name}}</p>
+                <div>
+                    {{plan.description}}
+                </div>
+
+            </div>
+            {% endfor %}
+        </div>
     </span>
   </div>
   {% endblock %}
