@@ -76,7 +76,6 @@ def initiate_subscription_payment(request: HttpRequest, pk) -> HttpResponse:
         for subscription in all_subscriptions:
             if Subscription_Timeline.objects.filter(store=store, subscription=subscription).first():
                 subscription_timeline = Subscription_Timeline.objects.filter(store=store, subscription=subscription).first()
-                print(subscription_timeline)
                 if subscription_timeline.mail_remainder == True:
                     return render(
                         request,
@@ -90,7 +89,17 @@ def initiate_subscription_payment(request: HttpRequest, pk) -> HttpResponse:
                     )
                 else:
                     messages.error(request, "You are active on a subscription plan")
-                    return redirect("app:yearly_subscription_plans")            
+                    return redirect("app:yearly_subscription_plans")   
+            return render(
+                        request,
+                        "subscriptions/make-subscription-payments.html",
+                        {
+                            "subscription": subscription,
+                            "store": store,
+                            "paystack_public_key": settings.PAYSTACK_PUBLIC_KEY,
+                            "email": email,
+                        },
+                    )         
     else:
         return redirect("/")
 
