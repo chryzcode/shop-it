@@ -1,5 +1,3 @@
-import email
-from operator import sub
 import secrets
 
 from django.conf import settings
@@ -10,6 +8,7 @@ from datetime import datetime, timedelta
 from django.utils import timezone
 from django.core.mail import send_mail
 from django.conf import settings
+from django.template.loader import render_to_string
 
 from account.models import *
 
@@ -33,16 +32,10 @@ def subscription_check_mail_remainder(request):
             if subscription_timeline.subscription.duration ==  monthly_duration:
                 if subscription_timeline.created_at < timezone.now() - timedelta(minutes=3): 
                     subject = "Your Shop!t Monthly Subscription is about to Expire"
-                    message = """
-                    Hello {{ store.store_name }},
-
-                    Here is a reminder that your monthly subscription on Shop!t is about to expire in few days time. We hope to see you renew your subscription soon to continue enjoying exclusive services to experience a better store and a smooth runing experience.
-
-                    Thank you for your continued support.
-
-                    Regards,
-                    Shop!t Team
-                    """
+                    message = render_to_string( "subscriptions/subscription-mail-remainder.html", {
+                        "store": store,
+                        "duration": "monthly",
+                    })
                     from_email = settings.EMAIL_HOST_USER
                     to_email = [request.user.email]
                     send_mail(subject, message, from_email, to_email)
@@ -51,16 +44,10 @@ def subscription_check_mail_remainder(request):
             if subscription_timeline.subscription.duration ==  yearly_duration:
                 if subscription_timeline.created_at < timezone.now() - timedelta(minutes=3): 
                     subject = "Your Shop!t Yearly Subscription is about to Expire"
-                    message = """
-                    Hello {{ store.store_name }},
-
-                    Here is a reminder that your yearly subscription on Shop!t is about to expire in few days time. We hope to see you renew your subscription soon to continue enjoying exclusive services to experience a better store and a smooth runing experience.
-
-                    Thank you for your continued support.
-
-                    Regards,
-                    Shop!t Team
-                    """
+                    message = message = render_to_string( "subscriptions/subscription-mail-remainder.html", {
+                        "store": store,
+                        "duration": "monthly",
+                    })
                     from_email = settings.EMAIL_HOST_USER
                     to_email = [request.user.email]
                     send_mail(subject, message, from_email, to_email)
