@@ -1,4 +1,5 @@
 import email
+from operator import sub
 import secrets
 
 from django.conf import settings
@@ -73,7 +74,8 @@ def initiate_subscription_payment(request: HttpRequest, pk) -> HttpResponse:
         subscription = Subscription.objects.get(pk=pk)
         all_subscriptions = Subscription.objects.all()
         for subscription in all_subscriptions:
-            if subscription_check_mail_remainder(request):
+            subscription_timeline = Subscription_Timeline.objects.filter(store=store, subscription=subscription).first()
+            if subscription_timeline.mail_remainder == True:
                 return render(
                     request,
                     "subscriptions/make-subscription-payments.html",
