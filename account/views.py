@@ -1,5 +1,3 @@
-from distutils.command.install_data import install_data
-
 import requests
 from django.conf import settings
 from django.contrib import messages
