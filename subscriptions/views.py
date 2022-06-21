@@ -41,6 +41,8 @@ def subscription_check_mail_remainder(request):
                     send_mail(subject, message, from_email, to_email)
                     subscription_timeline.mail_remainder = True
                     subscription_timeline.save()
+                    subscription = Subscription.objects.get(name = subscription_timeline.subscription.name, duration = monthly_duration)
+                    initiate_subscription_payment(request, subscription.id)
             if subscription_timeline.subscription.duration ==  yearly_duration:
                 if subscription_timeline.created_at < timezone.now() - timedelta(minutes=3): 
                     subject = "Your Shop!t Yearly Subscription is about to Expire"
@@ -53,6 +55,8 @@ def subscription_check_mail_remainder(request):
                     send_mail(subject, message, from_email, to_email)
                     subscription_timeline.mail_remainder = True
                     subscription_timeline.save()
+                    subscription = Subscription.objects.get(name = subscription_timeline.subscription.name, duration = monthly_duration)
+                    initiate_subscription_payment(request, subscription.id)
 
 def initiate_subscription_payment(request: HttpRequest, pk) -> HttpResponse:
     if request.user.store_creator == True:
@@ -61,20 +65,9 @@ def initiate_subscription_payment(request: HttpRequest, pk) -> HttpResponse:
         subscription = Subscription.objects.get(pk=pk)
         if Subscription_Timeline.objects.filter(store=store):
             subscription_timeline = Subscription_Timeline.objects.filter(store=store).first()
-            if subscription_timeline.mail_remainder == True:
-                return render(
-                    request,
-                    "subscriptions/make-subscription-payments.html",
-                    {
-                        "subscription": subscription,
-                        "store": store,
-                        "paystack_public_key": settings.PAYSTACK_PUBLIC_KEY,
-                        "email": email,
-                    },
-                )
-            else:
-                messages.error(request, "You are active on a subscription plan")
-                return redirect("app:yearly_subscription_plans")   
+            subscription_timeline.delete()
+            return redirect("subscriptions:subscription_payment", pk=subscription.pk)
+                   
         return render(
                     request,
                     "subscriptions/make-subscription-payments.html",
