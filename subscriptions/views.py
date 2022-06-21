@@ -46,7 +46,7 @@ def subscription_check_mail_remainder(request):
                     subject = "Your Shop!t Yearly Subscription is about to Expire"
                     message = message = render_to_string( "subscriptions/subscription-mail-remainder.html", {
                         "store": store,
-                        "duration": "monthly",
+                        "duration": "yearly",
                     })
                     from_email = settings.EMAIL_HOST_USER
                     to_email = [request.user.email]
