@@ -59,26 +59,9 @@ def initiate_subscription_payment(request: HttpRequest, pk) -> HttpResponse:
         email = request.user.email
         store = Store.objects.get(store_name=request.user.store_name)
         subscription = Subscription.objects.get(pk=pk)
-        all_subscriptions = Subscription.objects.all()
-        for subscription in all_subscriptions:
-            if Subscription_Timeline.objects.filter(store=store, subscription=subscription).first():
-                subscription_timeline = Subscription_Timeline.objects.filter(store=store, subscription=subscription).first()
-                if subscription_timeline.mail_remainder == True:
-                    return render(
-                        request,
-                        "subscriptions/make-subscription-payments.html",
-                        {
-                            "subscription": subscription,
-                            "store": store,
-                            "paystack_public_key": settings.PAYSTACK_PUBLIC_KEY,
-                            "email": email,
-                        },
-                    )
-                else:
-                    messages.error(request, "You are active on a subscription plan")
-                    return redirect("app:yearly_subscription_plans") 
-
-            else:
+        if Subscription_Timeline.objects.filter(store=store):
+            subscription_timeline = Subscription_Timeline.objects.filter(store=store).first()
+            if subscription_timeline.mail_remainder == True:
                 return render(
                     request,
                     "subscriptions/make-subscription-payments.html",
@@ -88,7 +71,20 @@ def initiate_subscription_payment(request: HttpRequest, pk) -> HttpResponse:
                         "paystack_public_key": settings.PAYSTACK_PUBLIC_KEY,
                         "email": email,
                     },
-                )        
+                )
+            else:
+                messages.error(request, "You are active on a subscription plan")
+                return redirect("app:yearly_subscription_plans")   
+        return render(
+                    request,
+                    "subscriptions/make-subscription-payments.html",
+                    {
+                        "subscription": subscription,
+                        "store": store,
+                        "paystack_public_key": settings.PAYSTACK_PUBLIC_KEY,
+                        "email": email,
+                    },
+                )         
     else:
         return redirect("/")
 
