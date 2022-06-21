@@ -63,6 +63,7 @@ def verify_subscription_payment(request: HttpRequest, ref: str) -> HttpResponse:
         messages.error(request, "Verification Failed")
 
 def subscription_check(request):
+    subscription_check_mail_renainder(request)
     store = None
     if request.user.store_creator == True:
         store = Store.objects.get(store_name=request.user.store_name)
@@ -97,12 +98,12 @@ def subscription_check_mail_renainder(request):
             store_name=store_staff.objects.get(user=request.user).store
         )
     if store:
-        if Subscription_Timeline.objects.filter(store=store).exists():
+        if Subscription_Timeline.objects.filter(store=store, mail_remainder=False).exists():
             subscription_timeline = Subscription_Timeline.objects.filter(store=store).first()
             yearly_duration = Duration.objects.get(name="yearly")
             monthly_duration = Duration.objects.get(name="monthly")
             if subscription_timeline.subscription.duration ==  monthly_duration:
-                if subscription_timeline.created_at < timezone.now() - timedelta(days=26): 
+                if subscription_timeline.created_at < timezone.now() - timedelta(minutes=3): 
                     subject = "Your Shop!t Monthly Subscription is about to Expire"
                     message = """
                     Hello {{ store.store_name }},
@@ -118,7 +119,7 @@ def subscription_check_mail_renainder(request):
                     to_email = [store.email]
                     send_mail(subject, message, from_email, to_email)
             if subscription_timeline.subscription.duration ==  yearly_duration:
-                if subscription_timeline.created_at < timezone.now() - timedelta(days=355): 
+                if subscription_timeline.created_at < timezone.now() - timedelta(minutes=3): 
                     subject = "Your Shop!t Yearly Subscription is about to Expire"
                     message = """
                     Hello {{ store.store_name }},

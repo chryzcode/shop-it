@@ -1,7 +1,4 @@
-from calendar import month
 from datetime import datetime, timedelta
-from decimal import Decimal
-from tkinter import S
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
