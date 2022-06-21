@@ -1,3 +1,4 @@
+from calendar import month
 import secrets
 
 from django.conf import settings
@@ -69,19 +70,19 @@ def subscription_check(request):
         )
     if store:
         if Subscription_Timeline.objects.filter(store=store).exists():
-            subscription_timeline = Subscription_Timeline.objects.get(store=store)
+            subscription_timeline = Subscription_Timeline.objects.filter(store=store).first()
             yearly_duration = Duration.objects.get(name="yearly")
             monthly_duration = Duration.objects.get(name="monthly")
             if subscription_timeline.subscription.duration ==  monthly_duration:
                 # make remainder on subscriptioon finishing
-                if subscription_timeline.created_at < timezone.now() - timedelta(minutes=4):
+                if subscription_timeline.created_at < timezone.now() - timedelta(months=1):
                     subscription = Subscription.objects.get(name = subscription_timeline.subscription.name, duration = monthly_duration)
                     subscription.subscribers.remove(store)
                     subscription_timeline.delete()
                     messages.success(request, "Your monthly subscription has expired")
             if subscription_timeline.subscription.duration ==  yearly_duration:
                 # make remainder on subscriptioon finishing
-                if subscription_timeline.created_at < timezone.now() - timedelta(minutes=4):
+                if subscription_timeline.created_at < timezone.now() - timedelta(months=12):
                     subscription = Subscription.objects.get(name = subscription_timeline.subscription.name, duration = yearly_duration)
                     subscription.subscribers.remove(store)
                     subscription_timeline.delete()
