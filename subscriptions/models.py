@@ -1,5 +1,4 @@
 import secrets
-from locale import currency
 
 from django.db import models
 
@@ -19,8 +18,6 @@ class Subscription(models.Model):
     name = models.CharField(max_length=100)
     amount = models.PositiveIntegerField()
     description = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
     ref = models.CharField(max_length=200, blank=True, null=True)
     verified = models.BooleanField(default=False)
     subscribers = models.ManyToManyField(
@@ -28,9 +25,6 @@ class Subscription(models.Model):
     )
     duration = models.ForeignKey(Duration, on_delete=models.CASCADE)
     currency = models.ForeignKey(Currency, on_delete=models.CASCADE)
-
-    class Meta:
-        ordering = ["-created_at"]
 
     def __str__(self):
         return self.name + " " + str(self.duration.name)
@@ -56,3 +50,14 @@ class Subscription(models.Model):
             if not objects_with_similar_ref:
                 self.ref = ref
         super().save(*args, **kwargs)
+
+
+class Subscription_Timeline(models.Model):
+    store = models.ForeignKey(Store, on_delete=models.CASCADE)
+    subscription = models.ForeignKey(Subscription, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.subscription + ' ' + self.store.store_name + ' ' + 'timeline'
+
