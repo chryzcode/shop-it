@@ -23,13 +23,7 @@ def initiate_subscription_payment(request: HttpRequest, pk) -> HttpResponse:
         subscription = Subscription.objects.get(pk=pk)
         all_subscriptions = Subscription.objects.all()
         for subscription in all_subscriptions:
-            if (
-                store in subscription.subscribers.all()
-                or subscription.subscribers.filter(pk=store.pk).exists()
-            ):
-                messages.error(request, "You are active on a subscription plan")
-                return redirect("app:yearly_subscription_plans")
-            else:
+            if subscription_check_mail_remainder(request):
                 return render(
                     request,
                     "subscriptions/make-subscription-payments.html",
@@ -40,6 +34,9 @@ def initiate_subscription_payment(request: HttpRequest, pk) -> HttpResponse:
                         "email": email,
                     },
                 )
+            else:
+                messages.error(request, "You are active on a subscription plan")
+                return redirect("app:yearly_subscription_plans")            
     else:
         return redirect("/")
 
@@ -63,7 +60,7 @@ def verify_subscription_payment(request: HttpRequest, ref: str) -> HttpResponse:
         messages.error(request, "Verification Failed")
 
 def subscription_check(request):
-    subscription_check_mail_renainder(request)
+    subscription_check_mail_remainder(request)
     store = None
     if request.user.store_creator == True:
         store = Store.objects.get(store_name=request.user.store_name)
@@ -89,7 +86,7 @@ def subscription_check(request):
                     subscription_timeline.delete()
                     messages.success(request, "Your yearly subscription has expired")
 
-def subscription_check_mail_renainder(request):
+def subscription_check_mail_remainder(request):
     store = None
     if request.user.store_creator == True:
         store = Store.objects.get(store_name=request.user.store_name)
