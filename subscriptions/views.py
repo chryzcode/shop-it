@@ -74,12 +74,12 @@ def subscription_check(request):
             monthly_duration = Duration.objects.get(name="monthly")
             if subscription_timeline.subscription.duration ==  monthly_duration:
                 # make remainder on subscriptioon finishing
-                if subscription_timeline.created_at < timezone.now() - timedelta(months=1):
+                if subscription_timeline.created_at < timezone.now() - timedelta(minutes=4):
                     subscription = Subscription.objects.get(name = subscription_timeline.subscription.name)
                     subscription.delete()
             if subscription_timeline.subscription.duration ==  yearly_duration:
                 # make remainder on subscriptioon finishing
-                if subscription_timeline.created_at < timezone.now() - timedelta(months=12):
+                if subscription_timeline.created_at < timezone.now() - timedelta(minutes=4):
                     subscription = Subscription.objects.get(name = subscription_timeline.subscription.name)
                     subscription.delete()
 
