@@ -16,6 +16,56 @@ from .models import *
 
 
 # Create your views here.
+def subscription_check_mail_remainder(request):
+    store = None
+    if request.user.store_creator == True:
+        store = Store.objects.get(store_name=request.user.store_name)
+    else:
+        store = Store.objects.get(
+            store_name=store_staff.objects.get(user=request.user).store
+        )
+    if store:
+        if Subscription_Timeline.objects.filter(store=store, mail_remainder=False).exists():
+            subscription_timeline = Subscription_Timeline.objects.filter(store=store).first()
+            yearly_duration = Duration.objects.get(name="yearly")
+            monthly_duration = Duration.objects.get(name="monthly")
+            if subscription_timeline.subscription.duration ==  monthly_duration:
+                if subscription_timeline.created_at < timezone.now() - timedelta(minutes=3): 
+                    subject = "Your Shop!t Monthly Subscription is about to Expire"
+                    message = """
+                    Hello {{ store.store_name }},
+
+                    Here is a reminder that your monthly subscription on Shop!t is about to expire in few days time. We hope to see you renew your subscription soon to continue enjoying exclusive services to experience a better store and a smooth runing experience.
+
+                    Thank you for your continued support.
+
+                    Regards,
+                    Shop!t Team
+                    """
+                    from_email = settings.EMAIL_HOST_USER
+                    to_email = [request.user.email]
+                    send_mail(subject, message, from_email, to_email)
+                    subscription_timeline.mail_remainder = True
+                    subscription_timeline.save()
+            if subscription_timeline.subscription.duration ==  yearly_duration:
+                if subscription_timeline.created_at < timezone.now() - timedelta(minutes=3): 
+                    subject = "Your Shop!t Yearly Subscription is about to Expire"
+                    message = """
+                    Hello {{ store.store_name }},
+
+                    Here is a reminder that your yearly subscription on Shop!t is about to expire in few days time. We hope to see you renew your subscription soon to continue enjoying exclusive services to experience a better store and a smooth runing experience.
+
+                    Thank you for your continued support.
+
+                    Regards,
+                    Shop!t Team
+                    """
+                    from_email = settings.EMAIL_HOST_USER
+                    to_email = [request.user.email]
+                    send_mail(subject, message, from_email, to_email)
+                    subscription_timeline.mail_remainder = True
+                    subscription_timeline.save()
+
 def initiate_subscription_payment(request: HttpRequest, pk) -> HttpResponse:
     if request.user.store_creator == True:
         email = request.user.email
@@ -60,7 +110,6 @@ def verify_subscription_payment(request: HttpRequest, ref: str) -> HttpResponse:
         messages.error(request, "Verification Failed")
 
 def subscription_check(request):
-    subscription_check_mail_remainder(request)
     store = None
     if request.user.store_creator == True:
         store = Store.objects.get(store_name=request.user.store_name)
@@ -74,61 +123,16 @@ def subscription_check(request):
             yearly_duration = Duration.objects.get(name="yearly")
             monthly_duration = Duration.objects.get(name="monthly")
             if subscription_timeline.subscription.duration ==  monthly_duration:
-                if subscription_timeline.created_at < timezone.now() - timedelta(months=1):
+                if subscription_timeline.created_at < timezone.now() - timedelta(days=30):
                     subscription = Subscription.objects.get(name = subscription_timeline.subscription.name, duration = monthly_duration)
                     subscription.subscribers.remove(store)
                     subscription_timeline.delete()
                     messages.success(request, "Your monthly subscription has expired")
             if subscription_timeline.subscription.duration ==  yearly_duration:
-                if subscription_timeline.created_at < timezone.now() - timedelta(months=12):
+                if subscription_timeline.created_at < timezone.now() - timedelta(days=365):
                     subscription = Subscription.objects.get(name = subscription_timeline.subscription.name, duration = yearly_duration)
                     subscription.subscribers.remove(store)
                     subscription_timeline.delete()
                     messages.success(request, "Your yearly subscription has expired")
 
-def subscription_check_mail_remainder(request):
-    store = None
-    if request.user.store_creator == True:
-        store = Store.objects.get(store_name=request.user.store_name)
-    else:
-        store = Store.objects.get(
-            store_name=store_staff.objects.get(user=request.user).store
-        )
-    if store:
-        if Subscription_Timeline.objects.filter(store=store, mail_remainder=False).exists():
-            subscription_timeline = Subscription_Timeline.objects.filter(store=store).first()
-            yearly_duration = Duration.objects.get(name="yearly")
-            monthly_duration = Duration.objects.get(name="monthly")
-            if subscription_timeline.subscription.duration ==  monthly_duration:
-                if subscription_timeline.created_at < timezone.now() - timedelta(minutes=3): 
-                    subject = "Your Shop!t Monthly Subscription is about to Expire"
-                    message = """
-                    Hello {{ store.store_name }},
-
-                    Here is a reminder that your monthly subscription on Shop!t is about to expire in few days time. We hope to see you renew your subscription soon to continue enjoying exclusive services to experience a better store and a smooth runing experience.
-
-                    Thank you for your continued support.
-
-                    Regards,
-                    Shop!t Team
-                    """
-                    from_email = settings.EMAIL_HOST_USER
-                    to_email = [store.email]
-                    send_mail(subject, message, from_email, to_email)
-            if subscription_timeline.subscription.duration ==  yearly_duration:
-                if subscription_timeline.created_at < timezone.now() - timedelta(minutes=3): 
-                    subject = "Your Shop!t Yearly Subscription is about to Expire"
-                    message = """
-                    Hello {{ store.store_name }},
-
-                    Here is a reminder that your yearly subscription on Shop!t is about to expire in few days time. We hope to see you renew your subscription soon to continue enjoying exclusive services to experience a better store and a smooth runing experience.
-
-                    Thank you for your continued support.
-
-                    Regards,
-                    Shop!t Team
-                    """
-                    from_email = settings.EMAIL_HOST_USER
-                    to_email = [store.email]
-                    send_mail(subject, message, from_email, to_email)
 
