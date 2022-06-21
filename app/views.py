@@ -1,6 +1,7 @@
 from calendar import month
 from datetime import datetime, timedelta
 from decimal import Decimal
+from tkinter import S
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -14,6 +15,7 @@ from cart.cart import *
 from order.models import *
 from payment.models import Payment
 from subscriptions.models import *
+from subscriptions.views import *
 
 from .forms import *
 from .models import *
@@ -28,6 +30,7 @@ def custom_error_500(request):
 
 
 def home_page(request):
+    subscription_check(request)
     return render(request, "base/index.html")
 
 

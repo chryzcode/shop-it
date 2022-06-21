@@ -59,5 +59,5 @@ class Subscription_Timeline(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.subscription + ' ' + self.store.store_name + ' ' + 'timeline'
+        return str(self.subscription ) + ' ' + str(self.store.store_name) + ' ' + 'timeline'
 

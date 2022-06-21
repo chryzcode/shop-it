@@ -68,19 +68,23 @@ def subscription_check(request):
             store_name=store_staff.objects.get(user=request.user).store
         )
     if store:
-        if Subscription_Timeline.objects.get(store=store):
+        if Subscription_Timeline.objects.filter(store=store).exists():
             subscription_timeline = Subscription_Timeline.objects.get(store=store)
             yearly_duration = Duration.objects.get(name="yearly")
             monthly_duration = Duration.objects.get(name="monthly")
             if subscription_timeline.subscription.duration ==  monthly_duration:
                 # make remainder on subscriptioon finishing
                 if subscription_timeline.created_at < timezone.now() - timedelta(minutes=4):
-                    subscription = Subscription.objects.get(name = subscription_timeline.subscription.name)
-                    subscription.delete()
+                    subscription = Subscription.objects.get(name = subscription_timeline.subscription.name, duration = monthly_duration)
+                    subscription.subscribers.remove(store)
+                    subscription_timeline.delete()
+                    messages.success(request, "Your monthly subscription has expired")
             if subscription_timeline.subscription.duration ==  yearly_duration:
                 # make remainder on subscriptioon finishing
                 if subscription_timeline.created_at < timezone.now() - timedelta(minutes=4):
-                    subscription = Subscription.objects.get(name = subscription_timeline.subscription.name)
-                    subscription.delete()
+                    subscription = Subscription.objects.get(name = subscription_timeline.subscription.name, duration = yearly_duration)
+                    subscription.subscribers.remove(store)
+                    subscription_timeline.delete()
+                    messages.success(request, "Your yearly subscription has expired")
 
 
