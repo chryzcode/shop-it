@@ -16,6 +16,34 @@ from .models import *
 
 
 # Create your views here.
+
+def initiate_subscription_payment(request: HttpRequest, pk) -> HttpResponse:
+    if request.user.store_creator == True:
+        email = request.user.email
+        store = Store.objects.get(store_name=request.user.store_name)
+        subscription = Subscription.objects.get(pk=pk)
+        if Subscription_Timeline.objects.filter(store=store):
+            subscription_timeline = Subscription_Timeline.objects.filter(store=store).first()
+            subscription = subscription_timeline.subscription
+            subscription.subscribers.remove(store)
+            subscription_timeline.delete()
+            return redirect("subscriptions:initiate_subscription_payment", pk=pk)
+                   
+        return render(
+                    request,
+                    "subscriptions/make-subscription-payments.html",
+                    {
+                        "subscription": subscription,
+                        "store": store,
+                        "paystack_public_key": settings.PAYSTACK_PUBLIC_KEY,
+                        "email": email,
+                    },
+                )         
+    else:
+        return redirect("/")
+
+
+
 def subscription_check_mail_remainder(request):
     store = None
     if request.user.store_creator == True:
@@ -58,30 +86,6 @@ def subscription_check_mail_remainder(request):
                     subscription = Subscription.objects.get(name = subscription_timeline.subscription.name, duration = monthly_duration)
                     initiate_subscription_payment(request, subscription.id)
 
-def initiate_subscription_payment(request: HttpRequest, pk) -> HttpResponse:
-    if request.user.store_creator == True:
-        email = request.user.email
-        store = Store.objects.get(store_name=request.user.store_name)
-        subscription = Subscription.objects.get(pk=pk)
-        if Subscription_Timeline.objects.filter(store=store):
-            subscription_timeline = Subscription_Timeline.objects.filter(store=store).first()
-            subscription = subscription_timeline.subscription
-            subscription.subscribers.remove(store)
-            subscription_timeline.delete()
-            return redirect("subscriptions:initiate_subscription_payment", pk=pk)
-                   
-        return render(
-                    request,
-                    "subscriptions/make-subscription-payments.html",
-                    {
-                        "subscription": subscription,
-                        "store": store,
-                        "paystack_public_key": settings.PAYSTACK_PUBLIC_KEY,
-                        "email": email,
-                    },
-                )         
-    else:
-        return redirect("/")
 
 
 def verify_subscription_payment(request: HttpRequest, ref: str) -> HttpResponse:
