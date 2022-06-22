@@ -14,52 +14,8 @@ from account.models import *
 
 from .models import *
 
+
 # Create your views here.
-
-def get_current_store_creator(request):
-        if request.user.is_authenticated:
-            if request.user.store_creator == True:
-                return request.user
-            else:
-                return None
-        else:
-            return None
-
-def CreateRecurringSubscriptionDataFunction(request, email, amount, authorization_code):
-    RecurringSubscriptionData.objects.create(
-        user= get_current_store_creator(request),
-        email = email,
-        amount = amount,
-        authorization_code = authorization_code,
-    )
-
-def initiate_subscription_payment(request: HttpRequest, pk) -> HttpResponse:
-    if request.user.store_creator == True:
-        email = request.user.email
-        store = Store.objects.get(store_name=request.user.store_name)
-        subscription = Subscription.objects.get(pk=pk)
-        if Subscription_Timeline.objects.filter(store=store):
-            subscription_timeline = Subscription_Timeline.objects.filter(store=store).first()
-            subscription = subscription_timeline.subscription
-            subscription.subscribers.remove(store)
-            subscription_timeline.delete()
-            return redirect("subscriptions:initiate_subscription_payment", pk=pk)
-                   
-        return render(
-                    request,
-                    "subscriptions/make-subscription-payments.html",
-                    {
-                        "subscription": subscription,
-                        "store": store,
-                        "paystack_public_key": settings.PAYSTACK_PUBLIC_KEY,
-                        "email": email,
-                    },
-                )         
-    else:
-        return redirect("/")
-
-
-
 def subscription_check_mail_remainder(request):
     store = None
     if request.user.store_creator == True:
@@ -74,31 +30,56 @@ def subscription_check_mail_remainder(request):
             yearly_duration = Duration.objects.get(name="yearly")
             monthly_duration = Duration.objects.get(name="monthly")
             if subscription_timeline.subscription.duration ==  monthly_duration:
-                if subscription_timeline.created_at < timezone.now() - timedelta(minutes=3):
-                    if subscription_timeline.mail_remainder == False: 
-                        subject = "Your Shop!t Monthly Subscription is about to Expire"
-                        message = render_to_string( "subscriptions/subscription-mail-remainder.html", {
-                            "store": store,
-                            "duration": "monthly",
-                        })
-                        from_email = settings.EMAIL_HOST_USER
-                        to_email = [request.user.email]
-                        send_mail(subject, message, from_email, to_email)
-                        subscription_timeline.mail_remainder = True
-                        subscription_timeline.save()
+                if subscription_timeline.created_at < timezone.now() - timedelta(minutes=3): 
+                    subject = "Your Shop!t Monthly Subscription is about to Expire"
+                    message = render_to_string( "subscriptions/subscription-mail-remainder.html", {
+                        "store": store,
+                        "duration": "monthly",
+                    })
+                    from_email = settings.EMAIL_HOST_USER
+                    to_email = [request.user.email]
+                    send_mail(subject, message, from_email, to_email)
+                    subscription_timeline.mail_remainder = True
+                    subscription_timeline.save()
+                    subscription = Subscription.objects.get(name = subscription_timeline.subscription.name, duration = monthly_duration)
+                    initiate_subscription_payment(request, subscription.id)
             if subscription_timeline.subscription.duration ==  yearly_duration:
                 if subscription_timeline.created_at < timezone.now() - timedelta(minutes=3): 
-                    if subscription_timeline.mail_remainder == False: 
-                        subject = "Your Shop!t Yearly Subscription is about to Expire"
-                        message = message = render_to_string( "subscriptions/subscription-mail-remainder.html", {
-                            "store": store,
-                            "duration": "yearly",
-                        })
-                        from_email = settings.EMAIL_HOST_USER
-                        to_email = [request.user.email]
-                        send_mail(subject, message, from_email, to_email)
-                        subscription_timeline.mail_remainder = True
-                        subscription_timeline.save()
+                    subject = "Your Shop!t Yearly Subscription is about to Expire"
+                    message = message = render_to_string( "subscriptions/subscription-mail-remainder.html", {
+                        "store": store,
+                        "duration": "yearly",
+                    })
+                    from_email = settings.EMAIL_HOST_USER
+                    to_email = [request.user.email]
+                    send_mail(subject, message, from_email, to_email)
+                    subscription_timeline.mail_remainder = True
+                    subscription_timeline.save()
+                    subscription = Subscription.objects.get(name = subscription_timeline.subscription.name, duration = monthly_duration)
+                    initiate_subscription_payment(request, subscription.id)
+
+def initiate_subscription_payment(request: HttpRequest, pk) -> HttpResponse:
+    if request.user.store_creator == True:
+        email = request.user.email
+        store = Store.objects.get(store_name=request.user.store_name)
+        subscription = Subscription.objects.get(pk=pk)
+        if Subscription_Timeline.objects.filter(store=store):
+            subscription_timeline = Subscription_Timeline.objects.filter(store=store).first()
+            subscription_timeline.delete()
+            return redirect("subscriptions:subscription_payment", pk=subscription.pk)
+                   
+        return render(
+                    request,
+                    "subscriptions/make-subscription-payments.html",
+                    {
+                        "subscription": subscription,
+                        "store": store,
+                        "paystack_public_key": settings.PAYSTACK_PUBLIC_KEY,
+                        "email": email,
+                    },
+                )         
+    else:
+        return redirect("/")
 
 
 def verify_subscription_payment(request: HttpRequest, ref: str) -> HttpResponse:
@@ -133,18 +114,14 @@ def subscription_check(request):
             yearly_duration = Duration.objects.get(name="yearly")
             monthly_duration = Duration.objects.get(name="monthly")
             if subscription_timeline.subscription.duration ==  monthly_duration:
-                if subscription_timeline.created_at < timezone.now() - timedelta(minutes=5):
+                if subscription_timeline.created_at < timezone.now() - timedelta(days=30):
                     subscription = Subscription.objects.get(name = subscription_timeline.subscription.name, duration = monthly_duration)
                     subscription.subscribers.remove(store)
                     subscription_timeline.delete()
                     messages.success(request, "Your monthly subscription has expired")
-                    initiate_subscription_payment(request, subscription.id)
             if subscription_timeline.subscription.duration ==  yearly_duration:
-                if subscription_timeline.created_at < timezone.now() - timedelta(minutes=5):
+                if subscription_timeline.created_at < timezone.now() - timedelta(days=365):
                     subscription = Subscription.objects.get(name = subscription_timeline.subscription.name, duration = yearly_duration)
                     subscription.subscribers.remove(store)
                     subscription_timeline.delete()
                     messages.success(request, "Your yearly subscription has expired")
-                    initiate_subscription_payment(request, subscription.id)
-
-
