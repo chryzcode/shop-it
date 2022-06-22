@@ -61,3 +61,13 @@ class Subscription_Timeline(models.Model):
 
     def __str__(self):
         return str(self.subscription ) + ' ' + str(self.store.store_name) + ' ' + 'timeline'
+
+
+class RecurringSubscriptionData(models.Model):
+    amount = models.PositiveIntegerField()
+    email = models.EmailField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    authorization_code = models.CharField(max_length=200)
+
+    def __str__(self):
+        return str(self.user.store_name) + " " + str(self.user.full_name) + " " + str(self.amount)
