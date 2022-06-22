@@ -88,7 +88,6 @@ def initiate_subscription_payment(request: HttpRequest, pk) -> HttpResponse:
 def verify_subscription_payment(request: HttpRequest, ref: str) -> HttpResponse:
     subscription = get_object_or_404(Subscription, ref=ref)
     store = Store.objects.get(store_name=request.user.store_name)
-    # verified = subscription.verify_payment()
     paystack = Paystack()
     status, result = paystack.verify_payment(subscription.ref, subscription.amount)
     if status:
