@@ -14,8 +14,24 @@ from account.models import *
 
 from .models import *
 
-
 # Create your views here.
+
+def get_current_store_creator(request):
+        if request.user.is_authenticated:
+            if request.user.store_creator == True:
+                return request.user
+            else:
+                return None
+        else:
+            return None
+
+def CreateRecurringSubscriptionDataFunction(request, email, amount, authorization_code):
+    RecurringSubscriptionData.objects.create(
+        user= get_current_store_creator(request),
+        email = email,
+        amount = amount,
+        authorization_code = authorization_code,
+    )
 
 def initiate_subscription_payment(request: HttpRequest, pk) -> HttpResponse:
     if request.user.store_creator == True:

@@ -3,7 +3,7 @@ import secrets
 from django.db import models
 
 from account.models import *
-from payment.paystack import Paystack
+from .paystack import Paystack
 
 
 # Create your models here.
@@ -52,6 +52,8 @@ class Subscription(models.Model):
         super().save(*args, **kwargs)
 
 
+
+
 class Subscription_Timeline(models.Model):
     store = models.ForeignKey(Store, on_delete=models.CASCADE)
     subscription = models.ForeignKey(Subscription, on_delete=models.CASCADE)
@@ -62,3 +64,12 @@ class Subscription_Timeline(models.Model):
     def __str__(self):
         return str(self.subscription ) + ' ' + str(self.store.store_name) + ' ' + 'timeline'
 
+
+class RecurringSubscriptionData(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    authorization_code = models.CharField(max_length=100)
+    email = models.EmailField()
+    amount = models.PositiveIntegerField()
+
+    def __str__(self):
+        return str(self.user.full_name) + " " + str(self.user.store_name) + " " + str(self.amount)
