@@ -30,7 +30,7 @@ def subscription_check_mail_remainder(request):
             yearly_duration = Duration.objects.get(name="yearly")
             monthly_duration = Duration.objects.get(name="monthly")
             if subscription_timeline.subscription.duration ==  monthly_duration:
-                if subscription_timeline.created_at < timezone.now() - timedelta(minutes=3): 
+                if subscription_timeline.created_at < timezone.now() - timedelta(days=25): 
                     subject = "Your Shop!t Monthly Subscription is about to Expire"
                     message = render_to_string( "subscriptions/subscription-mail-remainder.html", {
                         "store": store,
@@ -44,7 +44,7 @@ def subscription_check_mail_remainder(request):
                     subscription = Subscription.objects.get(name = subscription_timeline.subscription.name, duration = monthly_duration)
                     initiate_subscription_payment(request, subscription.id)
             if subscription_timeline.subscription.duration ==  yearly_duration:
-                if subscription_timeline.created_at < timezone.now() - timedelta(minutes=3): 
+                if subscription_timeline.created_at < timezone.now() - timedelta(days=355): 
                     subject = "Your Shop!t Yearly Subscription is about to Expire"
                     message = message = render_to_string( "subscriptions/subscription-mail-remainder.html", {
                         "store": store,
@@ -65,8 +65,10 @@ def initiate_subscription_payment(request: HttpRequest, pk) -> HttpResponse:
         subscription = Subscription.objects.get(pk=pk)
         if Subscription_Timeline.objects.filter(store=store):
             subscription_timeline = Subscription_Timeline.objects.filter(store=store).first()
+            subscription = subscription_timeline.subscription
+            subscription.subscribers.remove(store)
             subscription_timeline.delete()
-            return redirect("subscriptions:subscription_payment", pk=subscription.pk)
+            return redirect("subscriptions:initiate_subscription_payment", pk=pk)
                    
         return render(
                     request,
