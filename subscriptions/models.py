@@ -3,7 +3,7 @@ import secrets
 from django.db import models
 
 from account.models import *
-from payment.paystack import Paystack
+from .paystack import Paystack
 
 
 # Create your models here.
