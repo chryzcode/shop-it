@@ -13,6 +13,7 @@ from django.template.loader import render_to_string
 from account.models import *
 
 from .models import *
+from .paystack import Paystack
 
 
 # Create your views here.
@@ -63,10 +64,12 @@ def initiate_subscription_payment(request: HttpRequest, pk) -> HttpResponse:
         email = request.user.email
         store = Store.objects.get(store_name=request.user.store_name)
         subscription = Subscription.objects.get(pk=pk)
+        subscription.user = request.user
+        subscription.save()
         if Subscription_Timeline.objects.filter(store=store):
             subscription_timeline = Subscription_Timeline.objects.filter(store=store).first()
             subscription_timeline.delete()
-            return redirect("subscriptions:subscription_payment", pk=subscription.pk)
+            return redirect("subscriptions:initiate_subscription_payment", pk=pk)
                    
         return render(
                     request,
@@ -85,8 +88,14 @@ def initiate_subscription_payment(request: HttpRequest, pk) -> HttpResponse:
 def verify_subscription_payment(request: HttpRequest, ref: str) -> HttpResponse:
     subscription = get_object_or_404(Subscription, ref=ref)
     store = Store.objects.get(store_name=request.user.store_name)
-    verified = subscription.verify_payment()
-    if verified:
+    # verified = subscription.verify_payment()
+    paystack = Paystack()
+    status, result = paystack.verify_payment(subscription.ref, subscription.amount)
+    if status:
+        if result["amount"] / 100 == subscription.amount:
+            subscription.verified = True
+        subscription.save()
+    if subscription.verified:
         subscription.subscribers.add(store)
         Subscription_Timeline.objects.create(
             store= store,
@@ -94,6 +103,7 @@ def verify_subscription_payment(request: HttpRequest, ref: str) -> HttpResponse:
         )
         messages.success(request, "Verification Successful")
         subscription.verified = False
+        subscription.user = None
         subscription.ref = secrets.token_urlsafe(50)
         subscription.save()
         return redirect("app:store_admin")
