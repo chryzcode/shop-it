@@ -57,7 +57,7 @@ def subscription_check_mail_remainder(request):
             subscription_timeline = Subscription_Timeline.objects.filter(store=store).first()
             yearly_duration = Duration.objects.get(name="yearly")
             monthly_duration = Duration.objects.get(name="monthly")
-            domain = get_current_site(request)
+            current_site = get_current_site(request)
             if subscription_timeline.subscription.duration ==  monthly_duration:
                 if subscription_timeline.created_at < timezone.now() - timedelta(minutes=3): 
                     subject = "Your Shop!t Monthly Subscription is about to Expire"
@@ -72,7 +72,7 @@ def subscription_check_mail_remainder(request):
                     message = render_to_string( "subscriptions/subscription-mail-remainder.html", {
                         "store": store,
                         "duration": "monthly",
-                        "domain_path": domain,
+                        "domain": current_site.domain,
                         "store_owner": store_owner,
                         "recurring_subscription":recurring_subscription,
                     })
@@ -95,7 +95,7 @@ def subscription_check_mail_remainder(request):
                     message = message = render_to_string( "subscriptions/subscription-mail-remainder.html", {
                         "store": store,
                         "duration": "yearly",
-                        "domain_path": domain,
+                        "domain": current_site.domain,
                         "store_owner": store_owner,
                         "recurring_subscription": recurring_subscription,
                     })
