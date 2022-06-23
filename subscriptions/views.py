@@ -214,7 +214,7 @@ def subscription_check(request):
             subscription_timeline = Subscription_Timeline.objects.filter(store=store).first()
             yearly_duration = Duration.objects.get(name="yearly")
             monthly_duration = Duration.objects.get(name="monthly")
-            recurring_subscription_data = RecurringSubscriptionData.objects.get(store=store)
+            recurring_subscription_data = RecurringSubscriptionData.objects.get(user=store.owner)
             if subscription_timeline.subscription.duration ==  monthly_duration:
                 if subscription_timeline.created_at < timezone.now() - timedelta(minutes=5):
                     subscription = Subscription.objects.get(name = subscription_timeline.subscription.name, duration = monthly_duration)
