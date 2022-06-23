@@ -108,32 +108,6 @@ def verify_subscription_payment(request: HttpRequest, ref: str) -> HttpResponse:
     else:
         messages.error(request, "Verification Failed")
 
-def subscription_check(request):
-    store = None
-    if request.user.store_creator == True:
-        store = Store.objects.get(store_name=request.user.store_name)
-    else:
-        store = Store.objects.get(
-            store_name=store_staff.objects.get(user=request.user).store
-        )
-    if store:
-        if Subscription_Timeline.objects.filter(store=store).exists():
-            subscription_timeline = Subscription_Timeline.objects.filter(store=store).first()
-            yearly_duration = Duration.objects.get(name="yearly")
-            monthly_duration = Duration.objects.get(name="monthly")
-            if subscription_timeline.subscription.duration ==  monthly_duration:
-                if subscription_timeline.created_at < timezone.now() - timedelta(days=30):
-                    subscription = Subscription.objects.get(name = subscription_timeline.subscription.name, duration = monthly_duration)
-                    subscription.subscribers.remove(store)
-                    subscription_timeline.delete()
-                    messages.success(request, "Your monthly subscription has expired")
-            if subscription_timeline.subscription.duration ==  yearly_duration:
-                if subscription_timeline.created_at < timezone.now() - timedelta(days=365):
-                    subscription = Subscription.objects.get(name = subscription_timeline.subscription.name, duration = yearly_duration)
-                    subscription.subscribers.remove(store)
-                    subscription_timeline.delete()
-                    messages.success(request, "Your yearly subscription has expired")
-
 
 def paystack_recurring_payment(request: HttpRequest, ref: str) -> HttpResponse:
     if RecurringSubscriptionData.objects.get(user=request.user).charge == True:
@@ -172,4 +146,40 @@ def paystack_recurring_payment(request: HttpRequest, ref: str) -> HttpResponse:
                 messages.error(request, "Subscription Failed")
         else:
             messages.error(request, "Subscription Failed")
+
+
+def subscription_check(request):
+    store = None
+    if request.user.store_creator == True:
+        store = Store.objects.get(store_name=request.user.store_name)
+    else:
+        store = Store.objects.get(
+            store_name=store_staff.objects.get(user=request.user).store
+        )
+    if store:
+        if Subscription_Timeline.objects.filter(store=store).exists():
+            subscription_timeline = Subscription_Timeline.objects.filter(store=store).first()
+            yearly_duration = Duration.objects.get(name="yearly")
+            monthly_duration = Duration.objects.get(name="monthly")
+            recurring_subscription_data = RecurringSubscriptionData.objects.get(store=store)
+            if subscription_timeline.subscription.duration ==  monthly_duration:
+                if subscription_timeline.created_at < timezone.now() - timedelta(days=30):
+                    subscription = Subscription.objects.get(name = subscription_timeline.subscription.name, duration = monthly_duration)
+                    if recurring_subscription_data.charge == True:
+                        paystack_recurring_payment(request, subscription.ref)
+                    else:
+                        subscription.subscribers.remove(store)
+                        subscription_timeline.delete()
+                        messages.success(request, "Your monthly subscription has expired")
+            if subscription_timeline.subscription.duration ==  yearly_duration:
+                if subscription_timeline.created_at < timezone.now() - timedelta(days=365):
+                    subscription = Subscription.objects.get(name = subscription_timeline.subscription.name, duration = yearly_duration)
+                    if recurring_subscription_data.charge == True:
+                        paystack_recurring_payment(request, subscription.ref)
+                    else:
+                        subscription.subscribers.remove(store)
+                        subscription_timeline.delete()
+                        messages.success(request, "Your yearly subscription has expired")
+
+
 
