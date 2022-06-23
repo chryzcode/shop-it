@@ -11,6 +11,7 @@ from django.utils import timezone
 from django.core.mail import send_mail
 from django.conf import settings
 from django.template.loader import render_to_string
+from django.contrib.sites.shortcuts import get_current_site
 
 from account.models import *
 
@@ -39,12 +40,15 @@ def subscription_check_mail_remainder(request):
             subscription_timeline = Subscription_Timeline.objects.filter(store=store).first()
             yearly_duration = Duration.objects.get(name="yearly")
             monthly_duration = Duration.objects.get(name="monthly")
+            domain = get_current_site(request)
+            path = f"subscriptions/cancel-subscription/{subscription_timeline.subscription.pk}"
             if subscription_timeline.subscription.duration ==  monthly_duration:
                 if subscription_timeline.created_at < timezone.now() - timedelta(minutes=3): 
                     subject = "Your Shop!t Monthly Subscription is about to Expire"
                     message = render_to_string( "subscriptions/subscription-mail-remainder.html", {
                         "store": store,
                         "duration": "monthly",
+                        "domain_path": f"{domain}/{path}",
                     })
                     from_email = settings.EMAIL_HOST_USER
                     to_email = [request.user.email]
@@ -57,6 +61,7 @@ def subscription_check_mail_remainder(request):
                     message = message = render_to_string( "subscriptions/subscription-mail-remainder.html", {
                         "store": store,
                         "duration": "yearly",
+                        "domain_path": f"{domain}/{path}",
                     })
                     from_email = settings.EMAIL_HOST_USER
                     to_email = [request.user.email]

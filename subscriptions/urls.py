@@ -15,4 +15,9 @@ urlpatterns = [
         views.verify_subscription_payment,
         name="verify_subscription_payment",
     ),
+    path(
+        "cancel-subscription/<str:pk>", 
+        views.cancel_subscription,
+        name="cancel_subscription",
+    )
 ]
