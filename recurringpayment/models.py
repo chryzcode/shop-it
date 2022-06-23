@@ -8,7 +8,7 @@ class RecurringSubscriptionData(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     authorization_code = models.CharField(max_length=200)
     charge = models.BooleanField(default=True)
-    currency = models.CharField(max_length=3, default="NGN")
+    currency = models.CharField(max_length=6)
 
     def __str__(self):
         return str(self.user.store_name) + " " + str(self.user.full_name) + " " + str(self.amount)
