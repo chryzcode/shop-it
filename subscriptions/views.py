@@ -1,3 +1,4 @@
+from locale import currency
 import secrets
 import requests
 
@@ -94,6 +95,7 @@ def verify_subscription_payment(request: HttpRequest, ref: str) -> HttpResponse:
     if status:
         if result["amount"] / 100 == subscription.amount:
             subscription.verified = True
+            subscription.user = request.user
         subscription.save()
     if subscription.verified:
         subscription.subscribers.add(store)
@@ -149,6 +151,7 @@ def paystack_recurring_payment(request: HttpRequest, ref: str) -> HttpResponse:
             "authorization_code": recurring_subscription_data.authorization_code,
             "email": recurring_subscription_data.email,
             "amount": recurring_subscription_data.amount,
+            "currency": recurring_subscription_data.currency,
         }
         response = requests.request("POST", base_url, headers=headers, json=data)
         if response.status_code == 200:
