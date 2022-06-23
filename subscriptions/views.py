@@ -45,10 +45,15 @@ def subscription_check_mail_remainder(request):
             if subscription_timeline.subscription.duration ==  monthly_duration:
                 if subscription_timeline.created_at < timezone.now() - timedelta(minutes=3): 
                     subject = "Your Shop!t Monthly Subscription is about to Expire"
+                    if request.user.store_creator == True:
+                        store_owner =  True
+                    else:
+                        store_owner = False
                     message = render_to_string( "subscriptions/subscription-mail-remainder.html", {
                         "store": store,
                         "duration": "monthly",
                         "domain_path": f"{domain}/{path}",
+                        "store_owner": store_owner,
                     })
                     from_email = settings.EMAIL_HOST_USER
                     to_email = [request.user.email]
@@ -58,10 +63,15 @@ def subscription_check_mail_remainder(request):
             if subscription_timeline.subscription.duration ==  yearly_duration:
                 if subscription_timeline.created_at < timezone.now() - timedelta(minutes=3): 
                     subject = "Your Shop!t Yearly Subscription is about to Expire"
+                    if request.user.store_creator == True:
+                        store_owner =  True
+                    else:
+                        store_owner = False
                     message = message = render_to_string( "subscriptions/subscription-mail-remainder.html", {
                         "store": store,
                         "duration": "yearly",
                         "domain_path": f"{domain}/{path}",
+                        "store_owner": store_owner,
                     })
                     from_email = settings.EMAIL_HOST_USER
                     to_email = [request.user.email]
