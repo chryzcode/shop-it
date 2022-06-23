@@ -180,11 +180,16 @@ def paystack_recurring_payment(request: HttpRequest, pk) -> HttpResponse:
                 subscription.verified = True
                 subscription.save()
                 subscription.subscribers.add(Store.objects.get(store_name=request.user.store_name))
-                Subscription_Timeline.objects.create(
-                    store= Store.objects.get(store_name=request.user.store_name),
-                    subscription = subscription,
-                    created_at = timezone.now(),
-                )
+                if Subscription_Timeline.objects.filter(store=Store.objects.get(store_name=request.user.store_name)).exists():
+                    subscription_timeline = Subscription_Timeline.objects.get(store=Store.objects.get(store_name=request.user.store_name))
+                    subscription_timeline.store = Store.objects.get(store_name=request.user.store_name)
+                    subscription_timeline.subscription = subscription
+                    subscription_timeline.save()
+                else:
+                    Subscription_Timeline.objects.create(
+                        store= Store.objects.get(store_name=request.user.store_name),
+                        subscription = subscription,       
+                    )
                 messages.success(request, "Subscription Successful")
                 subscription.verified = False
                 subscription.user = None
