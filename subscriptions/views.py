@@ -15,7 +15,6 @@ from account.models import *
 
 from .models import *
 from .paystack import Paystack
-from recurringpayment.models import RecurringSubscriptionData
 
 
 # Create your views here.

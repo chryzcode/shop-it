@@ -51,7 +51,6 @@ INSTALLED_APPS = [
     "order",
     "payment",
     "subscriptions",
-    "recurringpayment",
 ]
 
 MIDDLEWARE = [

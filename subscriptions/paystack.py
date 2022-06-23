@@ -1,7 +1,6 @@
 from operator import sub
 import requests
 from django.conf import settings
-from recurringpayment.models import RecurringSubscriptionData
 from .models import *
 
 
