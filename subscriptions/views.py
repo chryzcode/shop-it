@@ -1,3 +1,4 @@
+from operator import sub
 import secrets
 import requests
 
@@ -18,6 +19,13 @@ from .paystack import Paystack
 
 
 # Create your views here.
+
+def cancel_recurring_subscription(request: HttpRequest, pk: int) -> HttpResponse:
+    subscription = get_object_or_404(Subscription, pk=pk)
+    subscription.charge = False
+    subscription.save()
+    return redirect("app:store_admin")
+   
 def subscription_check_mail_remainder(request):
     store = None
     if request.user.store_creator == True:
