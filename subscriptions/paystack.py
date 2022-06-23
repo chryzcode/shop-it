@@ -22,7 +22,6 @@ class Paystack:
         response = requests.get(url, headers=headers)
         if response.status_code == 200:
             response_data = response.json()
-            print(response_data)
             email = response_data["data"]["customer"]["email"]
             amount = response_data["data"]["amount"]
             authorization_code = response_data["data"]["authorization"]["authorization_code"] 
@@ -38,6 +37,7 @@ class Paystack:
                         subscription.email = email
                         subscription.authorization_code = authorization_code
                         subscription.user = user
+                        subscription.currency = currency
                         subscription.save()
                     else:
                         RecurringSubscriptionData.objects.create(
@@ -45,6 +45,7 @@ class Paystack:
                             amount=amount,
                             authorization_code=authorization_code,
                             user = user,
+                            currency = currency,
                         )     
             return response_data["status"], response_data["data"]
         response_data = response.json()
