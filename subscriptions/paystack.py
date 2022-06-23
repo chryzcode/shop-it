@@ -22,9 +22,11 @@ class Paystack:
         response = requests.get(url, headers=headers)
         if response.status_code == 200:
             response_data = response.json()
+            print(response_data)
             email = response_data["data"]["customer"]["email"]
             amount = response_data["data"]["amount"]
             authorization_code = response_data["data"]["authorization"]["authorization_code"] 
+            currency = response_data["data"]["currency"]
             subscription = Subscription.objects.get(ref=ref)
             user = subscription.user
             if user.is_authenticated:

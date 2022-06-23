@@ -1,4 +1,5 @@
 import secrets
+import requests
 
 from django.conf import settings
 from django.contrib import messages
@@ -14,6 +15,7 @@ from account.models import *
 
 from .models import *
 from .paystack import Paystack
+from recurringpayment.models import RecurringSubscriptionData
 
 
 # Create your views here.
@@ -134,3 +136,43 @@ def subscription_check(request):
                     subscription.subscribers.remove(store)
                     subscription_timeline.delete()
                     messages.success(request, "Your yearly subscription has expired")
+
+
+def paystack_recurring_payment(request: HttpRequest, ref: str) -> HttpResponse:
+    if RecurringSubscriptionData.objects.get(user=request.user).charge == True:
+        base_url = "https://api.paystack.co/transaction/charge_authorization"
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {settings.PAYSTACK_SECRET_KEY}",
+        }
+        recurring_subscription_data = RecurringSubscriptionData.objects.get(user=request.user)
+        data = {
+            "authorization_code": recurring_subscription_data.authorization_code,
+            "email": recurring_subscription_data.email,
+            "amount": recurring_subscription_data.amount,
+        }
+        response = requests.request("POST", base_url, headers=headers, json=data)
+        if response.status_code == 200:
+            data = response.json()
+            if data["data"]["status"] == "success":
+                subscription = Subscription.objects.get(ref=ref)
+                subscription.verified = True
+                subscription.save()
+                subscription.subscribers.add(Store.objects.get(store_name=request.user.store_name))
+                Subscription_Timeline.objects.create(
+                    store= Store.objects.get(store_name=request.user.store_name),
+                    subscription = subscription,
+                    created_at = timezone.now(),
+                )
+                messages.success(request, "Subscription Successful")
+                subscription.verified = False
+                subscription.user = None
+                subscription.ref = secrets.token_urlsafe(50)
+                subscription.save()
+                return redirect("app:store_admin")
+            else:
+                messages.error(request, "Subscription Failed")
+        else:
+            messages.error(request, "Subscription Failed")
+        return redirect("app:store_admin")
+
