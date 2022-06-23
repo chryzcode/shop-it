@@ -16,8 +16,13 @@ urlpatterns = [
         name="verify_subscription_payment",
     ),
     path(
-        "cancel-subscription/<str:pk>", 
-        views.cancel_subscription,
-        name="cancel_subscription",
+        "cancel-recurring-subscription/", 
+        views.cancel_recurring_subscription,
+        name="cancel_recurring_subscription",
+    ),
+    path(
+        "activate-recurring-subscription/", 
+        views.activate_recurring_subscription,
+        name="activate_recurring_subscription",
     )
 ]

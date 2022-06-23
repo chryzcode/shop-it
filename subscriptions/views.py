@@ -21,11 +21,28 @@ from .paystack import Paystack
 
 # Create your views here.
 
-def cancel_recurring_subscription(request: HttpRequest, pk: int) -> HttpResponse:
-    subscription = get_object_or_404(Subscription, pk=pk)
-    subscription.charge = False
-    subscription.save()
-    return redirect("app:store_admin")
+def cancel_recurring_subscription(request: HttpRequest) -> HttpResponse:
+    if request.user.is_authenticated:
+        if request.user.store_creator == True:
+            recurring_subscription = RecurringSubscriptionData.objects.get(user=request.user)
+            recurring_subscription.charge = False
+            recurring_subscription.save()
+            return redirect("app:store_admin")
+        else:
+            return redirect("/")
+    return redirect("/")
+
+
+def activate_recurring_subscription(request: HttpRequest) -> HttpResponse:
+    if request.user.is_authenticated:
+        if request.user.store_creator == True:
+            recurring_subscription = RecurringSubscriptionData.objects.get(user=request.user)
+            recurring_subscription.charge = True
+            recurring_subscription.save()
+            return redirect("app:store_admin")
+        else:
+            return redirect("/")
+    return redirect("/")
    
 def subscription_check_mail_remainder(request):
     store = None
@@ -41,12 +58,17 @@ def subscription_check_mail_remainder(request):
             yearly_duration = Duration.objects.get(name="yearly")
             monthly_duration = Duration.objects.get(name="monthly")
             domain = get_current_site(request)
-            path = f"subscriptions/cancel-subscription/{subscription_timeline.subscription.pk}"
             if subscription_timeline.subscription.duration ==  monthly_duration:
                 if subscription_timeline.created_at < timezone.now() - timedelta(minutes=3): 
                     subject = "Your Shop!t Monthly Subscription is about to Expire"
                     if request.user.store_creator == True:
                         store_owner =  True
+                        if RecurringSubscriptionData.objects.get(user=request.user).charge == True:
+                            recurring_subscription = True
+                            path = "subscriptions/cancel-recurring-subscription/"
+                        else:
+                            recurring_subscription = False
+                            path = "subscriptions/activate-recurring-subscription/"
                     else:
                         store_owner = False
                     message = render_to_string( "subscriptions/subscription-mail-remainder.html", {
@@ -54,6 +76,7 @@ def subscription_check_mail_remainder(request):
                         "duration": "monthly",
                         "domain_path": f"{domain}/{path}",
                         "store_owner": store_owner,
+                        "recurring_subscription":recurring_subscription,
                     })
                     from_email = settings.EMAIL_HOST_USER
                     to_email = [request.user.email]
@@ -65,6 +88,12 @@ def subscription_check_mail_remainder(request):
                     subject = "Your Shop!t Yearly Subscription is about to Expire"
                     if request.user.store_creator == True:
                         store_owner =  True
+                        if RecurringSubscriptionData.objects.get(user=request.user).charge == True:
+                            recurring_subscription = True
+                            path = "subscriptions/cancel-recurring-subscription/"
+                        else:
+                            recurring_subscription = False
+                            path = "subscriptions/activate-recurring-subscription/"
                     else:
                         store_owner = False
                     message = message = render_to_string( "subscriptions/subscription-mail-remainder.html", {
@@ -72,6 +101,7 @@ def subscription_check_mail_remainder(request):
                         "duration": "yearly",
                         "domain_path": f"{domain}/{path}",
                         "store_owner": store_owner,
+                        "recurring_subscription": recurring_subscription,
                     })
                     from_email = settings.EMAIL_HOST_USER
                     to_email = [request.user.email]
@@ -132,7 +162,7 @@ def verify_subscription_payment(request: HttpRequest, ref: str) -> HttpResponse:
         messages.error(request, "Verification Failed")
 
 
-def paystack_recurring_payment(request: HttpRequest, ref: str) -> HttpResponse:
+def paystack_recurring_payment(request: HttpRequest, pk) -> HttpResponse:
     if RecurringSubscriptionData.objects.get(user=request.user).charge == True:
         base_url = "https://api.paystack.co/transaction/charge_authorization"
         headers = {
@@ -150,7 +180,7 @@ def paystack_recurring_payment(request: HttpRequest, ref: str) -> HttpResponse:
         if response.status_code == 200:
             data = response.json()
             if data["data"]["status"] == "success":
-                subscription = Subscription.objects.get(ref=ref)
+                subscription = Subscription.objects.get(pk=pk)
                 subscription.verified = True
                 subscription.save()
                 subscription.subscribers.add(Store.objects.get(store_name=request.user.store_name))
@@ -189,7 +219,7 @@ def subscription_check(request):
                 if subscription_timeline.created_at < timezone.now() - timedelta(days=30):
                     subscription = Subscription.objects.get(name = subscription_timeline.subscription.name, duration = monthly_duration)
                     if recurring_subscription_data.charge == True:
-                        paystack_recurring_payment(request, subscription.ref)
+                        paystack_recurring_payment(request, subscription.pk)
                     else:
                         subscription.subscribers.remove(store)
                         subscription_timeline.delete()
@@ -198,7 +228,7 @@ def subscription_check(request):
                 if subscription_timeline.created_at < timezone.now() - timedelta(days=365):
                     subscription = Subscription.objects.get(name = subscription_timeline.subscription.name, duration = yearly_duration)
                     if recurring_subscription_data.charge == True:
-                        paystack_recurring_payment(request, subscription.ref)
+                        paystack_recurring_payment(request, subscription.pk)
                     else:
                         subscription.subscribers.remove(store)
                         subscription_timeline.delete()
