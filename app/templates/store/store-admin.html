@@ -4,7 +4,9 @@
 {% endblock %} {% block content %}
 <div class="store-page-container">
   {% include 'navs/store-side-nav.html' %}
-
+    {% if messages %} {% for message in messages %}
+    <small class="error">{{message}}</small>
+    {% endfor %} {% endif %}
   </div>
   {% endblock %}
 </div>

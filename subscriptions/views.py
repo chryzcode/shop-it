@@ -12,6 +12,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
+from django.contrib import messages
 
 from account.models import *
 
@@ -27,6 +28,7 @@ def cancel_recurring_subscription(request: HttpRequest) -> HttpResponse:
             recurring_subscription = RecurringSubscriptionData.objects.get(user=request.user)
             recurring_subscription.charge = False
             recurring_subscription.save()
+            messages.success(request, "Recurring Subscription Cancelled")
             return redirect("app:store_admin")
         else:
             return redirect("/")
@@ -39,6 +41,7 @@ def activate_recurring_subscription(request: HttpRequest) -> HttpResponse:
             recurring_subscription = RecurringSubscriptionData.objects.get(user=request.user)
             recurring_subscription.charge = True
             recurring_subscription.save()
+            messages.success(request, "Recurring Subscription Activated")
             return redirect("app:store_admin")
         else:
             return redirect("/")
