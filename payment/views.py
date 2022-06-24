@@ -1,3 +1,4 @@
+import requests
 from django.conf import settings
 from django.contrib import messages
 from django.http import HttpRequest, HttpResponse
@@ -145,6 +146,29 @@ def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
             "currency_code": currency_code,
         },
     )
+
+
+def initiate_transfer(request, account_name, account_number, amount, currency, beneficiary_name, narration):
+    url = "https://api.flutterwave.com/v3/transfers"
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + settings.RAVE_SECRET_KEY,
+    }
+    data = {
+        "account_name": account_name,
+        "account_number": account_number,
+        "amount": amount,
+        "currency": currency,
+        "beneficiary_name": beneficiary_name,
+        "narration": narration,
+    }
+    response = requests.post(url, headers=headers, json=data)
+    if response.status_code == 200:
+        messages.success(request, "Transfer initiated successfully")
+        return response.json()
+    else:
+        messages.error(request, "Transfer failed")
+        return response.json()
 
 
 def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
