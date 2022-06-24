@@ -4,11 +4,12 @@
 {% endblock %} {% block content %}
 <div class="store-page-container">
   {% include 'navs/store-side-nav.html' %}
-    {% if messages.error %} {% for message in messages %}
+     {% if messages %} {% for message in messages %}
+     {% if message.error %}
     <small class="error">{{message}}</small>
-    {% endfor %} {% endif %}
-    {% if messages.success %} {% for message in messages %}
+    {% endif %}{% if message.sucess %}
     <small class="success">{{message}}</small>
+    {% endif %}
     {% endfor %} {% endif %}
   </div>
   {% endblock %}

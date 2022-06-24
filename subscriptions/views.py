@@ -68,10 +68,10 @@ def subscription_check_mail_remainder(request):
                         store_owner =  True
                         if RecurringSubscriptionData.objects.get(user=request.user).charge == True:
                             recurring_subscription = True
-                            path = "subscriptions/activate-recurring-subscription"
+                            path = "subscriptions/cancel-recurring-subscription"
                         else:
                             recurring_subscription = False
-                            path = "subscriptions/cancel-recurring-subscription"
+                            path = "subscriptions/activate-recurring-subscription"
                     else:
                         store_owner = False
                     message = render_to_string( "subscriptions/subscription-mail-remainder.html", {
@@ -93,10 +93,10 @@ def subscription_check_mail_remainder(request):
                         store_owner =  True
                         if RecurringSubscriptionData.objects.get(user=request.user).charge == True:
                             recurring_subscription = True
-                            path = "subscriptions/activate-recurring-subscription"
+                            path = "subscriptions/cancel-recurring-subscription"
                         else:
                             recurring_subscription = False
-                            path = "subscriptions/cancel-recurring-subscription"
+                            path = "subscriptions/activate-recurring-subscription"
                     else:
                         store_owner = False
                     message = message = render_to_string( "subscriptions/subscription-mail-remainder.html", {
