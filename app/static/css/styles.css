@@ -1218,6 +1218,12 @@ button {
   text-align: center;
 }
 
+.success {
+  color: green !important;
+  font-size: 13px !important;
+  text-align: center;
+}
+
 .disable {
   cursor: not-allowed !important;
 }
