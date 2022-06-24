@@ -454,6 +454,23 @@ def delete_shipping_method(request, pk):
         return render(request, "store/shipping-method.html", {"error": error})
 
 
+def resolve_account_details(request, account_number, account_bank):
+    url = "https://api.flutterwave.com/v3/accounts/resolve/"
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {settings.FLUTTERWAVE_SECRET_KEY}",
+    }
+    data = {
+        "account_number": account_number,
+        "account_bank": account_bank,
+    }
+    response = requests.post(url, headers=headers, json=data)
+    if response.status_code == 200:
+        return True
+    else:
+        return False
+
+
 @login_required(login_url="/account/login/")
 def bank_details(request):
     if request.user.store_creator == True:
@@ -491,9 +508,19 @@ def bank_details(request):
                 bank_name = form.cleaned_data["bank_name"]
                 bank_info.store = store
                 bank_info.bank_code = all_banks[bank_name]
-                bank_info.save()
-                Bank_Info.objects.exclude(pk=bank_info.pk).filter(store=store).delete()
-                return redirect("account:bank_details")
+                bank_info.account_number = form.cleaned_data["account_number"]
+                if flutterwave_currency_code == "NG":
+                    if resolve_account_details(request, bank_info.account_number, bank_info.bank_code) == True: 
+                        bank_info.save()
+                        Bank_Info.objects.exclude(pk=bank_info.pk).filter(store=store).delete()
+                        return redirect("account:bank_details")
+                    else:
+                        error = "Account details are invalid"
+                        return render(
+                            request,
+                            "store/bank-details.html",
+                            {"error": error, "form": form},
+                        )
         return render(
             request,
             "store/bank-details.html",
