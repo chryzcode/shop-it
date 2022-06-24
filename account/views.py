@@ -455,19 +455,23 @@ def delete_shipping_method(request, pk):
 
 
 def resolve_account_details(request, account_number, account_bank):
-    url = "https://api.flutterwave.com/v3/accounts/resolve/"
+    url = "https://api.flutterwave.com/v3/accounts/resolve"
     headers = {
         "Content-Type": "application/json",
-        "Authorization": f"Bearer {settings.FLUTTERWAVE_SECRET_KEY}",
+        "Authorization": f"Bearer {settings.RAVE_SECRET_KEY}",
     }
     data = {
         "account_number": account_number,
         "account_bank": account_bank,
     }
+    print(data)
     response = requests.post(url, headers=headers, json=data)
+    print(response)
     if response.status_code == 200:
+        print(response.json())
         return True
     else:
+        print(response.json())
         return False
 
 
@@ -509,6 +513,7 @@ def bank_details(request):
                 bank_info.store = store
                 bank_info.bank_code = all_banks[bank_name]
                 bank_info.account_number = form.cleaned_data["account_number"]
+                print(bank_info.account_number, bank_info.bank_code)
                 if flutterwave_currency_code == "NG":
                     if resolve_account_details(request, bank_info.account_number, bank_info.bank_code) == True: 
                         bank_info.save()
@@ -519,8 +524,12 @@ def bank_details(request):
                         return render(
                             request,
                             "store/bank-details.html",
-                            {"error": error, "form": form},
+                            {"error": error, "form": form, "all_banks": all_banks},
                         )
+                else:
+                    bank_info.save()
+                    Bank_Info.objects.exclude(pk=bank_info.pk).filter(store=store).delete()
+                    return redirect("account:bank_details")
         return render(
             request,
             "store/bank-details.html",
