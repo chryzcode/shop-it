@@ -464,14 +464,10 @@ def resolve_account_details(request, account_number, account_bank):
         "account_number": account_number,
         "account_bank": account_bank,
     }
-    print(data)
     response = requests.post(url, headers=headers, json=data)
-    print(response)
     if response.status_code == 200:
-        print(response.json())
-        return True
+        return response.json()
     else:
-        print(response.json())
         return False
 
 
@@ -498,7 +494,6 @@ def bank_details(request):
         all_banks = {}
         for bank in result:
             all_banks[bank.get("name")] = bank.get("code")
-        print(all_banks)
         if Bank_Info.objects.filter(store=store).exists():
             bank_info = Bank_Info.objects.get(store=store)
             form = BankForm(instance=bank_info)
@@ -513,9 +508,11 @@ def bank_details(request):
                 bank_info.store = store
                 bank_info.bank_code = all_banks[bank_name]
                 bank_info.account_number = form.cleaned_data["account_number"]
-                print(bank_info.account_number, bank_info.bank_code)
                 if flutterwave_currency_code == "NG":
-                    if resolve_account_details(request, bank_info.account_number, bank_info.bank_code) == True: 
+                    if resolve_account_details(request, bank_info.account_number, bank_info.bank_code): 
+                        response = resolve_account_details(request, bank_info.account_number, bank_info.bank_code)
+                        account_name = response.get("data").get("account_name")
+                        bank_info.account_name = account_name
                         bank_info.save()
                         Bank_Info.objects.exclude(pk=bank_info.pk).filter(store=store).delete()
                         return redirect("account:bank_details")
