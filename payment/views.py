@@ -188,18 +188,11 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
             product.save()
         messages.success(request, "Verification Successful")
         cart.clear()
-
-        res = rave.Transfer.initiate(
-            {
-                "account_bank": store_bank.bank_code,
-                "account_number": store_bank.account_number,
-                "amount": payment.amount,
-                "currency": order.currency_code,
-                "beneficiary_name": store_bank.account_name,
-                "narration": f"Hello {store.store_name}, the total sum of {order.currency_symbol}{payment.amount} hs been sent to your bank account through the purchase made by {payment.full_name} in your Shop!t store",
-            }
-        )
-        print(res)
+        transfer = initiate_transfer(request, store_bank.account_name, store_bank.account_number, payment.amount, payment.currency, store_bank.beneficiary_name, store_bank.narration)
+        if transfer:
+            messages.success(request, "Transfer initiated successfully")
+        else:
+            messages.error(request, "Transfer failed")
 
     else:
         messages.error(request, "Verification Failed")
