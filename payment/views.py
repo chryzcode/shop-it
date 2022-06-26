@@ -198,16 +198,18 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
                     "amount": payment.amount,
                     "currency": payment.currency,
                     "beneficiary_name": store_bank.beneficiary_name,
-                    "narration": store_bank.narration,
+                    "payment": payment,
                 },
             )
             from_email = settings.EMAIL_HOST_USER
+            to_email = [store.owner.email]
+            send_mail(subject, message, from_email, to_email)
+            
             if store_staff.filter(store=store).exists():
                 for staff in store_staff.filter(store=store):
                     staff_email = staff.email
                     send_mail(subject, message, from_email, [staff_email])
-            to_email = [store.owner.email]
-            send_mail(subject, message, from_email, to_email)
+            
 
         else:
             messages.error(request, "Transfer failed")

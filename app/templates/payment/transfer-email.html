@@ -1,16 +1,10 @@
 {% autoescape off %}
 Hello {{ store.store_name|capfirst }},
 
-Here is a reminder that your {{duration}} subscription on Shop!t is about to expire in few days time and after it expires your subscription will be renewed automatically(recurring 
-subscription) because we would love to see you continously enjoy these exclusive services for the growth and smooth running of your business and online store.
+{{beneficiary_name|capfirst }} ({{payment.email}}) just paid a total amount of {{currency}}{{payment.amount}} for an order placed on your store, on the Shop!t platform.
 
-{% if store_owner ==  True %}
-{% if recurring_subscription == True %} If you want to opt out from the recurring subscription policy, kindly click https://{{ domain }}
-{% endif %}
 
-{% if recurring_subscription == False %} If you want to opt in into the recurring subscription policy, kindly click https://{{ domain }}
-{% endif %}
-{% endif %}
+For more information and details on the order, kindly click this links https://{{domain}}
 
 Thank you for your continued support.
 
