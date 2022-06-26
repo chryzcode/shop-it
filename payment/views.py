@@ -1,9 +1,11 @@
+from email import message
 import requests
 from django.conf import settings
 from django.contrib import messages
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, render
-from rave_python import Rave
+from django.template.loader import render_to_string
+from django.contrib.sites.shortcuts import get_current_site
 
 from app.models import *
 from cart.cart import *
@@ -15,13 +17,6 @@ from .models import *
 
 RAVE_SECRET_KEY = settings.RAVE_SECRET_KEY
 RAVE_PUBLIC_KEY = settings.RAVE_PUBLIC_KEY
-rave = Rave(
-    secretKey=RAVE_SECRET_KEY,
-    publicKey=RAVE_PUBLIC_KEY,
-    production=False,
-    usingEnv=False,
-)
-
 
 # Create your views here.
 def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
@@ -188,9 +183,32 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
             product.save()
         messages.success(request, "Verification Successful")
         cart.clear()
-        transfer = initiate_transfer(request, store_bank.account_name, store_bank.account_number, payment.amount, payment.currency, store_bank.beneficiary_name, store_bank.narration)
+        narration = f"{store_bank.beneficiary_name} just paid {payment.currency}{payment.amount} for some products from {store.store_name} on Shop!t"
+        transfer = initiate_transfer(request, store_bank.account_name, store_bank.account_number, payment.amount, payment.currency, store_bank.beneficiary_name, narration)
         if transfer:
             messages.success(request, "Transfer initiated successfully")
+            subject = f"{store.store_name} just sold product on Shop!t"
+            current_site = get_current_site(request)
+            path = f"order/{order.id}"
+            message = render_to_string(
+                "payment/transfer_email.html",
+                {
+                    "store": store,
+                    "domain": current_site.domain+"/"+path,
+                    "amount": payment.amount,
+                    "currency": payment.currency,
+                    "beneficiary_name": store_bank.beneficiary_name,
+                    "narration": store_bank.narration,
+                },
+            )
+            from_email = settings.EMAIL_HOST_USER
+            if store_staff.filter(store=store).exists():
+                for staff in store_staff.filter(store=store):
+                    staff_email = staff.email
+                    send_mail(subject, message, from_email, [staff_email])
+            to_email = [store.owner.email]
+            send_mail(subject, message, from_email, to_email)
+
         else:
             messages.error(request, "Transfer failed")
 

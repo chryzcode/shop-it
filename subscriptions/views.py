@@ -1,4 +1,3 @@
-from operator import sub
 import secrets
 import requests
 
