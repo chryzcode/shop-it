@@ -5,6 +5,9 @@ from cart.cart import *
 
 from .forms import *
 from .models import *
+from django.template.loader import render_to_string
+from django.contrib.sites.shortcuts import get_current_site
+from django.conf import settings
 
 
 def order(request, coupon_code):
@@ -52,7 +55,6 @@ def order(request, coupon_code):
             currency_symbol=currency_symbol,
             currency_code=currency_code,
         )
-        order_id = order.id
         for item in cart:
             OrderItem.objects.create(
                 order=order,
@@ -61,3 +63,25 @@ def order(request, coupon_code):
                 price=item["price"],
             )
         return redirect("payment:initiate_payment", order.id)
+
+
+def unpaid_order_mail_remainder(request, pk):
+    if Order.objects.get(pk=pk).billing_status == False and Order.objects.get(pk=pk).user:
+        order = Order.objects.get(pk=pk)
+        store = Store.objects.get(store_name=order.store)
+        current_site = get_current_site(request)
+        path = f"payment/{order.id}"
+        subject = f"You have unpaid order in {store.store_name} store on Shop!t"
+        message = render_to_string(
+            "payment/order-email.html",
+            {
+                "store": store,
+                "order": order,
+                "domain": current_site.domain+"/"+path,
+            },
+        )
+        from_email = settings.EMAIL_HOST_USER
+        to_email = [order.user.email]
+        send_mail(subject, message, from_email, to_email)
+
+

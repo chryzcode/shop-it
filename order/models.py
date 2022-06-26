@@ -21,6 +21,7 @@ class Order(models.Model):
     coupon = models.BooleanField(default=False)
     currency_symbol = models.CharField(max_length=10)
     currency_code = models.CharField(max_length=50)
+    mail_remainder = models.BooleanField(default=False)
 
     class Meta:
         ordering = ("-created",)

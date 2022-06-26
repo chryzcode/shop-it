@@ -14,8 +14,6 @@ from order.models import *
 from .forms import *
 from .models import *
 
-RAVE_SECRET_KEY = settings.RAVE_SECRET_KEY
-RAVE_PUBLIC_KEY = settings.RAVE_PUBLIC_KEY
 
 # Create your views here.
 def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
