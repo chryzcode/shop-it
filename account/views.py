@@ -507,7 +507,6 @@ def bank_details(request):
                 bank_name = form.cleaned_data["bank_name"]
                 bank_info.store = store
                 bank_info.bank_code = all_banks[bank_name]
-                print(bank_info.bank_code)
                 bank_info.account_number = form.cleaned_data["account_number"]
                 if flutterwave_currency_code == "NG":
                     if resolve_account_details(request, bank_info.account_number, bank_info.bank_code): 

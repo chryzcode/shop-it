@@ -183,8 +183,8 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
             product.save()
         messages.success(request, "Verification Successful")
         cart.clear()
-        narration = f"{store_bank.beneficiary_name} just paid {payment.currency}{payment.amount} for some products from {store.store_name} on Shop!t"
-        transfer = initiate_transfer(request, store_bank.account_name, store_bank.account_number, payment.amount, payment.currency, store_bank.beneficiary_name, narration)
+        narration = f"{payment.full_name} just paid {order.currency_symbol}{payment.amount} for some products from {store.store_name} on Shop!t"
+        transfer = initiate_transfer(request, store_bank.account_name, store_bank.account_number, payment.amount, order.currency_code, payment.full_name, narration)
         if transfer:
             messages.success(request, "Transfer initiated successfully")
             subject = f"{store.store_name} just sold some product on Shop!t"
@@ -196,15 +196,15 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
                     "store": store,
                     "domain": current_site.domain+"/"+path,
                     "amount": payment.amount,
-                    "currency": payment.currency,
-                    "beneficiary_name": store_bank.beneficiary_name,
+                    "currency": order.currency_symbol,
+                    "beneficiary_name": payment.full_name,
                     "payment": payment,
                 },
             )
             from_email = settings.EMAIL_HOST_USER
             to_email = [store.owner.email]
             send_mail(subject, message, from_email, to_email)
-            
+
             if store_staff.filter(store=store).exists():
                 for staff in store_staff.filter(store=store):
                     staff_email = staff.email
