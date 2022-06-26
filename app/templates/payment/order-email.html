@@ -1,0 +1,14 @@
+{% autoescape off %}
+Hello {{payment.full_name|capfirst }} ({{payment.email}}),
+
+You just paid a total amount of {{currency}}{{payment.amount}} for an order placed on {{ store.store_name|capfirst }} store, on the Shop!t platform.
+
+{% if customer == True %}
+For more information and details on the order, kindly click this link https://{{domain}}
+{% endif %}
+
+Thank you for your continued support.
+
+Regards,
+Shop!t Team
+{% endautoescape %}

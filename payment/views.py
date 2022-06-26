@@ -208,8 +208,27 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
                 for staff in store_staff.filter(store=store):
                     staff_email = staff.email
                     send_mail(subject, message, from_email, [staff_email])
-            
 
+            subject = f"You just ordered some products on {store.store_name} on Shop!t platform"
+            path = f"{store.slugified_store_name}/order/{order.id}"
+            if payment.user in store.customers.all():
+                customer = True
+            else:
+                customer = False
+            message = render_to_string(
+                "payment/order-email.html",
+                {
+                    "store": store,
+                    "order": order,
+                    "payment": payment,
+                    "domain": current_site.domain+"/"+path,
+                    "customer": customer,
+                },
+            )
+            to_email = [payment.email]
+            send_mail(subject, message, from_email, to_email)
+
+    
         else:
             messages.error(request, "Transfer failed")
 
