@@ -27,9 +27,6 @@ def custom_error_500(request):
 
 
 def home_page(request):
-    if request.user.is_authenticated:
-        subscription_check(request)
-        subscription_check_mail_remainder(request)
     return render(request, "base/index.html")
 
 

@@ -47,14 +47,7 @@ def activate_recurring_subscription(request: HttpRequest) -> HttpResponse:
     return redirect("/")
    
 def subscription_check_mail_remainder(request):
-    store = None
-    if request.user.store_creator == True:
-        store = Store.objects.get(store_name=request.user.store_name)
-    else:
-        store = Store.objects.get(
-            store_name=store_staff.objects.get(user=request.user).store
-        )
-    if store:
+    for store in store.objects.all():
         if Subscription_Timeline.objects.filter(store=store, mail_remainder=False).exists():
             subscription_timeline = Subscription_Timeline.objects.filter(store=store).first()
             yearly_duration = Duration.objects.get(name="yearly")
@@ -211,14 +204,7 @@ def paystack_recurring_payment(request: HttpRequest, pk) -> HttpResponse:
 
 
 def subscription_check(request):
-    store = None
-    if request.user.store_creator == True:
-        store = Store.objects.get(store_name=request.user.store_name)
-    else:
-        store = Store.objects.get(
-            store_name=store_staff.objects.get(user=request.user).store
-        )
-    if store:
+    for store in Store.objects.all():
         if Subscription_Timeline.objects.filter(store=store).exists():
             subscription_timeline = Subscription_Timeline.objects.filter(store=store).first()
             yearly_duration = Duration.objects.get(name="yearly")
