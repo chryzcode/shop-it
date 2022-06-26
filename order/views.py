@@ -65,23 +65,23 @@ def order(request, coupon_code):
         return redirect("payment:initiate_payment", order.id)
 
 
-def unpaid_order_mail_remainder(request, pk):
-    if Order.objects.get(pk=pk).billing_status == False and Order.objects.get(pk=pk).user:
-        order = Order.objects.get(pk=pk)
-        store = Store.objects.get(store_name=order.store)
-        current_site = get_current_site(request)
-        path = f"payment/{order.id}"
-        subject = f"You have unpaid order in {store.store_name} store on Shop!t"
-        message = render_to_string(
-            "payment/order-email.html",
-            {
-                "store": store,
-                "order": order,
-                "domain": current_site.domain+"/"+path,
-            },
-        )
-        from_email = settings.EMAIL_HOST_USER
-        to_email = [order.user.email]
-        send_mail(subject, message, from_email, to_email)
+def unpaid_order_mail_remainder(request):
+    for order in Order.objects.filter(billing_status=False, mail_remainder=False):
+        if order.user:
+            store = Store.objects.get(store_name=order.store)
+            current_site = get_current_site(request)
+            path = f"payment/{order.id}"
+            subject = f"You have unpaid order in {store.store_name} store on Shop!t"
+            message = render_to_string(
+                "payment/order-email.html",
+                {
+                    "store": store,
+                    "order": order,
+                    "domain": current_site.domain+"/"+path,
+                },
+            )
+            from_email = settings.EMAIL_HOST_USER
+            to_email = [order.user.email]
+            send_mail(subject, message, from_email, to_email)
 
 
