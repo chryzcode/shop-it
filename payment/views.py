@@ -187,11 +187,11 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
         transfer = initiate_transfer(request, store_bank.account_name, store_bank.account_number, payment.amount, payment.currency, store_bank.beneficiary_name, narration)
         if transfer:
             messages.success(request, "Transfer initiated successfully")
-            subject = f"{store.store_name} just sold product on Shop!t"
+            subject = f"{store.store_name} just sold some product on Shop!t"
             current_site = get_current_site(request)
             path = f"order/{order.id}"
             message = render_to_string(
-                "payment/transfer_email.html",
+                "payment/transfer-email.html",
                 {
                     "store": store,
                     "domain": current_site.domain+"/"+path,
