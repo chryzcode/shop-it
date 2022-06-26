@@ -184,7 +184,7 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
         messages.success(request, "Verification Successful")
         cart.clear()
         narration = f"{payment.full_name} just paid {order.currency_symbol}{payment.amount} for some products from {store.store_name} on Shop!t"
-        transfer = initiate_transfer(request, store_bank.account_name, store_bank.account_number, payment.amount, order.currency_code, payment.full_name, narration)
+        transfer = initiate_transfer(request, store_bank.account_name, store_bank.account_number, payment.amount, order.currency_code, store_bank.account_name, narration)
         if transfer:
             messages.success(request, "Transfer initiated successfully")
             subject = f"{store.store_name} just sold some product on Shop!t"
