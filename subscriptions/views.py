@@ -47,7 +47,7 @@ def activate_recurring_subscription(request: HttpRequest) -> HttpResponse:
     return redirect("/")
    
 def subscription_check_mail_remainder(request):
-    for store in store.objects.all():
+    for store in Store.objects.all():
         if Subscription_Timeline.objects.filter(store=store, mail_remainder=False).exists():
             subscription_timeline = Subscription_Timeline.objects.filter(store=store).first()
             yearly_duration = Duration.objects.get(name="yearly")
