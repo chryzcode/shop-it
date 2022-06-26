@@ -205,7 +205,7 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
             to_email = [store.owner.email]
             send_mail(subject, message, from_email, to_email)
 
-            if store_staff.filter(store=store).exists():
+            if store_staff.objects.filter(store=store).exists():
                 for staff in store_staff.filter(store=store):
                     staff_email = staff.email
                     send_mail(subject, message, from_email, [staff_email])
