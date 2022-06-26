@@ -56,16 +56,13 @@ def subscription_check_mail_remainder(request):
             if subscription_timeline.subscription.duration ==  monthly_duration:
                 if subscription_timeline.created_at < timezone.now() - timedelta(minutes=2): 
                     subject = "Your Shop!t Monthly Subscription is about to Expire"
-                    if request.user.store_creator == True:
-                        store_owner =  True
-                        if RecurringSubscriptionData.objects.get(user=request.user).charge == True:
-                            recurring_subscription = True
-                            path = "subscriptions/cancel-recurring-subscription"
-                        else:
-                            recurring_subscription = False
-                            path = "subscriptions/activate-recurring-subscription"
+                    store_owner =  store.owner
+                    if RecurringSubscriptionData.objects.get(user=store_owner).charge == True:
+                        recurring_subscription = True
+                        path = "subscriptions/cancel-recurring-subscription"
                     else:
-                        store_owner = False
+                        recurring_subscription = False
+                        path = "subscriptions/activate-recurring-subscription"
                     message = render_to_string( "subscriptions/subscription-mail-remainder.html", {
                         "store": store,
                         "duration": "monthly",
@@ -74,23 +71,26 @@ def subscription_check_mail_remainder(request):
                         "recurring_subscription":recurring_subscription,
                     })
                     from_email = settings.EMAIL_HOST_USER
-                    to_email = [request.user.email]
+                    to_email = [store_owner.email]
                     send_mail(subject, message, from_email, to_email)
+                    if store_staff.objects.filter(store=store).exists():
+                        for staff in store_staff.objects.filter(store=store):
+                            if staff.user.email:
+                                to_email = [staff.user.email]
+                                send_mail(subject, message, from_email, to_email)
                     subscription_timeline.mail_remainder = True
                     subscription_timeline.save()
+                    
             if subscription_timeline.subscription.duration ==  yearly_duration:
                 if subscription_timeline.created_at < timezone.now() - timedelta(minutes=2): 
                     subject = "Your Shop!t Yearly Subscription is about to Expire"
-                    if request.user.store_creator == True:
-                        store_owner =  True
-                        if RecurringSubscriptionData.objects.get(user=request.user).charge == True:
-                            recurring_subscription = True
-                            path = "subscriptions/cancel-recurring-subscription"
-                        else:
-                            recurring_subscription = False
-                            path = "subscriptions/activate-recurring-subscription"
+                    store_owner =  store.owner
+                    if RecurringSubscriptionData.objects.get(user=store_owner).charge == True:
+                        recurring_subscription = True
+                        path = "subscriptions/cancel-recurring-subscription"
                     else:
-                        store_owner = False
+                        recurring_subscription = False
+                        path = "subscriptions/activate-recurring-subscription"
                     message = message = render_to_string( "subscriptions/subscription-mail-remainder.html", {
                         "store": store,
                         "duration": "yearly",
@@ -101,6 +101,11 @@ def subscription_check_mail_remainder(request):
                     from_email = settings.EMAIL_HOST_USER
                     to_email = [request.user.email]
                     send_mail(subject, message, from_email, to_email)
+                    if store_staff.objects.filter(store=store).exists():
+                        for staff in store_staff.objects.filter(store=store):
+                            if staff.user.email:
+                                to_email = [staff.user.email]
+                                send_mail(subject, message, from_email, to_email)
                     subscription_timeline.mail_remainder = True
                     subscription_timeline.save()
 
