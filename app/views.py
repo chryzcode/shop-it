@@ -113,7 +113,7 @@ def create_product(request):
             product.store = Store.objects.get(store_name=store)
             product.created_by = store
             product.slug = slugify(product.name)
-            if Product.objects.filter(slug=product.slug, created=store).exists():
+            if Product.objects.filter(slug=product.slug, store=store).exists():
                 error = "Product already exists"
                 return render(
                     request,
