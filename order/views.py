@@ -75,7 +75,7 @@ def unpaid_order_mail_remainder(request):
             path = f"payment/{order.id}"
             subject = f"You have unpaid order in {store.store_name} store on Shop!t"
             message = render_to_string(
-                "payment/order-email.html",
+                "payment/unpaid-order-email.html",
                 {
                     "store": store,
                     "order": order,
