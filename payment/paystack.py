@@ -20,12 +20,7 @@ class Paystack:
 
         if response.status_code == 200:
             response_data = response.json()
-            channel = response_data["data"]["channel"]
-            print(channel)
-            if Payment.objects.filter(ref=ref).exists():
-                payment = Payment.objects.get(ref=ref) 
-                payment.payment_method = channel
-                payment.save()
+            channel = response_data["data"]["channel"]     
             return response_data["status"], response_data["data"]
         response_data = response.json()
         return response_data["status"], response_data["message"]

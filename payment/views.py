@@ -174,7 +174,9 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
     status, result = paystack.verify_payment(payment.ref, payment.amount)
     if status:
         if result["amount"] / 100 == payment.amount:
+            channel = result["channel"]
             payment.verified = True
+            payment.payment_method = channel
             payment.save()
     if payment.verified:
         order = Order.objects.get(pk=payment.order.pk)
