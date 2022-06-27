@@ -14,6 +14,7 @@ from order.models import *
 
 from .forms import *
 from .models import *
+from .paystack import *
 
 
 # Create your views here.
@@ -169,8 +170,13 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
     payment = get_object_or_404(Payment, ref=ref)
     store = Store.objects.get(pk=payment.store.pk)
     store_bank = Bank_Info.objects.get(store=store)
-    verified = payment.verify_payment()
-    if verified:
+    paystack = Paystack()
+    status, result = paystack.verify_payment(payment.ref, payment.amount)
+    if status:
+        if result["amount"] / 100 == payment.amount:
+            payment.verified = True
+            payment.save()
+    if payment.verified:
         order = Order.objects.get(pk=payment.order.pk)
         order.billing_status = True
         order.save()

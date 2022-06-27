@@ -145,7 +145,7 @@ def verify_subscription_payment(request: HttpRequest, ref: str) -> HttpResponse:
         if result["amount"] / 100 == subscription.amount:
             subscription.verified = True
             subscription.user = request.user
-        subscription.save()
+            subscription.save()
     if subscription.verified:
         subscription.subscribers.add(store)
         Subscription_Timeline.objects.create(
