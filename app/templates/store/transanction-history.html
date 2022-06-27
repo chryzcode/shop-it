@@ -23,8 +23,10 @@
           <td>
             {% if payment.user in customers %}
             {{payment.user.full_name}} (cust)
-            {% else %}
+            {% elif payment.user %}
             {{ payment.user.full_name }} (not cust)
+            {% else %}
+            {{ payment.full_name }} (not cust)
             {% endif %}
           </td>
           <td><a href="{% url 'app:store_order_detail' payment.order.pk %}">{{payment.order.id|truncatechars:12}}</a></td>
@@ -33,7 +35,7 @@
             {{payment.order.currency_symbol}}{{ payment.amount|intcomma }}
           </td>
           <td>
-            under constr
+            {{payment.payment_method}}
           </td>
         </tr>
         {% endfor %}
