@@ -1,0 +1,44 @@
+{% extends 'navs/store-nav.html' %}{% load humanize %} {% load static %}{% block title %}<title>
+  Shop !t - {{store.store_name}} Transanction History
+</title>
+{% endblock %} {% block content %}
+<div class="store-page-container">
+  {% include 'navs/store-side-nav.html' %}
+  <div class="store-content-container">
+    <span class="store-products-container">
+      <p>{{store.store_name|capfirst}} Transanction History</p>
+      <table class="store-products-table">
+        <tr class="table-rows">
+          <th>Date</th>
+          <th>Customer</th>
+          <th>Order</th>
+          <th>Status</th>
+          <th>Amount</th>
+          <th>Payment Method</th>
+        </tr>
+
+        {% for payment in payments %}
+        <tr class="table-rows">
+          <td>{{payment.date_created}}</td>
+          <td>
+            {% if payment.user in customers %}
+            {{payment.user.full_name}} (cust)
+            {% else %}
+            {{ payment.user.full_name }} (not cust)
+            {% endif %}
+          </td>
+          <td><a href="{% url 'app:store_order_detail' payment.order.pk %}">{{payment.order.id|truncatechars:12}}</a></td>
+          <td>{% if payment.verified == True %} Paid {% else %} Unpaid {% endif %}</td>
+          <td>
+            {{payment.order.currency_symbol}}{{ payment.amount|intcomma }}
+          </td>
+          <td>
+            under constr
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+    </span>
+  </div>
+  {% endblock %}
+</div>

@@ -237,3 +237,13 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
         return redirect("customer:customer_orders", store.slugified_store_name)
     else:
         return redirect("app:store", store.slugified_store_name)
+
+
+def transanction_history(request):
+    if request.user.store_creator == True:
+        store = Store.objects.get(owner= request.user)
+    else:
+        store = store_staff.objects.get(user=request.user).store
+    payments = Payment.objects.filter(store=store)
+    customers = store.customers.all()
+    return render(request, "store/transanction-history.html", {"payments":payments, "store":store, "customers":customers})
