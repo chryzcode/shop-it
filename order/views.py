@@ -8,6 +8,8 @@ from .models import *
 from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
 from django.conf import settings
+from datetime import datetime, timedelta
+from django.utils import timezone
 
 
 def order(request, coupon_code):
@@ -67,7 +69,7 @@ def order(request, coupon_code):
 
 def unpaid_order_mail_remainder(request):
     for order in Order.objects.filter(billing_status=False, mail_remainder=False):
-        if order.user:
+        if order.user and order.date_created < timezone.now() - timedelta(days=20):
             store = Store.objects.get(store_name=order.store)
             current_site = get_current_site(request)
             path = f"payment/{order.id}"

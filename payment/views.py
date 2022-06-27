@@ -6,6 +6,7 @@ from django.shortcuts import get_object_or_404, render
 from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
 
+
 from app.models import *
 from cart.cart import *
 from customer.models import Address, Customer
