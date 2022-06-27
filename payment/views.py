@@ -230,6 +230,7 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
                     "payment": payment,
                     "domain": current_site.domain+"/"+path,
                     "customer": customer,
+                    "currency": order.currency_symbol,
                 },
             )
             to_email = [payment.email]
