@@ -101,7 +101,7 @@
     {% endif %}
 
     <div class="form-btn-container">
-      <button class="form-btn" type="submit">Submit</button>
+      <button class="form-btn" type="submit">Init <span id="total">{{currency_symbol}}{{order.amount|intcomma}}</span></button>
     </div>
   </form>
 </div>
@@ -113,11 +113,17 @@ $( document ).ready(function() {
     $("input[name='shipping_method']").on('change', function(event) {
        var shipping_method_price = $(this).attr('class');
         var order_amount = "{{order.amount}}";
+        var currency_symbol = "{{currency_symbol}}";
         var total = parseInt(order_amount) + parseInt(shipping_method_price);
-        var total = total.toLocaleString("en-US");
+        var total = currency_symbol + total.toLocaleString("en-US");
          $('#result').html(total);
+        document.getElementById('total').innerHTML = total;
     });
 });
+
+
+
+
 </script>
 
 {% endblock %}

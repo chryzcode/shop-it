@@ -127,19 +127,19 @@ def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
     else:
         payment_form = PaymentForm()
         order = Order.objects.get(pk=pk)
-    return render(
-        request,
-        "payment/initiate-payment.html",
-        {
-            "payment_form": payment_form,
-            "addresses": addresses,
-            "shipping_methods": shipping_methods,
-            "store": store,
-            "order": order,
-            "currency_symbol": currency_symbol,
-            "currency_code": currency_code,
-        },
-    )
+        return render(
+            request,
+            "payment/initiate-payment.html",
+            {
+                "payment_form": payment_form,
+                "addresses": addresses,
+                "shipping_methods": shipping_methods,
+                "store": store,
+                "order": order,
+                "currency_symbol": currency_symbol,
+                "currency_code": currency_code,
+            },
+        )
 
 
 def initiate_transfer(request, account_name, account_number, amount, currency, beneficiary_name, narration):
