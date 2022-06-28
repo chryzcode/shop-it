@@ -4,6 +4,7 @@ const nav_links = document.getElementById("nav-links");
 const store_side_nav = document.getElementById("store-sidenav");
 const profile_dropdown = document.getElementById("acc-store-nav-links");
 const profile_section = document.getElementById("nav-user-profile")
+const profile_icon = document.getElementById("profile-icon");
 
 document.onclick = function (e) {
   if (e.target.id == "a-nav-link") {
@@ -25,6 +26,7 @@ toogle.onclick = function () {
 profile_section.onclick = function () {
   if (profile_dropdown) {
     profile_dropdown.classList.toggle("active");
+    profile_icon.classList.toggle("active");
   }
 };
 
@@ -35,6 +37,7 @@ document.onclick = function (e) {
       e.target.classList == "subscription-grid-container"
     ) {
       profile_dropdown.classList.remove("active");
+      profile_icon.classList.remove("active");
     }
   }
 

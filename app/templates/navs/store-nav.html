@@ -47,7 +47,7 @@
             {% else %}
             <i class="fas fa-user-circle default-avatar"></i>
             {% endif %}
-            <span>{{request.user.full_name}}</span> <i class="fas fa-caret-down"></i
+            <span>{{request.user.full_name}}</span> <i id="profile-icon" class="fas fa-caret-down"></i
           ></span>
           <ul id="acc-store-nav-links">
             <li><a href="{% url 'account:user_profile' %}" id="a-nav-link">Profile</a></li>

@@ -12,7 +12,8 @@ body {
 }
 
 .main-container {
-  margin-top: 100px;
+  margin-top: 150px;
+  margin-bottom: 50px;
 }
 
 .intro {
@@ -911,6 +912,7 @@ button {
 }
 
 #acc-store-nav-links {
+  transition: all 0.5s ease-in-out;
   display: none;
 }
 
@@ -921,27 +923,25 @@ button {
   list-style: none;
   z-index: 1070;
   background-color: #fff;
-  margin-top: 10px;
+  margin-top: 0;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   right: 0;
   margin-right: 20px;
   border-radius: 10px;
+  margin-left: 0;
+  transition: all 0.5s ease-in-out;
 }
 
 .nav-not-acc-sec {
   display: flex;
 }
+
 #user-account {
   padding: 0 0 0 10px;
   display: flex;
   align-items: center;
   cursor: pointer;
   color: #3d5170;
-}
-
-#user-account:hover {
-  color: #6b69f8;
-  transition: all 1.01s ease-in-out;
 }
 
 #user-account > span {
@@ -998,6 +998,15 @@ button {
 .notification:hover {
   color: #6b69f8;
   transition: all 1.01s ease-in-out;
+}
+
+#profile-icon {
+  transition:  all 1.01s ease-in-out;
+}
+
+#profile-icon.active {
+  transform: rotate(180deg);
+  transition:  all 0.5s ease-in-out;
 }
 
 .store-front-btn {
