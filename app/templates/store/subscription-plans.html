@@ -21,12 +21,13 @@
         <div class="subscription-grid-container">
             {% for plan in plans %}
             <div class="a-related-container">
+                <div>
                 <p>{{plan.name}}</p>
                 <p>{{plan.currency.symbol}}{{plan.amount|intcomma}}/ {{plan.duration}}</p>
                 <div>
-                    {{plan.description}}
+                    {{plan.description|safe}}
                 </div>
-
+                </div>
              <a href="{% url 'subscriptions:initiate_subscription_payment' plan.id %}" class="update-btn">Subscibe Now</a>
             </div>
             {% endfor %}
