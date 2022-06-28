@@ -35,11 +35,7 @@
         {% endif %}
       </span>
 
-
-
       <ul id="nav-links">
-        
-
         <span class="cart-icon-container">
           <a href="{% url 'cart:cart_summary' store.slugified_store_name %}" class="cart-btn">
             {% with total_qty=cart|length %}
@@ -59,17 +55,21 @@
         </span>
 
         <input type="search" name="" id="" class="side-nav-search-bar" placeholder="Search for Products" />
-        {% if store %}
-        {% if request.user in store.customers.all %}
-        <li><a href="{% url 'customer:customer_profile' store.slugified_store_name %}" id="a-nav-link">My Account</a></li>  
-        {% else %}  
-        {% if owner_store == store %}    
-        {% else %} 
+        {% if store %} {% if request.user in store.customers.all %}
+        <li>
+          <a href="{% url 'customer:customer_profile' store.slugified_store_name %}" id="a-nav-link">My Account</a>
+        </li>
+        <span>
+          <li><a href="{% url 'customer:customer_wishlist' store.slugified_store_name %}">My Wishlist</a></li>
+          <li><a href="{% url 'customer:customer_orders' store.slugified_store_name %}">Order</a></li>
+          <li><a href="{% url 'customer:customer_reviews' store.slugified_store_name %}">Reviews</a></li>
+          <li><a href="{% url 'customer:address_list' store.slugified_store_name%}">Address</a></li>
+          <li><a href="{% url 'customer:customer_logout' store.slugified_store_name %}">Sign Out</a></li>
+        </span>
+        {% else %} {% if owner_store == store %} {% else %}
         <li><a href="{% url 'customer:customer_login' store.slugified_store_name %}" id="a-nav-link">Sign In</a></li>
         <li><a href="{% url 'customer:customer_register' store.slugified_store_name %}" id="a-nav-link">Sign Up</a></li>
-        {% endif %}
-        {% endif %}
-        {% endif %}
+        {% endif %} {% endif %} {% endif %}
       </ul>
 
       <div id="toogle"></div>

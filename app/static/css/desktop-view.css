@@ -37,6 +37,10 @@
     color: #6b69f8;
   }
 
+  nav > ul > span > li {
+    display: none;
+  }
+
   #toogle {
     display: none;
   }
@@ -57,15 +61,13 @@
     min-width: 20%;
   }
 
-    .product-container {
+  .product-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
     grid-gap: 100px;
     margin: 0px auto;
     padding: 5% 8% 5% 8%;
   }
-
-  
 
   .store-content-container {
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
@@ -149,4 +151,6 @@
     object-fit: cover;
     object-position: center;
   }
+
+  
 }

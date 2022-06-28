@@ -31,7 +31,11 @@
     padding-left: 50px;
   } */
 
-  nav > ul > li {
+  .store-sidenav-seg.customer-store-sidenav {
+    display: none;
+  }
+
+  nav > ul > li, nav ul span li a{
     display: flex;
     justify-content: left;
     align-items: center;
@@ -39,7 +43,7 @@
     padding-left: 10px;
   }
 
-  nav > ul > li > a {
+  nav > ul > li > a, nav ul span li a{
     text-decoration: none;
     color: #6d7d89;
     font-size: 20px;

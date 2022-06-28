@@ -563,7 +563,6 @@ body > nav > span:nth-child(2) > i {
   position: relative;
 }
 
-
 .subscription-grid-container a {
   display: block;
   text-decoration: none;
@@ -576,7 +575,6 @@ body > nav > span:nth-child(2) > i {
 }
 
 .a-related-container {
-  
   border: 1px solid #ccc;
   margin: 20px auto;
   text-decoration: none;
@@ -586,16 +584,14 @@ body > nav > span:nth-child(2) > i {
   padding-right: 2px;
 }
 
-
 .a-related-container > div {
   width: 300px;
   height: 300px;
-  overflow-y: auto; 
+  overflow-y: auto;
   padding: 15px;
   margin-bottom: 30px;
   font-size: 15px;
 }
-
 
 .a-related-container > div > p:nth-child(1) {
   text-align: center;
@@ -609,11 +605,9 @@ body > nav > span:nth-child(2) > i {
   color: #3d5170;
 }
 
-
 .a-related-container > div > div {
   margin-top: 15px;
 }
-  
 
 .a-related-container:hover {
   transform: scale(1.05);
@@ -670,7 +664,7 @@ div.product-info > p:nth-child(2) {
   border-top: 1px solid #ccc;
 }
 
-.store-sidenav-seg ul li a{
+.store-sidenav-seg ul li a {
   padding-left: 30px;
 }
 
@@ -1004,12 +998,12 @@ button {
 }
 
 #profile-icon {
-  transition:  all 1.01s ease-in-out;
+  transition: all 1.01s ease-in-out;
 }
 
 #profile-icon.active {
   transform: rotate(180deg);
-  transition:  all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
 }
 
 .store-front-btn {
