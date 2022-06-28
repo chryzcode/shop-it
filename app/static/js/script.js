@@ -1,9 +1,9 @@
-const navbar = document.getElementsByTagName("nav");
+const navbar = document.getElementById("nav");
 const toogle = document.getElementById("toogle");
 const nav_links = document.getElementById("nav-links");
 const store_side_nav = document.getElementById("store-sidenav");
-console.log(store_side_nav);
-
+const profile_dropdown = document.getElementById("acc-store-nav-links");
+const profile_section = document.getElementById("nav-user-profile")
 
 document.onclick = function (e) {
   if (e.target.id == "a-nav-link") {
@@ -22,12 +22,42 @@ toogle.onclick = function () {
   }
 };
 
-document.onclick = function (e) {
-  if (e.target.id == toogle) {
-    store_side_nav.classList.remove("active");
-    toogle.classList.remove("active");
+profile_section.onclick = function () {
+  if (profile_dropdown) {
+    profile_dropdown.classList.toggle("active");
   }
 };
+
+document.onclick = function (e) {
+  if (profile_dropdown) {
+    if (
+      e.target.classList == "store-products-container" ||
+      e.target.classList == "subscription-grid-container"
+    ) {
+      profile_dropdown.classList.remove("active");
+    }
+  }
+
+  if (store_side_nav) {
+    if (e.target.id == "nav") {
+      store_side_nav.classList.remove("active");
+      toogle.classList.remove("active");
+    }
+  }
+};
+
+console.log(navbar)
+
+// document.onclick = function (e) {
+//   if (e.target.id == profile_section) {
+//     profile_dropdown.classList.remove("active");
+//   }
+//   if (e.target.id == navbar) {
+//     store_side_nav.classList.remove("active");
+//   }
+// };
+
+
 
 
 

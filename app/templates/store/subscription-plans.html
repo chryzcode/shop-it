@@ -5,7 +5,7 @@
 <div class="store-page-container">
   {% include 'navs/store-side-nav.html' %}
   <div class="store-content-container">
-    <span class="store-products-container">
+    <span class="store-products-container" id="store-products-container">
       <p>Shop!t {% if 'monthly' in request.get_full_path %} Monthly {% else %} Yearly {% endif %} Subscriptions </p>
        {% if messages %} {% for message in messages %}
     <small class="error">{{message}}</small>

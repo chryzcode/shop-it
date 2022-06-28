@@ -55,3 +55,13 @@ def owner_store(request):
         else:
             return {"owner_store": None}
     return {"owner_store": None}
+
+def user_profile(request):
+    if request.user.is_authenticated:
+        if User.objects.filter(email=request.user.email):
+            user = User.objects.get(email=request.user.email)
+            return {"user_profile": user}
+        else:
+            return {"user_profile": None}
+    else:
+        return {"user_profile": None}

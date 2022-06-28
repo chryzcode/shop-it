@@ -911,6 +911,10 @@ button {
 }
 
 #acc-store-nav-links {
+  display: none;
+}
+
+#acc-store-nav-links.active {
   padding: 0 30px 0 0;
   display: block;
   position: absolute;
@@ -967,11 +971,16 @@ button {
 
 .side-nav-search-bar {
   width: 50vw;
-  height: 40px;
-  padding: 10px 15px;
+  height: 35px;
+  padding: 7px 10px;
   outline: none;
   border: 0;
   border-radius: 8px;
+}
+
+.side-nav-search-bar:focus {
+  color: #3d5170;
+  border: 2px solid #3d5170;
 }
 
 .nav-avatar {
@@ -1004,6 +1013,8 @@ button {
   color: #3d5170;
   border: 1px solid #3d5170;
   transition: all 1.01s ease-in-out;
+  display: inline-block;
+  width: max-content;
 }
 
 .store-products-container > p {

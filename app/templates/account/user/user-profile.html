@@ -15,19 +15,31 @@
         <div class="input-container">
           <label for="avatar">Avatar<span class="form-required">*</span></label>
           <p>{{ userprofileform.avatar.errors }}</p>
-          <div>{{ userprofileform.avatar }}</div>
+          {% if user_profile.avatar %}
+          <input class="form-control" type="file" value="{{user_profile.avatar.url}}" src="{{user_profile.avatar.url}}" name="avatar" id="avatar">
+          {% else %}
+          <input class="form-control" type="file" src="" name="avatar" id="avatar">
+          {% endif %}
         </div>
 
         <div class="input-container">
           <label for="name">Full Name<span class="form-required">*</span></label>
           <p>{{ userprofileform.full_name.errors }}</p>
-          <div>{{ userprofileform.full_name }}</div>
+          {% if user_profile.full_name %}
+          <input class="form-control" type="text" name="name" id="name" value="{{user_profile.full_name}}" placeholder="johndoe" />
+          {% else %}
+          <input class="form-control" type="text" name="name" id="name" placeholder="johndoe" />
+          {% endif %}
         </div>
 
         <div class="input-container">
           <label for="phone_number">Phone Number</label>
           <p>{{ userprofileform.phone_number.errors }}</p>
-          {{userprofileform.phone_number}}
+          {% if user_profile.phone_number %}
+          <input class="form-control" type="text" name="phone_number" id="phone_number" value="{{user_profile.phone_number}}" placeholder="+3487 8084 4646" />
+          {% else %}
+          <input class="form-control" type="text" name="phone_number" id="phone_number" placeholder="johndoe" />
+          {% endif %}
         </div>
       </div>
 

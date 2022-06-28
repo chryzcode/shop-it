@@ -117,6 +117,7 @@ def account_activate(request, uidb64, token):
 def user_profile(request):
     account = request.user
     userprofileform = UserProfileForm(instance=account)
+    user_profile = User.objects.get(email=account.email)
     if request.method == "POST":
         userprofileform = UserProfileForm(request.POST, request.FILES, instance=account)
         if userprofileform.is_valid():
@@ -126,7 +127,7 @@ def user_profile(request):
     return render(
         request,
         "account/user/user-profile.html",
-        {"userprofileform": userprofileform, "account": account},
+        {"userprofileform": userprofileform, "account": account, "user_profile":user_profile},
     )
 
 

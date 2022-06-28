@@ -28,19 +28,19 @@
     {% endblock %}
   </head>
   <body>
-    <nav data-aos="fade-down" data-aos-duration="1500" class="store-nav">
+    <nav data-aos="fade-down" data-aos-duration="1500" class="store-nav" id="nav">
       <span>
         <a href="">Shop !t</a>
       </span>
       <span>
-        <input type="search" name="" id="" class="side-nav-search-bar" placeholder="Search for Customers, Products, orders" />
-        <a href="{% url "app:store" a_staff_store_store_slugified %}" class="store-front-btn" target="_blank" rel="noopener noreferrer">StoreFront</a>
+        <input type="search" name="" id="side-nav-search-bar" class="side-nav-search-bar" placeholder="Search for Customers, Products, orders" />
+        
       </span>
-
+      <a href="{% url "app:store" a_staff_store_store_slugified %}" class="store-front-btn" target="_blank" rel="noopener noreferrer">StoreFront</a>
       <span class="nav-not-acc-sec">
         <span class="notification"><i class="fas fa-bell notification-bell"></i></span>
 
-        <span class="nav-user-profile">
+        <span class="nav-user-profile" id="nav-user-profile">
           <span id="user-account">
             {% if request.user.avatar %}
             <img class="nav-avatar" src="{{request.user.avatar.url}}" alt="" />
