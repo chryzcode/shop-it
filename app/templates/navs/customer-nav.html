@@ -38,7 +38,7 @@
 
 
       <ul id="nav-links">
-        <input type="search" name="" id="" class="side-nav-search-bar" placeholder="Search for Products" />
+        
 
         <span class="cart-icon-container">
           <a href="{% url 'cart:cart_summary' store.slugified_store_name %}" class="cart-btn">
@@ -57,6 +57,8 @@
             <i class="far fa-shopping-cart"></i>
           </a>
         </span>
+
+        <input type="search" name="" id="" class="side-nav-search-bar" placeholder="Search for Products" />
         {% if store %}
         {% if request.user in store.customers.all %}
         <li><a href="{% url 'customer:customer_profile' store.slugified_store_name %}" id="a-nav-link">My Account</a></li>  
