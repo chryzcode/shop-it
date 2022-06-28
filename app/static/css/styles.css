@@ -668,7 +668,10 @@ div.product-info > p:nth-child(2) {
 .store-sidenav-seg {
   padding: 25px 0px;
   border-top: 1px solid #ccc;
-  margin: 0 20px;
+}
+
+.store-sidenav-seg ul li a{
+  padding-left: 30px;
 }
 
 .customer-store-sidenav {
