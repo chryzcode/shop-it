@@ -1014,6 +1014,8 @@ button {
   padding: 5px 10px;
   border-radius: 8px;
   text-decoration: none;
+  display: inline-block;
+  width: max-content;
 }
 
 .store-front-btn:hover {
@@ -1021,6 +1023,7 @@ button {
   color: #3d5170;
   border: 1px solid #3d5170;
   transition: all 1.01s ease-in-out;
+  padding: 5px 10px;
   display: inline-block;
   width: max-content;
 }

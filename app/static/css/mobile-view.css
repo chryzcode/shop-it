@@ -123,11 +123,13 @@
     transform: translate(-50%, -50%);
   }
 
-  .store-nav > a {
+  .store-nav > span:nth-child(3) {
     position: absolute;
     bottom: 15px;
     left: 0;
     padding-left: 15px;
+    display: inline-block; 
+    width: max-content;
   }
 
   #toogle {
