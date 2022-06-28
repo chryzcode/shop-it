@@ -5,12 +5,20 @@
     right: 0;
     left: 0;
     z-index: 10;
-    height: 130px;
+    height: 100px;
     background-color: #fff;
-    margin: 0 10px;
     bottom: 10px;
-    border-bottom: 1px solid #333;
   }
+
+  .store-nav {
+    height: 140px;
+  }
+
+  .nav > *, nav > * {
+    padding: 0 10px;
+  }
+
+
 
   nav:after {
     content: "";
@@ -46,7 +54,7 @@
 
   #nav-links {
     position: absolute;
-    margin-top: 40px;
+    margin-top: 20px;
     height: 0%;
     transition: all 1.5s ease-in-out;
     overflow: hidden;
@@ -60,7 +68,6 @@
     height: max-content;
     overflow: hidden;
     z-index: 10;
-    /* border-bottom: 1px solid #ccc; */
   }
 
   #store-sidenav.active {
@@ -103,23 +110,24 @@
 
   .nav-user-profile {
     position: absolute;
-    bottom: 10px;
+    bottom: 15px;
     right: 0;
+    padding-right: 15px;
   }
 
   .notification {
     display: inline-block;
     position: absolute;
-    bottom: -5px;
-    right: 200px;
-
+    bottom: 3px;
+    right: 220px;
     transform: translate(-50%, -50%);
   }
 
   .store-nav > a {
     position: absolute;
-    bottom: 10px;
+    bottom: 15px;
     left: 0;
+    padding-left: 15px;
   }
 
   #toogle {
