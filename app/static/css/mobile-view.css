@@ -69,8 +69,24 @@
     overflow: hidden;
     z-index: 10;
     padding-bottom: 20px;
-    border-bottom:  1px solid red;
   }
+
+  #product-cart-qty, .cart-qty-num {
+    display: block;
+    font-size: 17px;
+    position: relative;
+    top: 0;
+    text-align: left;
+    margin-left: 0;
+}
+
+#product-cart-qty, .cart-qty-num {
+    display: block;
+    /* text-align: center; */
+    font-size: 17px;
+    position: absolute;
+    top: 5px;
+}
 
   #store-sidenav.active {
     margin-left: 0;
