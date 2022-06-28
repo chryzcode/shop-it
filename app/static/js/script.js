@@ -9,15 +9,31 @@ document.onclick = function (e) {
   if (e.target.id == "a-nav-link") {
     nav_links.classList.remove("active");
     toogle.classList.remove("active");
-    store_side_nav.classList.remove("active");
   }
 };
 
 toogle.onclick = function () {
   toogle.classList.toggle("active");
-  // nav_links.classList.toggle("active");
-  store_side_nav.classList.toggle("active");
+  if (nav_links) {
+    nav_links.classList.toggle("active");
+  }
+  if (store_side_nav) {
+    store_side_nav.classList.toggle("active");
+  }
 };
+
+document.onclick = function (e) {
+  if (e.target.id == toogle) {
+    store_side_nav.classList.remove("active");
+    toogle.classList.remove("active");
+  }
+};
+
+
+
+
+
+
 
 
 
