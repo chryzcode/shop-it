@@ -222,7 +222,6 @@
     width: 100%;
     margin-left: -100%;
     transition: all 1.5s ease-in-out;
-    margin-top: 25px;
     position: fixed;
   }
 
