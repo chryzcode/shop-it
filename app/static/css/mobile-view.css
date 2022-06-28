@@ -104,6 +104,16 @@
     right: 0;
   }
 
+  .notification {
+    display: inline-block;
+    position: absolute;
+    /* set to bottom center */
+    bottom: -10px;
+    right: 200px;
+
+    transform: translate(-50%, -50%)
+  }
+
   .store-nav > a {
     position: absolute;
     bottom: 0;
@@ -264,7 +274,7 @@
 
   .view-store-products-grid > a {
     display: block;
-    margin:  15px auto;
+    margin: 15px auto;
   }
 }
 
