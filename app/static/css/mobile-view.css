@@ -144,7 +144,7 @@
 
   .nav-user-profile {
     position: absolute;
-    bottom: 15px;
+    bottom: 10px;
     right: 0;
     padding-right: 15px;
   }
@@ -153,7 +153,7 @@
     display: inline-block;
     position: absolute;
     bottom: 3px;
-    right: 220px;
+    right: 240px;
     transform: translate(-50%, -50%);
   }
 
@@ -434,7 +434,7 @@
   }
 
   .notification {
-    right: 75px;
+    right: 90px;
   }
 
   .store-front-btn > span {
