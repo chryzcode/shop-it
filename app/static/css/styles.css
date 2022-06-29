@@ -1002,6 +1002,7 @@ button {
   object-fit: cover;
   object-position: center;
   width: 50px;
+  height: 45px;
 }
 
 .notification {
