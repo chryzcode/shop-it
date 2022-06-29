@@ -32,7 +32,7 @@
   } */
 
   .main-container-large {
-    margin-top: 150px;
+    margin-top: 140px;
   }
 
   .store-sidenav-seg.customer-store-sidenav {
@@ -414,11 +414,25 @@
     display: block;
   }
 
-  .create-product-form, .acc-form-seg {
+  .create-product-form,
+  .acc-form-seg {
     padding: 30px 5px;
   }
 
-  .store-content-container, .account-form-container, .acc-form-seg {
+  .store-content-container,
+  .account-form-container,
+  .acc-form-seg {
     box-shadow: none;
+  }
+
+  #user-account > span {
+    display: none;
+  }
+
+  #profile-icon {
+    padding-left: 10px;
+  }
+  .notification {
+    right: 65px;
   }
 }

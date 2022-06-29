@@ -955,10 +955,11 @@ button {
 }
 
 #acc-store-nav-links > li > a {
-  padding: 10px 30px;
+  padding: 7px 30px;
   display: block;
   color: #3d5170;
   text-decoration: none;
+  width: max-content;
 }
 
 #acc-store-nav-links > li > a:hover {
