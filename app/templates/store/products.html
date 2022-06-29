@@ -10,7 +10,8 @@
       <span>
         <a href="{% url 'app:create_product' %}">Add Product</a>
     </span>
-      <table class="store-products-table">
+      <div>
+        <table class="store-products-table">
         <tr class="table-rows">
           <th>Product</th>
           <th>Price</th>
@@ -42,6 +43,7 @@
         </tr>
         {% endfor %}
       </table>
+      </div>
     </span>
   </div>
   {% endblock %}

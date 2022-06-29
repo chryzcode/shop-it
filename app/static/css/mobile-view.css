@@ -108,6 +108,7 @@
     margin-left: 0;
     transition: all 1.5s ease-in-out;
     position: absolute;
+    height: 100%;
   }
 
   .store-nav {
@@ -414,7 +415,11 @@
     display: block;
   }
 
-  .create-product-form {
+  .create-product-form, .acc-form-seg {
     padding: 30px 5px;
+  }
+
+  .store-content-container, .account-form-container, .acc-form-seg {
+    box-shadow: none;
   }
 }
