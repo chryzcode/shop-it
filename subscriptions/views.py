@@ -139,6 +139,7 @@ def initiate_subscription_payment(request: HttpRequest, pk) -> HttpResponse:
 def verify_subscription_payment(request: HttpRequest, ref: str) -> HttpResponse:
     subscription = get_object_or_404(Subscription, ref=ref)
     store = Store.objects.get(store_name=request.user.store_name)
+    subscriptions = Subscription.objects.all()
     paystack = Paystack()
     status, result = paystack.verify_payment(subscription.ref, subscription.amount)
     if status:
@@ -147,6 +148,10 @@ def verify_subscription_payment(request: HttpRequest, ref: str) -> HttpResponse:
             subscription.user = request.user
             subscription.save()
     if subscription.verified:
+        for subscription in subscriptions:
+            if store in subscription.subscribers.all():
+                subscription.subscribers.remove(store)
+                subscription.save()
         subscription.subscribers.add(store)
         Subscription_Timeline.objects.create(
             store= store,
