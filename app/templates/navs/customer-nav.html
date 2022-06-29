@@ -36,7 +36,7 @@
       </span>
 
       <ul id="nav-links">
-        <span class="cart-icon-container">
+        <span class="cart-icon-container cart-mobile">
           <a href="{% url 'cart:cart_summary' store.slugified_store_name %}" class="cart-btn">
             {% with total_qty=cart|length %}
             <span id="product-cart-qty">
@@ -55,6 +55,24 @@
         </span>
 
         <input type="search" name="" id="" class="side-nav-search-bar" placeholder="Search for Products" />
+
+        <span class="cart-icon-container cart-desktop">
+          <a href="{% url 'cart:cart_summary' store.slugified_store_name %}" class="cart-btn">
+            {% with total_qty=cart|length %}
+            <span id="product-cart-qty">
+              <span class="cart-qty-num">
+                {% if total_qty > 0 %}
+                <div class="cart-qty-num">{{ total_qty }}</div>
+                {% else %}
+                <div class="cart-qty-num">0</div>
+                {% endif %}
+              </span>
+
+              {% endwith %}
+            </span>
+            <i class="far fa-shopping-cart"></i>
+          </a>
+        </span>
         {% if store %} {% if request.user in store.customers.all %}
         <li>
           <a href="{% url 'customer:customer_profile' store.slugified_store_name %}" id="a-nav-link">My Account</a>
@@ -71,6 +89,8 @@
         <li><a href="{% url 'customer:customer_register' store.slugified_store_name %}" id="a-nav-link">Sign Up</a></li>
         {% endif %} {% endif %} {% endif %}
       </ul>
+
+      
 
       <div id="toogle"></div>
     </nav>
