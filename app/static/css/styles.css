@@ -991,15 +991,17 @@ button {
 }
 
 .nav-avatar {
-  width: 50px;
+  position: relative;
+  display: inline-block;
   border-radius: 50%;
 }
 
-.nav-avatar > img {
+.nav-avatar img {
   display: block;
-  width: 100%;
-  object-fit: contain;
   border-radius: 50%;
+  object-fit: cover;
+  object-position: center;
+  width: 50px;
 }
 
 .notification {
@@ -1033,7 +1035,7 @@ button {
   width: max-content;
 }
 
-.store-front-btn > img{
+.store-front-btn > img {
   display: none;
 }
 
@@ -1078,8 +1080,6 @@ button {
   margin: 10px;
   flex-wrap: wrap;
 }
-
-
 
 .store-products-container > div > a {
   color: #ffffff;
@@ -1478,7 +1478,7 @@ small {
   display: block;
 }
 
-.table-container{
+.table-container {
   overflow-x: auto !important;
 }
 
