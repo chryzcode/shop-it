@@ -19,7 +19,7 @@ django-richtextfield = "*"
 django-ckeditor = "*"
 django-countries = "*"
 six = "*"
-rave-python = "*"
+markdown = "*"
 
 [dev-packages]
 
