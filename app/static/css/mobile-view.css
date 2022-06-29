@@ -31,7 +31,7 @@
     padding-left: 50px;
   } */
 
-  .main-container-large{
+  .main-container-large {
     margin-top: 150px;
   }
 
@@ -389,7 +389,32 @@
     border-radius: 10px;
   }
 
-  .account-form-container{
+  .account-form-container {
     width: 90%;
+  }
+
+  .illustration-grid-sec,
+  .payment-illustration-sec {
+    width: 90%;
+  }
+
+  .payment-illustration-sec,
+  .auth-form-container {
+    width: 90%;
+  }
+
+  .pricing-quantity-seg,
+  .images-seg,
+  .acc-form-seg {
+    width: 100%;
+  }
+
+  .price-section,
+  .quantity-section {
+    display: block;
+  }
+
+  .create-product-form {
+    padding: 30px 5px;
   }
 }
