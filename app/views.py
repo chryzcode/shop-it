@@ -18,6 +18,8 @@ from order.views import *
 from .forms import *
 from .models import *
 
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 
 def custom_error_404(request, exception):
     return render(request, "error-pages/404-page.html")
@@ -44,6 +46,14 @@ def a_store_all_products(request):
             store_name=store_staff.objects.get(user=request.user).store
         )
     all_products = Product.objects.filter(store=store)
+    page = request.GET.get('page', 1)
+    paginator = Paginator(all_products, 1)
+    try:
+        all_products = paginator.page(page)
+    except PageNotAnInteger:
+        all_products = paginator.page(1)
+    except EmptyPage:
+        all_products = paginator.page(paginator.num_pages)
     return render(
         request,
         "store/products.html",

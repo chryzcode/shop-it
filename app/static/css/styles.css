@@ -1495,3 +1495,23 @@ small {
   background-color: #3d5170;
   color: #ccc !important;
 }
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px;
+  font-size: 16px;
+  color: #3d5170;
+  flex-wrap: wrap;
+}
+
+.pagination span:nth-child(2) > * {
+  margin: 0 10px;
+  color: #3d5170;
+}
+
+.pagination > * {
+  display: block;
+  margin: 0 auto;
+}
