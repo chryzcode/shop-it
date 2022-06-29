@@ -425,7 +425,7 @@
     box-shadow: none;
   }
 
-  #user-account > span {
+  #user-account > span:nth-child(2) {
     display: none;
   }
 
@@ -434,7 +434,7 @@
   }
 
   .notification {
-    right: 65px;
+    right: 75px;
   }
 
   .store-front-btn > span {

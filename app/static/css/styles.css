@@ -995,6 +995,13 @@ button {
   border-radius: 50%;
 }
 
+.nav-avatar > img {
+  display: block;
+  width: 100%;
+  object-fit: contain;
+  border-radius: 50%;
+}
+
 .notification {
   display: flex;
   align-items: center;
