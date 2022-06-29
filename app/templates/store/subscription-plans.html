@@ -1,4 +1,4 @@
-{% extends 'navs/store-nav.html' %}{% load humanize %} {% load static %}{% block title %}<title>
+{% extends 'navs/store-nav.html' %}{% load humanize %} {% load static %}{% load apply_markdown %}{% block title %}<title>
   Shop!t - {% if 'monthly' in request.get_full_path %} Monthly {% else %} Yearly {% endif %} Subscriptions 
 </title>
 {% endblock %} {% block content %}
@@ -25,7 +25,7 @@
                 <p>{{plan.name}}</p>
                 <p>{{plan.currency.symbol}}{{plan.amount|intcomma}}/ {{plan.duration}}</p>
                 <div>
-                    {{plan.description|safe}}
+                    {{plan.description|convert_markdown|safe}}
                 </div>
                 </div>
              <a href="{% url 'subscriptions:initiate_subscription_payment' plan.id %}" class="update-btn">Subscibe Now</a>
