@@ -58,18 +58,9 @@ def subscription_check_mail_remainder(request):
                 if subscription_timeline.created_at < timezone.now() - timedelta(days=24): 
                     subject = "Your Shop!t Monthly Subscription is about to Expire"
                     store_owner =  store.owner
-                    if RecurringSubscriptionData.objects.get(user=store_owner).charge == True:
-                        recurring_subscription = True
-                        path = "subscriptions/cancel-recurring-subscription"
-                    else:
-                        recurring_subscription = False
-                        path = "subscriptions/activate-recurring-subscription"
                     message = render_to_string( "subscriptions/subscription-mail-remainder.html", {
                         "store": store,
                         "duration": "monthly",
-                        "domain": current_site.domain+"/"+path,
-                        "store_owner": store_owner,
-                        "recurring_subscription":recurring_subscription,
                     })
                     from_email = settings.EMAIL_HOST_USER
                     to_email = [store_owner.email]
@@ -86,18 +77,9 @@ def subscription_check_mail_remainder(request):
                 if subscription_timeline.created_at < timezone.now() - timedelta(days=355): 
                     subject = "Your Shop!t Yearly Subscription is about to Expire"
                     store_owner =  store.owner
-                    if RecurringSubscriptionData.objects.get(user=store_owner).charge == True:
-                        recurring_subscription = True
-                        path = "subscriptions/cancel-recurring-subscription"
-                    else:
-                        recurring_subscription = False
-                        path = "subscriptions/activate-recurring-subscription"
                     message = message = render_to_string( "subscriptions/subscription-mail-remainder.html", {
                         "store": store,
                         "duration": "yearly",
-                        "domain": current_site.domain+"/"+path,
-                        "store_owner": store_owner,
-                        "recurring_subscription": recurring_subscription,
                     })
                     from_email = settings.EMAIL_HOST_USER
                     to_email = [request.user.email]
