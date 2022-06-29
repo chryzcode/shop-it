@@ -8,7 +8,8 @@
     <div class="store-content-container">
       <span class="store-products-container">
         <p>{{reviews.count}}{% if reviews.count > 1 %} Reviews {% else %} Review {% endif %}</p>
-        <table class="store-products-table">
+        <div class="table-container">
+          <table class="store-products-table">
           <tr class="table-rows">
             <th>Name</th>
             <th>Email</th>
@@ -31,6 +32,7 @@
         </tr>
         {% endfor %}
         </table>
+        </div>
       </span>
     </div>
   </span>

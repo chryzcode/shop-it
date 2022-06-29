@@ -8,7 +8,8 @@
     <div class="store-content-container">
       <span class="store-products-container">
         <p>My {% if 'unpaid' in request.get_full_path %}Unpaid{% endif %} Orders</p>
-        <table class="store-products-table">
+        <div class="table-container">
+          <table class="store-products-table">
           
           <p>
             {% if 'unpaid' in request.get_full_path %}
@@ -71,6 +72,7 @@
           </tr>
           {% endfor %}
         </table>
+        </div>
       </span>
     </div>
   </span>

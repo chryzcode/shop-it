@@ -10,7 +10,8 @@
       {% if request.user.store_creator == True %}
       <span><a href="{% url 'app:create_coupon' %}">Add Coupon</a></span>
       {% endif %}
-      <table class="store-products-table">
+      <div class="table-container">
+        <table class="store-products-table">
         <tr class="table-rows">
           <th>Code</th>
           <th>Percentage</th>
@@ -36,6 +37,7 @@
         </tr>
         {% endfor %}
       </table>
+      </div>
     </span>
   </div>
   {% endblock %}

@@ -14,7 +14,8 @@
         <a href="{% url 'account:add_store_staff' %}">Create Staff(new user)</a>
       </div>
       {% endif %}
-      <table class="store-products-table">
+      <div class="table-container">
+        <table class="store-products-table">
         <tr class="table-rows">
           <th>Full Name</th>
           <th>Email</th>
@@ -38,6 +39,7 @@
         </tr>
         {% endfor %}
       </table>
+      </div>
     </span>
   </div>
   {% endblock %}

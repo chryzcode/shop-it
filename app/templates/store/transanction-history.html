@@ -7,7 +7,8 @@
   <div class="store-content-container">
     <span class="store-products-container">
       <p>{{store.store_name|capfirst}} Transanction History</p>
-      <table class="store-products-table">
+      <div class="table-container">
+        <table class="store-products-table">
         <tr class="table-rows">
           <th>Date</th>
           <th>Customer</th>
@@ -40,6 +41,7 @@
         </tr>
         {% endfor %}
       </table>
+      </div>
     </span>
   </div>
   {% endblock %}

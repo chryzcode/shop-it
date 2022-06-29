@@ -8,7 +8,8 @@
     <span class="store-products-container">
       <p>All Category</p>
       <span ><a href="{% url 'app:create_category' %}">Add Category</a></span>
-      <table class="store-products-table">
+      <div class="table-container">
+        <table class="store-products-table">
         <tr class="table-rows">
           <th>Name</th>
           <th>Edit</th>
@@ -30,6 +31,7 @@
         </tr>
         {% endfor %}
       </table>
+      </div>
     </span>
   </div>
   {% endblock %}
