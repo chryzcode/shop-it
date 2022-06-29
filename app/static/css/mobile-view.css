@@ -432,7 +432,17 @@
   #profile-icon {
     padding-left: 10px;
   }
+
   .notification {
     right: 65px;
+  }
+
+  .store-front-btn > span {
+    display: none;
+  }
+
+  .store-front-btn > img {
+    display: block;
+    width: 20px;
   }
 }

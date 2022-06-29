@@ -1026,6 +1026,10 @@ button {
   width: max-content;
 }
 
+.store-front-btn > img{
+  display: none;
+}
+
 .store-front-btn:hover {
   background-color: #ffffff;
   color: #3d5170;
@@ -1469,4 +1473,17 @@ small {
 
 .table-container{
   overflow-x: auto !important;
+}
+
+.store-front-logo {
+  width: 15px;
+  color: #ccc !important;
+}
+
+.store-logo-btn-container {
+  width: max-content;
+  display: inline-block;
+  padding: 5px 2px;
+  background-color: #3d5170;
+  color: #ccc !important;
 }
