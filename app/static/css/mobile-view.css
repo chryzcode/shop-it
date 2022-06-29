@@ -31,6 +31,10 @@
     padding-left: 50px;
   } */
 
+  .main-container-large{
+    margin-top: 150px;
+  }
+
   .store-sidenav-seg.customer-store-sidenav {
     display: none;
   }
@@ -383,5 +387,9 @@
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     padding: 30px;
     border-radius: 10px;
+  }
+
+  .account-form-container{
+    width: 90%;
   }
 }
