@@ -13,6 +13,7 @@ from order.models import *
 from payment.models import Payment
 from subscriptions.models import *
 from subscriptions.views import *
+from order.views import *
 
 from .forms import *
 from .models import *
@@ -30,6 +31,7 @@ def home_page(request):
     if request.user.is_authenticated:
         subscription_check(request)
         subscription_check_mail_remainder(request)
+        unpaid_order_mail_remainder(request)
     return render(request, "base/index.html")
 
 
