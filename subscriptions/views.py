@@ -1,3 +1,4 @@
+from email import message
 import secrets
 import requests
 
@@ -158,6 +159,20 @@ def verify_subscription_payment(request: HttpRequest, ref: str) -> HttpResponse:
             subscription = subscription,       
         )
         messages.success(request, "Verification Successful")
+        subject = f"Your {subscription.name} {subscription.duration.name} Subscription on Shop!t has been Activated"
+        message = render_to_string( "subscriptions/subscription-success-mail.html", {
+            "store": store,
+            "subscription": subscription,
+        }
+        )
+        from_email = settings.EMAIL_HOST_USER
+        to_email = [request.user.email]
+        send_mail(subject, message, from_email, to_email)
+        if store_staff.objects.filter(store=store).exists():
+            for staff in store_staff.objects.filter(store=store):
+                if staff.user.email:
+                    to_email = [staff.user.email]
+                    send_mail(subject, message, from_email, to_email)
         subscription.verified = False
         subscription.user = None
         subscription.ref = secrets.token_urlsafe(50)
@@ -202,6 +217,21 @@ def paystack_recurring_payment(request: HttpRequest, pk) -> HttpResponse:
                         mail_remainder = False
                     )
                 messages.success(request, "Subscription Successful")
+                subject = f"Your {subscription.name} {subscription.duration.name} Subscription on Shop!t has been Re-Activated"
+                message = render_to_string( "subscriptions/recurring-subscription-success-mail.html", {
+                    "store": Store.objects.get(store_name=request.user.store_name),
+                    "subscription": subscription,
+                }
+                )
+                from_email = settings.EMAIL_HOST_USER
+                to_email = [request.user.email]
+                send_mail(subject, message, from_email, to_email)
+                if store_staff.objects.filter(store=Store.objects.get(store_name=request.user.store_name)).exists():
+                    for staff in store_staff.objects.filter(store=Store.objects.get(store_name=request.user.store_name)):
+                        if staff.user.email:
+                            to_email = [staff.user.email]
+                            send_mail(subject, message, from_email, to_email)
+
                 subscription.verified = False
                 subscription.user = None
                 subscription.ref = secrets.token_urlsafe(50)
