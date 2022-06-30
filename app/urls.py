@@ -66,4 +66,5 @@ urlpatterns = [
         name="monthly_subscription_plans",
     ),
     path("transanction-history/", views.transanction_history, name="transanction_history"),
+     path("store-staff/", views.store_staff_page, name="store_staff_page"),
 ]

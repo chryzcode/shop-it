@@ -729,3 +729,25 @@ def transanction_history(request):
     except EmptyPage:
         payments = paginator.page(paginator.num_pages)
     return render(request, "store/transanction-history.html", {"payments":payments, "store":store, "customers":customers})
+
+
+@login_required(login_url="/account/login/")
+def store_staff_page(request):
+    if request.user.store_creator == True:
+        store = Store.objects.get(owner=request.user)
+    else:
+        store = Store.objects.get(
+                store_name=store_staff.objects.get(user=request.user).store
+            )
+    store_staffs = store_staff.objects.filter(store=store)
+    page = request.GET.get('page', 1)
+    paginator = Paginator(store_staffs, 10)
+    try:
+        store_staffs = paginator.page(page)
+    except PageNotAnInteger:
+        store_staffs = paginator.page(1)
+    except EmptyPage:
+        store_staffs = paginator.page(paginator.num_pages)
+    return render(
+        request, "store/store-staff-page.html", {"store_staffs": store_staffs}
+    )

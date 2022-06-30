@@ -40,6 +40,30 @@
         {% endfor %}
       </table>
       </div>
+
+      {% if store_staffs.has_other_pages %}
+      <span class="pagination">
+        <span>
+          {% for i in store_staffs.paginator.page_range %} {% if store_staffs.number == i %} Showing
+          {{store_staffs.start_index }} of {{ store_staffs.end_index }} of {{ store_staffs.paginator.count }} 
+          entries {% endif %} {% endfor %}
+        </span>
+
+        <span>
+          {% if store_staffs.has_previous %}
+          <a href="?page={{ store_staffs.previous_page_number }}"><i class="fas fa-arrow-left"></i></a>
+          {% else %}
+          <span><i class="fas fa-arrow-left disable"></i></span>
+          {% endif %} {% if store_staffs.has_next %}
+          <a href="?page={{ store_staffs.next_page_number }}"><i class="fas fa-arrow-right"></i></a>
+          {% else %}
+          <span><i class="fas fa-arrow-right disable"></i></span>
+          {% endif %}
+        </span>
+      </span>
+      {% endif %}
+
+
     </span>
   </div>
   {% endblock %}

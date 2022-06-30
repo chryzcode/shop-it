@@ -34,7 +34,7 @@
         <li><a href="">Store Custmization</a></li>
         {% endif %}
         <li><a href="{% url 'account:user_profile' %}">User Account</a></li>
-        <li><a href="{% url 'account:store_staff_page' %}">Staff Account</a></li>
+        <li><a href="{% url 'app:store_staff_page' %}">Staff Account</a></li>
         {% if request.user.store_creator == False %}
         {% if multiple_store_staff %}
         <li><a href="{% url 'account:staff_stores' %}">Switch Store</a></li>
