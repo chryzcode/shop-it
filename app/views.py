@@ -276,6 +276,14 @@ def wishlist(request):
     wishlist = Product.objects.filter(wishlist=user)
     for product in wishlist:
         product_store = Store.objects.get(store_name=product.store.store_name)
+    page = request.GET.get('page', 1)
+    paginator = Paginator(wishlist, 10)
+    try:
+        wishlist = paginator.page(page)
+    except PageNotAnInteger:
+        wishlist = paginator.page(1)
+    except EmptyPage:
+        wishlist = paginator.page(paginator.num_pages)
     return render(
         request, "store/wishlist.html", {"wishlist": wishlist, "store": store}
     )

@@ -31,6 +31,28 @@
         {% endfor %}
       </table>
       </div>
+
+      {% if wishlist.has_other_pages %}
+      <span class="pagination">
+        <span>
+          {% for i in wishlist.paginator.page_range %} {% if wishlist.number == i %} Showing
+          {{wishlist.start_index }} of {{ wishlist.end_index }} of {{ wishlist.paginator.count }} 
+          entries {% endif %} {% endfor %}
+        </span>
+
+        <span>
+          {% if wishlist.has_previous %}
+          <a href="?page={{ wishlist.previous_page_number }}"><i class="fas fa-arrow-left"></i></a>
+          {% else %}
+          <span><i class="fas fa-arrow-left disable"></i></span>
+          {% endif %} {% if wishlist.has_next %}
+          <a href="?page={{ wishlist.next_page_number }}"><i class="fas fa-arrow-right"></i></a>
+          {% else %}
+          <span><i class="fas fa-arrow-right disable"></i></span>
+          {% endif %}
+        </span>
+      </span>
+      {% endif %}
     </span>
   </div>
   {% endblock %}
