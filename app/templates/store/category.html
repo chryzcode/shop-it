@@ -32,6 +32,30 @@
         {% endfor %}
       </table>
       </div>
+
+      {% if categories.has_other_pages %}
+      <span class="pagination">
+        <span>
+          {% for i in categories.paginator.page_range %} {% if categories.number == i %} Showing
+          {{categories.start_index }} of {{ categories.end_index }} of {{ categories.paginator.count }} 
+          entries {% endif %} {% endfor %}
+        </span>
+
+        <span>
+          {% if categories.has_previous %}
+          <a href="?page={{ categories.previous_page_number }}"><i class="fas fa-arrow-left"></i></a>
+          {% else %}
+          <span><i class="fas fa-arrow-left disable"></i></span>
+          {% endif %} {% if categories.has_next %}
+          <a href="?page={{ categories.next_page_number }}"><i class="fas fa-arrow-right"></i></a>
+          {% else %}
+          <span><i class="fas fa-arrow-right disable"></i></span>
+          {% endif %}
+        </span>
+      </span>
+      {% endif %}
+
+
     </span>
   </div>
   {% endblock %}

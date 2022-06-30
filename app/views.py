@@ -366,16 +366,20 @@ def delete_category(request, slug):
 def all_category(request):
     if request.user.store_creator == True:
         store = Store.objects.get(store_name=request.user.store_name)
-        categories = Category.objects.filter(created_by=store)
-        context = {"categories": categories}
-        return render(request, "store/category.html", context)
     else:
         store = Store.objects.get(
             store_name=store_staff.objects.get(user=request.user).store
         )
-        categories = Category.objects.filter(created_by=store)
-        context = {"categories": categories}
-        return render(request, "store/category.html", context)
+    categories = Category.objects.filter(created_by=store)
+    page = request.GET.get('page', 1)
+    paginator = Paginator(categories, 10)
+    try:
+        categories = paginator.page(page)
+    except PageNotAnInteger:
+        categories = paginator.page(1)
+    except EmptyPage:
+        categories = paginator.page(paginator.num_pages)
+    return render(request, "store/category.html", {"categories": categories})
 
 
 @login_required(login_url="/account/login/")
