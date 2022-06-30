@@ -37,49 +37,11 @@
         </div>
       </form>
 
-      <form action="{% url 'account:change_password' %}" method="post">
-        {% csrf_token %}
-        <div class="acc-form-seg">
-          <p>Change Password</p>
-          <div class="input-container">
-            <label for="old_password">Old Password<span class="form-required">*</span></label>
-            <p>{{ form.old_password.errors }}</p>
-            <input type="password" name="old_password" class="form-control" required id="id_old_password" />
-          </div>
 
-          <div class="input-container">
-            <label for="new_password1">New Password<span class="form-required">*</span></label>
-            <p>{{ form.new_password1.errors }}</p>
-            <input
-              type="password"
-              name="new_password1"
-              class="form-control"
-              maxlength="100"
-              required
-              id="id_new_password1"
-            />
-          </div>
-
-          <div class="input-container">
-            <label for="new_password2">Confirm Password<span class="form-required">*</span></label>
-            <p>{{ form.new_password2.errors }}</p>
-            <input
-              type="password"
-              name="new_password2"
-              class="form-control"
-              maxlength="100"
-              required
-              id="id_new_password2"
-            />
-          </div>
-
-          <button class="form-btn" type="submit">Update</button>
-        </div>
-      </form>
-
-      <div class="delete-btn-container">
-        <a class="delete-btn" href="{% url 'customer:delete_account' store.slugified_store_name %}">Delete Account</a>
-      </div>
+      <div class="profile-btm-container">
+      <a class="update-btn" href="{% url 'account:change_password' %}">Forgot Password</a>
+      <a class="delete-btn" href="{% url 'customer:delete_account' store.slugified_store_name %}">Delete Account</a>
+    </div>
     </div>
   </span>
 </div>
