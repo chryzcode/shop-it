@@ -65,4 +65,5 @@ urlpatterns = [
         views.monthly_subscription_plans,
         name="monthly_subscription_plans",
     ),
+    path("transanction-history/", views.transanction_history, name="transanction_history"),
 ]

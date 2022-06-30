@@ -682,3 +682,14 @@ def monthly_subscription_plans(request):
         "store/subscription-plans.html",
         {"plans": plans, "store_plan": store_plan, "plans": plans},
     )
+
+
+@login_required(login_url="/account/login/")
+def transanction_history(request):
+    if request.user.store_creator == True:
+        store = Store.objects.get(owner= request.user)
+    else:
+        store = store_staff.objects.get(user=request.user).store
+    payments = Payment.objects.filter(store=store)
+    customers = store.customers.all()
+    return render(request, "store/transanction-history.html", {"payments":payments, "store":store, "customers":customers})
