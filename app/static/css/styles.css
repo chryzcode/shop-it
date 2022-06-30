@@ -1020,7 +1020,7 @@ button {
   cursor: pointer;
 }
 
-.notification:hover {
+#notification.active {
   color: #6b69f8;
   transition: all 1.01s ease-in-out;
 }

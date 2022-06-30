@@ -57,6 +57,7 @@ console.log(notification)
 if (notification) {
   notification.onclick = function () {
     notification_dropdown.classList.toggle("active");
+    notification.classList.toggle("active");
   }
 }
 
