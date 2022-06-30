@@ -20,6 +20,7 @@ django-ckeditor = "*"
 django-countries = "*"
 six = "*"
 markdown = "*"
+django-notifications-hq = "*"
 
 [dev-packages]
 

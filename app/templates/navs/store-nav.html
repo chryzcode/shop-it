@@ -41,7 +41,18 @@
       </span>
    
       <span class="nav-not-acc-sec">
-      <span class="notification"><i class="fas fa-bell notification-bell"></i></span>
+       
+      <span id="notification" class="notification"><span class="notification-count">{{ user.notifications.unread.count }}</span><i class="fas fa-bell notification-bell"></i>
+         
+          <div id="notification-dropdown">
+             {% for notification in  user.notifications.unread %}
+              <a href="">
+              <p>{{ notification.verb}}</p>
+              </a>
+            {% endfor %}
+          </div>  
+       
+      </span>
 
         <span class="nav-user-profile" id="nav-user-profile">
           <span id="user-account">

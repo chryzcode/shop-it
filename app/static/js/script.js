@@ -5,6 +5,9 @@ const store_side_nav = document.getElementById("store-sidenav");
 const profile_dropdown = document.getElementById("acc-store-nav-links");
 const profile_section = document.getElementById("nav-user-profile")
 const profile_icon = document.getElementById("profile-icon");
+const notification = document.getElementById("notification");
+const notification_dropdown = document.getElementById("notification-dropdown");
+
 
 document.onclick = function (e) {
   if (e.target.id == "a-nav-link") {
@@ -49,7 +52,15 @@ document.onclick = function (e) {
   }
 };
 
-console.log(navbar)
+console.log(notification)
+
+if (notification) {
+  notification.onclick = function () {
+    notification_dropdown.classList.toggle("active");
+  }
+}
+
+
 
 // document.onclick = function (e) {
 //   if (e.target.id == profile_section) {

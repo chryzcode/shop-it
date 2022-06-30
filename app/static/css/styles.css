@@ -985,7 +985,7 @@ button {
 }
 
 .side-nav-search-bar {
-  width: 50vw;
+  width: 45vw;
   height: 35px;
   padding: 7px 10px;
   outline: none;
@@ -1524,4 +1524,33 @@ small {
 .pagination > * {
   display: block;
   margin: 0 auto;
+}
+
+
+#notification-dropdown{
+  display: none;
+}
+
+#notification-dropdown.active {
+  display: block;
+  width: 500px;
+  overflow: hidden;
+  position: absolute;
+  height: 100px;
+  background-color: #fff;
+  z-index: 1070;
+  top: 80px;
+  box-shadow: rgb(0 0 0 / 35%) 0px 5px 15px;
+  border-radius: 8px;
+  margin-right: 20px;
+  padding: 10px;
+  right: 0;
+}
+
+.notification-count {
+  position: absolute;
+  z-index: 1022;
+  color: #fff;
+  display: block;
+  margin-left: 6px;
 }
