@@ -19,6 +19,7 @@
             <a href="{% url 'customer:unpaid_customer_orders' store.slugified_store_name %}">Unpaid Orders</a>
             {% endif %}
           </p>
+          {% include 'navs/pagination.html' %}
           <tr class="table-rows">
             <th>Order Id</th>
             <th>Name</th>

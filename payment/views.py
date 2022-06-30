@@ -169,7 +169,10 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
     cart = Cart(request)
     payment = get_object_or_404(Payment, ref=ref)
     store = Store.objects.get(pk=payment.store.pk)
-    store_bank = Bank_Info.objects.get(store=store)
+    if Bank_Info.objects.filter(store=store).exists():
+        store_bank = Bank_Info.objects.get(store=store)
+    else:
+        messages.error(request, "Store bank info not found")
     paystack = Paystack()
     status, result = paystack.verify_payment(payment.ref, payment.amount)
     if status:

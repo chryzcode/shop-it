@@ -102,7 +102,8 @@ class Product(models.Model):
     def save(self, *args, **kwargs):
         if self.availability < 1:
             self.in_stock = False
-
+        if self.availability > 0:
+            self.in_stock = True
         return super(Product, self).save(*args, **kwargs)
 
     def discount_price(self):

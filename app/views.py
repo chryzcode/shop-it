@@ -47,7 +47,7 @@ def a_store_all_products(request):
         )
     all_products = Product.objects.filter(store=store)
     page = request.GET.get('page', 1)
-    paginator = Paginator(all_products, 1)
+    paginator = Paginator(all_products, 10)
     try:
         all_products = paginator.page(page)
     except PageNotAnInteger:

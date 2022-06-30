@@ -9,7 +9,7 @@
       <p>Store Staffs</p>
       <p>{{error}}</p>
       {% if request.user.store_creator == True %}
-      <div>
+      <div class="top-table-double-content">
         <a href="{% url 'account:existing_store_staff' %}">Add Staff(user exits)</a>
         <a href="{% url 'account:add_store_staff' %}">Create Staff(new user)</a>
       </div>

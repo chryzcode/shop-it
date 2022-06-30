@@ -1058,9 +1058,11 @@ button {
   padding: 30px 0;
 }
 
-.store-products-container > p > a {
+.store-products-container p > a {
   color: #6b69f8;
   font-size: 19px;
+  display: block;
+  text-align: center;
 }
 
 .store-products-container > span > a {
@@ -1075,7 +1077,7 @@ button {
   width: max-content;
 }
 
-.store-products-container > div {
+.top-table-double-content {
   display: flex;
   justify-content: space-between;
   margin: 10px;
@@ -1500,7 +1502,7 @@ small {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 20px;
+  padding: 20px 0;
   font-size: 16px;
   color: #3d5170;
   flex-wrap: wrap;

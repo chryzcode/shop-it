@@ -23,6 +23,8 @@ from payment.models import *
 from .forms import *
 from .models import *
 
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 # Create your views here.
 
 
@@ -419,13 +421,21 @@ def customer_orders(request, slugified_store_name):
     if request.user.is_authenticated:
         store = Store.objects.get(slugified_store_name=slugified_store_name)
         customer = Customer.objects.get(email=request.user.email, store=store)
-        orders = Order.objects.filter(user=request.user, store=store)
+        orders = Order.objects.filter(user=request.user, store=store, billing_status=True)
         if Payment.objects.filter(user=request.user, store=store, order__in=orders):
             payment = Payment.objects.filter(
                 user=request.user, store=store, order__in=orders
             )
         else:
             payment = None
+        page = request.GET.get('page', 1)
+        paginator = Paginator(orders, 1)
+        try:
+            orders = paginator.page(page)
+        except PageNotAnInteger:
+            orders = paginator.page(1)
+        except EmptyPage:
+            orders = paginator.page(paginator.num_pages)
         return render(
             request,
             "customer/customer-order.html",
@@ -449,7 +459,6 @@ def unpaid_customer_orders(request, slugified_store_name):
         orders = Order.objects.filter(
             user=request.user, store=store, billing_status=False
         )
-        print(orders)
         if Payment.objects.filter(user=request.user, store=store, order__in=orders):
             payment = Payment.objects.filter(
                 user=request.user, store=store, order__in=orders
@@ -459,6 +468,14 @@ def unpaid_customer_orders(request, slugified_store_name):
         for order in orders:
             if order.date_created < timezone.now() - timedelta(days=30):
                 order.delete()
+        page = request.GET.get('page', 1)
+        paginator = Paginator(orders, 1)
+        try:
+            orders = paginator.page(page)
+        except PageNotAnInteger:
+            orders = paginator.page(1)
+        except EmptyPage:
+            orders = paginator.page(paginator.num_pages)
         return render(
             request,
             "customer/customer-order.html",

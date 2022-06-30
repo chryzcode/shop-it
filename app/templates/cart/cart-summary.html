@@ -106,7 +106,7 @@
   <div class="empty-cart-stylings">
     <p>Your Shopping Cart Is Empty</p>
     <img src="{% static 'images/illustrations/cart-illustration.png' %}" alt="" />
-    <a class="get-started-btn" href="">Let's Shop</a>
+    <a class="get-started-btn" href="{% url 'app:store' store.slugified_store_name %}">Let's Shop</a>
   </div>
 
 {% endif %}
