@@ -45,6 +45,28 @@
         {% endfor %} {% endfor %}
       </table>
       </div>
+      {% if orders.has_other_pages %}
+      <span class="pagination">
+        <span>
+          {% for i in orders.paginator.page_range %} {% if orders.number == i %} Showing
+          {{orders.start_index }} of {{ orders.end_index }} of {{ orders.paginator.count }} 
+          entries {% endif %} {% endfor %}
+        </span>
+
+        <span>
+          {% if orders.has_previous %}
+          <a href="?page={{ orders.previous_page_number }}"><i class="fas fa-arrow-left"></i></a>
+          {% else %}
+          <span><i class="fas fa-arrow-left disable"></i></span>
+          {% endif %} {% if orders.has_next %}
+          <a href="?page={{ orders.next_page_number }}"><i class="fas fa-arrow-right"></i></a>
+          {% else %}
+          <span><i class="fas fa-arrow-right disable"></i></span>
+          {% endif %}
+      </span>
+      </span>
+      {% endif %}
+      
     </span>
   </div>
   {% endblock %}

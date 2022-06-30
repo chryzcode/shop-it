@@ -499,6 +499,14 @@ def store_orders(request):
         payment = Payment.objects.filter(store=store.id, order__in=orders)
     else:
         payment = None
+    page = request.GET.get('page', 1)
+    paginator = Paginator(orders, 10)
+    try:
+        orders = paginator.page(page)
+    except PageNotAnInteger:
+        orders = paginator.page(1)
+    except EmptyPage:
+        orders = paginator.page(paginator.num_pages)
     return render(
         request, "store/store-order.html", {"orders": orders, "payment": payment}
     )
@@ -520,6 +528,14 @@ def unpaid_store_orders(request):
     for order in orders:
         if order.date_created < datetime.now() - timedelta(days=30):
             order.delete()
+    page = request.GET.get('page', 1)
+    paginator = Paginator(orders, 10)
+    try:
+        orders = paginator.page(page)
+    except PageNotAnInteger:
+        orders = paginator.page(1)
+    except EmptyPage:
+        orders = paginator.page(paginator.num_pages)
     return render(
         request, "store/store-order.html", {"orders": orders, "payment": payment}
     )
