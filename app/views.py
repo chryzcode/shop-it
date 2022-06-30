@@ -477,6 +477,14 @@ def all_coupons(request):
         minutes = expiry_date_seconds / 60
         if int(minutes) > coupon.expiry_date:
             coupon.delete()
+    page = request.GET.get('page', 1)
+    paginator = Paginator(coupons, 10)
+    try:
+        coupons = paginator.page(page)
+    except PageNotAnInteger:
+        coupons = paginator.page(1)
+    except EmptyPage:
+        coupons = paginator.page(paginator.num_pages)
     return render(
         request,
         "store/coupon.html",

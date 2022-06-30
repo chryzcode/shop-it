@@ -26,28 +26,28 @@
       </table>
       </div>
 
-      {% if all_products.has_other_pages %}
+      {% if products.has_other_pages %}
       <span class="pagination">
         <span>
-          {% for i in all_products.paginator.page_range %} {% if all_products.number == i %} Showing
-          {{all_products.start_index }} of {{ all_products.end_index }} of {{ all_products.paginator.count }} 
+          {% for i in products.paginator.page_range %} {% if products.number == i %} Showing
+          {{products.start_index }} of {{ products.end_index }} of {{ products.paginator.count }} 
           entries {% endif %} {% endfor %}
         </span>
 
         <span>
-          {% if all_products.has_previous %}
-          <a href="?page={{ all_products.previous_page_number }}"><i class="fas fa-arrow-left"></i></a>
+          {% if products.has_previous %}
+          <a href="?page={{ products.previous_page_number }}"><i class="fas fa-arrow-left"></i></a>
           {% else %}
           <span><i class="fas fa-arrow-left disable"></i></span>
-          {% endif %} {% if all_products.has_next %}
-          <a href="?page={{ all_products.next_page_number }}"><i class="fas fa-arrow-right"></i></a>
+          {% endif %} {% if products.has_next %}
+          <a href="?page={{ products.next_page_number }}"><i class="fas fa-arrow-right"></i></a>
           {% else %}
           <span><i class="fas fa-arrow-right disable"></i></span>
           {% endif %}
         </span>
       </span>
       {% endif %}
-      
+
     </span>
   </div>
   {% endblock %}
