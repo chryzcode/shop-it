@@ -293,6 +293,7 @@ footer {
   transition: all 1s ease-in-out;
   outline: none;
   border: 0;
+  text-decoration: none;
 }
 
 .update-btn:hover {
@@ -911,10 +912,17 @@ button {
   margin-top: 60px;
 }
 
-.delete-btn-container {
+.profile-btm-container {
   display: flex;
-  justify-content: right;
+  justify-content: space-between;
   margin-top: 20px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.profile-btm-container > * {
+  display: block;
+  margin: 10px auto;
 }
 
 #acc-store-nav-links {

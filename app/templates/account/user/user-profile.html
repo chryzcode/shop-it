@@ -15,83 +15,29 @@
         <div class="input-container">
           <label for="avatar">Avatar<span class="form-required">*</span></label>
           <p>{{ userprofileform.avatar.errors }}</p>
-          {% if user_profile.avatar %}
-          <input class="form-control" type="file" value="{{user_profile.avatar.url}}" src="{{user_profile.avatar.url}}" name="avatar" id="avatar">
-          {% else %}
-          <input class="form-control" type="file" src="" name="avatar" id="avatar">
-          {% endif %}
+          <div>{{ userprofileform.avatar }}</div>
         </div>
 
         <div class="input-container">
           <label for="name">Full Name<span class="form-required">*</span></label>
           <p>{{ userprofileform.full_name.errors }}</p>
-          {% if user_profile.full_name %}
-          <input class="form-control" type="text" name="name" id="name" value="{{user_profile.full_name}}" placeholder="johndoe" />
-          {% else %}
-          <input class="form-control" type="text" name="name" id="name" placeholder="johndoe" />
-          {% endif %}
+          <div>{{ userprofileform.full_name }}</div>
         </div>
 
         <div class="input-container">
           <label for="phone_number">Phone Number</label>
           <p>{{ userprofileform.phone_number.errors }}</p>
-          {% if user_profile.phone_number %}
-          <input class="form-control" type="text" name="phone_number" id="phone_number" value="{{user_profile.phone_number}}" placeholder="+3487 8084 4646" />
-          {% else %}
-          <input class="form-control" type="text" name="phone_number" id="phone_number" placeholder="johndoe" />
-          {% endif %}
+          {{userprofileform.phone_number}}
         </div>
       </div>
-
-
 
       <div class="form-btn-container">
         <button class="form-btn" type="submit">Update</button>
       </div>
     </form>
 
-
-    <form action="{% url 'account:change_password' %}" method="post">
-      {% csrf_token %}
-      <div class="acc-form-seg">
-        <p>Change Password</p>
-         <div class="input-container">
-          <label for="old_password">Old Password<span class="form-required">*</span></label>
-          <p>{{ form.old_password.errors }}</p>
-          <input type="password" name="old_password" class="form-control" required id="id_old_password" />
-        </div>
-
-        <div class="input-container">
-          <label for="new_password1">New Password<span class="form-required">*</span></label>
-          <p>{{ form.new_password1.errors }}</p>
-          <input
-            type="password"
-            name="new_password1"
-            class="form-control"
-            maxlength="100"
-            required
-            id="id_new_password1"
-          />
-        </div>
-
-        <div class="input-container">
-          <label for="new_password2">Confirm Password<span class="form-required">*</span></label>
-          <p>{{ form.new_password2.errors }}</p>
-          <input
-            type="password"
-            name="new_password2"
-            class="form-control"
-            maxlength="100"
-            required
-            id="id_new_password2"
-          />
-        </div>
-
-        <button class="form-btn" type="submit">Update</button>
-      </div>
-    </form>
-
-    <div class="delete-btn-container">
+    <div class="profile-btm-container">
+      <a class="update-btn" href="{% url 'account:change_password' %}">Forgot Password</a>
       <a class="delete-btn" href="{% url 'account:delete_account' %}">Delete Account</a>
     </div>
   </div>
