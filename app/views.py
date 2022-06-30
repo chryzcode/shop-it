@@ -416,6 +416,14 @@ def discount_products(request):
             store_name=store_staff.objects.get(user=request.user).store
         )
     products = Product.objects.filter(store=store, discount_percentage__gt=0)
+    page = request.GET.get('page', 1)
+    paginator = Paginator(products, 10)
+    try:
+        products = paginator.page(page)
+    except PageNotAnInteger:
+        products = paginator.page(1)
+    except EmptyPage:
+        products = paginator.page(paginator.num_pages)
     return render(
         request,
         "product/discount-products.html",
