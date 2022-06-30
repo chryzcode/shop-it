@@ -7,7 +7,7 @@
   <div class="store-content-container">
     <span class="store-products-container">
       <p>{{store |capfirst}} Shipping Method</p>
-      <span ><a href="{% url 'account:add_shipping_method' %}">Add Shipping Method</a></span>
+      <span ><a href="{% url 'app:add_shipping_method' %}">Add Shipping Method</a></span>
       <div class="table-container">
         <table class="store-products-table">
         <tr class="table-rows">
@@ -25,12 +25,12 @@
           {% if request.user.store_creator == True %}
           <td>
             <button type="button" class="update-btn">
-              <a href="{% url 'account:edit_shipping_method' shipping_method.pk  %}"><i class="far fa-edit"></i>Update</a>
+              <a href="{% url 'app:edit_shipping_method' shipping_method.pk  %}"><i class="far fa-edit"></i>Update</a>
             </button>
           </td>
           <td>
             <button type="button" class="delete-btn">
-              <a href="{% url 'account:delete_shipping_method' shipping_method.pk %}"><i class="fas fa-trash-alt"></i>Delete</a>
+              <a href="{% url 'app:delete_shipping_method' shipping_method.pk %}"><i class="fas fa-trash-alt"></i>Delete</a>
             </button>
           </td>
           {% endif %}

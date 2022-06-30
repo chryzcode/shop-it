@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import ModelForm
 
-from .models import Category, Coupon, Product, Review
+from .models import *
 
 
 class ProductForm(ModelForm):
@@ -252,3 +252,21 @@ class authProductReviewForm(ModelForm):
         super(authProductReviewForm, self).__init__(*args, **kwargs)
         self.label_suffix = ""
         self.fields["comment"].label = "Comment"
+
+class ShippingMethodForm(ModelForm):
+    class Meta:
+        model = Shipping_Method
+        fields = ["location", "price"]
+
+        widgets = {
+            "location": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "Location Coverage"}
+            ),
+            "price": forms.NumberInput(
+                attrs={"class": "form-control", "placeholder": "Price"}
+            ),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(ShippingMethodForm, self).__init__(*args, **kwargs)
+

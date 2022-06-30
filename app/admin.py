@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Category, Coupon, Product, ProductUnit, Review
+from .models import *
 
 # Register your models here.
 
@@ -33,3 +33,4 @@ class ProductAdmin(admin.ModelAdmin):
 admin.site.register(ProductUnit)
 admin.site.register(Coupon)
 admin.site.register(Review)
+admin.site.register(Shipping_Method)

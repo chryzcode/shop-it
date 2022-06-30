@@ -6,6 +6,7 @@ from django.db import models
 from account.models import *
 from customer.models import *
 from order.models import *
+from app.models import *
 
 # Create your models here.
 class Payment(models.Model):

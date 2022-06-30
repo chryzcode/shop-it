@@ -158,12 +158,3 @@ class store_staff(models.Model):
         return self.full_name
 
 
-class Shipping_Method(models.Model):
-    store = models.ForeignKey(
-        Store, on_delete=models.CASCADE, related_name="shipping_method"
-    )
-    location = models.CharField(max_length=250)
-    price = models.PositiveIntegerField(default=0)
-
-    def __str__(self):
-        return self.location + " " + self.store.store_name
