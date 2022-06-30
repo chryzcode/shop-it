@@ -602,6 +602,14 @@ def store_review_list(request):
             store_name=store_staff.objects.get(user=request.user).store
         )
     reviews = Review.objects.filter(store=store)
+    page = request.GET.get('page', 1)
+    paginator = Paginator(reviews, 10)
+    try:
+        reviews = paginator.page(page)
+    except PageNotAnInteger:
+        reviews = paginator.page(1)
+    except EmptyPage:
+            reviews = paginator.page(paginator.num_pages)
     return render(request, "store/store-review-list.html", {"reviews": reviews})
 
 
