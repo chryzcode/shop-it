@@ -42,6 +42,29 @@
         {% endfor %}
       </table>
       </div>
+
+      {% if payments.has_other_pages %}
+      <span class="pagination">
+        <span>
+          {% for i in payments.paginator.page_range %} {% if payments.number == i %} Showing
+          {{payments.start_index }} of {{ payments.end_index }} of {{ payments.paginator.count }} 
+          entries {% endif %} {% endfor %}
+        </span>
+
+        <span>
+          {% if payments.has_previous %}
+          <a href="?page={{ payments.previous_page_number }}"><i class="fas fa-arrow-left"></i></a>
+          {% else %}
+          <span><i class="fas fa-arrow-left disable"></i></span>
+          {% endif %} {% if payments.has_next %}
+          <a href="?page={{ payments.next_page_number }}"><i class="fas fa-arrow-right"></i></a>
+          {% else %}
+          <span><i class="fas fa-arrow-right disable"></i></span>
+          {% endif %}
+        </span>
+      </span>
+      {% endif %}
+
     </span>
   </div>
   {% endblock %}

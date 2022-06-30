@@ -692,4 +692,12 @@ def transanction_history(request):
         store = store_staff.objects.get(user=request.user).store
     payments = Payment.objects.filter(store=store)
     customers = store.customers.all()
+    page = request.GET.get('page', 1)
+    paginator = Paginator(payments, 10)
+    try:
+        payments = paginator.page(page)
+    except PageNotAnInteger:
+        payments = paginator.page(1)
+    except EmptyPage:
+        payments = paginator.page(paginator.num_pages)
     return render(request, "store/transanction-history.html", {"payments":payments, "store":store, "customers":customers})
