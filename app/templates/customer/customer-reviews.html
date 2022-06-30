@@ -33,6 +33,31 @@
         {% endfor %}
         </table>
         </div>
+
+
+        {% if reviews.has_other_pages %}
+      <span class="pagination">
+        <span>
+          {% for i in reviews.paginator.page_range %} {% if reviews.number == i %} Showing
+          {{reviews.start_index }} of {{ reviews.end_index }} of {{ reviews.paginator.count }} 
+          entries {% endif %} {% endfor %}
+        </span>
+
+        <span>
+          {% if reviews.has_previous %}
+          <a href="?page={{ reviews.previous_page_number }}"><i class="fas fa-arrow-left"></i></a>
+          {% else %}
+          <span><i class="fas fa-arrow-left disable"></i></span>
+          {% endif %} {% if reviews.has_next %}
+          <a href="?page={{ reviews.next_page_number }}"><i class="fas fa-arrow-right"></i></a>
+          {% else %}
+          <span><i class="fas fa-arrow-right disable"></i></span>
+          {% endif %}
+        </span>
+      </span>
+      {% endif %}
+
+
       </span>
     </div>
   </span>

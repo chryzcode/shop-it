@@ -532,6 +532,14 @@ def customer_reviews(request, slugified_store_name):
         store = Store.objects.get(slugified_store_name=slugified_store_name)
         customer = Customer.objects.get(email=request.user.email, store=store)
         reviews = Review.objects.filter(email=request.user.email, store=store)
+        page = request.GET.get('page', 1)
+        paginator = Paginator(reviews, 10)
+        try:
+            reviews = paginator.page(page)
+        except PageNotAnInteger:
+            reviews = paginator.page(1)
+        except EmptyPage:
+            reviews = paginator.page(paginator.num_pages)
         return render(
             request,
             "customer/customer-reviews.html",
