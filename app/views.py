@@ -760,6 +760,14 @@ def shipping_method_list(request):
     else:
         store = store_staff.objects.get(user=request.user).store
     shipping_methods = Shipping_Method.objects.filter(store=store)
+    page = request.GET.get('page', 1)
+    paginator = Paginator(shipping_methods, 10)
+    try:
+        shipping_methods = paginator.page(page)
+    except PageNotAnInteger:
+        shipping_methods = paginator.page(1)
+    except EmptyPage:
+        shipping_methods = paginator.page(paginator.num_pages)
     return render(
         request,
         "store/all-shipping-method.html",

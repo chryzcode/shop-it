@@ -38,6 +38,29 @@
         {% endfor %}
       </table>
       </div>
+
+      {% if shipping_methods.has_other_pages %}
+      <span class="pagination">
+        <span>
+          {% for i in shipping_methods.paginator.page_range %} {% if shipping_methods.number == i %} Showing
+          {{shipping_methods.start_index }} of {{ shipping_methods.end_index }} of {{ shipping_methods.paginator.count }} 
+          entries {% endif %} {% endfor %}
+        </span>
+
+        <span>
+          {% if reviews.has_previous %}
+          <a href="?page={{ shipping_methods.previous_page_number }}"><i class="fas fa-arrow-left"></i></a>
+          {% else %}
+          <span><i class="fas fa-arrow-left disable"></i></span>
+          {% endif %} {% if shipping_methods.has_next %}
+          <a href="?page={{ shipping_methods.next_page_number }}"><i class="fas fa-arrow-right"></i></a>
+          {% else %}
+          <span><i class="fas fa-arrow-right disable"></i></span>
+          {% endif %}
+        </span>
+      </span>
+      {% endif %}
+
     </span>
   </div>
   {% endblock %}
