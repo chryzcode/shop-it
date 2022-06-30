@@ -240,6 +240,14 @@ def customer_wishlist(request, slugified_store_name):
         store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
         user = request.user
         wishlist = Product.objects.filter(wishlist=user)
+        page = request.GET.get('page', 1)
+        paginator = Paginator(wishlist, 10)
+        try:
+            wishlist = paginator.page(page)
+        except PageNotAnInteger:
+            wishlist = paginator.page(1)
+        except EmptyPage:
+            wishlist = paginator.page(paginator.num_pages)
         return render(
             request,
             "customer/customer-wishlist.html",
