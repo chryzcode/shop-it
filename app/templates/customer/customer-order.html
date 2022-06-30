@@ -73,7 +73,8 @@
           {% endfor %}
         </table>
         </div>
-        {% if all_products.has_other_pages %}
+        
+        {% if orders.has_other_pages %}
       <span class="pagination">
         <span>
           {% for i in orders.paginator.page_range %} {% if orders.number == i %} Showing

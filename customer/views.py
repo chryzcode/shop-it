@@ -428,14 +428,14 @@ def customer_orders(request, slugified_store_name):
             )
         else:
             payment = None
-        # page = request.GET.get('page', 1)
-        # paginator = Paginator(orders, 1)
-        # try:
-        #     orders = paginator.page(page)
-        # except PageNotAnInteger:
-        #     orders = paginator.page(1)
-        # except EmptyPage:
-        #     orders = paginator.page(paginator.num_pages)
+        page = request.GET.get('page', 1)
+        paginator = Paginator(orders, 10)
+        try:
+            orders = paginator.page(page)
+        except PageNotAnInteger:
+            orders = paginator.page(1)
+        except EmptyPage:
+            orders = paginator.page(paginator.num_pages)
         return render(
             request,
             "customer/customer-order.html",
@@ -468,14 +468,14 @@ def unpaid_customer_orders(request, slugified_store_name):
         for order in orders:
             if order.date_created < timezone.now() - timedelta(days=30):
                 order.delete()
-        # page = request.GET.get('page', 1)
-        # paginator = Paginator(orders, 1)
-        # try:
-        #     orders = paginator.page(page)
-        # except PageNotAnInteger:
-        #     orders = paginator.page(1)
-        # except EmptyPage:
-        #     orders = paginator.page(paginator.num_pages)
+        page = request.GET.get('page', 1)
+        paginator = Paginator(orders, 10)
+        try:
+            orders = paginator.page(page)
+        except PageNotAnInteger:
+            orders = paginator.page(1)
+        except EmptyPage:
+            orders = paginator.page(paginator.num_pages)
         return render(
             request,
             "customer/customer-order.html",
