@@ -420,7 +420,6 @@
   }
 
   .store-content-container,
-  .account-form-container,
   .acc-form-seg {
     box-shadow: none;
   }
@@ -441,8 +440,4 @@
     display: none;
   }
 
-  .store-front-btn > img {
-    display: block;
-    width: 20px;
-  }
 }

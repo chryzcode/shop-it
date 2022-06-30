@@ -20,6 +20,7 @@
         {% endif %}
       </div>
       {% csrf_token %}
+      <div class="pricing-quantity-seg">
       <div class="input-container">       
         <label for="name">Product Name<span class="form-required">*</span></label>
         <p class="error"> {{error}}</p>
@@ -48,6 +49,7 @@
         <label for="">Product Details</label>
         <p>{{ form.product_details.errors }}</p>
         <div class="product-detail-input">{{ form.product_details }}</div>
+      </div>
       </div>
 
       <div class="pricing-quantity-seg">
