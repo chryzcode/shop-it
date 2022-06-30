@@ -240,6 +240,14 @@ def store(request, slugified_store_name):
 def store_customers(request, slugified_store_name):
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
     customers = store.customers.all()
+    page = request.GET.get('page', 1)
+    paginator = Paginator(customers, 10)
+    try:
+        customers = paginator.page(page)
+    except PageNotAnInteger:
+        customers = paginator.page(1)
+    except EmptyPage:
+        customers = paginator.page(paginator.num_pages)
     return render(
         request, "store/store-customers.html", {"store": store, "customers": customers}
     )

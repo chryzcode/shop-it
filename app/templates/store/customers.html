@@ -27,6 +27,29 @@
         {% endfor %}
       </table>
       </div>
+
+      {% if customers.has_other_pages %}
+      <span class="pagination">
+        <span>
+          {% for i in customers.paginator.page_range %} {% if customers.number == i %} Showing
+          {{customers.start_index }} of {{ customers.end_index }} of {{ customers.paginator.count }} 
+          entries {% endif %} {% endfor %}
+        </span>
+
+        <span>
+          {% if customers.has_previous %}
+          <a href="?page={{ customers.previous_page_number }}"><i class="fas fa-arrow-left"></i></a>
+          {% else %}
+          <span><i class="fas fa-arrow-left disable"></i></span>
+          {% endif %} {% if customers.has_next %}
+          <a href="?page={{ customers.next_page_number }}"><i class="fas fa-arrow-right"></i></a>
+          {% else %}
+          <span><i class="fas fa-arrow-right disable"></i></span>
+          {% endif %}
+        </span>
+      </span>
+      {% endif %}
+
     </span>
   </div>
   {% endblock %}
