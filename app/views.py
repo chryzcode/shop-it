@@ -667,48 +667,34 @@ def store_review_detail(request, pk):
 
 
 def yearly_subscription_plans(request):
-    store_plan = None
     if request.user.store_creator == True:
         store = Store.objects.get(store_name=request.user.store_name)
     else:
         store = Store.objects.get(
             store_name=store_staff.objects.get(user=request.user).store
         )
-    all_subscription = Subscription.objects.all()
-    for subscription in all_subscription:
-        if store in subscription.subscribers.all():
-            store_plan = subscription
-        else:
-            store_plan = None
     duration = Duration.objects.get(name="yearly")
     plans = Subscription.objects.filter(duration=duration)
     return render(
         request,
         "store/subscription-plans.html",
-        {"plans": plans, "store_plan": store_plan, "plans": plans},
+        {"plans": plans, "store":store},
     )
 
 
 def monthly_subscription_plans(request):
-    store_plan = None
     if request.user.store_creator == True:
         store = Store.objects.get(store_name=request.user.store_name)
     else:
         store = Store.objects.get(
             store_name=store_staff.objects.get(user=request.user).store
         )
-    all_subscription = Subscription.objects.all()
-    for subscription in all_subscription:
-        if store in subscription.subscribers.all():
-            store_plan = subscription
-        else:
-            store_plan = None
     duration = Duration.objects.get(name="monthly")
     plans = Subscription.objects.filter(duration=duration)
     return render(
         request,
         "store/subscription-plans.html",
-        {"plans": plans, "store_plan": store_plan, "plans": plans},
+        {"plans": plans, "store":store},
     )
 
 
