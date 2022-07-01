@@ -400,7 +400,7 @@
   }
 
   .account-form-container {
-    width: 90%;
+    width: 100%;
   }
 
   .illustration-grid-sec,
@@ -429,7 +429,6 @@
     padding: 30px 15px;
   }
 
- 
 
   #user-account > span:nth-child(2) {
     display: none;
@@ -461,4 +460,9 @@
   nav ul span li a {
     font-size: 18px;
   }
+
+  .pricing-quantity-seg, .images-seg, .acc-form-seg {
+    box-shadow: none;
+  
+}
 }
