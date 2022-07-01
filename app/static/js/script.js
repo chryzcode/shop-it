@@ -26,10 +26,12 @@ toogle.onclick = function () {
   }
 };
 
-profile_section.onclick = function () {
-  if (profile_dropdown) {
-    profile_dropdown.classList.toggle("active");
-    profile_icon.classList.toggle("active");
+if (profile_section) {
+  profile_section.onclick = function () {
+    if (profile_dropdown) {
+      profile_dropdown.classList.toggle("active");
+      profile_icon.classList.toggle("active");
+    }
   }
 };
 
@@ -52,8 +54,6 @@ document.onclick = function (e) {
   }
 };
 
-console.log(notification)
-
 if (notification) {
   notification.onclick = function () {
     notification_dropdown.classList.toggle("active");
@@ -63,14 +63,7 @@ if (notification) {
 
 
 
-// document.onclick = function (e) {
-//   if (e.target.id == profile_section) {
-//     profile_dropdown.classList.remove("active");
-//   }
-//   if (e.target.id == navbar) {
-//     store_side_nav.classList.remove("active");
-//   }
-// };
+
 
 
 

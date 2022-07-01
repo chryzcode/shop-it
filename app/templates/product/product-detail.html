@@ -178,10 +178,9 @@
         csrfmiddlewaretoken: "{{ csrf_token }}",
         action: "post",
       },
+
       success: function (json) {
-        console.log(json);
-        document.getElementById("product-cart-qty").innerHTML = json.qty;
-        
+        document.getElementById("product-cart-qty").innerHTML = json.qty; 
       },
       error: function (xhr, errmsg, err) {},
     });
