@@ -7,9 +7,12 @@
   <div class="account-form-container">
     <form action="{% url 'account:store_account' %}" method="post" enctype="multipart/form-data">
       {% csrf_token %}
-      <p><a href="{% url 'account:bank_details' %}">Bank Details</a></p>
+      
       <div class="above-create-form">
-        <p>Store Account</p>
+        <span>
+          <p>Store Account</p>
+          <span><a href="{% url 'account:bank_details' %}">Bank Details</a></span>
+        </span>
       </div>
 
       <div class="acc-form-seg">

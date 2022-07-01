@@ -248,7 +248,7 @@
   .store-content-container {
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     width: 100%;
-    margin: 0 auto;
+    margin: 10px auto;
     display: block;
   }
 
@@ -308,6 +308,11 @@
   #notification-dropdown.active {
     top: 35px;
     left: -150px;
+  }
+
+  nav > ul > li > a,
+  nav ul span li a {
+    font-size: 18px;
   }
 }
 
@@ -421,13 +426,10 @@
 
   .create-product-form,
   .acc-form-seg {
-    padding: 30px 5px;
+    padding: 30px 15px;
   }
 
-  .store-content-container,
-  .acc-form-seg {
-    box-shadow: none;
-  }
+ 
 
   #user-account > span:nth-child(2) {
     display: none;
@@ -453,5 +455,10 @@
     margin-left: auto;
     margin-right: auto;
     overflow: hidden;
+  }
+
+  nav > ul > li > a,
+  nav ul span li a {
+    font-size: 18px;
   }
 }
