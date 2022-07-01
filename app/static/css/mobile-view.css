@@ -401,6 +401,7 @@
 
   .account-form-container {
     width: 100%;
+    box-shadow: none;
   }
 
   .illustration-grid-sec,
