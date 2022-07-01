@@ -399,7 +399,8 @@
     border-radius: 10px;
   }
 
-  .account-form-container {
+  .account-form-container,
+  .store-content-container {
     width: 100%;
     box-shadow: none;
   }
@@ -429,7 +430,6 @@
   .acc-form-seg {
     padding: 30px 15px;
   }
-
 
   #user-account > span:nth-child(2) {
     display: none;
@@ -462,8 +462,9 @@
     font-size: 18px;
   }
 
-  .pricing-quantity-seg, .images-seg, .acc-form-seg {
+  .pricing-quantity-seg,
+  .images-seg,
+  .acc-form-seg {
     box-shadow: none;
-  
-}
+  }
 }
