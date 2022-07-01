@@ -609,10 +609,16 @@ body > nav > span:nth-child(2) > i {
   color: #6b69f8;
 }
 
-.a-related-container > div > p:nth-child(2) {
+.a-related-container >  div >  p:nth-child(2) {
   text-align: center;
   font-size: 17px;
   color: #3d5170;
+}
+
+.a-related-container > small {
+  margin-top: 10px;
+  text-align: center;
+  color: #6b69f8;
 }
 
 .a-related-container > div > div {

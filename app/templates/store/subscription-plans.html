@@ -21,10 +21,11 @@
         <div class="subscription-grid-container">
             {% for plan in plans %}
             <div class="a-related-container">
-                <div>
-                  {% if store in plan.subscribers.all %}
+               {% if store in plan.subscribers.all %}
                   <small>Actively Subscribed</small>
                   {% endif %}
+                <div>
+                 
                 <p>{{plan.name}}</p>
                 <p>{{plan.currency.symbol}}{{plan.amount|intcomma}}/ {{plan.duration}}</p>
                 <div>
