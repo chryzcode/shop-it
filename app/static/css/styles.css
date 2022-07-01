@@ -1058,7 +1058,8 @@ button {
   width: max-content;
 }
 
-.store-products-container p small, .store-products-container > p {
+.store-products-container p small,
+.store-products-container > p {
   font-size: 25px;
   font-weight: 500;
   text-align: center;
@@ -1526,17 +1527,18 @@ small {
   margin: 0 auto;
 }
 
-
-#notification-dropdown{
+#notification-dropdown {
   display: none;
 }
 
 #notification-dropdown.active {
   display: block;
-  width: 500px;
+  width: max-content;
+  max-width: 400px;
   overflow: hidden;
   position: absolute;
-  height: 100px;
+  height: max-content;
+  max-height: 100px;
   background-color: #fff;
   z-index: 1070;
   top: 80px;
@@ -1553,4 +1555,10 @@ small {
   color: #fff;
   display: block;
   margin-left: 6px;
+}
+
+#notification-dropdown > a {
+  color: #3d5170;
+  display: inline-block;
+  margin: 5px 0;
 }

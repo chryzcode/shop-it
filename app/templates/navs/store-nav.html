@@ -45,11 +45,15 @@
       <span id="notification" class="notification"><span class="notification-count">{{ user.notifications.unread.count }}</span><i class="fas fa-bell notification-bell"></i>
          
           <div id="notification-dropdown">
+            {% if user.notifications.unread %}
              {% for notification in  user.notifications.unread %}
               <a href="">
               <p>{{ notification.verb}}</p>
               </a>
             {% endfor %}
+            {% else %}
+            <p>There's nothing new here</p>
+            {% endif %}
           </div>  
        
       </span>

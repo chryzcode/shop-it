@@ -304,6 +304,11 @@
     display: block;
     margin: 15px auto;
   }
+
+  #notification-dropdown.active {
+    top: 35px;
+    left: -150px;
+  }
 }
 
 @media all and (max-width: 850px) {
@@ -440,4 +445,13 @@
     display: none;
   }
 
+  #notification-dropdown.active {
+    top: 35px;
+    width: 250px;
+    left: -150px;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    overflow: hidden;
+  }
 }
