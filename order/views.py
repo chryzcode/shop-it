@@ -12,6 +12,7 @@ from datetime import datetime, timedelta
 from django.utils import timezone
 
 from notifications.signals import notify
+from app.urls import *
 
 
 def order(request, coupon_code):
@@ -67,7 +68,10 @@ def order(request, coupon_code):
                 price=item["price"],
             )
         message = "An order has been made on your store"
-        notify.send(user, recipient=store.owner, verb=message)
+        notify.send(user, recipient=store.owner, verb=message, 
+        # use urls name for thr url variable
+        url =   reverse('app:store_order_detail', kwargs={'pk': order.id})
+        )
         return redirect("payment:initiate_payment", order.id)
 
 

@@ -1551,7 +1551,6 @@ small {
   overflow: hidden;
   position: absolute;
   height: max-content;
-  max-height: 100px;
   background-color: #fff;
   z-index: 1070;
   top: 80px;
@@ -1567,7 +1566,7 @@ small {
   z-index: 1022;
   color: #fff;
   display: block;
-  margin-left: 6px;
+  margin-left: 8px;
 }
 
 #notification-dropdown > a,  
