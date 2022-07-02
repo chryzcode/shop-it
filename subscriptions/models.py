@@ -3,6 +3,7 @@ import secrets
 from django.db import models
 
 from account.models import *
+from app.models import *
 
 
 # Create your models here.
@@ -36,8 +37,8 @@ class Subscription(models.Model):
     )
     duration = models.ForeignKey(Duration, on_delete=models.CASCADE)
     currency = models.ForeignKey(Currency, on_delete=models.CASCADE)
-    user = models.ForeignKey(
-        User, related_name="subscriptions", on_delete=models.CASCADE, null=True, blank=True
+    store = models.ForeignKey(
+        Store, on_delete=models.CASCADE, null=True, blank=True, related_name="subscription_store"
     )
 
     def __str__(self):
