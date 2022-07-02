@@ -55,7 +55,7 @@ def subscription_check_mail_remainder(request):
             monthly_duration = Duration.objects.get(name="monthly")
             current_site = get_current_site(request)
             if subscription_timeline.subscription.duration ==  monthly_duration:
-                if subscription_timeline.created_at < timezone.now() - timedelta(days=24): 
+                if subscription_timeline.created_at < timezone.now() - timedelta(minutes=2): 
                     subject = "Your Shop!t Monthly Subscription is about to Expire"
                     store_owner =  store.owner
                     message = render_to_string( "subscriptions/subscription-mail-remainder.html", {
@@ -74,7 +74,7 @@ def subscription_check_mail_remainder(request):
                     subscription_timeline.save()
                     
             if subscription_timeline.subscription.duration ==  yearly_duration:
-                if subscription_timeline.created_at < timezone.now() - timedelta(days=355): 
+                if subscription_timeline.created_at < timezone.now() - timedelta(minutes=2): 
                     subject = "Your Shop!t Yearly Subscription is about to Expire"
                     store_owner =  store.owner
                     message = message = render_to_string( "subscriptions/subscription-mail-remainder.html", {
@@ -233,7 +233,7 @@ def subscription_check(request):
             monthly_duration = Duration.objects.get(name="monthly")
             recurring_subscription_data = RecurringSubscriptionData.objects.get(user=store.owner)
             if subscription_timeline.subscription.duration ==  monthly_duration:
-                if subscription_timeline.created_at < timezone.now() - timedelta(days=30):
+                if subscription_timeline.created_at < timezone.now() - timedelta(minutes=5):
                     subscription = Subscription.objects.get(name = subscription_timeline.subscription.name, duration = monthly_duration)
                     if recurring_subscription_data.charge == True:
                         paystack_recurring_payment(request, subscription.pk)
@@ -242,7 +242,7 @@ def subscription_check(request):
                         subscription_timeline.delete()
                         messages.success(request, "Your monthly subscription has expired")
             if subscription_timeline.subscription.duration ==  yearly_duration:
-                if subscription_timeline.created_at < timezone.now() - timedelta(days=365):
+                if subscription_timeline.created_at < timezone.now() - timedelta(minutes=5):
                     subscription = Subscription.objects.get(name = subscription_timeline.subscription.name, duration = yearly_duration)
                     if recurring_subscription_data.charge == True:
                         paystack_recurring_payment(request, subscription.pk)

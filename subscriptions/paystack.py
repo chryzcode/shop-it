@@ -2,6 +2,7 @@ from operator import sub
 import requests
 from django.conf import settings
 from .models import *
+from app.models import *
 
 
 
@@ -26,16 +27,17 @@ class Paystack:
             authorization_code = response_data["data"]["authorization"]["authorization_code"] 
             currency = response_data["data"]["currency"]
             subscription = Subscription.objects.get(ref=ref)
-            user = subscription.user
-            if user.is_authenticated:
+            store = subscription.store
+            if Store.objects.filter(store_name=store.store_name).exists():
+                user = Store.objects.get(store_name=store.store_name).owner
                 if user.store_creator == True:
                     user = user
-                    if RecurringSubscriptionData.objects.filter(user=user).exists():
-                        subscription = RecurringSubscriptionData.objects.get(user=user)
+                    if RecurringSubscriptionData.objects.filter(store=store).exists():
+                        subscription = RecurringSubscriptionData.objects.get(store=store)
                         subscription.amount = amount
                         subscription.email = email
                         subscription.authorization_code = authorization_code
-                        subscription.user = user
+                        subscription.store = store
                         subscription.currency = currency
                         subscription.save()
                     else:
@@ -43,7 +45,7 @@ class Paystack:
                             email=email,
                             amount=amount,
                             authorization_code=authorization_code,
-                            user = user,
+                            store = store,
                             currency = currency,
                         )     
             return response_data["status"], response_data["data"]
