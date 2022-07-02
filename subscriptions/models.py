@@ -75,6 +75,6 @@ class RecurringSubscriptionData(models.Model):
     currency = models.CharField(max_length=6)
 
     def __str__(self):
-        return str(self.user.store_name) + " " + str(self.user.full_name) + " " + str(self.amount)
+        return str(self.store.store_name) + " " + str(self.amount)
 
 

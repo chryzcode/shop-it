@@ -36,11 +36,13 @@
             </div>
             {% endfor %}
         </div>
-        {% if reccuring_sub == True}
+        {% if request.user.store_creator == True %}
+        {% if reccuring_sub == True %}
         <p>If you want to opt out from the recurring subscription policy - <a href="{% url 'subscriptions:cancel_recurring_subscription' %}">Click</a></p>
         {% endif %}
-        {% if reccuring_sub == False}
+        {% if reccuring_sub == False %}
         <p>If you want to opt in into the recurring subscription policy - <a href="{% url 'subscriptions:activate_recurring_subscription' %}">Click</a></p>
+        {% endif %}
         {% endif %}
     </span>
   </div>
