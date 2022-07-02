@@ -69,7 +69,7 @@ class Subscription_Timeline(models.Model):
 class RecurringSubscriptionData(models.Model):
     amount = models.PositiveIntegerField()
     email = models.EmailField()
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    store = models.ForeignKey(Store, on_delete=models.CASCADE, default=1)
     authorization_code = models.CharField(max_length=200)
     charge = models.BooleanField(default=True)
     currency = models.CharField(max_length=6)
