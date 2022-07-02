@@ -1579,3 +1579,10 @@ small {
   height: 30px;
   overflow: hidden;
 }
+
+#notification-dropdown > p > a {
+  color: #6b69f8;
+  font-size: 14px;
+  text-align: center;
+  display: block;
+}
