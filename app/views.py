@@ -704,7 +704,7 @@ def yearly_subscription_plans(request):
         )
     duration = Duration.objects.get(name="yearly")
     plans = Subscription.objects.filter(duration=duration)
-    if RecurringSubscriptionData.objects.filter(user=request.user).charge == True:
+    if RecurringSubscriptionData.objects.filter(store=store).charge == True:
         reccuring_sub = True
     else:
         reccuring_sub = False
@@ -724,7 +724,7 @@ def monthly_subscription_plans(request):
         )
     duration = Duration.objects.get(name="monthly")
     plans = Subscription.objects.filter(duration=duration)
-    if RecurringSubscriptionData.objects.filter(store=store, duration=duration).charge == True:
+    if RecurringSubscriptionData.objects.filter(store=store).charge == True:
         reccuring_sub = True
     else:
         reccuring_sub = False
