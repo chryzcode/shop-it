@@ -19,8 +19,7 @@ from account.models import *
 from .models import *
 from .paystack import Paystack
 
-from notifications.models import Notification
-
+from notifications.signals import notify
 
 
 # Create your views here.
