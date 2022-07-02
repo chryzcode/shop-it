@@ -42,9 +42,9 @@ def mark_notification_read(request, id):
             if "subscription" in key:
                 subscription = Subscription.objects.get(id=values)
                 notification.save()
-                if subscription.duration == "monthly":
+                if subscription.duration.name == "monthly":
                     return redirect("app:monthly_subscription_plans")
-                elif subscription.duration == "yearly":
+                if subscription.duration.name == "yearly":
                     return redirect("app:yearly_subscription_plans")
 
 
