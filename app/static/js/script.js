@@ -7,6 +7,8 @@ const profile_section = document.getElementById("nav-user-profile")
 const profile_icon = document.getElementById("profile-icon");
 const notification = document.getElementById("notification");
 const notification_dropdown = document.getElementById("notification-dropdown");
+const search_bar = document.getElementById("side-nav-search-bar");
+const search_display = document.getElementById("search-display");
 
 
 document.onclick = function (e) {
@@ -61,7 +63,32 @@ if (notification) {
   }
 }
 
+if (search_bar) {
+  search_bar.onclick = function () {
+    search_display.classList.toggle("active");
+  }
+}
 
+
+function myFunction() {
+  // Declare variables
+  var input, filter, ul, li, a, i, txtValue;
+  input = document.getElementById("side-nav-search-bar");
+  filter = input.value.toUpperCase();
+  ul = document.getElementById("search-display");
+  li = ul.getElementsByTagName("li");
+
+  // Loop through all list items, and hide those who don't match the search query
+  for (i = 0; i < li.length; i++) {
+    a = li[i].getElementsByTagName("a")[0];
+    txtValue = a.textContent || a.innerText;
+    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+      li[i].style.display = "";
+    } else {
+      li[i].style.display = "none";
+    }
+  }
+}
 
 
 

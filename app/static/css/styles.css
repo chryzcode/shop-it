@@ -609,7 +609,7 @@ body > nav > span:nth-child(2) > i {
   color: #6b69f8;
 }
 
-.a-related-container >  div >  p:nth-child(2) {
+.a-related-container > div > p:nth-child(2) {
   text-align: center;
   font-size: 17px;
   color: #3d5170;
@@ -774,12 +774,14 @@ div.product-info > p:nth-child(2) {
   color: #3d5170;
 }
 
-.above-create-form > p, .above-create-form > span {
+.above-create-form > p,
+.above-create-form > span {
   font-size: 20px;
   color: #3d5170;
 }
 
-.above-create-form > span > span a, .above-create-form > span > span {
+.above-create-form > span > span a,
+.above-create-form > span > span {
   display: block;
   font-size: 18px;
   color: #3d5170;
@@ -1005,6 +1007,29 @@ button {
   border: 0;
   border-radius: 8px;
 }
+
+#search-display{
+  display: none;
+}
+
+#search-display.active {
+  position: absolute;
+  top: 80px;
+  width: 80%;
+  height: max-content;
+  background-color: blue;
+  z-index: 1070;
+  padding: 10px;
+  border-radius: 8px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  text-align: center;
+  list-style: none;
+}
+
 
 .side-nav-search-bar:focus {
   color: #3d5170;
@@ -1569,7 +1594,7 @@ small {
   margin-left: 8px;
 }
 
-#notification-dropdown > a,  
+#notification-dropdown > a,
 #notification-dropdown > a > p {
   color: #3d5170;
   display: block;

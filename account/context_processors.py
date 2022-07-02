@@ -1,6 +1,9 @@
 from django.utils.text import slugify
 
 from .models import *
+from app.models import *
+from order.models import *
+from customer.models import *
 
 
 def a_staff_store_store(request):
@@ -65,3 +68,36 @@ def user_profile(request):
             return {"user_profile": None}
     else:
         return {"user_profile": None}
+
+def store_products(request): 
+    if request.user.is_authenticated:
+        if request.user.store_creator == True:
+            store = Store.objects.get(owner=request.user)
+        else:
+            store = store_staff.objects.get(user=request.user).store
+        products = Product.objects.filter(store=store)
+        return {"store_products": products}
+    else:
+        return {"store_products": None}
+
+def store_orders(request): 
+    if request.user.is_authenticated:
+        if request.user.store_creator == True:
+            store = Store.objects.get(owner=request.user)
+        else:
+            store = store_staff.objects.get(user=request.user).store
+        orders = Order.objects.filter(store=store)
+        return {"store_orders": orders}
+    else:
+        return {"store_orders": None}
+
+def store_customers(request):
+    if request.user.is_authenticated:
+        if request.user.store_creator == True:
+            store = Store.objects.get(owner=request.user)
+        else:
+            store = store_staff.objects.get(user=request.user).store
+        customers = Customer.objects.filter(store=store)
+        return {"store_customers": customers}
+    else:
+        return {"store_customers": None}

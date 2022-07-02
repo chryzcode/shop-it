@@ -32,8 +32,20 @@
       <span>
         <a href="">Shop !t</a>
       </span>
-      <span>
-        <input type="search" name="" id="side-nav-search-bar" class="side-nav-search-bar" placeholder="Search for Customers, Products, orders" />
+
+      <span>     
+          <input type="search" name="search_text" id="side-nav-search-bar" class="side-nav-search-bar"  onkeyup="myFunction()" placeholder="Search for Customers, Products, orders" />
+          <ul id="search-display">
+            {% for product in store_products %}
+            <li><a href="">{{product}}</a></li>
+            {% endfor %}
+            {% for order in store_orders %}
+            <li><a href="">{{order.id}}</a></li>
+            {% endfor %}
+            {% for customer in store_customers %}
+            <li><a href="">{{customer.full_name}}</a></li>
+            {% endfor %}
+          </ul>
       </span>
       
       <span>
