@@ -19,6 +19,9 @@ from account.models import *
 from .models import *
 from .paystack import Paystack
 
+from notifications.models import Notification
+
+
 
 # Create your views here.
 
@@ -141,6 +144,8 @@ def verify_subscription_payment(request: HttpRequest, ref: str) -> HttpResponse:
             subscription = subscription,       
         )
         messages.success(request, "Verification Successful")
+        message = "You have succesfully subscribed to a plan"
+        notify.send(store.owner, recipient=store.owner, verb=message, subscription = subscription.id)
         subject = f"Your {subscription.name} {subscription.duration.name} Subscription on Shop!t has been Activated"
         message = render_to_string( "subscriptions/subscription-success-mail.html", {
             "store": store,
@@ -199,6 +204,8 @@ def paystack_recurring_payment(request: HttpRequest, pk) -> HttpResponse:
                         mail_remainder = False
                     )
                 messages.success(request, "Subscription Successful")
+                message = "You just resubscribed to a plan(recurring sub)"
+                notify.send(Store.objects.get(store_name=request.user.store_name).owner, recipient=Store.objects.get(store_name=request.user.store_name).owner, verb=message, subscription = subscription.id)
                 subject = f"Your {subscription.name} {subscription.duration.name} Subscription on Shop!t has been Re-Activated"
                 message = render_to_string( "subscriptions/recurring-subscription-success-mail.html", {
                     "store": Store.objects.get(store_name=request.user.store_name),

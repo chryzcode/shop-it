@@ -39,6 +39,13 @@ def mark_notification_read(request, id):
                 payment = Payment.objects.get(order=order)
                 notification.save()
                 return redirect("app:store_order_detail", pk=payment.order.id)
+            if "subscription" in key:
+                subscription = Subscription.objects.get(id=values)
+                notification.save()
+                if subscription.duration == "monthly":
+                    return redirect("app:monthly_subscription_plans")
+                elif subscription.duration == "yearly":
+                    return redirect("app:yearly_subscription_plans")
 
 
 @login_required(login_url="account:login")
