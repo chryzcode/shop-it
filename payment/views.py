@@ -200,10 +200,8 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
             messages.success(request, "Transfer initiated successfully")
             if payment.user:
                 user = payment.user
-            else:
-                user = None
-            message = "A payment for an order has been made"
-            notify.send(user, recipient=store.owner, verb=message, payment = payment.order.id)
+                message = "A payment for an order has been made"
+                notify.send(user, recipient=store.owner, verb=message, payment = payment.order.id)          
             subject = f"{store.store_name} just sold some product on Shop!t"
             current_site = get_current_site(request)
             path = f"order/{order.id}"
