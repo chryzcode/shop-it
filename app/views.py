@@ -696,6 +696,7 @@ def store_review_detail(request, pk):
 
 
 def yearly_subscription_plans(request):
+    reccuring_sub = None
     if request.user.store_creator == True:
         store = Store.objects.get(store_name=request.user.store_name)
     else:
@@ -718,6 +719,7 @@ def yearly_subscription_plans(request):
 
 
 def monthly_subscription_plans(request):
+    reccuring_sub = None
     if request.user.store_creator == True:
         store = Store.objects.get(store_name=request.user.store_name)
     else:
