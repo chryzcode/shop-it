@@ -16,7 +16,8 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import include, path, re_path
+import notifications.urls
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -27,6 +28,7 @@ urlpatterns = [
     path("order/", include("order.urls")),
     path("payment/", include("payment.urls")),
     path("subscriptions/", include("subscriptions.urls")),
+    re_path('^inbox/notifications/', include(notifications.urls, namespace='notifications')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 handler404 = "app.views.custom_error_404"

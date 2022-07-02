@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+import re
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -17,9 +18,19 @@ from order.views import *
 
 from .forms import *
 from .models import *
+from notifications.models import Notification
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+def mark_notification_read(request, id):
+    if Notification.objects.filter(recipient=request.user, id=id).exists():
+        notification = Notification.objects.get(recipient=request.user, id=id)
+        notification.unread = False
+        for key, values in notification.data.items():
+            if "order" in key:
+                order = Order.objects.get(id=values)
+                notification.save()
+                return redirect("app:store_order_detail", pk=order.id)
 
 def custom_error_404(request, exception):
     return render(request, "error-pages/404-page.html")

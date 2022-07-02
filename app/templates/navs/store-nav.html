@@ -47,8 +47,8 @@
           <div id="notification-dropdown">
             {% if user.notifications.unread %}
              {% for notification in  user.notifications.unread %}
-              <a href="{{notification.data.url}}">
-              <p>{{ notification.verb}}</p>
+              <a  href="{% url 'app:mark_notification_read' notification.id %}">
+              <p>{{ notification.verb }}</p>
               </a>
             {% endfor %}
             {% else %}
