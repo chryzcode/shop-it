@@ -3,7 +3,6 @@ import secrets
 from django.db import models
 
 from account.models import *
-from app.models import *
 
 
 # Create your models here.
@@ -37,8 +36,8 @@ class Subscription(models.Model):
     )
     duration = models.ForeignKey(Duration, on_delete=models.CASCADE)
     currency = models.ForeignKey(Currency, on_delete=models.CASCADE)
-    store = models.ForeignKey(
-        Store, on_delete=models.CASCADE, null=True, blank=True, related_name="subscription_store"
+    user = models.ForeignKey(
+        User, related_name="subscriptions", on_delete=models.CASCADE, null=True, blank=True
     )
 
     def __str__(self):
@@ -70,12 +69,12 @@ class Subscription_Timeline(models.Model):
 class RecurringSubscriptionData(models.Model):
     amount = models.PositiveIntegerField()
     email = models.EmailField()
-    store = models.ForeignKey(Store, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     authorization_code = models.CharField(max_length=200)
     charge = models.BooleanField(default=True)
     currency = models.CharField(max_length=6)
 
     def __str__(self):
-        return str(self.store.store_name) + " " + str(self.amount)
+        return str(self.user.store_name) + " " + str(self.user.full_name) + " " + str(self.amount)
 
 

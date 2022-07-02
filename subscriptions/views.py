@@ -25,8 +25,7 @@ from .paystack import Paystack
 def cancel_recurring_subscription(request: HttpRequest) -> HttpResponse:
     if request.user.is_authenticated:
         if request.user.store_creator == True:
-            store = Store.objects.get(store_name=request.user.store_name)
-            recurring_subscription = RecurringSubscriptionData.objects.get(store=store)
+            recurring_subscription = RecurringSubscriptionData.objects.get(user=request.user)
             recurring_subscription.charge = False
             recurring_subscription.save()
             messages.success(request, "Recurring Subscription Cancelled")
@@ -39,8 +38,7 @@ def cancel_recurring_subscription(request: HttpRequest) -> HttpResponse:
 def activate_recurring_subscription(request: HttpRequest) -> HttpResponse:
     if request.user.is_authenticated:
         if request.user.store_creator == True:
-            store = Store.objects.get(store_name=request.user.store_name)
-            recurring_subscription = RecurringSubscriptionData.objects.get(store=store)
+            recurring_subscription = RecurringSubscriptionData.objects.get(user=request.user)
             recurring_subscription.charge = True
             recurring_subscription.save()
             messages.success(request, "Recurring Subscription Activated")
