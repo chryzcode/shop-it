@@ -22,6 +22,9 @@ from notifications.models import Notification
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+
+
+@login_required(login_url="account:login")
 def mark_notification_read(request, id):
     if Notification.objects.filter(recipient=request.user, id=id).exists():
         notification = Notification.objects.get(recipient=request.user, id=id)
@@ -36,6 +39,16 @@ def mark_notification_read(request, id):
                 payment = Payment.objects.get(order=order)
                 notification.save()
                 return redirect("app:store_order_detail", pk=payment.order.id)
+
+
+@login_required(login_url="account:login")
+def mark_all_notification_read(request):
+    current_path = request.META.get('HTTP_REFERER')
+    notifications = Notification.objects.filter(recipient=request.user, unread=True)
+    for notification in notifications:
+        notification.unread = False
+        notification.save()
+    return redirect (current_path)
 
 def custom_error_404(request, exception):
     return render(request, "error-pages/404-page.html")

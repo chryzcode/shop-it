@@ -82,4 +82,5 @@ urlpatterns = [
         name="delete_shipping_method",
     ),
     path("notification/mark-as-read/<str:id>/", views.mark_notification_read, name="mark_notification_read"),
+    path("notification/mark-all-as-read/", views.mark_all_notification_read, name="mark_all_notification_read"),
 ]
