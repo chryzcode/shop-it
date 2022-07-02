@@ -69,7 +69,7 @@ def order(request, coupon_code):
                 price=item["price"],
             )
         message = "An order has been made on your store"
-        notify.send(user, recipient=store.owner, verb=message, order =   order.id)
+        notify.send(user, recipient=store.owner, verb=message, order = order.id)
         return redirect("payment:initiate_payment", order.id)
 
 

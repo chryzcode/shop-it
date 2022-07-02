@@ -16,6 +16,8 @@ from .forms import *
 from .models import *
 from .paystack import *
 
+from notifications.signals import notify
+
 
 # Create your views here.
 def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
@@ -196,6 +198,12 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
         transfer = initiate_transfer(request, store_bank.account_name, store_bank.account_number, payment.amount, order.currency_code, store_bank.account_name, narration)
         if transfer:
             messages.success(request, "Transfer initiated successfully")
+            if payment.user:
+                user = payment.user
+            else:
+                user = None
+            message = "A payment for an order has been made"
+            notify.send(user, recipient=store.owner, verb=message, payment = payment.order.id)
             subject = f"{store.store_name} just sold some product on Shop!t"
             current_site = get_current_site(request)
             path = f"order/{order.id}"

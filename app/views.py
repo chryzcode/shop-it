@@ -31,6 +31,11 @@ def mark_notification_read(request, id):
                 order = Order.objects.get(id=values)
                 notification.save()
                 return redirect("app:store_order_detail", pk=order.id)
+            if "payment" in key:
+                order = Order.objects.get(id=values)
+                payment = Payment.objects.get(order=order)
+                notification.save()
+                return redirect("app:store_order_detail", pk=payment.order.id)
 
 def custom_error_404(request, exception):
     return render(request, "error-pages/404-page.html")
