@@ -316,10 +316,11 @@
   }
 
   #search-display.active {
-    width: 100%;
+    width: 95%;
     left: 0;
     top: 45px;
     margin-left: auto;
+    height: max-content;
   }
 }
 
