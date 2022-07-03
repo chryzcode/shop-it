@@ -69,7 +69,7 @@ function myFunction() {
     if (txtValue.toUpperCase().indexOf(filter) > -1) {
       li[i].style.display = "";
     } else {
-      li[i].style.display = "none";
+      ul.innerHTML = "<li>No available search</li>";
     }
   }
 }

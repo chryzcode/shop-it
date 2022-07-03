@@ -1032,10 +1032,14 @@ button {
   overflow: scroll;
 }
 
-#search-display > li a {
+#search-display > li  {
   color: #3d5170;
   margin: 10px 0;
   display: block;
+}
+
+#search-display > li a {
+  color: #3d5170;
 }
 
 .side-nav-search-bar:focus {
