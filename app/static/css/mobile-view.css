@@ -314,6 +314,13 @@
   nav ul span li a {
     font-size: 18px;
   }
+
+  #search-display.active {
+    width: 100%;
+    left: 0;
+    top: 45px;
+    margin-left: auto;
+  }
 }
 
 @media all and (max-width: 850px) {

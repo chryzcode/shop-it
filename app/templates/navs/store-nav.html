@@ -34,13 +34,13 @@
       </span>
 
       <span>     
-          <input type="search" name="search_text" id="side-nav-search-bar" class="side-nav-search-bar"  onkeyup="myFunction()" placeholder="Search for Customers, Products, orders" />
+          <input type="search" name="search_text" id="side-nav-search-bar" class="side-nav-search-bar"  onkeypress="myFunction()" placeholder="Search for Customers, Products, orders" />
           <ul id="search-display">
             {% for product in store_products %}
-            <li><a href="">{{product}}</a></li>
+            <li><a href="{% url 'app:product_detail' product.slug %}">{{product}}</a></li>
             {% endfor %}
             {% for order in store_orders %}
-            <li><a href="">{{order.id}}</a></li>
+            <li><a href="{% url 'app:store_order_detail' order.id %}">{{order.id}}</a></li>
             {% endfor %}
             {% for customer in store_customers %}
             <li><a href="">{{customer.full_name}}</a></li>

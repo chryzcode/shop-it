@@ -1006,6 +1006,7 @@ button {
   outline: none;
   border: 0;
   border-radius: 8px;
+  position: relative;
 }
 
 #search-display{
@@ -1015,21 +1016,27 @@ button {
 #search-display.active {
   position: absolute;
   top: 80px;
-  width: 80%;
-  height: max-content;
-  background-color: blue;
+  width: 45%;
+  height: 300px;
+  background-color: #fff;
   z-index: 1070;
   padding: 10px;
   border-radius: 8px;
   display: block;
-  margin-left: auto;
+  margin-left: 14%;
   margin-right: auto;
-  left: 0;
+  left: 0px;
   right: 0;
   text-align: center;
   list-style: none;
+  overflow: scroll;
 }
 
+#search-display > li a {
+  color: #3d5170;
+  margin: 10px 0;
+  display: block;
+}
 
 .side-nav-search-bar:focus {
   color: #3d5170;

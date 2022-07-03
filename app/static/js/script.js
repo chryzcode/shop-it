@@ -38,16 +38,6 @@ if (profile_section) {
 };
 
 document.onclick = function (e) {
-  if (profile_dropdown) {
-    if (
-      e.target.classList == "store-products-container" ||
-      e.target.classList == "subscription-grid-container"
-    ) {
-      profile_dropdown.classList.remove("active");
-      profile_icon.classList.remove("active");
-    }
-  }
-
   if (store_side_nav) {
     if (e.target.id == "nav") {
       store_side_nav.classList.remove("active");
@@ -63,22 +53,16 @@ if (notification) {
   }
 }
 
-if (search_bar) {
-  search_bar.onclick = function () {
-    search_display.classList.toggle("active");
-  }
-}
-
 
 function myFunction() {
-  // Declare variables
   var input, filter, ul, li, a, i, txtValue;
   input = document.getElementById("side-nav-search-bar");
   filter = input.value.toUpperCase();
   ul = document.getElementById("search-display");
   li = ul.getElementsByTagName("li");
 
-  // Loop through all list items, and hide those who don't match the search query
+  ul.classList.add("active");
+  
   for (i = 0; i < li.length; i++) {
     a = li[i].getElementsByTagName("a")[0];
     txtValue = a.textContent || a.innerText;
@@ -89,6 +73,19 @@ function myFunction() {
     }
   }
 }
+
+
+if (search_bar) {
+  document.onclick = function (e) {
+    if (search_display) {
+      if (e.target.id != "side-nav-search-bar") {
+        search_display.classList.remove("active");
+      }
+    }
+  }
+}
+
+
 
 
 
