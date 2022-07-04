@@ -35,7 +35,8 @@
     margin-top: 140px;
   }
 
-  .store-sidenav-seg.customer-store-sidenav, .store-add-review-link > a {
+  .store-sidenav-seg.customer-store-sidenav,
+  .store-add-review-link > a {
     display: none;
   }
 
@@ -325,6 +326,10 @@
     overflow-x: hidden;
     height: 150px;
   }
+
+  .store-socials {
+    width: 30vw;
+  }
 }
 
 @media all and (max-width: 850px) {
@@ -477,5 +482,15 @@
   .images-seg,
   .acc-form-seg {
     box-shadow: none;
+  }
+
+  .store-socials {
+    width: 55%;
+    margin: 0 auto;
+  }
+
+  .store-socials > a i {
+    display: inline-block;
+    margin: 10px 10px;
   }
 }

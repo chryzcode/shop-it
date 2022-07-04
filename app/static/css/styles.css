@@ -1636,3 +1636,29 @@ body::-webkit-scrollbar,
   background: transparent;
   display: none !important;
 }
+
+
+.store-socials {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto;
+  width: 15vw;
+  flex-wrap: wrap;
+}
+
+.store-socials > a {
+  color: #3d5170;
+  text-decoration: none;
+}
+
+.store-socials > a:hover {
+  color: #6b69f8;
+  transform: scale(1.1);
+  transition: all 0.3s ease-in-out;
+}
+
+
+.store-socials > a i {
+  font-size: 25px;
+}
