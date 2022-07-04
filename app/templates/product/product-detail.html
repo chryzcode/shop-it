@@ -49,7 +49,7 @@
 
   <div class="product-info">
     <h1>{{ product.name }}</h1>
-    <p>{{product.category}}</p>
+    <a href="{{product.category.get_absolute_url}}">{{product.category}}</a>
     <p>{{product.description}}</p>
    
     <div>

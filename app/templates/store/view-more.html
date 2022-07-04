@@ -7,7 +7,7 @@
     {% endif %}
     <div class="store-add-review-link"><a href="{% url 'app:store_review' store.slugified_store_name %}">Add a store review</a></div>
     {% if 'category' in request.get_full_path %}
-    <p>{{category.name|capfirst}} Products</p>
+    <p>{{category.name|capfirst}} Category Products</p>
     {% else %}
     <p>Products {{products.count}}</p>
     {% endif %}
@@ -38,18 +38,16 @@
     </div>
     {% if products.has_other_pages %}
       <span class="pagination">
-        <span>
           {% if products.has_previous %}
-          <a href="?page={{ products.previous_page_number }}"><i class="fas fa-arrow-left"></i></a>
+          <a class="view-more-btn" href="?page={{ products.previous_page_number }}">Prev Page <i class="fas fa-arrow-left"></i></a>
           {% else %}
-          <span><i class="fas fa-arrow-left disable"></i></span>
+          <span class="view-more-btn disable">Prev Page <i class="fas fa-arrow-left disable"></i></span>
           {% endif %} {% if products.has_next %}
-          <a href="?page={{ products.next_page_number }}"><i class="fas fa-arrow-right"></i></a>
+          <a class="view-more-btn" href="?page={{ products.next_page_number }}">Next Page <i class="fas fa-arrow-right"></i></a>
           {% else %}
-          <span><i class="fas fa-arrow-right disable"></i></span>
+          <span class="view-more-btn disable">Next Page <i class="fas fa-arrow-right"></i></span>
           {% endif %}
         </span>
-      </span>
       {% endif %}
   </div>
   

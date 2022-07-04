@@ -661,7 +661,8 @@ body > nav > span:nth-child(2) > i {
   justify-content: space-between;
 }
 
-div.product-info > p:nth-child(2) {
+div.product-info > a {
+  display: inline-block;
   color: #6b69f8;
   font-size: 17px;
 }
