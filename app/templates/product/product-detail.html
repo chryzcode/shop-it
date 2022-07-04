@@ -142,6 +142,7 @@
 {% if category_product %}
 <div class="related-product-sec">
   <p>You might also like</p>
+  <h1 id="product-cart-qty" style="top: 500px;">1</h1>
   <div class="related-products-container">
     {% for product in category_product %}
     <a class="a-related-container" href="{{product.get_absolute_url}}">
@@ -182,8 +183,7 @@
       },
 
       success: function (json) {
-        document.getElementById("product-cart-qty").innerHTML = json.qty; 
-         console.log(json.qty);
+        document.getElementById("product-cart-qty").innerHTML = json.qty;
       },
       error: function (xhr, errmsg, err) {},
     });

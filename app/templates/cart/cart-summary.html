@@ -151,10 +151,10 @@
         action: "post",
       },
       success: function (json) {
-        document.getElementById("product-cart-qty").innerHTML = json.qty;
         document.getElementById("subtotal").innerHTML = json.currency + json.subtotal;
         document.getElementById("item_total_price" + prodid).innerHTML = json.currency + json.cartproqty;
         document.getElementById("grand_total").innerHTML = json.currency + json.subtotal;
+        document.getElementById("product-cart-qty").innerHTML = json.qty;
 
          console.log(json.qty);
       },

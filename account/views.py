@@ -167,16 +167,26 @@ def store_account(
     else:
         return redirect("account:user_profile")
 
+def accept_staff_invitation(request, pk, slugified_store_name):
+    store = Store.objects.get(slugified_store_name=slugified_store_name)
+    if store_staff.objects.filter(pk=pk, store=store).exists():
+        staff = store_staff.objects.get(pk=pk)
+        staff.is_active = True
+        staff_store_user = User.objects.get(email=staff.email)
+        store.staffs.add(staff_store_user)
+        staff_store_user.store = store
+        staff_store_user.save()
+        staff.save()
 
-def store_staff_register(request):
-    error = ""
-    if request.user.store_creator == True:
+
+def store_staff_register(request, slugified_store_name):
+    if Store.objects.filter(slugified_store_name=slugified_store_name).exists():
+        store = Store.objects.get(slugified_store_name=slugified_store_name)
         form = StoreStaffForm
         if request.method == "POST":
             form = StoreStaffForm(request.POST, request.FILES)
             if form.is_valid():
                 staff_user = form.save(commit=False)
-                store = Store.objects.get(owner=request.user)
                 staff_user.store = store
                 user = User.objects.create(
                     email=form.cleaned_data["email"],
@@ -202,14 +212,14 @@ def store_staff_register(request):
                         "domain": current_site.domain,
                         "uid": urlsafe_base64_encode(force_bytes(user.pk)),
                         "token": account_activation_token.make_token(user),
+                        "staff": True,
+                        "store": store,
                     },
                 )
                 user.email_user(subject=subject, message=message)
                 return render(request, "account/registration/registration-success.html")
     else:
-        error = "You are not authorized"
-        return render(request, "store/store-staff-page.html", {"error": error})
-
+        messages.error(request, "Store not found")
     return render(
         request, "account/registration/store-staff-register.html", {"form": form}
     )
@@ -241,11 +251,20 @@ def existing_store_staff(request):
                                 phone_number=staff_store_user.phone_number,
                                 avatar=staff_store_user.avatar,
                                 password=staff_store_user.password,
+                                is_active = False
                             )
-                            staff.save()
-                            store.staffs.add(user)
-                            staff_store_user.store = store
-                            staff_store_user.save()
+                            invition_url = reverse(
+                                "account:accept_staff_invitation")
+                            subject = f"{store.store_name} - Staff Permission Activation"
+                            message = render_to_string(
+                                "account/registration/store_staff_email.html", 
+                                {
+                                    "user": staff_store_user,
+                                    "store": store,
+                                    "invition_url": invition_url,
+                                }
+                            )
+                            staff_store_user.email_user(subject=subject, message=message) 
                             return redirect("account:store_staff_page")
                         else:
                             error = "User is not eligible to be a staff yet"
@@ -266,12 +285,9 @@ def existing_store_staff(request):
                     "account/registration/add-store-staff-exist.html",
                     {"form": form, "error": error},
                 )
-            error = "User does not exist"
-            return render(
-                request,
-                "account/registration/add-store-staff-exist.html",
-                {"form": form, "error": error},
-            )
+
+            store_staff_register(request, store.slugified_store_name)
+            return redirect("account:staff_stores")
     return render(
         request, "account/registration/add-store-staff-exist.html", {"form": form}
     )

@@ -62,10 +62,10 @@
         <span class="cart-icon-container cart-desktop">
           <a href="{% url 'cart:cart_summary' store.slugified_store_name %}" class="cart-btn">
             {% with total_qty=cart|length %}
-            <span id="product-cart-qty">
-              <span class="cart-qty-num">
+            <span>
+              <span  class="cart-qty-num">
                 {% if total_qty > 0 %}
-                <div class="cart-qty-num">{{ total_qty }}</div>
+                <div id="product-cart-qty" class="cart-qty-num">{{ total_qty }}</div>
                 {% else %}
                 <div class="cart-qty-num">0</div>
                 {% endif %}
