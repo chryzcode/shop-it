@@ -9,8 +9,9 @@ Hi,
 
 if you want to accept the invitation, kindly click the link below:
 {% if existing_user == True %}
-{{domain}}{% url 'account:accept_staff_invitation' slugified_store_name=store.slugified_store_name pk=staff.pk %}
-{% else %}
+{{domain}}
+{% endif %}
+{% if existing_user == False %}
 {{domain}}
 {% endif %}
 and if otherwise, kindly ignore.

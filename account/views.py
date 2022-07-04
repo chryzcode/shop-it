@@ -1,3 +1,4 @@
+from xml import dom
 import requests
 from django.conf import settings
 from django.contrib import messages
@@ -263,14 +264,15 @@ def add_store_staff(request):
                                     password=staff_store_user.password,
                                     is_active = False
                                 )
-                                current_site = get_current_site(request)
+                                domain = settings.DEFAULT_DOMAIN
+                                path = reverse("account:accept_staff_invitation", kwargs={"pk": staff.pk, "slugified_store_name": store.slugified_store_name})
                                 subject = f"{store.store_name} - Staff Permission Activation"
                                 message = render_to_string(
                                     "account/registration/store_staff_email.html", 
                                     {
                                         "user": staff_store_user,
                                         "store": store,
-                                        "domain": current_site.domain,
+                                        "domain": domain + path,
                                         "existing_user": True,
                                         "staff": staff
                                     }
