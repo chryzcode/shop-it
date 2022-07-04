@@ -578,7 +578,8 @@ body > nav > span:nth-child(2) > i {
 .subscription-grid-container > .a-related-container > div {
   width: 300px;
   height: 300px;
-  overflow-y: auto;
+  overflow-y: scroll;
+  overflow-x: hidden;
   padding: 25px;
   margin-bottom: 30px;
   font-size: 15px;
@@ -597,7 +598,8 @@ body > nav > span:nth-child(2) > i {
 .a-related-container > div {
   width: 300px;
   height: 300px;
-  overflow-y: auto;
+  overflow-y: scroll;
+  overflow-x: hidden;
   padding: 15px;
   margin-bottom: 30px;
   font-size: 15px;
@@ -1628,18 +1630,9 @@ small {
 body::-webkit-scrollbar,
 .store-sidenav::-webkit-scrollbar,
 #search-display::-webkit-scrollbar,
-.table-container::-webkit-scrollbar,
-.a-related-container::-webkit-scrollbar {
+.subscription-grid-container > .a-related-container > div::-webkit-scrollbar
+{
   width: 0;
   background: transparent;
-}
-
-body::-webkit-scrollbar-thumb,
-.store-sidenav::-webkit-scrollbar-thumb,
-#search-display::-webkit-scrollbar-thumb,
-.table-container::-webkit-scrollbar-thumb {
-  background-color: #ccc;
-
-  width: 0 !important;
-  height: 0 !important;
+  display: none !important;
 }
