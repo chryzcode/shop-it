@@ -6,7 +6,11 @@
     <img class="store-image-banner" src="{{ store.store_image.url }}" alt="" />
     {% endif %}
     <div class="store-add-review-link"><a href="{% url 'app:store_review' store.slugified_store_name %}">Add a store review</a></div>
-    <p>Latest Products</p>
+    {% if 'category' in request.get_full_path %}
+    <p>{{category.name|capfirst}} Products</p>
+    {% else %}
+    <p>Products {{products.count}}</p>
+    {% endif %}
     <div class="view-store-products-container">
       <div class="view-store-products-grid">
         {% for product in products %}

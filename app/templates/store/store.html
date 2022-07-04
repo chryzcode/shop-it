@@ -33,7 +33,7 @@
       </div>
     </div>
     {% if products.count > 12 %}
-    <a href="" class="view-more-btn">View More</a>
+    <a href="{% 'app:all_store_products' store.slugified_store_name %}" class="view-more-btn">View More</a>
     {% endif %}
     <div class="store-socials">
     {% if store.facebook %}

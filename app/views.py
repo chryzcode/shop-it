@@ -466,7 +466,7 @@ def store_category_products(request, slugified_store_name, slug):
     return render(
         request,
         "store/view-more.html",
-        {"products":products, "category": category},
+        {"products":products, "category": category, "store": store},
     )
 
 def all_store_products(request, slugified_store_name):
@@ -480,7 +480,7 @@ def all_store_products(request, slugified_store_name):
         products = paginator.page(1)
     except EmptyPage:
         products = paginator.page(paginator.num_pages)
-    return render(request, "store/view-more.html", {"products": products})
+    return render(request, "store/view-more.html", {"products": products, "store": store})
 
 
 @login_required(login_url="/account/login/")
