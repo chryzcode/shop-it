@@ -1036,9 +1036,9 @@ button {
   list-style: none;
   overflow-y: scroll;
   overflow-x: hidden;
-} 
+}
 
- #search-display > li {
+#search-display > li {
   color: #3d5170;
   margin: 10px 0;
   display: block;
@@ -1616,7 +1616,12 @@ small {
   z-index: 1022;
   color: #fff;
   display: block;
-  margin-left: 8px;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  text-align: center;
+  width: 100%;
 }
 
 #notification-dropdown > a,
@@ -1640,13 +1645,11 @@ small {
 body::-webkit-scrollbar,
 .store-sidenav::-webkit-scrollbar,
 #search-display::-webkit-scrollbar,
-.subscription-grid-container > .a-related-container > div::-webkit-scrollbar
-{
+.subscription-grid-container > .a-related-container > div::-webkit-scrollbar {
   width: 0;
   background: transparent;
   display: none !important;
 }
-
 
 .store-socials {
   display: flex;
@@ -1668,12 +1671,11 @@ body::-webkit-scrollbar,
   transition: all 0.3s ease-in-out;
 }
 
-
 .store-socials > a i {
   font-size: 25px;
 }
 
-.view-more-btn{
+.view-more-btn {
   display: block;
   margin: 20px auto;
   width: max-content;
@@ -1685,7 +1687,7 @@ body::-webkit-scrollbar,
 }
 
 .view-more-btn:hover {
-  background-color: #3d5170 ;
+  background-color: #3d5170;
   color: #fff !important;
   transition: all 1s ease-in-out;
   transform: scale(1.1);
