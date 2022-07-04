@@ -19,11 +19,6 @@ urlpatterns = [
         name="store_products",
     ),
     path(
-        "<slugified_store_name>/all-categories/",
-        views.a_store_all_categories,
-        name="a_store_all_categories",
-    ),
-    path(
         "product/<slug:slug>/",
         views.product_detail,
         name="product_detail",

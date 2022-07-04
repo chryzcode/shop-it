@@ -1,0 +1,53 @@
+{% extends 'navs/customer-nav.html' %} {% load humanize %} {% load static %} {% block title %}
+<title>{{store.store_name}}</title> {%endblock%} {% block content %}
+<div class="store-page-container">
+  <div>
+    {% if store.store_image %}
+    <img class="store-image-banner" src="{{ store.store_image.url }}" alt="" />
+    {% endif %}
+    <div class="store-add-review-link"><a href="{% url 'app:store_review' store.slugified_store_name %}">Add a store review</a></div>
+    <p>Latest Products</p>
+    <div class="view-store-products-container">
+      <div class="view-store-products-grid">
+        {% for product in products %}
+        <a href="{% url 'customer:customer_product_detail' store.slugified_store_name product.slug %}">
+          <span>
+            <img src="{{ product.image_1.url }}" />
+            <img src="{{ product.image_2.url}}" alt="">
+          </span>
+          <div>
+            <p>{{ product.name }}</p>
+            <p>
+              {% if product.discount_price != product.price %}
+              <span>
+                <span style="text-decoration: line-through">{{product.currency.symbol}}{{ product.price|intcomma }}</span>
+                <span>{{product.currency.symbol}}{{ product.discount_price|intcomma }}</span>
+              </span>
+              {% else %}
+            </p>
+            <div>{{product.currency.symbol}}{{ product.price|intcomma }}</div>
+            {% endif %}
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+    {% if products.has_other_pages %}
+      <span class="pagination">
+        <span>
+          {% if products.has_previous %}
+          <a href="?page={{ products.previous_page_number }}"><i class="fas fa-arrow-left"></i></a>
+          {% else %}
+          <span><i class="fas fa-arrow-left disable"></i></span>
+          {% endif %} {% if products.has_next %}
+          <a href="?page={{ products.next_page_number }}"><i class="fas fa-arrow-right"></i></a>
+          {% else %}
+          <span><i class="fas fa-arrow-right disable"></i></span>
+          {% endif %}
+        </span>
+      </span>
+      {% endif %}
+  </div>
+  
+</div>
+  {% endblock %}

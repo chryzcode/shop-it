@@ -450,29 +450,37 @@ def all_category(request):
     return render(request, "store/category.html", {"categories": categories})
 
 
-@login_required(login_url="/account/login/")
-def a_store_all_categories(request, slugified_store_name):
-    store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
-    all_categories = Category.objects.filter(created_by=store.store_name)
-    return render(
-        request,
-        "store/a-store-categories.html",
-        {"all_categories": all_categories},
-    )
-
-
-@login_required(login_url="/account/login/")
 def a_store_category_products(request, slugified_store_name, slug):
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
     category = get_object_or_404(Category, slug=slug, created_by=store)
-    category_products = Product.objects.filter(
-        category=category, store=store, in_stock=True
-    )
+    products = Product.objects.filter(
+        category=category, store=store)
+    page = request.GET.get('page', 1)
+    paginator = Paginator(products, 20)
+    try:
+        products = paginator.page(page)
+    except PageNotAnInteger:
+        products = paginator.page(1)
+    except EmptyPage:
+        products = paginator.page(paginator.num_pages)
     return render(
         request,
-        "product/category-products.html",
-        {"category_products": category_products, "category": category},
+        "store/view-more.html",
+        {"products":products, "category": category},
     )
+
+def all_store_products(request, slugified_store_name):
+    store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
+    products = Product.objects.filter(store=store)
+    page = request.GET.get('page', 1)
+    paginator = Paginator(products, 20)
+    try:
+        products = paginator.page(page)
+    except PageNotAnInteger:
+        products = paginator.page(1)
+    except EmptyPage:
+        products = paginator.page(paginator.num_pages)
+    return render(request, "store/view-more.html", {"products": products})
 
 
 @login_required(login_url="/account/login/")
