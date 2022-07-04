@@ -4,8 +4,6 @@ from .models import *
 from app.models import *
 from order.models import *
 from customer.models import *
-from django.conf import settings
-
 
 def a_staff_store_store(request):
     if request.user.is_authenticated:
@@ -104,6 +102,3 @@ def store_customers(request):
         return {"store_customers": None}
 
 
-
-def default_domain(request):
-    return {'default_domain': settings.DEFAULT_DOMAIN}

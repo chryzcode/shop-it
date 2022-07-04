@@ -285,18 +285,21 @@ def add_store_staff(request):
             else:
                 current_site = get_current_site(request)
                 subject = f"{store.store_name} - Staff Permission Activation"
+                domain = settings.DOMAIN_NAME
+                path = reverse("account:store_staff_register", kwargs={"slugified_store_name": store.slugified_store_name})
                 message = render_to_string(
                     "account/registration/store_staff_email.html", 
                     {
                         "store": store,
-                        "domain": current_site.domain,
+                        "domain": domain + path,
                         "existing_user": False
+
                     }
                 )
                 email = request.POST.get("email")
                 if "@" in email and "." in email:
                     send_mail(subject, message, settings.EMAIL_HOST_USER, [email])
-                    return redirect("/")
+                    return redirect("account:add_store_staff")
                 else:
                     messages.error(request, "Please enter a valid email address")
     return render(
