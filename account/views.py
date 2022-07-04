@@ -13,6 +13,8 @@ from customer.models import Customer
 
 from .forms import *
 from .models import *
+from app.models import *
+from app.forms import *
 from .tokens import account_activation_token
 
 
