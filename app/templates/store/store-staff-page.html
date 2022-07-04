@@ -10,7 +10,7 @@
       <p>{{error}}</p>
       {% if request.user.store_creator == True %}
       <span >
-        <a href="{% url 'account:existing_store_staff' %}">Add Staff</a>
+        <a href="{% url 'account:add_store_staff' %}">Add Staff</a>
       </span>
       {% endif %}
       <div class="table-container">

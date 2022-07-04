@@ -260,6 +260,8 @@ def add_store_staff(request):
                                     "user": staff_store_user,
                                     "store": store,
                                     "domain": current_site.domain,
+                                    "existing_user": True,
+                                    "staff": staff
                                 }
                             )
                             staff_store_user.email_user(subject=subject, message=message) 
@@ -283,8 +285,18 @@ def add_store_staff(request):
                     "account/registration/add-store-staff-exist.html",
                     {"form": form, "error": error},
                 )
-
-            store_staff_register(request, store.slugified_store_name)
+            else:
+                subject = f"{store.store_name} - Staff Permission Activation"
+                message = render_to_string(
+                    "account/registration/store_staff_email.html", 
+                    {
+                        "user": staff_store_user,
+                        "store": store,
+                        "domain": current_site.domain,
+                        "existing_user": False
+                    }
+                )
+                store_staff_register(request, store.slugified_store_name)
             return redirect("account:staff_stores")
     return render(
         request, "account/registration/add-store-staff-exist.html", {"form": form}
