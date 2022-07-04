@@ -15,6 +15,7 @@ from payment.models import Payment
 from subscriptions.models import *
 from subscriptions.views import *
 from order.views import *
+from customer.models import *
 
 from .forms import *
 from .models import *
@@ -920,3 +921,22 @@ def delete_shipping_method(request, pk):
     else:
         error = "You are not authorized"
         return render(request, "store/shipping-method.html", {"error": error})
+
+@login_required(login_url="/account/login/")
+def store_customers_details(request, pk):
+    if request.user.store_creator == True:
+        store = Store.objects.get(owner=request.user)
+    else:
+        store = store_staff.objects.get(user=request.user).store
+    customer = get_object_or_404(Customer, pk=pk)
+    return render(request, "store/customer-details.html", {"customer": customer, "store": store})
+
+@login_required(login_url="/account/login/")
+def store_customers_review(request, pk):
+    if request.user.store_creator == True:
+        store = Store.objects.get(owner=request.user)
+    else:
+        store = store_staff.objects.get(user=request.user).store
+    customer = get_object_or_404(Customer, pk=pk)
+    reviews = Review.objects.filter(customer=customer)
+    return render(request, "store/customer-review.html", {"customer": customer, "store": store, "reviews": reviews})
