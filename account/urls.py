@@ -55,12 +55,12 @@ urlpatterns = [
         ),
         name="change_password",
     ),
-    path("add-store-staff/", views.store_staff_register, name="add_store_staff"),
+    path("store/<slugified_store_name>/add-store-staff/", views.store_staff_register, name="add_store_staff"),
     path("delete-staff/<str:pk>", views.delete_store_staff, name="delete_store_staff"),
     path("staff-stores/", views.staff_stores, name="staff_stores"),
     path("store/<slugified_store_name>/", views.select_store, name="select_store"),
     path(
-        "add-staff/user-exist/", views.existing_store_staff, name="existing_store_staff"
+        "add-staff/user/", views.add_store_staff, name="add_store_staff"
     ),
     path("create-store/", views.create_store, name="create_store"),
     path("bank-details/", views.bank_details, name="bank_details"),

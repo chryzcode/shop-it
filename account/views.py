@@ -225,7 +225,7 @@ def store_staff_register(request, slugified_store_name):
 
 
 @login_required(login_url="/account/login/")
-def existing_store_staff(request):
+def add_store_staff(request):
     form = ExistingStoreStaffForm
     if request.user.store_creator != True:
         error = "You are not authorized"
