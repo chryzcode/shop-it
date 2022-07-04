@@ -825,7 +825,7 @@ def store_staff_page(request):
     except EmptyPage:
         store_staffs = paginator.page(paginator.num_pages)
     return render(
-        request, "store/store-staff-page.html", {"store_staffs": store_staffs}
+        request, "store/store-staff-page.html", {"store_staffs": store_staffs, "store":store}
     )
 
 

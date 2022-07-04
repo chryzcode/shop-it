@@ -6,7 +6,7 @@
   {% include 'navs/store-side-nav.html' %}
   <div class="store-content-container">
     <span class="store-products-container">
-      <p>Store Staffs</p>
+      <p>{{store.store_name}} Staffs</p>
       <p>{{error}}</p>
       {% if request.user.store_creator == True %}
       <span >
