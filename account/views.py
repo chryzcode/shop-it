@@ -8,6 +8,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.utils import timezone
 
 from customer.models import Customer
 
@@ -57,12 +58,20 @@ def account_logout(request):
     logout(request)
     return redirect("/")
 
-
+#delete user after 50 days using real time 
 @login_required(login_url="/account/login/")
 def account_delete(request):
-    request.user.delete()
+    user = User.objects.get(email=request.user.email)
+    subject = "Your Shop!t Account has been Deleted"
+    message = render_to_string(
+        "account/registration/account_delete_email.html",
+        {"user": user},
+    )
+    user.email_user(subject, message)
+    #delete user after 50 days from when this function is called
+    user.delete()
+    logout(request)
     return redirect("/")
-
 
 def account_register(request):
     if request.user.is_authenticated:
@@ -239,52 +248,39 @@ def add_store_staff(request):
                 user = User.objects.get(email=email)
                 if user.store_creator == False:
                     if user not in store.staffs.all():
-                        staff_store_user = User.objects.get(email=user.email)
-                        if staff_store_user:
-                            store = Store.objects.get(owner=request.user)
-                            staff = store_staff.objects.create(
-                                store=store,
-                                user=staff_store_user,
-                                full_name=staff_store_user.full_name,
-                                email=staff_store_user.email,
-                                phone_number=staff_store_user.phone_number,
-                                avatar=staff_store_user.avatar,
-                                password=staff_store_user.password,
-                                is_active = False
-                            )
-                            current_site = get_current_site(request)
-                            subject = f"{store.store_name} - Staff Permission Activation"
-                            message = render_to_string(
-                                "account/registration/store_staff_email.html", 
-                                {
-                                    "user": staff_store_user,
-                                    "store": store,
-                                    "domain": current_site.domain,
-                                    "existing_user": True,
-                                    "staff": staff
-                                }
-                            )
-                            staff_store_user.email_user(subject=subject, message=message) 
-                            return redirect("account:store_staff_page")
-                        else:
-                            error = "User is not eligible to be a staff yet"
-                            return render(
-                                request,
-                                "account/registration/add-store-staff-exist.html",
-                                {"form": form, "error": error},
-                            )
-                    error = "User is already a staff"
-                    return render(
-                        request,
-                        "account/registration/add-store-staff-exist.html",
-                        {"form": form, "error": error},
-                    )
-                error = "Store creator can't be a staff"
-                return render(
-                    request,
-                    "account/registration/add-store-staff-exist.html",
-                    {"form": form, "error": error},
-                )
+                        if User.objects.filter(email=user.email).exists():
+                            staff_store_user = User.objects.get(email=user.email)
+                            if staff_store_user:
+                                store = Store.objects.get(owner=request.user)
+                                staff = store_staff.objects.create(
+                                    store=store,
+                                    user=staff_store_user,
+                                    full_name=staff_store_user.full_name,
+                                    email=staff_store_user.email,
+                                    phone_number=staff_store_user.phone_number,
+                                    avatar=staff_store_user.avatar,
+                                    password=staff_store_user.password,
+                                    is_active = False
+                                )
+                                current_site = get_current_site(request)
+                                subject = f"{store.store_name} - Staff Permission Activation"
+                                message = render_to_string(
+                                    "account/registration/store_staff_email.html", 
+                                    {
+                                        "user": staff_store_user,
+                                        "store": store,
+                                        "domain": current_site.domain,
+                                        "existing_user": True,
+                                        "staff": staff
+                                    }
+                                )
+                                staff_store_user.email_user(subject=subject, message=message) 
+                                return redirect("account:store_staff_page")
+                    else:            
+                        messages.error(request, "User is already a staff")
+                else:
+                    messages.error(request, "Store creator can't be a staff")
+                
             else:
                 subject = f"{store.store_name} - Staff Permission Activation"
                 message = render_to_string(
@@ -296,8 +292,7 @@ def add_store_staff(request):
                         "existing_user": False
                     }
                 )
-                store_staff_register(request, store.slugified_store_name)
-            return redirect("account:staff_stores")
+                return redirect("account:staff_stores")
     return render(
         request, "account/registration/add-store-staff-exist.html", {"form": form}
     )
