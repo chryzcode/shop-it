@@ -63,16 +63,19 @@ function myFunction() {
 
   
 
-  ul.classList.add("active");
+  // ul.classList.add("active");
 
   for (i = 0; i < li.length; i++) {
     a = li[i].getElementsByTagName("a")[0];
-    txtValue = a.textContent || a.innerText;
-    console.log(txtValue);
-    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-      li[i].style.display = "";
-    } else {
-      ul.innerHTML = "<li>No available search</li>";
+    if (a) {
+      console.log(a)
+      txtValue = a.textContent || a.innerText;
+      console.log(txtValue);
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        li[i].style.display = "";
+      } else {
+        ul.innerHTML = "<li>No available search</li>";
+      }
     }
   }
 }

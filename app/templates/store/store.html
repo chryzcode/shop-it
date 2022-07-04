@@ -33,6 +33,17 @@
       </div>
     </div>
   </div>
-
-  {% endblock %}
+  <div class="store-socials">
+    {% if store.facebook %}
+  <a href="{{store.facebook}}" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook"></i></a>
+  {% endif %}
+  {% if store.twitter %}
+  <a href="{{store.twitter}}" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
+  {% endif %}
+  {% if store.instagram %}
+  <a href="{{store.instagram}}" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+  {% endif %}
+  </div>
 </div>
+  {% endblock %}
+

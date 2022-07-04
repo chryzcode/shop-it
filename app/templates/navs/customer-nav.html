@@ -54,7 +54,12 @@
           </a>
         </span>
 
-        <input type="search" name="" id="" class="side-nav-search-bar" placeholder="Search for Products" />
+        <span>
+          <input type="search" name="search_text" id="side-nav-search-bar" class="side-nav-search-bar"  onkeypress="myFunction()" placeholder="Search for Products" />
+        <ul id="search-display">
+            
+          </ul>
+        </span>
 
         <span class="cart-icon-container cart-desktop">
           <a href="{% url 'cart:cart_summary' store.slugified_store_name %}" class="cart-btn">

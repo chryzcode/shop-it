@@ -1033,9 +1033,9 @@ button {
   list-style: none;
   overflow-y: scroll;
   overflow-x: hidden;
-}
+} 
 
-#search-display > li {
+ #search-display > li {
   color: #3d5170;
   margin: 10px 0;
   display: block;
