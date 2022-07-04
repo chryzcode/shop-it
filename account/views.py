@@ -313,18 +313,13 @@ def add_store_staff(request):
 def delete_store_staff(request, pk):
     if request.user.store_creator == True:
         store = Store.objects.get(owner=request.user)
-        staff = store_staff.objects.get(pk=pk)
-        staff_stores = Store.objects.filter(staffs=staff.user)
-        customer_stores = Customer.objects.filter(user=staff.user)
-        if staff:
+        if store.staffs.filter(pk=pk, store=store).exists():
+            staff = store_staff.objects.get(pk=pk)
             staff.delete()
             store.staffs.remove(staff.user)
-            if staff_stores or customer_stores or staff.user.store_creator == True:
-                return redirect("account:store_staff_page")
-            else:
-                staff.user.delete()
-                return redirect("/")
+            return redirect("account:store_staff_page")
         else:
+            messages.error(request, "staff not found")
             return redirect("account:store_staff_page")
     else:
         error = "You are not authorized"
