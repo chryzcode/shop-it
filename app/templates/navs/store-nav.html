@@ -43,7 +43,7 @@
             <li><a href="{% url 'app:store_order_detail' order.id %}">{{order.id}}</a></li>
             {% endfor %}
             {% for customer in store_customers %}
-            <li><a href="">{{customer.full_name}}</a></li>
+            <li><a href="{% url 'app:store_customers_details' customer.pk %}">{{customer.full_name}}</a></li>
             {% endfor %}
           </ul>
       </span>

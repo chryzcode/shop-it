@@ -597,11 +597,11 @@ body > nav > span:nth-child(2) > i {
 
 .a-related-container > div {
   width: 300px;
-  height: 300px;
+  /* height: 300px;
   overflow-y: scroll;
-  overflow-x: hidden;
+  overflow-x: hidden; 
+  margin-bottom: 30px;*/
   padding: 15px;
-  margin-bottom: 30px;
   font-size: 15px;
 }
 
@@ -609,6 +609,8 @@ body > nav > span:nth-child(2) > i {
   text-align: center;
   font-size: 22px;
   color: #6b69f8;
+  width: 100%;
+  overflow: hidden;
 }
 
 .a-related-container > div > p:nth-child(2) {
@@ -1178,7 +1180,7 @@ button {
 .view-store-products-container {
   display: block;
   width: 80%;
-  margin: 0 auto 200px auto;
+  margin: 0 auto 100px auto;
 }
 
 .store-page-container > div > p {
@@ -1668,4 +1670,23 @@ body::-webkit-scrollbar,
 
 .store-socials > a i {
   font-size: 25px;
+}
+
+.view-more-btn{
+  display: block;
+  margin: 20px auto;
+  width: max-content;
+  padding: 10px 10px;
+  font-size: 16px;
+  color: #3d5170 !important;
+  text-decoration: none;
+  border: 1px solid #3d5170;
+}
+
+.view-more-btn:hover {
+  background-color: #3d5170 ;
+  color: #fff !important;
+  transition: all 1s ease-in-out;
+  transform: scale(1.1);
+  border: 0;
 }
