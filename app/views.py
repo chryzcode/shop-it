@@ -929,5 +929,7 @@ def store_customers_details(request, pk):
     else:
         store = store_staff.objects.get(user=request.user).store
     customer = get_object_or_404(Customer, pk=pk)
-    reviews = Review.objects.filter(email= customer.email)
-    return render(request, "store/customer-details.html", {"customer": customer, "store": store, "reviews": reviews})
+    customer_user = User.objects.get(email=customer.email)
+    reviews = Review.objects.filter(email= customer_user.email)
+    orders = Order.objects.filter(user=customer_user)
+    return render(request, "store/customer-details.html", {"customer": customer, "store": store, "reviews": reviews, "orders": orders})
