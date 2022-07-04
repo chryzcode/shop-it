@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 import os
 from pathlib import Path
+from unittest.mock import DEFAULT
 
 from decouple import config
 
@@ -88,6 +89,7 @@ TEMPLATES = [
                 "account.context_processors.store_products",
                 "account.context_processors.store_orders",
                 "account.context_processors.store_customers",
+                "account.context_processors.default_domain",
             ],
         },
     },
@@ -197,3 +199,5 @@ FLUTTERWAVE_PUBLIC_KEY = config("FLUTTERWAVE_PUBLIC_KEY")
 
 
 DJANGO_NOTIFICATIONS_CONFIG = { 'USE_JSONFIELD': True}
+
+DEFAULT_DOMAIN=config("DEFAULT_DOMAIN")

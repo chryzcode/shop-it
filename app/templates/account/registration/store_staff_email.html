@@ -11,7 +11,7 @@ if you want to accept the invitation, kindly click the link below:
 {% if existing_user == True %}
 https//:{{domain}}{% url 'account:accept_staff_invitation' slugified_store_name=store.slugified_store_name pk=staff.pk %}
 {% else %}
-htpps//:{{domain}}{% url 'account:store_staff_register' store.slugified_store_name %}
+{{default_domain}}{% url 'account:store_staff_register' store.slugified_store_name %}
 {% endif %}
 and if otherwise, kindly ignore.
 
