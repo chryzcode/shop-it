@@ -8,6 +8,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.core.mail import send_mail
 from django.utils import timezone
 
 from customer.models import Customer
@@ -282,17 +283,23 @@ def add_store_staff(request):
                     messages.error(request, "Store creator can't be a staff")
                 
             else:
+                current_site = get_current_site(request)
                 subject = f"{store.store_name} - Staff Permission Activation"
                 message = render_to_string(
                     "account/registration/store_staff_email.html", 
                     {
-                        "user": staff_store_user,
                         "store": store,
                         "domain": current_site.domain,
                         "existing_user": False
                     }
                 )
-                return redirect("account:staff_stores")
+                email = request.POST.get("email")
+                #check if it is a correct email address
+                if "@" in email and "." in email:
+                    send_mail(subject, message, settings.EMAIL_HOST_USER, [email])
+                    return redirect("account:staff_stores")
+                else:
+                    messages.error(request, "Please enter a valid email address")
     return render(
         request, "account/registration/add-store-staff-exist.html", {"form": form}
     )
