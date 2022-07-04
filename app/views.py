@@ -450,7 +450,7 @@ def all_category(request):
     return render(request, "store/category.html", {"categories": categories})
 
 
-def a_store_category_products(request, slugified_store_name, slug):
+def store_category_products(request, slugified_store_name, slug):
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
     category = get_object_or_404(Category, slug=slug, created_by=store)
     products = Product.objects.filter(
