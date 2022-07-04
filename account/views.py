@@ -201,7 +201,6 @@ def store_staff_register(request, slugified_store_name):
                 user.save()
                 staff_user.user = user
                 staff_user.save()
-                store = Store.objects.get(owner=request.user)
                 store.staffs.add(user)
                 current_site = get_current_site(request)
                 subject = "Activate your Shop!t Account"
@@ -253,15 +252,14 @@ def existing_store_staff(request):
                                 password=staff_store_user.password,
                                 is_active = False
                             )
-                            invition_url = reverse(
-                                "account:accept_staff_invitation")
+                            current_site = get_current_site(request)
                             subject = f"{store.store_name} - Staff Permission Activation"
                             message = render_to_string(
                                 "account/registration/store_staff_email.html", 
                                 {
                                     "user": staff_store_user,
                                     "store": store,
-                                    "invition_url": invition_url,
+                                    "domain": current_site.domain,
                                 }
                             )
                             staff_store_user.email_user(subject=subject, message=message) 
