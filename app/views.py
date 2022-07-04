@@ -948,4 +948,4 @@ def store_customers_details(request, pk):
         orders = paginator.page(1)
     except EmptyPage:
         orders = paginator.page(paginator.num_pages)
-    return render(request, "store/customer-details.html", {"customer": customer, "store": store, "reviews": reviews, "orders": orders})
+    return render(request, "store/customer-details.html", {"customer": customer, "store": store, "reviews": reviews, "orders": orders, "customer_user": customer_user})

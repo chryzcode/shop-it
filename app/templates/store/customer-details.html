@@ -1,72 +1,161 @@
-{% extends 'navs/store-nav.html' %}{% load humanize %} {% load static %}{% block title %}<title>
-  Shop !t - Store {% if 'unpaid' in request.get_full_path %} Unpaid {% endif %}Orders
+{% extends 'navs/store-nav.html' %} {% load static %}{% load humanize %}{% block title %}<title>
+{{store.store_name|capfirst }} - Customer details
 </title>
 {% endblock %} {% block content %}
 <div class="store-page-container">
   {% include 'navs/store-side-nav.html' %}
   <div class="store-content-container">
-    <span class="store-products-container">
-      <p>Store {% if 'unpaid' in request.get_full_path %}Unpaid{% endif %} Orders</p>
-      <div class="table-container">
-        <table class="store-products-table">
-        <p>
-          {% if 'unpaid' in request.get_full_path %}
-          <a href="{% url 'app:store_orders' %}">Paid Orders</a>
-          <small>Unpaid orders will be deleted after 30 days</small>
-          {% else %}
-          <a href="{% url 'app:unpaid_store_orders'%}">Unpaid Orders</a>
-          {% endif %}
-        </p>
-        <tr class="table-rows">
-          <th>Order Id</th>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Amount</th>
-          <th>Billing Status</th>
-        </tr>
+    <span class="order-detail-content">
+      <p> Customer Details</p>
+        <div>
+          <div>Full Name</div>
+          <p>{{customer_user.full_name|capfirst}}</p>
+        </div>
 
-        {% for order in orders %} {% for payment in payment %}
-        <tr class="table-rows">
-          <td><a href="{% url 'app:store_order_detail' order.pk %}">{{order.id|truncatechars:12}}</a></td>
-          <td>
-            {% if payment.full_name %} {{ payment.full_name }} {% elif payment.order.user %}
-            {{payment.order.user.full_name}} {% else %} Non user/ customer {% endif %}
-          </td>
-          <td>
-            {% if payment.order.user %} {{ order.user.email }} {% elif payment.email %} {{ payment.email}} {% else %}
-            Non user/ customer {% endif %}
-          </td>
-          <td>
-            {{order.currency_symbol}} {% if payment.currency %} {{ payment.amount|intcomma }} {% else %} 
-            {{order.amount|intcomma }} {% endif %}
-          </td>
-          <td>{% if order.billing_status == True %} Paid {% else %} Unpaid {% endif %}</td>
-        </tr>
-        {% endfor %} {% endfor %}
-      </table>
-      </div>
-      {% if orders.has_other_pages %}
-      <span class="pagination">
-        <span>
-          {% for i in orders.paginator.page_range %} {% if orders.number == i %} Showing
-          {{orders.start_index }} of {{ orders.end_index }} of {{ orders.paginator.count }} 
-          entries {% endif %} {% endfor %}
-        </span>
+        <div>
+          <div>Order Created</div>
+          <p>{{customer.time|timesince}}</p>
+        </div>
 
-        <span>
-          {% if orders.has_previous %}
-          <a href="?page={{ orders.previous_page_number }}"><i class="fas fa-arrow-left"></i></a>
-          {% else %}
-          <span><i class="fas fa-arrow-left disable"></i></span>
-          {% endif %} {% if orders.has_next %}
-          <a href="?page={{ orders.next_page_number }}"><i class="fas fa-arrow-right"></i></a>
-          {% else %}
-          <span><i class="fas fa-arrow-right disable"></i></span>
-          {% endif %}
-      </span>
-      </span>
-      {% endif %}
+        <div class="order-detail-products-block">
+          <div>Products</div>
+          <div class="table-container">
+            <table class="store-products-table">
+            <thead>
+              <tr class="table-rows">
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Discount Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for order_item in order_items %}
+              <tr class="table-rows">
+                <td>{{order_item.product}}</td>
+                <td>{{order_item.quantity}}</td>
+                <td>{{order.currency_symbol}}{{order_item.price|intcomma}}</td>
+                <td>
+                  {% if order_item.product.discount_percentage > 1 %}
+                True
+                {% else %}
+                False
+               {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          </div>
+        </div>
+
+        <div>
+            <div>Products Count</div>
+            <p>{{order_items.count}} Products</p>
+        </div>
+
+        <div>
+            <div>Coupoun Use</div>
+            <p>{% if order.coupon == True %}
+                True
+                {% else %}
+                False
+                {% endif %}
+            </p>
+        </div>
+
+        <div class="order-detail-products-block">
+          <div class="order-payments-amount-seg">
+          <span><span>Order: </span> <span>{{order.currency_symbol}}{{order.amount|intcomma}}</span></span>
+          <span><span>Logistics: </span>
+              <span>
+                {% if payment %}
+              {{order.currency_symbol}}{{payment.shipping_method.price|intcomma}}
+              {% else %}
+              Not paid yet
+              {% endif %}
+              </span>
+            </span>
+
+          <span>
+              <span>Total: </span><span>{{order.currency_symbol}}{% if payment %}{{ payment.amount|intcomma}}{% else %}{{order.amount|intcomma}}{% endif %}
+            </span>
+          </span>
+
+          <span>
+            <span>Payment Status: </span>
+            <span>
+              {% if order.billing_status == True %}
+                Paid
+                {% else %}
+                Not Paid
+                {% endif %}
+            </span>
+          </span>
+        </div>
+        </div>
+        
       
+
+      {% if payment %}
+      <p>
+          <p>Order Shipping Details</p>
+
+          <div>
+              <div>Payment Created</div>
+              <p>{{payment.date_created}}</p>
+          </div>
+
+          <div>
+              <div>Full Name</div>
+              <p>{{payment.full_name}}</p>
+          </div>
+
+          <div>
+              <div>Email</div>
+              <p>{{payment.email}}</p>
+          </div>
+
+          <div>
+              <div>Address</div>
+              <p>{{payment.address_line}}</p>
+          </div>
+
+          <div>
+              <div>Address 2</div>
+              {% if payment.address_line2 %}
+              <p>{{payment.address_line2}}</p>
+              {% else %}
+              <p>Nil</p>
+              {% endif %}
+          </div>
+
+          <div>
+              <div>Post Code</div>
+              {% if payment.postcode %}
+                <p>{{payment.postcode}}</p>
+                {% else %}
+                <p>Nil</p>
+                {% endif %}
+          </div>
+
+            <div>
+                <div>City</div>
+                <p>{{payment.city}}</p>
+            </div>
+
+            <div>
+                <div>State</div>
+                <p>{{payment.state}}</p>
+            </div>
+
+            <div>
+                <div>Country</div>
+                <p>{{payment.country}}</p>
+            </div>
+
+        </p>
+        {% endif %}
     </span>
   </div>
   {% endblock %}

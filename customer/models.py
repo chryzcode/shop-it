@@ -15,6 +15,7 @@ class Customer(models.Model):
     password = models.CharField(max_length=300)
     password2 = models.CharField(max_length=300)
     store = models.ForeignKey(Store, on_delete=models.CASCADE, related_name="customer")
+    time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.full_name
