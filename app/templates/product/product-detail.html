@@ -164,7 +164,9 @@
     </a>
     {% endfor %}
   </div>
+  {% if category_product.count > 6 %}
   <a class="view-more-btn" href="">View more</a>
+  {% endif %}
 </div>
 {% endif %} {% include 'navs/footer.html' %}
 <script>

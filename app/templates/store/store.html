@@ -32,7 +32,9 @@
         {% endfor %}
       </div>
     </div>
+    {% if products.count > 12 %}
     <a href="" class="view-more-btn">View More</a>
+    {% endif %}
     <div class="store-socials">
     {% if store.facebook %}
   <a href="{{store.facebook}}" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook"></i></a>
