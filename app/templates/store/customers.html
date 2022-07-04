@@ -20,8 +20,8 @@
           <th>Email</th>
         </tr>
         {% for customer in customers %}
-        <tr class="table-rows">
-          <td>{{ customer.full_name }}</a></td>
+        <tr class="table-rows">      
+          <td><a href="{% url 'app:store_customers_details' customer.pk %}">{{customer.full_name}}</a></td>
           <td>{{ customer.email }}</td>
         </tr>
         {% endfor %}
