@@ -59,6 +59,7 @@ class StoreForm(ModelForm):
             "instagram",
             "twitter",
             "facebook",
+            'whatsapp',
         ]
 
         widgets = {
@@ -89,6 +90,12 @@ class StoreForm(ModelForm):
                 attrs={
                     "class": "form-control",
                     "placeholder": "https://facebook.com/*******",
+                }
+            ),
+            "whatsapp": forms.TextInput(
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "https://wa.me/message/KLHFKHFKHL",
                 }
             ),
         }
