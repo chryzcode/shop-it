@@ -285,7 +285,7 @@ def add_store_staff(request):
             else:
                 current_site = get_current_site(request)
                 subject = f"{store.store_name} - Staff Permission Activation"
-                domain = settings.DOMAIN_NAME
+                domain = settings.DEFAULT_DOMAIN
                 path = reverse("account:store_staff_register", kwargs={"slugified_store_name": store.slugified_store_name})
                 message = render_to_string(
                     "account/registration/store_staff_email.html", 
