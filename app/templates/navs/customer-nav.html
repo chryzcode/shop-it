@@ -73,7 +73,13 @@
             <i class="far fa-shopping-cart"></i>
           </a>
         </span>
-        {% if store %} {% if request.user in store.customers.all %}
+        {% if store %} 
+        <span>
+          <li>
+            <a href="{% url 'app:store_review' store.slugified_store_name %}">Add a store review</a>
+          </li>
+        </span>
+        {% if request.user in store.customers.all %}
         <li>
           <a href="{% url 'customer:customer_profile' store.slugified_store_name %}" id="a-nav-link">My Account</a>
         </li>
