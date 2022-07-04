@@ -294,10 +294,9 @@ def add_store_staff(request):
                     }
                 )
                 email = request.POST.get("email")
-                #check if it is a correct email address
                 if "@" in email and "." in email:
                     send_mail(subject, message, settings.EMAIL_HOST_USER, [email])
-                    return redirect("account:staff_stores")
+                    return redirect("/")
                 else:
                     messages.error(request, "Please enter a valid email address")
     return render(
