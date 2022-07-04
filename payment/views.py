@@ -148,7 +148,7 @@ def initiate_transfer(request, account_name, account_number, amount, currency, b
     url = "https://api.flutterwave.com/v3/transfers"
     headers = {
         "Content-Type": "application/json",
-        "Authorization": "Bearer " + settings.RAVE_SECRET_KEY,
+        "Authorization": "Bearer " + settings.FLUTTERWAVE_SECRET_KEY,
     }
     data = {
         "account_name": account_name,

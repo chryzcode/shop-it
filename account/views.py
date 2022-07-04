@@ -441,7 +441,7 @@ def resolve_account_details(request, account_number, account_bank):
     url = "https://api.flutterwave.com/v3/accounts/resolve"
     headers = {
         "Content-Type": "application/json",
-        "Authorization": f"Bearer {settings.RAVE_SECRET_KEY}",
+        "Authorization": "Bearer " + settings.FLUTTERWAVE_SECRET_KEY,
     }
     data = {
         "account_number": account_number,
@@ -470,7 +470,7 @@ def bank_details(request):
         url = f"https://api.flutterwave.com/v3/banks/{flutterwave_currency_code}"
         headers = {
             "Content-Type": "application/json",
-            "Authorization": settings.FLUTTERWAVE_SECRET_KEY,
+            "Authorization": "Bearer " + settings.FLUTTERWAVE_SECRET_KEY,
         }
         response = requests.get(url, headers=headers)
         result = response.json().get("data")
