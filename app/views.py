@@ -930,7 +930,7 @@ def store_customers_details(request, pk):
         store = store_staff.objects.get(user=request.user).store
     customer = get_object_or_404(Customer, pk=pk)
     customer_user = User.objects.get(email=customer.email)
-    reviews = Review.objects.filter(email= customer_user.email)
+    reviews = Review.objects.filter(email= customer_user.email, store=store)
     page = request.GET.get('page', 1)
     paginator = Paginator(reviews, 5)
     try:
@@ -939,7 +939,7 @@ def store_customers_details(request, pk):
         reviews = paginator.page(1)
     except EmptyPage:
         reviews = paginator.page(paginator.num_pages)
-    orders = Order.objects.filter(user=customer_user)
+    orders = Order.objects.filter(user=customer_user, store=store)
     page = request.GET.get('page', 1)
     paginator = Paginator(orders, 5)
     try:

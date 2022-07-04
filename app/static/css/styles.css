@@ -1406,6 +1406,13 @@ button {
   flex-wrap: wrap;
 }
 
+.order-detail-products-block > p {
+  color: #6b69f8;
+  font-size: 25px;
+  text-align: center;
+  margin: 10px 0;
+}
+
 .order-detail-content > p {
   font-size: 25px;
   font-weight: 500;

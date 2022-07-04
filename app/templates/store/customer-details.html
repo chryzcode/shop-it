@@ -23,7 +23,7 @@
       </div>
 
       <div class="order-detail-products-block">
-        <div>Orders</div>
+        <p>Orders</p>
         <div class="table-container">
           <table class="store-products-table">
             <thead>
@@ -47,8 +47,8 @@
         {% if orders.has_other_pages %}
         <span class="pagination">
           <span>
-            {% for i in orders.paginator.page_range %} {% if orders.number == i %} Showing {{orders.start_index }} of {{
-            orders.end_index }} of {{ orders.paginator.count }} entries {% endif %} {% endfor %}
+            {% for i in orders.paginator.page_range %} {% if orders.number == i %} Showing {{orders.start_index }} of 
+            {{ orders.end_index }} of {{ orders.paginator.count }} entries {% endif %} {% endfor %}
           </span>
 
           <span>
@@ -67,7 +67,7 @@
       </div>
 
       <div class="order-detail-products-block">
-        <div>Reviews</div>
+        <p>Reviews</p>
         <div class="table-container">
           <table class="store-products-table">
             <thead>
@@ -89,8 +89,8 @@
         {% if reviews.has_other_pages %}
         <span class="pagination">
           <span>
-            {% for i in reviews.paginator.page_range %} {% if reviews.number == i %} Showing {{reviews.start_index }} of {{
-            reviews.end_index }} of {{ reviews.paginator.count }} entries {% endif %} {% endfor %}
+            {% for i in reviews.paginator.page_range %} {% if reviews.number == i %} Showing {{reviews.start_index }} of 
+            {{ reviews.end_index }} of {{ reviews.paginator.count }} entries {% endif %} {% endfor %}
           </span>
 
           <span>
