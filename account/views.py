@@ -276,7 +276,7 @@ def add_store_staff(request):
                                     }
                                 )
                                 staff_store_user.email_user(subject=subject, message=message) 
-                                return redirect("account:store_staff_page")
+                                return redirect("app:store_staff_page")
                     else:            
                         messages.error(request, "User is already a staff")
                 else:
