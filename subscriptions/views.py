@@ -144,9 +144,9 @@ def verify_subscription_payment(request: HttpRequest, ref: str) -> HttpResponse:
         )
         messages.success(request, "Verification Successful")
         message = f"{store.store_name} has succesfully subscribed to a plan"
-        staffs_emails = store_staff.objects.filter(store=store).email
-        for email in staffs_emails:
-            staff_user = User.objects.get(email=email)
+        staffs = store_staff.objects.filter(store=store)
+        for staff in staffs:     
+            staff_user = User.objects.get(email=staff.email)
             notify.send(store.owner, recipient=staff_user, verb=message, subscription = subscription.id)
         notify.send(store.owner, recipient=store.owner, verb=message, subscription = subscription.id)
         subject = f"Your {subscription.name} {subscription.duration.name} Subscription on Shop!t has been Activated"
@@ -209,9 +209,9 @@ def paystack_recurring_payment(request: HttpRequest, pk) -> HttpResponse:
                 messages.success(request, "Subscription Successful")
                 store = Store.objects.get(store_name=request.user.store_name)
                 message = f"{store.store_name} just resubscribed to a plan(recurring sub)"
-                staffs_emails = store_staff.objects.filter(store=store).email
-                for email in staffs_emails:
-                    staff_user = User.objects.get(email=email)
+                staffs = store_staff.objects.filter(store=store)
+                for staff in staffs:     
+                    staff_user = User.objects.get(email=staff.email)
                     notify.send(store.owner, recipient=staff_user, verb=message, subscription = subscription.id)
                 notify.send(store.owner, recipient=store.owner, verb=message, subscription = subscription.id)
                 subject = f"Your {subscription.name} {subscription.duration.name} Subscription on Shop!t has been Re-Activated"
