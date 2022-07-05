@@ -86,6 +86,9 @@ def mark_notification_read(request, id):
             if "currency_url" in key:
                 notification.save()
                 return redirect(values)
+            if "product_detail_url" in key:
+                notification.save()
+                return redirect(values)
 
 
 @login_required(login_url="account:login")
@@ -251,8 +254,11 @@ def create_product(request):
                 )
             product.currency = store.currency
             product.save()
-            staffs = store_staff.objects.filter(store=store)
-            notify.send(store.owner, recipient_list=[staff.email for staff in staffs], verb="created a new product")
+            staffs_emails = store_staff.objects.filter(store=store).email
+            for email in staffs_emails:
+                staff_user = User.objects.get(email=email)
+                notify.send(store.owner, recipient=staff_user, verb="Added a new product", product_detail_url=product.get_absolute_url())
+            notify.send(store.owner, recipient=store.owner, verb="Added a new product", product_detail_url=product.get_absolute_url())
             return redirect(
                 "app:product_detail",
                 slug=product.slug,
