@@ -30,7 +30,7 @@ def search_bar(request):
         store = Store.objects.get(store_name=request.user.store_name)
     else:
         store = Store.objects.get(
-            store_name=store_staff.objects.get(user=request.user).store
+            store_name=store_staff.objects.get(email=request.user.email).store
         )
     if request.method == "POST":
         search_text = request.POST.get("search_text") if request.POST.get("search_text") != None else ""
@@ -111,7 +111,7 @@ def a_store_all_products(request):
         store = Store.objects.get(store_name=request.user.store_name)
     else:
         store = Store.objects.get(
-            store_name=store_staff.objects.get(user=request.user).store
+            store_name=store_staff.objects.get(email=request.user.email).store
         )
     all_products = Product.objects.filter(store=store)
     page = request.GET.get('page', 1)
@@ -138,8 +138,8 @@ def product_detail(request, slug):
             store = Store.objects.get(store_name=request.user.store_name)
         else:
             store = Store.objects.get(
-                store_name=store_staff.objects.get(user=request.user).store
-            )
+            store_name=store_staff.objects.get(email=request.user.email).store
+        )
         category_product = Product.objects.filter(
             category=product.category, store=store
         ).exclude(id=product.id)[:6]
@@ -170,7 +170,7 @@ def create_product(request):
         store = Store.objects.get(store_name=request.user.store_name)
     else:
         store = Store.objects.get(
-            store_name=store_staff.objects.get(user=request.user).store
+            store_name=store_staff.objects.get(email=request.user.email).store
         )
     product_units = ProductUnit.objects.all()
     shipping_methods = Shipping_Method.objects.filter(store=store)
@@ -257,7 +257,7 @@ def edit_product(request, slug):
         store = Store.objects.get(store_name=request.user.store_name)
     else:
         store = Store.objects.get(
-            store_name=store_staff.objects.get(user=request.user).store
+            store_name=store_staff.objects.get(email=request.user.email).store
         )
     product = get_object_or_404(Product, slug=slug, store=store)
     form = ProductForm(instance=product)
@@ -364,7 +364,7 @@ def add_category(request):
         store = Store.objects.get(store_name=request.user.store_name)
     else:
         store = Store.objects.get(
-            store_name=store_staff.objects.get(user=request.user).store
+            store_name=store_staff.objects.get(email=request.user.email).store
         )
     if request.method == "POST":
         form = CategoryForm(request.POST, request.FILES)
@@ -395,7 +395,7 @@ def edit_category(request, slug):
 
     else:
         store = Store.objects.get(
-            store_name=store_staff.objects.get(user=request.user).store
+            store_name=store_staff.objects.get(email=request.user.email).store
         )
         category = get_object_or_404(Category, slug=slug, created_by=store)
 
@@ -423,7 +423,7 @@ def delete_category(request, slug):
         category = get_object_or_404(Category, slug=slug, created_by=store)
     else:
         store = Store.objects.get(
-            store_name=store_staff.objects.get(user=request.user).store
+            store_name=store_staff.objects.get(email=request.user.email).store
         )
         category = get_object_or_404(Category, slug=slug, created_by=store)
     category.delete()
@@ -436,7 +436,7 @@ def all_category(request):
         store = Store.objects.get(store_name=request.user.store_name)
     else:
         store = Store.objects.get(
-            store_name=store_staff.objects.get(user=request.user).store
+            store_name=store_staff.objects.get(email=request.user.email).store
         )
     categories = Category.objects.filter(created_by=store)
     page = request.GET.get('page', 1)
@@ -489,7 +489,7 @@ def discount_products(request):
         store = Store.objects.get(store_name=request.user.store_name)
     else:
         store = Store.objects.get(
-            store_name=store_staff.objects.get(user=request.user).store
+            store_name=store_staff.objects.get(email=request.user.email).store
         )
     products = Product.objects.filter(store=store, discount_percentage__gt=0)
     page = request.GET.get('page', 1)
@@ -544,7 +544,7 @@ def all_coupons(request):
         coupons = Coupon.objects.filter(created_by=store)
     else:
         store = Store.objects.get(
-            store_name=store_staff.objects.get(user=request.user).store
+            store_name=store_staff.objects.get(email=request.user.email).store
         )
         coupons = Coupon.objects.filter(created_by=store)
     for coupon in coupons:
@@ -584,7 +584,9 @@ def all_customers(request):
     if request.user.store_creator == True:
         store = request.user.store_name
     if request.user.store_staff == True:
-        store = store_staff.objects.get(user=request.user).store
+        store = Store.objects.get(
+            store_name=store_staff.objects.get(email=request.user.email).store
+        )
 
     customers = Store.objects.get(store_name=store).customers.all()
     return render(request, "store/customers.html", {"customers": customers})
@@ -596,7 +598,7 @@ def store_orders(request):
         store = Store.objects.get(store_name=request.user.store_name)
     if request.user.store_staff == True:
         store = Store.objects.get(
-            store_name=store_staff.objects.get(user=request.user).store
+            store_name=store_staff.objects.get(email=request.user.email).store
         )
     orders = Order.objects.filter(store=store)
     if Payment.objects.filter(store=store.id, order__in=orders).exists():
@@ -622,7 +624,7 @@ def unpaid_store_orders(request):
         store = Store.objects.get(store_name=request.user.store_name)
     if request.user.store_staff == True:
         store = Store.objects.get(
-            store_name=store_staff.objects.get(user=request.user).store
+            store_name=store_staff.objects.get(email=request.user.email).store
         )
     orders = Order.objects.filter(store=store, billing_status=False)
     if Payment.objects.filter(store=store.id, order__in=orders).exists():
@@ -651,7 +653,7 @@ def store_order_detail(request, pk):
         store = Store.objects.get(store_name=request.user.store_name)
     if request.user.store_staff == True:
         store = Store.objects.get(
-            store_name=store_staff.objects.get(user=request.user).store
+            store_name=store_staff.objects.get(email=request.user.email).store
         )
     order = Order.objects.get(id=pk, store=store.id)
     order_items = OrderItem.objects.filter(order=order)
@@ -691,7 +693,7 @@ def store_review_list(request):
         store = Store.objects.get(store_name=request.user.store_name)
     else:
         store = Store.objects.get(
-            store_name=store_staff.objects.get(user=request.user).store
+            store_name=store_staff.objects.get(email=request.user.email).store
         )
     reviews = Review.objects.filter(store=store)
     page = request.GET.get('page', 1)
@@ -736,7 +738,7 @@ def store_review_detail(request, pk):
         store = Store.objects.get(store_name=request.user.store_name)
     elif request.user.store_staff == True:
         store = Store.objects.get(
-            store_name=store_staff.objects.get(user=request.user).store
+            store_name=store_staff.objects.get(email=request.user.email).store
         )
     review = Review.objects.get(id=pk, store=store)
     return render(request, "store/store-review-detail.html", {"review": review})
@@ -748,7 +750,7 @@ def yearly_subscription_plans(request):
         store = Store.objects.get(store_name=request.user.store_name)
     else:
         store = Store.objects.get(
-            store_name=store_staff.objects.get(user=request.user).store
+            store_name=store_staff.objects.get(email=request.user.email).store
         )
     duration = Duration.objects.get(name="yearly")
     plans = Subscription.objects.filter(duration=duration)
@@ -771,7 +773,7 @@ def monthly_subscription_plans(request):
         store = Store.objects.get(store_name=request.user.store_name)
     else:
         store = Store.objects.get(
-            store_name=store_staff.objects.get(user=request.user).store
+            store_name=store_staff.objects.get(email=request.user.email).store
         )
     duration = Duration.objects.get(name="monthly")
     plans = Subscription.objects.filter(duration=duration)
@@ -793,7 +795,9 @@ def transanction_history(request):
     if request.user.store_creator == True:
         store = Store.objects.get(owner= request.user)
     else:
-        store = store_staff.objects.get(user=request.user).store
+        store = Store.objects.get(
+            store_name=store_staff.objects.get(email=request.user.email).store
+        )
     payments = Payment.objects.filter(store=store)
     customers = store.customers.all()
     page = request.GET.get('page', 1)
@@ -813,8 +817,8 @@ def store_staff_page(request):
         store = Store.objects.get(owner=request.user)
     else:
         store = Store.objects.get(
-                store_name=store_staff.objects.get(user=request.user).store
-            )
+            store_name=store_staff.objects.get(email=request.user.email).store
+        )
     store_staffs = store_staff.objects.filter(store=store)
     page = request.GET.get('page', 1)
     paginator = Paginator(store_staffs, 10)
@@ -834,7 +838,9 @@ def shipping_method_list(request):
     if request.user.store_creator == True:
         store = Store.objects.get(owner=request.user)
     else:
-        store = store_staff.objects.get(user=request.user).store
+        store = Store.objects.get(
+            store_name=store_staff.objects.get(email=request.user.email).store
+        )
     shipping_methods = Shipping_Method.objects.filter(store=store)
     page = request.GET.get('page', 1)
     paginator = Paginator(shipping_methods, 10)
@@ -935,7 +941,9 @@ def store_customers_details(request, pk):
     if request.user.store_creator == True:
         store = Store.objects.get(owner=request.user)
     else:
-        store = store_staff.objects.get(user=request.user).store
+        store = Store.objects.get(
+            store_name=store_staff.objects.get(email=request.user.email).store
+        )
     customer = get_object_or_404(Customer, pk=pk)
     customer_user = User.objects.get(email=customer.email)
     reviews = Review.objects.filter(email= customer_user.email, store=store)

@@ -8,7 +8,7 @@ from customer.models import *
 def a_staff_store_store(request):
     if request.user.is_authenticated:
         if request.user.store_staff == True:
-            store = store_staff.objects.get(user=request.user).store
+            store = store_staff.objects.get(email=request.user.email).store
             return {"a_staff_store_store": store}
         if request.user.store_creator == True:
             return {"a_staff_store_store": request.user.store_name}
@@ -21,7 +21,7 @@ def a_staff_store_store_slugified(request):
             return {"a_staff_store_store_slugified": slugify(request.user.store_name)}
 
         if request.user.store_staff == True:
-            store = store_staff.objects.get(user=request.user).store
+            store = store_staff.objects.get(email=request.user.email).store
             return {"a_staff_store_store_slugified": slugify(store)}
 
     return {"a_staff_store_store_slugified": None}
@@ -73,7 +73,7 @@ def store_products(request):
         if request.user.store_creator == True:
             store = Store.objects.get(owner=request.user)
         else:
-            store = store_staff.objects.get(user=request.user).store
+           store = store_staff.objects.get(email=request.user.email).store
         products = Product.objects.filter(store=store)
         return {"store_products": products}
     else:
@@ -84,7 +84,7 @@ def store_orders(request):
         if request.user.store_creator == True:
             store = Store.objects.get(owner=request.user)
         else:
-            store = store_staff.objects.get(user=request.user).store
+            store = store_staff.objects.get(email=request.user.email).store
         orders = Order.objects.filter(store=store)
         return {"store_orders": orders}
     else:
@@ -95,7 +95,7 @@ def store_customers(request):
         if request.user.store_creator == True:
             store = Store.objects.get(owner=request.user)
         else:
-            store = store_staff.objects.get(user=request.user).store
+            store = store_staff.objects.get(email=request.user.email).store
         customers = Customer.objects.filter(store=store)
         return {"store_customers": customers}
     else:

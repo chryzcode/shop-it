@@ -283,7 +283,6 @@ def add_store_staff(request):
                     messages.error(request, "Store creator can't be a staff")
                 
             else:
-                current_site = get_current_site(request)
                 subject = f"{store.store_name} - Staff Permission Activation"
                 domain = settings.DEFAULT_DOMAIN
                 path = reverse("account:store_staff_register", kwargs={"slugified_store_name": store.slugified_store_name})
@@ -376,7 +375,7 @@ def shipping_method_list(request):
     if request.user.store_creator == True:
         store = Store.objects.get(owner=request.user)
     else:
-        store = store_staff.objects.get(user=request.user).store
+        store = store_staff.objects.get(email=request.user.email).store
     shipping_methods = Shipping_Method.objects.filter(store=store)
     return render(
         request,
