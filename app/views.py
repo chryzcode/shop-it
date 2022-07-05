@@ -20,8 +20,7 @@ from customer.models import *
 from .forms import *
 from .models import *
 from notifications.models import Notification
-
-from django.db.models import Q
+from notifications.signals import notify
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
@@ -252,6 +251,8 @@ def create_product(request):
                 )
             product.currency = store.currency
             product.save()
+            staffs = store_staff.objects.filter(store=store)
+            notify.send(store.owner, recipient_list=[staff.email for staff in staffs], verb="created a new product")
             return redirect(
                 "app:product_detail",
                 slug=product.slug,

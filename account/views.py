@@ -107,6 +107,9 @@ def account_register(request):
                 },
             )
             user.email_user(subject=subject, message=message)
+            notify.send(store.owner, recipient=user, verb="Set your store bank details", bank_details_url=reverse("account:bank_details"))
+            notify.send(store.owner, recipient=user, verb=f"Set at least a shipping method", shipping_method_url=reverse("app:add_shipping_method"))
+            notify.send(store.owner, recipient=user, verb=f"Set your store default currency", currency_url= reverse("account:store_account"))
             return render(request, "account/registration/registration-success.html")
     return render(request, "account/registration/register.html", {"form": registerform})
 
@@ -198,8 +201,10 @@ def accept_staff_invitation(request, slugified_store_name, email, uidb64, token)
             staff.save()
             store.staffs.add(user)
             store.save()
-            staffs = store_staff.objects.filter(store=store)
-            notify.send(store.owner, recipient=staffs, verb="An additional staff has been added to the store")
+            staffs_emails = store_staff.objects.filter(store=store).email
+            for email in staffs_emails:
+                staff_user = User.objects.get(email=email)
+                notify.send(store.owner, recipient=staff_user, verb="An additional staff has been added to the store")
             notify.send(store.owner, recipient=store.owner, verb="You have been added as a staff member of your store")
             return redirect("/")
 
@@ -227,8 +232,10 @@ def store_staff_register(request, slugified_store_name):
                 user.save()
                 staff_user.save()
                 store.staffs.add(user)
-                staffs = store_staff.objects.filter(store=store)
-                notify.send(store.owner, recipient=staffs, verb="An additional staff has been added to the store")
+                staffs_emails = store_staff.objects.filter(store=store).email
+                for email in staffs_emails:
+                    staff_user = User.objects.get(email=email)
+                    notify.send(store.owner, recipient=staff_user, verb="An additional staff has been added to the store")
                 notify.send(store.owner, recipient=store.owner, verb="You have been added as a staff member of your store")
                 current_site = get_current_site(request)
                 subject = "Activate your Shop!t Account"
@@ -281,8 +288,10 @@ def add_store_staff(request):
                             }
                         )
                         user.email_user(subject=subject, message=message)
-                        staffs = store_staff.objects.filter(store=store)
-                        notify.send(store.owner, recipient=staffs, verb="Permission to add a staff member sent")
+                        staffs_emails = store_staff.objects.filter(store=store).email
+                        for email in staffs_emails:
+                            staff_user = User.objects.get(email=email)
+                            notify.send(store.owner, recipient=staff_user, verb="Permission to add a staff member sent")
                         notify.send(store.owner, recipient=store.owner, verb="Permission to add a staff member sent")
                         return redirect("app:store_staff_page")
                     else:            
@@ -306,8 +315,10 @@ def add_store_staff(request):
                 email = request.POST.get("email")
                 if "@" in email and "." in email:
                     send_mail(subject, message, settings.EMAIL_HOST_USER, [email])
-                    staffs = store_staff.objects.filter(store=store)
-                    notify.send(store.owner, recipient=staffs, verb="Permission to add a staff member sent")
+                    staffs_emails = store_staff.objects.filter(store=store).email
+                    for email in staffs_emails:
+                        staff_user = User.objects.get(email=email)
+                        notify.send(store.owner, recipient=staff_user, verb="Permission to add a staff member sent")
                     notify.send(store.owner, recipient=store.owner, verb="Permission to add a staff member sent")
                     return redirect("app:store_staff_page")
                 else:
@@ -326,8 +337,10 @@ def delete_store_staff(request, pk):
             staff_user = User.objects.get(email=staff.email)
             store.staffs.remove(staff_user)
             staff.delete()
-            staffs = store_staff.objects.filter(store=store)
-            notify.send(store.owner, recipient=staffs, verb=f"{staff_user.full_name} has been removed from the store")
+            staffs_emails = store_staff.objects.filter(store=store).email
+            for email in staffs_emails:
+                staff_user = User.objects.get(email=email)
+                notify.send(store.owner, recipient=staff_user, verb=f"{staff_user.full_name} has been removed from the store")
             notify.send(store.owner, recipient=store.owner, verb=f"{staff_user.full_name} has been removed from the store")
             return redirect("app:store_staff_page")
         else:
