@@ -195,6 +195,8 @@ def accept_staff_invitation(request, slugified_store_name, email):
                 is_active = True,
             )
             staff.save()
+            store.staffs.add(user)
+            store.save()
             return redirect("/")
 
 
