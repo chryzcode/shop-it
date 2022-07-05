@@ -179,13 +179,13 @@ def store_account(
         return redirect("account:user_profile")
 
 def accept_staff_invitation(request, slugified_store_name, email, uidb64, token):
-    if uidb64 == urlsafe_base64_encode(force_bytes(user.pk)) and token == account_activation_token.make_token(user):
-        store = Store.objects.get(slugified_store_name=slugified_store_name)
-        if store_staff.objects.filter(store=store, email=email).exists():
-            return redirect("/")
-        else:
-            if User.objects.filter(email=email).exists():
-                user = User.objects.get(email=email)
+    store = Store.objects.get(slugified_store_name=slugified_store_name)
+    if store_staff.objects.filter(store=store, email=email).exists():
+        return redirect("/")
+    else:
+        if User.objects.filter(email=email).exists():
+            user = User.objects.get(email=email)
+            if uidb64 == urlsafe_base64_encode(force_bytes(user.pk)) and token == account_activation_token.make_token(user):
                 staff = store_staff.objects.create(
                     store=store,
                     full_name=user.full_name,
@@ -199,9 +199,9 @@ def accept_staff_invitation(request, slugified_store_name, email, uidb64, token)
                 store.staffs.add(user)
                 store.save()
                 return redirect("/")
-    else:
-        messages.error(request, "Invalid Link")
-        return redirect("account:login")
+            else:
+                messages.error(request, "Invalid Link")
+                return redirect("account:login")
 
 
 
