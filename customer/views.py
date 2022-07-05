@@ -641,3 +641,18 @@ def delete_unpaid_order(request, slugified_store_name, pk):
         return redirect(
             "customer:customer_login", slugified_store_name=slugified_store_name
         )
+
+def product_review_list(request, slugified_store_name, slug):
+    store = Store.objects.get(slugified_store_name=slugified_store_name)
+    product = Product.objects.get(slug=slug, store=store)
+    reviews = Review.objects.filter(product=product)
+    page = request.GET.get('page', 1)
+    paginator = Paginator(reviews, 10)
+    try:
+        reviews = paginator.page(page)
+    except PageNotAnInteger:
+        reviews = paginator.page(1)
+    except EmptyPage:
+        reviews = paginator.page(paginator.num_pages)
+    return render( request, "customer/product-review-list.html",
+        {  "reviews": reviews, "product": product, "store": store })

@@ -1,0 +1,70 @@
+{% extends 'navs/customer-nav.html' %} {% load static %} {% block title %}<title>
+  Shop !t - {{request.user.full_name }} Review
+</title>
+{% endblock %} {% block content %}
+<div class="store-page-container">
+  <span class="customer-profile-container">
+    {% if request.user.is_authenticated %}
+    {% include 'navs/customer-side-nav.html' %}
+    {% endif %}
+    {% if request.user.is_authenticated %}
+    <div class="store-content-container">
+      {% else %}
+    <div class="review-content-container">
+      {% endif %}
+      <span class="store-products-container">
+        <p> {{product.name}} {{reviews.count}}{% if reviews.count > 1 %} Reviews {% else %} Review {% endif %}</p>
+        <div class="table-container">
+          <table class="store-products-table">
+          <tr class="table-rows">
+            <th>Name</th>
+            <th>Email</th>
+            <th>Review</th>
+            <th>Date Created</th>
+          </tr>
+          {% for review in reviews %}
+        <tr class="table-rows">
+          <td>{{ review.full_name }}</a></td>
+          <td>{% if review.email %}
+            {{ review.email }}
+            {% else %}
+            Nil 
+            {% endif %}
+        </td>
+        <td>
+            <a href="{% url 'customer:customer_review_detail' slugified_store_name=store.slugified_store_name pk=review.id  %}">{{review.title|truncatechars:40}}</a>
+        </td>
+        <td>{{ review.created }}</td>
+        </tr>
+        {% endfor %}
+        </table>
+        </div>
+
+
+        {% if reviews.has_other_pages %}
+      <span class="pagination">
+        <span>
+          {% for i in reviews.paginator.page_range %} {% if reviews.number == i %} Showing
+          {{reviews.start_index }} of {{ reviews.end_index }} of {{ reviews.paginator.count }} 
+          entries {% endif %} {% endfor %}
+        </span>
+
+        <span>
+          {% if reviews.has_previous %}
+          <a href="?page={{ reviews.previous_page_number }}"><i class="fas fa-arrow-left"></i></a>
+          {% else %}
+          <span><i class="fas fa-arrow-left disable"></i></span>
+          {% endif %} {% if reviews.has_next %}
+          <a href="?page={{ reviews.next_page_number }}"><i class="fas fa-arrow-right"></i></a>
+          {% else %}
+          <span><i class="fas fa-arrow-right disable"></i></span>
+          {% endif %}
+        </span>
+      </span>
+      {% endif %}
+
+      </span>
+    </div>
+  </span>
+  </div>
+  {% endblock %}
