@@ -179,25 +179,29 @@ def store_account(
         return redirect("account:user_profile")
 
 def accept_staff_invitation(request, slugified_store_name, email, uidb64, token):
-    store = Store.objects.get(slugified_store_name=slugified_store_name)
-    if store_staff.objects.filter(store=store, email=email).exists():
-        return redirect("/")
-    else:
-        if User.objects.filter(email=email).exists():
-            user = User.objects.get(email=email)
-            staff = store_staff.objects.create(
-                store=store,
-                full_name=user.full_name,
-                email=user.email,
-                phone_number=user.phone_number,
-                avatar=user.avatar,
-                password=user.password,
-                is_active = True,
-            )
-            staff.save()
-            store.staffs.add(user)
-            store.save()
+    if uidb64 == urlsafe_base64_encode(force_bytes(user.pk)) and token == account_activation_token.make_token(user):
+        store = Store.objects.get(slugified_store_name=slugified_store_name)
+        if store_staff.objects.filter(store=store, email=email).exists():
             return redirect("/")
+        else:
+            if User.objects.filter(email=email).exists():
+                user = User.objects.get(email=email)
+                staff = store_staff.objects.create(
+                    store=store,
+                    full_name=user.full_name,
+                    email=user.email,
+                    phone_number=user.phone_number,
+                    avatar=user.avatar,
+                    password=user.password,
+                    is_active = True,
+                )
+                staff.save()
+                store.staffs.add(user)
+                store.save()
+                return redirect("/")
+    else:
+        messages.error(request, "Invalid Link")
+        return redirect("/")
 
 
 
@@ -262,6 +266,8 @@ def add_store_staff(request):
                     if user not in store.staffs.all():
                         user = User.objects.get(email=email)                         
                         domain = settings.DEFAULT_DOMAIN
+                        token= account_activation_token.make_token(user)
+                        uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
                         path = reverse("account:accept_staff_invitation", kwargs={"email": user.email, "slugified_store_name": store.slugified_store_name, "uidb64": urlsafe_base64_encode(force_bytes(user.pk)), "token": account_activation_token.make_token(user)})
                         subject = f"{store.store_name} - Staff Permission Activation"
                         message = render_to_string(
