@@ -318,7 +318,7 @@ def delete_store_staff(request, pk):
             return redirect("account:store_staff_page")
         else:
             messages.error(request, "staff not found")
-            return redirect("account:store_staff_page")
+            return redirect("app:store_staff_page")
     else:
         error = "You are not authorized"
         return render(request, "store/store-staff-page.html", {"error": error})
