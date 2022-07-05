@@ -133,8 +133,8 @@
       </li>
      </ul>
       {% endfor %}
-      {% if reviews.count > 2 %}
-      <a class="view-more-btn" href="">View More</a>
+      {% if reviews.count == 2 %}
+      <a class="view-more-btn" href="{% url 'app:product_review_list' slugified_store_name=store.slugified_store_name slug=product.slug %}">View More</a>
       {% endif %}
     </div>
     </div>

@@ -80,4 +80,5 @@ urlpatterns = [
     path("notification/mark-as-read/<str:id>/", views.mark_notification_read, name="mark_notification_read"),
     path("notification/mark-all-as-read/", views.mark_all_notification_read, name="mark_all_notification_read"),
     path("customer/<str:pk>/", views.store_customers_details, name="store_customers_details"),
+    path("store/<slugified_store_name>/product/<slug:slug>/reviews/", views.product_review_list, name="product_review_list"),
 ]
