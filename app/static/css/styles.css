@@ -1616,12 +1616,9 @@ small {
   z-index: 1022;
   color: #fff;
   display: block;
-  margin-left: auto;
-  margin-right: auto;
-  left: 0;
-  right: 0;
   text-align: center;
-  width: 100%;
+  width: 20px;
+  margin-left: 1px;
 }
 
 #notification-dropdown > a,
