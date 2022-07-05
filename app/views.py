@@ -887,7 +887,7 @@ def add_shipping_method(request):
                         {"form": form, "error": error},
                     )
                 shipping_method.save()
-                return redirect("account:shipping_method_list")
+                return redirect("app:shipping_method_list")
         return render(request, "store/shipping-method.html", {"form": form})
     else:
         error = "You are not authorized"
@@ -917,7 +917,7 @@ def edit_shipping_method(request, pk):
                         {"form": form, "error": error},
                     )
                 shipping_method.save()
-                return redirect("account:shipping_method_list")
+                return redirect("app:shipping_method_list")
         return render(request, "store/shipping-method.html", {"form": form})
     else:
         error = "You are not authorized"
@@ -933,7 +933,7 @@ def delete_shipping_method(request, pk):
         shipping_method = get_object_or_404(Shipping_Method, pk=pk)
         if shipping_method:
             shipping_method.delete()
-            return redirect("account:shipping_method_list")
+            return redirect("app:shipping_method_list")
     else:
         error = "You are not authorized"
         return render(request, "store/shipping-method.html", {"error": error})
