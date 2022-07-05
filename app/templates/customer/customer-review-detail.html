@@ -7,7 +7,7 @@
     {% if request.user.is_authenticated %}
     {% include 'navs/customer-side-nav.html' %}
     {% endif %}
-    {% if request.user %}
+    {% if request.user.is_authenticated %}
     <div class="store-content-container">
       {% else %}
     <div class="review-content-container">
@@ -41,8 +41,11 @@
               {% endif %}
             </span>
             <p>Comment</p>
-            {{review.comment}}
+            <div>
+              {{review.comment}}
+            </div>
           </div>
+          <small>By {{review.full_name}} - {{review.created|timesince}}</small>
         </div>
       </span>
     </div>

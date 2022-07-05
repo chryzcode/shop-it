@@ -388,6 +388,11 @@
     object-fit: contain;
     object-position: center;
   }
+
+  .review-content-container {
+    width: 80%;
+    text-align: center;
+  }
 }
 
 /* text */
