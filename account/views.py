@@ -310,8 +310,8 @@ def add_store_staff(request):
 def delete_store_staff(request, pk):
     if request.user.store_creator == True:
         store = Store.objects.get(owner=request.user)
-        if store.staffs.filter(pk=pk, store=store).exists():
-            staff = store_staff.objects.get(pk=pk)
+        if store_staff.filter(pk=pk, store=store).exists():
+            staff = store_staff.objects.get(pk=pk, store=store)
             staff_user = User.objects.get(email=staff.email)
             store.staffs.remove(staff_user)
             staff.delete()
