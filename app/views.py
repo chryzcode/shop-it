@@ -78,6 +78,15 @@ def mark_notification_read(request, id):
                     return redirect("app:monthly_subscription_plans")
                 if subscription.duration.name == "yearly":
                     return redirect("app:yearly_subscription_plans")
+            if "bank_details_url" in key:
+                notification.save()
+                return redirect(values)
+            if "shipping_method_url" in key:
+                notification.save()
+                return redirect(values)
+            if "currency_url" in key:
+                notification.save()
+                return redirect(values)
 
 
 @login_required(login_url="account:login")

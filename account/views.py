@@ -19,6 +19,7 @@ from .models import *
 from app.models import *
 from app.forms import *
 from .tokens import account_activation_token
+from notifications.signals import notify
 
 
 def account_login(request):
@@ -197,6 +198,9 @@ def accept_staff_invitation(request, slugified_store_name, email, uidb64, token)
             staff.save()
             store.staffs.add(user)
             store.save()
+            staffs = store_staff.objects.filter(store=store)
+            notify.send(store.owner, recipient=staffs, verb="An additional staff has been added to the store")
+            notify.send(store.owner, recipient=store.owner, verb="You have been added as a staff member of your store")
             return redirect("/")
 
 
@@ -223,6 +227,9 @@ def store_staff_register(request, slugified_store_name):
                 user.save()
                 staff_user.save()
                 store.staffs.add(user)
+                staffs = store_staff.objects.filter(store=store)
+                notify.send(store.owner, recipient=staffs, verb="An additional staff has been added to the store")
+                notify.send(store.owner, recipient=store.owner, verb="You have been added as a staff member of your store")
                 current_site = get_current_site(request)
                 subject = "Activate your Shop!t Account"
                 message = render_to_string(
@@ -262,8 +269,6 @@ def add_store_staff(request):
                     if user not in store.staffs.all():
                         user = User.objects.get(email=email)                         
                         domain = settings.DEFAULT_DOMAIN
-                        token= account_activation_token.make_token(user)
-                        uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
                         path = reverse("account:accept_staff_invitation", kwargs={"email": user.email, "slugified_store_name": store.slugified_store_name, "uidb64": urlsafe_base64_encode(force_bytes(user.pk)), "token": account_activation_token.make_token(user)})
                         subject = f"{store.store_name} - Staff Permission Activation"
                         message = render_to_string(
@@ -276,6 +281,9 @@ def add_store_staff(request):
                             }
                         )
                         user.email_user(subject=subject, message=message)
+                        staffs = store_staff.objects.filter(store=store)
+                        notify.send(store.owner, recipient=staffs, verb="Permission to add a staff member sent")
+                        notify.send(store.owner, recipient=store.owner, verb="Permission to add a staff member sent")
                         return redirect("app:store_staff_page")
                     else:            
                         messages.error(request, "User is already a staff")
@@ -298,7 +306,10 @@ def add_store_staff(request):
                 email = request.POST.get("email")
                 if "@" in email and "." in email:
                     send_mail(subject, message, settings.EMAIL_HOST_USER, [email])
-                    return redirect("account:add_store_staff")
+                    staffs = store_staff.objects.filter(store=store)
+                    notify.send(store.owner, recipient=staffs, verb="Permission to add a staff member sent")
+                    notify.send(store.owner, recipient=store.owner, verb="Permission to add a staff member sent")
+                    return redirect("app:store_staff_page")
                 else:
                     messages.error(request, "Please enter a valid email address")
     return render(
@@ -315,6 +326,9 @@ def delete_store_staff(request, pk):
             staff_user = User.objects.get(email=staff.email)
             store.staffs.remove(staff_user)
             staff.delete()
+            staffs = store_staff.objects.filter(store=store)
+            notify.send(store.owner, recipient=staffs, verb=f"{staff_user.full_name} has been removed from the store")
+            notify.send(store.owner, recipient=store.owner, verb=f"{staff_user.full_name} has been removed from the store")
             return redirect("app:store_staff_page")
         else:
             messages.error(request, "staff not found")
@@ -366,6 +380,9 @@ def create_store(request):
                     owner=user,
                     slugified_store_name=slugify(store_name),
                 )
+                notify.send(store.owner, recipient=user, verb="Set your store bank details", bank_details_url=reverse("account:bank_details"))
+                notify.send(store.owner, recipient=user, verb=f"Set at least a shipping method", shipping_method_url=reverse("app:add_shipping_method"))
+                notify.send(store.owner, recipient=user, verb=f"Set your store default currency", currency_url= reverse("account:store_account"))
                 return redirect("/")
     return render(request, "account/registration/add-store.html", {"form": form})
 
