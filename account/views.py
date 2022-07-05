@@ -262,7 +262,7 @@ def add_store_staff(request):
                     if user not in store.staffs.all():
                         user = User.objects.get(email=email)                         
                         domain = settings.DEFAULT_DOMAIN
-                        path = reverse("account:accept_staff_invitation", kwargs={"email": user.email, "slugified_store_name": store.slugified_store_name, "uid": urlsafe_base64_encode(force_bytes(user.pk)), "token": account_activation_token.make_token(user)})
+                        path = reverse("account:accept_staff_invitation", kwargs={"email": user.email, "slugified_store_name": store.slugified_store_name, "slug": urlsafe_base64_encode(force_bytes(user.pk)), "slug": account_activation_token.make_token(user)})
                         subject = f"{store.store_name} - Staff Permission Activation"
                         message = render_to_string(
                             "account/registration/store_staff_email.html", 
