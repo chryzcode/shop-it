@@ -9,7 +9,6 @@ from account.models import *
 
 
 class Customer(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="customer")
     full_name = models.CharField(max_length=300)
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=300)

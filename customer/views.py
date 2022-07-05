@@ -24,7 +24,7 @@ from .forms import *
 from .models import *
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
+from notifications.signals import notify
 # Create your views here.
 
 
@@ -61,8 +61,8 @@ def customer_register(request, slugified_store_name):
                     user.set_password(form.cleaned_data["password"])
                     user.save()
                     store.customers.add(user)
-                    customer.user = user
                     customer.save()
+
                     current_site = get_current_site(request)
                     subject = "Activate your Shop!t Account"
                     message = render_to_string(
@@ -147,7 +147,6 @@ def existing_user_customer_register(request, slugified_store_name):
                 if user not in store.customers.all():
                     form.save(commit=False)
                     customer = Customer.objects.create(
-                        user=user,
                         full_name=user.full_name,
                         email=user.email,
                         password=user.password,

@@ -24,36 +24,6 @@ from notifications.signals import notify
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-def search_bar(request):
-    if request.user.store_creator == True:
-        store = Store.objects.get(store_name=request.user.store_name)
-    else:
-        store = Store.objects.get(
-            store_name=store_staff.objects.get(email=request.user.email).store
-        )
-    if request.method == "POST":
-        search_text = request.POST.get("search_text") if request.POST.get("search_text") != None else ""
-        if search_text:
-            products = Product.objects.filter(
-                Q(name__icontains=search_text)
-                | Q(description__icontains=search_text),
-                store = store
-            )
-
-            customers = Customer.objects.filter(
-                Q(full_name__icontains=search_text)
-                | Q(email__icontains=search_text),
-                store = store
-            )
-            orders = Order.objects.filter(
-                Q(order_id__icontains=search_text),
-                store = store
-            )
-            return {"products": products, "customers": customers, "orders": orders}
-        else:
-            return {"products": [], "customers": [], "orders": []}
-
-
 
 @login_required(login_url="account:login")
 def mark_notification_read(request, id):
