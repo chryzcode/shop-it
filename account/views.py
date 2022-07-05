@@ -210,7 +210,6 @@ def store_staff_register(request, slugified_store_name):
                 )
                 user.set_password(form.cleaned_data["password"])
                 user.save()
-                staff_user.user = user
                 staff_user.save()
                 store.staffs.add(user)
                 current_site = get_current_site(request)
@@ -256,7 +255,6 @@ def add_store_staff(request):
                                 store = Store.objects.get(owner=request.user)
                                 staff = store_staff.objects.create(
                                     store=store,
-                                    user=staff_store_user,
                                     full_name=staff_store_user.full_name,
                                     email=staff_store_user.email,
                                     phone_number=staff_store_user.phone_number,
@@ -315,8 +313,9 @@ def delete_store_staff(request, pk):
         store = Store.objects.get(owner=request.user)
         if store.staffs.filter(pk=pk, store=store).exists():
             staff = store_staff.objects.get(pk=pk)
+            staff_user = User.objects.get(email=staff.email)
+            store.staffs.remove(staff_user)
             staff.delete()
-            store.staffs.remove(staff.user)
             return redirect("account:store_staff_page")
         else:
             messages.error(request, "staff not found")

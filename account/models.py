@@ -139,7 +139,6 @@ class Bank_Info(models.Model):
 
 
 class store_staff(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user")
     full_name = models.CharField(max_length=300)
     email = models.EmailField(_("email"))
     avatar = models.ImageField(upload_to="user-profile-images/", null=True, blank=True)
