@@ -178,16 +178,25 @@ def store_account(
     else:
         return redirect("account:user_profile")
 
-def accept_staff_invitation(request, pk, slugified_store_name):
+def accept_staff_invitation(request, slugified_store_name, email):
     store = Store.objects.get(slugified_store_name=slugified_store_name)
-    if store_staff.objects.filter(pk=pk, store=store).exists():
-        staff = store_staff.objects.get(pk=pk)
-        staff.is_active = True
-        staff_store_user = User.objects.get(email=staff.email)
-        store.staffs.add(staff_store_user)
-        staff_store_user.store = store
-        staff_store_user.save()
-        staff.save()
+    if store_staff.objects.filter(store=store, email=email).exists():
+        return redirect("/")
+    else:
+        if User.objects.filter(email=email).exists():
+            user = User.objects.get(email=email)
+            staff = store_staff.objects.create(
+                store=store,
+                full_name=user.full_name,
+                email=user.email,
+                phone_number=user.phone_number,
+                avatar=user.avatar,
+                password=user.password,
+                is_active = True,
+            )
+            staff.save()
+            return redirect("/")
+
 
 
 def store_staff_register(request, slugified_store_name):
@@ -249,34 +258,21 @@ def add_store_staff(request):
                 user = User.objects.get(email=email)
                 if user.store_creator == False:
                     if user not in store.staffs.all():
-                        if User.objects.filter(email=user.email).exists():
-                            staff_store_user = User.objects.get(email=user.email)
-                            if staff_store_user:
-                                store = Store.objects.get(owner=request.user)
-                                staff = store_staff.objects.create(
-                                    store=store,
-                                    full_name=staff_store_user.full_name,
-                                    email=staff_store_user.email,
-                                    phone_number=staff_store_user.phone_number,
-                                    avatar=staff_store_user.avatar,
-                                    password=staff_store_user.password,
-                                    is_active = False
-                                )
-                                domain = settings.DEFAULT_DOMAIN
-                                path = reverse("account:accept_staff_invitation", kwargs={"pk": staff.pk, "slugified_store_name": store.slugified_store_name})
-                                subject = f"{store.store_name} - Staff Permission Activation"
-                                message = render_to_string(
-                                    "account/registration/store_staff_email.html", 
-                                    {
-                                        "user": staff_store_user,
-                                        "store": store,
-                                        "domain": domain + path,
-                                        "existing_user": True,
-                                        "staff": staff
-                                    }
-                                )
-                                staff_store_user.email_user(subject=subject, message=message) 
-                                return redirect("app:store_staff_page")
+                        user = User.objects.get(email=email)                         
+                        domain = settings.DEFAULT_DOMAIN
+                        path = reverse("account:accept_staff_invitation", kwargs={"email": user.email, "slugified_store_name": store.slugified_store_name})
+                        subject = f"{store.store_name} - Staff Permission Activation"
+                        message = render_to_string(
+                            "account/registration/store_staff_email.html", 
+                            {
+                                "user": user,
+                                "store": store,
+                                "domain": domain + path,
+                                "existing_user": True,
+                            }
+                        )
+                        user.email_user(subject=subject, message=message)
+                        return redirect("app:store_staff_page")
                     else:            
                         messages.error(request, "User is already a staff")
                 else:
@@ -315,7 +311,7 @@ def delete_store_staff(request, pk):
             staff_user = User.objects.get(email=staff.email)
             store.staffs.remove(staff_user)
             staff.delete()
-            return redirect("account:store_staff_page")
+            return redirect("app:store_staff_page")
         else:
             messages.error(request, "staff not found")
             return redirect("app:store_staff_page")
