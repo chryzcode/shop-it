@@ -178,7 +178,7 @@ def store_account(
     else:
         return redirect("account:user_profile")
 
-def accept_staff_invitation(request, slugified_store_name, email):
+def accept_staff_invitation(request, slugified_store_name, email, uidb64, token):
     store = Store.objects.get(slugified_store_name=slugified_store_name)
     if store_staff.objects.filter(store=store, email=email).exists():
         return redirect("/")
