@@ -59,6 +59,12 @@ def mark_notification_read(request, id):
             if "product_detail_url" in key:
                 notification.save()
                 return redirect(values)
+            if "customer_detail_url" in key:
+                notification.save()
+                return redirect(values)
+            if "review_detail_url" in key:
+                notification.save()
+                return redirect(values)
 
 
 @login_required(login_url="account:login")
@@ -669,6 +675,11 @@ def store_review(request, slugified_store_name):
                 review.email = request.user.email
                 review.full_name = request.user.full_name
             review.save()
+            staffs_emails = store_staff.objects.filter(store=store).email
+            for email in staffs_emails:
+                staff_user = User.objects.get(email=email)
+                notify.send(store.owner, recipient=staff_user, verb=f"{store.store_name} just got a new store review", review_detail_url=reverse("app:store_review_detail", kwargs={"pk": review.pk}))
+            notify.send(store.owner, recipient=store.owner, verb=f"{store.store_name} just got a new store review", review_detail_url=reverse("app:store_review_detail", kwargs={"pk": review.pk}))
             return redirect("app:store", slugified_store_name=slugified_store_name)
     context = {"form": form, "store": store}
     return render(request, "store/store-review.html", context)
@@ -710,6 +721,11 @@ def product_store_review(request, slugified_store_name, slug):
                 review.full_name = request.user.full_name
             review.store = store
             review.save()
+            staffs_emails = store_staff.objects.filter(store=store).email
+            for email in staffs_emails:
+                staff_user = User.objects.get(email=email)
+                notify.send(store.owner, recipient=staff_user, verb=f"{store.store_name} just got a new product review", review_detail_url=reverse("app:store_review_detail", kwargs={"pk": review.pk}))
+            notify.send(store.owner, recipient=store.owner, verb=f"{store.store_name} just got a new product review", review_detail_url=reverse("app:store_review_detail", kwargs={"pk": review.pk}))
             return redirect(
                 "customer:customer_product_detail",
                 slugified_store_name=slugified_store_name,

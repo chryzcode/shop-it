@@ -62,7 +62,11 @@ def customer_register(request, slugified_store_name):
                     user.save()
                     store.customers.add(user)
                     customer.save()
-
+                    staffs_emails = store_staff.objects.filter(store=store).email
+                    for email in staffs_emails:
+                        staff_user = User.objects.get(email=email)
+                        notify.send(store.owner, recipient=staff_user, verb=f"{store.store_name} have newly registered customer", customer_detail_url=reverse("app:store_customers_details", kwargs={"pk": customer.id}))
+                    notify.send(store.owner, recipient=store.owner, verb=f"{store.store_name} have newly registered customer", customer_detail_url=reverse("app:store_customers_details", kwargs={"pk": customer.id}))
                     current_site = get_current_site(request)
                     subject = "Activate your Shop!t Account"
                     message = render_to_string(
@@ -155,6 +159,11 @@ def existing_user_customer_register(request, slugified_store_name):
                     )
                     customer.save()
                     store.customers.add(user)
+                    staffs_emails = store_staff.objects.filter(store=store).email
+                    for email in staffs_emails:
+                        staff_user = User.objects.get(email=email)
+                        notify.send(store.owner, recipient=staff_user, verb=f"{store.store_name} have newly registered customer", customer_detail_url=reverse("app:store_customers_details", kwargs={"pk": customer.id}))
+                    notify.send(store.owner, recipient=store.owner, verb=f"{store.store_name} have newly registered customer", customer_detail_url=reverse("app:store_customers_details", kwargs={"pk": customer.id}))
                     return redirect(
                         "customer:customer_login",
                         slugified_store_name=slugified_store_name,

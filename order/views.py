@@ -70,6 +70,10 @@ def order(request, coupon_code):
             )
         if request.user.is_authenticated:
             message = "An order has been made on your store"
+            staffs_emails = store_staff.objects.filter(store=store).email
+            for email in staffs_emails:
+                staff_user = User.objects.get(email=email)
+                notify.send(user, recipient=staff_user, verb=message, order= order.id)
             notify.send(user, recipient=store.owner, verb=message, order= order.id)
         return redirect("payment:initiate_payment", order.id)
 
