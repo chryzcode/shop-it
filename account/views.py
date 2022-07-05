@@ -201,7 +201,7 @@ def accept_staff_invitation(request, slugified_store_name, email, uidb64, token)
                 return redirect("/")
     else:
         messages.error(request, "Invalid Link")
-        return redirect("/")
+        return redirect("account:login")
 
 
 
