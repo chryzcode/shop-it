@@ -1,3 +1,4 @@
+import email
 import requests
 from django.conf import settings
 from django.contrib import messages
@@ -15,6 +16,7 @@ from order.models import *
 from .forms import *
 from .models import *
 from .paystack import *
+from subscriptions.models import *
 
 from notifications.signals import notify
 
@@ -42,8 +44,8 @@ def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
             )
     shipping_methods = Shipping_Method.objects.filter(store=store)
     if request.user.is_authenticated:
-        if Customer.objects.filter(user=request.user):
-            customer = Customer.objects.get(user=request.user)
+        if Customer.objects.filter(email=request.user.email):
+            customer = Customer.objects.get(email=request.user.email)
             addresses = Address.objects.filter(customer=customer)
             if addresses:
                 PaymentForm = CustomerPaymentForm
@@ -192,10 +194,24 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
             product = Product.objects.get(pk=orderitem.product.pk)
             product.availability -= orderitem.quantity
             product.save()
+            if product.availabilty <= 5:
+                staffs = store_staff.objects.filter(store=store)
+                for staff in staffs:     
+                    staff_user = User.objects.get(email=staff.email)
+                    notify.send(store.owner, recipient=staff_user, verb="Low stock for " + product.name, product_detail_url=product.get_absolute_url())
+                notify.send(store.owner, recipient=store.owner, verb="Low stock for " + product.name, product_detail_url=product.get_absolute_url())
         messages.success(request, "Verification Successful")
         cart.clear()
-        narration = f"{payment.full_name} just paid {order.currency_symbol}{payment.amount} for some products from {store.store_name} on Shop!t"
-        transfer = initiate_transfer(request, store_bank.account_name, store_bank.account_number, payment.amount, order.currency_code, store_bank.account_name, narration)
+        if Subscription_Timeline.objects.filter(store=store).exists():
+            store_subscription = Subscription_Timeline.objects.get(store=store)
+            if store_subscription.subscription.name == "Professional":
+                amount = payment.amount
+            elif store_subscription.subscription.name == "Standard":
+                amount =  payment.amount - (payment.amount * 0.01)
+        else:
+            amount = payment.amount - (payment.amount * 0.02)
+        narration = f"{payment.full_name} just paid {order.currency_symbol}{amount} for some products from {store.store_name} on Shop!t"
+        transfer = initiate_transfer(request, store_bank.account_name, store_bank.account_number, amount, order.currency_code, store_bank.account_name, narration)
         if transfer:
             messages.success(request, "Transfer initiated successfully")
             staffs = store_staff.objects.filter(store=store)
@@ -212,7 +228,7 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
                 {
                     "store": store,
                     "domain": current_site.domain+"/"+path,
-                    "amount": payment.amount,
+                    "amount":amount,
                     "currency": order.currency_symbol,
                     "beneficiary_name": payment.full_name,
                     "payment": payment,
