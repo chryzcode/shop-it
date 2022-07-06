@@ -269,7 +269,7 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
 
     else:
         messages.error(request, "Verification Failed")
-    if Customer.objects.filter(user=request.user, store=store).exists():
+    if Customer.objects.filter(email=request.user.email, store=store).exists():
         return redirect("customer:customer_orders", store.slugified_store_name)
     else:
         return redirect("app:store", store.slugified_store_name)
