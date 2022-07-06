@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+import email
 import re
 
 from django.contrib.auth import authenticate, login, logout
@@ -770,7 +771,15 @@ def store_review_detail(request, pk):
             store_name=store_staff.objects.get(email=request.user.email).store
         )
     review = Review.objects.get(id=pk, store=store)
-    return render(request, "store/store-review-detail.html", {"review": review})
+    if User.objects.filter(email=review.email).exists():
+        user = User.objects.get(email=review.email)
+        if user in store.customers.all():
+            customer = Customer.objects.get(email=review.email)
+        else:
+            customer = None
+    else:
+        customer = None
+    return render(request, "store/store-review-detail.html", {"review": review, "customer": customer})
 
 
 @login_required(login_url="/account/login/")
