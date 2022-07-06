@@ -12,7 +12,8 @@ def a_staff_store_store(request):
             store = store_staff.objects.get(email=request.user.email).store
             return {"a_staff_store_store": store}
         if request.user.store_creator == True:
-            return {"a_staff_store_store": request.user.store_name}
+            store = Store.objects.get(owner=request.user)
+            return {"a_staff_store_store": store}
     return {"a_staff_store_store": None}
 
 
