@@ -13,6 +13,7 @@ from django.core.mail import send_mail
 from django.utils import timezone
 
 from customer.models import Customer
+from subscriptions.models import Subscription_Timeline
 
 from .forms import *
 from .models import *
@@ -263,67 +264,79 @@ def store_staff_register(request, slugified_store_name):
 @login_required(login_url="/account/login/")
 def add_store_staff(request):
     form = ExistingStoreStaffForm
-    if request.user.store_creator != True:
-        error = "You are not authorized"
-        return render(request, "store/store-staff-page.html", {"error": error})
-
-    if request.user.store_creator == True:
-        store = Store.objects.get(owner=request.user)
-        if request.method == "POST":
-            email = request.POST.get("email")
-            if User.objects.filter(email=email).exists():
-                user = User.objects.get(email=email)
-                if user.store_creator == False:
-                    if user not in store.staffs.all():
-                        user = User.objects.get(email=email)                         
-                        domain = settings.DEFAULT_DOMAIN
-                        path = reverse("account:accept_staff_invitation", kwargs={"email": user.email, "slugified_store_name": store.slugified_store_name, "uidb64": urlsafe_base64_encode(force_bytes(user.pk)), "token": account_activation_token.make_token(user)})
+    store = Store.objects.get(owner=request.user)
+    if Subscription_Timeline.objects.filter(store=store).exists():
+        if request.user.store_creator == True: 
+            store_staffs = store_staff.objects.filter(store=store)
+            store_subscription = Subscription_Timeline.objects.get(store=store)
+            if store_subscription.subscription.name == "professional":
+                store_staffs_limit = 10
+            elif store_subscription.subscription.name == "standard":
+                store_staffs_limit = 3
+            else:
+                store_staffs_limit = 0
+            if store_staffs.count() < store_staffs_limit:
+                if request.method == "POST":
+                    email = request.POST.get("email")
+                    if User.objects.filter(email=email).exists():
+                        user = User.objects.get(email=email)
+                        if user.store_creator == False:
+                            if user not in store.staffs.all():
+                                user = User.objects.get(email=email)                         
+                                domain = settings.DEFAULT_DOMAIN
+                                path = reverse("account:accept_staff_invitation", kwargs={"email": user.email, "slugified_store_name": store.slugified_store_name, "uidb64": urlsafe_base64_encode(force_bytes(user.pk)), "token": account_activation_token.make_token(user)})
+                                subject = f"{store.store_name} - Staff Permission Activation"
+                                message = render_to_string(
+                                    "account/registration/store_staff_email.html", 
+                                    {
+                                        "user": user,
+                                        "store": store,
+                                        "domain": domain + path,
+                                        "existing_user": True,
+                                    }
+                                )
+                                user.email_user(subject=subject, message=message)
+                                staffs = store_staff.objects.filter(store=store)
+                                for staff in staffs:     
+                                    staff_user = User.objects.get(email=staff.email)
+                                    notify.send(store.owner, recipient=staff_user, verb="Permission to add a staff member sent")
+                                notify.send(store.owner, recipient=store.owner, verb="Permission to add a staff member sent")
+                                return redirect("app:store_staff_page")
+                            else:            
+                                messages.error(request, "User is already a staff")
+                        else:
+                            messages.error(request, "Store creator can't be a staff")
+                        
+                    else:
                         subject = f"{store.store_name} - Staff Permission Activation"
+                        domain = settings.DEFAULT_DOMAIN
+                        path = reverse("account:store_staff_register", kwargs={"slugified_store_name": store.slugified_store_name})
                         message = render_to_string(
                             "account/registration/store_staff_email.html", 
                             {
-                                "user": user,
                                 "store": store,
                                 "domain": domain + path,
-                                "existing_user": True,
+                                "existing_user": False
+
                             }
                         )
-                        user.email_user(subject=subject, message=message)
-                        staffs = store_staff.objects.filter(store=store)
-                        for staff in staffs:     
-                            staff_user = User.objects.get(email=staff.email)
-                            notify.send(store.owner, recipient=staff_user, verb="Permission to add a staff member sent")
-                        notify.send(store.owner, recipient=store.owner, verb="Permission to add a staff member sent")
-                        return redirect("app:store_staff_page")
-                    else:            
-                        messages.error(request, "User is already a staff")
-                else:
-                    messages.error(request, "Store creator can't be a staff")
-                
+                        email = request.POST.get("email")
+                        if "@" in email and "." in email:
+                            send_mail(subject, message, settings.EMAIL_HOST_USER, [email])
+                            staffs = store_staff.objects.filter(store=store)
+                            for staff in staffs:     
+                                staff_user = User.objects.get(email=staff.email)
+                                notify.send(store.owner, recipient=staff_user, verb="Permission to add a staff member sent")
+                            notify.send(store.owner, recipient=store.owner, verb="Permission to add a staff member sent")
+                            return redirect("app:store_staff_page")
+                        else:
+                            messages.error(request, "Please enter a valid email address")
             else:
-                subject = f"{store.store_name} - Staff Permission Activation"
-                domain = settings.DEFAULT_DOMAIN
-                path = reverse("account:store_staff_register", kwargs={"slugified_store_name": store.slugified_store_name})
-                message = render_to_string(
-                    "account/registration/store_staff_email.html", 
-                    {
-                        "store": store,
-                        "domain": domain + path,
-                        "existing_user": False
-
-                    }
-                )
-                email = request.POST.get("email")
-                if "@" in email and "." in email:
-                    send_mail(subject, message, settings.EMAIL_HOST_USER, [email])
-                    staffs = store_staff.objects.filter(store=store)
-                    for staff in staffs:     
-                        staff_user = User.objects.get(email=staff.email)
-                        notify.send(store.owner, recipient=staff_user, verb="Permission to add a staff member sent")
-                    notify.send(store.owner, recipient=store.owner, verb="Permission to add a staff member sent")
-                    return redirect("app:store_staff_page")
-                else:
-                    messages.error(request, "Please enter a valid email address")
+                messages.error(request, "You have reached the limit of staff members")
+        else:
+            messages.error(request, "You are not authorized")
+    else:
+        messages.error(request, "You are to subscribe to a plan to add staff")
     return render(
         request, "account/registration/add-store-staff-exist.html", {"form": form}
     )
