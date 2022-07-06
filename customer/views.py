@@ -40,48 +40,49 @@ def customer_register(request, slugified_store_name):
             customer = form.save(commit=False)
             customer.store = store
             email = form.cleaned_data["email"]
-            check_email = User.objects.get(email=email)
-            if check_email.store_name == store.store_name:
-                messages.error(request, "You can't be a customer of your store.")
+            if User.objects.filter(email=email).exists():
+                check_email = User.objects.get(email=email)
+                if check_email.store_name == store.store_name:
+                    messages.error(request, "You can't be a customer of your store.")
+                else: 
+                    if check_email:   
+                        error = "You have an existing account"
+                        return redirect(
+                            "customer:existing_user_customer_register",
+                            slugified_store_name=slugified_store_name,
+                        )
             else:
-                if check_email:
-                    error = "You have an exiting account"
-                    return redirect(
-                        "customer:existing_user_customer_register",
-                        slugified_store_name=slugified_store_name,
-                    )
-                else:
-                    user = User.objects.create(
-                        email=form.cleaned_data["email"],
-                        full_name=form.cleaned_data["full_name"],
-                        is_active=False,
-                        is_staff=False,
-                        store_creator=False,
-                    )
-                    user.set_password(form.cleaned_data["password"])
-                    user.save()
-                    store.customers.add(user)
-                    customer.save()
-                    staffs = store_staff.objects.filter(store=store)
-                    for staff in staffs:     
-                        staff_user = User.objects.get(email=staff.email)
-                        notify.send(store.owner, recipient=staff_user, verb=f"{store.store_name} have newly registered customer", customer_detail_url=reverse("app:store_customers_details", kwargs={"pk": customer.id}))
-                    notify.send(store.owner, recipient=store.owner, verb=f"{store.store_name} have newly registered customer", customer_detail_url=reverse("app:store_customers_details", kwargs={"pk": customer.id}))
-                    current_site = get_current_site(request)
-                    subject = "Activate your Shop!t Account"
-                    message = render_to_string(
-                        "account/registration/account_activation_email.html",
-                        {
-                            "user": user,
-                            "domain": current_site.domain,
-                            "uid": urlsafe_base64_encode(force_bytes(user.pk)),
-                            "token": account_activation_token.make_token(user),
-                        },
-                    )
-                    user.email_user(subject=subject, message=message)
-                    return render(
-                        request, "account/registration/registration-success.html"
-                    )
+                user = User.objects.create(
+                    email=form.cleaned_data["email"],
+                    full_name=form.cleaned_data["full_name"],
+                    is_active=False,
+                    is_staff=False,
+                    store_creator=False,
+                )
+                user.set_password(form.cleaned_data["password"])
+                user.save()
+                store.customers.add(user)
+                customer.save()
+                staffs = store_staff.objects.filter(store=store)
+                for staff in staffs:     
+                    staff_user = User.objects.get(email=staff.email)
+                    notify.send(store.owner, recipient=staff_user, verb=f"{store.store_name} have newly registered customer", customer_detail_url=reverse("app:store_customers_details", kwargs={"pk": customer.id}))
+                notify.send(store.owner, recipient=store.owner, verb=f"{store.store_name} have newly registered customer", customer_detail_url=reverse("app:store_customers_details", kwargs={"pk": customer.id}))
+                current_site = get_current_site(request)
+                subject = "Activate your Shop!t Account"
+                message = render_to_string(
+                    "account/registration/account_activation_email.html",
+                    {
+                        "user": user,
+                        "domain": current_site.domain,
+                        "uid": urlsafe_base64_encode(force_bytes(user.pk)),
+                        "token": account_activation_token.make_token(user),
+                    },
+                )
+                user.email_user(subject=subject, message=message)
+                return render(
+                    request, "account/registration/registration-success.html"
+                )
     return render(
         request,
         "customer/register.html",

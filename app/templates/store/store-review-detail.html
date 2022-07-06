@@ -10,6 +10,12 @@
       <div>
         {% if review.email %}
         <div>
+          {% if review.full_name %}
+          {% if customer != None %}
+          <a href="{% url 'app:store_customers_details' customer.pk %}">{{review.full_name}}</a>
+          <span>{{review.full_name}}</span>
+          {% endif %}
+          {% endif %}
           <span>{{review.email}}</span>
         </div>
         {% endif %}
