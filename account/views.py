@@ -275,7 +275,7 @@ def add_store_staff(request):
                 store_staffs_limit = 3
             else:
                 store_staffs_limit = 0
-            if store_staffs.count() < store_staffs_limit:
+            if store_staffs.count() <= store_staffs_limit:
                 if request.method == "POST":
                     email = request.POST.get("email")
                     if User.objects.filter(email=email).exists():

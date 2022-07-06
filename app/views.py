@@ -510,32 +510,43 @@ def discount_products(request):
 
 @login_required(login_url="/account/login/")
 def create_coupon(request):
-    if request.user.store_creator == False:
-        error = "You are not authorized to create coupons"
-        return render(request, "store/coupon.html", {"error": error})
-
+    form = CouponForm
+    if request.user.store_creator == True:
+        store = Store.objects.get(store_name=request.user.store_name)
+        if Subscription_Timeline.objects.filter(store=store).exists():
+            store_coupons = Coupon.objects.filter(store=store)
+            store_subscription = Subscription_Timeline.objects.get(store=store)
+            if store_subscription.subscription.name == "professional":
+                store_coupon_limit = 10
+            elif store_subscription.subscription.name == "standard":  
+                store_coupon_limit = 3
+            else:
+                store_coupon_limit = 0
+            if store_coupons.count() <= store_coupon_limit:  
+                if request.method == "POST":
+                    form = CouponForm(request.POST, request.FILES)
+                    if form.is_valid():
+                        code = request.POST.get("code")
+                        store = Store.objects.get(store_name=request.user.store_name)
+                        if Coupon.objects.filter(code=code, created_by=store).exists():
+                            error = "Coupon already exists"
+                            return render(
+                                request,
+                                "store/create-coupon.html",
+                                {"form": form, "error": error},
+                            )
+                        else:
+                            coupon = form.save(commit=False)
+                            store = Store.objects.get(store_name=request.user.store_name)
+                            coupon.created_by = store
+                            coupon.save()
+                            return redirect("app:all_coupons")
+            else:
+                messages.error(request, "You have reached the coupon limit")     
     else:
-        form = CouponForm
-        if request.method == "POST":
-            form = CouponForm(request.POST, request.FILES)
-            if form.is_valid():
-                code = request.POST.get("code")
-                store = Store.objects.get(store_name=request.user.store_name)
-                if Coupon.objects.filter(code=code, created_by=store).exists():
-                    error = "Coupon already exists"
-                    return render(
-                        request,
-                        "store/create-coupon.html",
-                        {"form": form, "error": error},
-                    )
-                else:
-                    coupon = form.save(commit=False)
-                    store = Store.objects.get(store_name=request.user.store_name)
-                    coupon.created_by = store
-                    coupon.save()
-                    return redirect("app:all_coupons")
-        context = {"form": form}
-        return render(request, "store/create-coupon.html", context)
+        messages.error(request, "You are not authorized to create coupon")
+    context = {"form": form}
+    return render(request, "store/create-coupon.html", context)
 
 
 @login_required(login_url="/account/login/")
