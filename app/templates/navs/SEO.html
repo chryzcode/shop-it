@@ -1,0 +1,53 @@
+{% if store %}
+<meta name="description" {% if store.store_description %} content="{{store.store_description}}"
+  {% else %} content="{{store.store_name}} - is an online store on Shop!t." {% endif %}
+/>
+<meta name="author" content="{{store.store_name}}" />
+
+<!-- Google / Search Engine Tags -->
+<meta itemprop="name" content="{{store.store_name}}" />
+<meta itemprop="description"
+  {% if store.store_description %} content="{{store.store_description}}"
+{% else %} content="{{store.store_name}} - is an online store on Shop!t." {% endif %}/>
+
+{% if store.store_image %}
+<meta itemprop="image"
+ content="https://res.cloudinary.com/chryz/image/upload/v1/{{store.store_image}}"/>
+{% endif %}
+<meta name="robots" content="index, follow" />
+<meta
+  name="keywords"
+  content="{{store.store_name|capfirst}}, {{store.store_name|lower}}, {{store.store_name|title}}, {% if store.store_description %} {{store.store_description}}
+    {% else %} {{store.store_name}} - is an online store on Shop!t.
+    {% endif %}"
+/>
+
+<!-- Facebook Meta Tags -->
+<meta property="og:url" content="https://shopitapps.herokuapp.com/store/{{store.slugified_store_name}}" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="{{store.store_name}}" />
+<meta
+  property="og:description"
+  {% if store.store_description %}
+  content="{{store.store_description}}"
+  {% else %}
+  content="{{store.store_name}} - is an online store on Shop!t."
+  {% endif %} 
+/>
+{% if store.store_image %}
+<meta property="og:image" content="https://res.cloudinary.com/chryz/image/upload/v1/{{store.store_image}}"  />
+{% endif %}
+
+<!-- Twitter Meta Tags -->
+<meta name="twitter:title" content="{{store.store_name}}" />
+
+<meta name="twitter:description" {% if store.store_description %}
+  content="{{store.store_description}}"
+  {% else %}
+  content="{{store.store_name}} - is an online store on Shop!t."
+  {% endif %} />
+
+{% if store.store_image %}
+<meta name="twitter:image" content="https://res.cloudinary.com/chryz/image/upload/v1/{{store.store_image}}" />
+{% endif %} 
+{% endif %}

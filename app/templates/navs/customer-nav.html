@@ -26,6 +26,10 @@
     {% block title %}
     <title>Shop !t</title>
     {% endblock %}
+
+    {% if SEO == True %}
+    {% include 'navs/SEO.html' %}
+    {% endif %}
   </head>
   <body>
     <nav data-aos="fade-down" data-aos-duration="1500" class="nav" id="nav">

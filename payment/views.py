@@ -207,9 +207,9 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
             if store_subscription.subscription.name == "Professional":
                 amount = payment.amount
             elif store_subscription.subscription.name == "Standard":
-                amount =  payment.amount - (payment.amount * 0.01)
+                amount =  int(payment.amount - (payment.amount * 0.01))
         else:
-            amount = payment.amount - (payment.amount * 0.02)
+            amount = int(payment.amount - (payment.amount * 0.02))
         narration = f"{payment.full_name} just paid {order.currency_symbol}{amount} for some products from {store.store_name} on Shop!t"
         transfer = initiate_transfer(request, store_bank.account_name, store_bank.account_number, amount, order.currency_code, store_bank.account_name, narration)
         if transfer:
