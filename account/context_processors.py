@@ -4,6 +4,7 @@ from .models import *
 from app.models import *
 from order.models import *
 from customer.models import *
+from subscriptions.models import *
 
 def a_staff_store_store(request):
     if request.user.is_authenticated:

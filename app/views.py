@@ -78,13 +78,6 @@ def mark_all_notification_read(request):
     return redirect (current_path)
 
 
-
-
-def a_store(request):
-    store  = get_store(request)
-    print('hi', store)
-    return render (request, "store/store.html", {"store": store})
-
 def custom_error_404(request, exception):
     return render(request, "error-pages/404-page.html")
 
@@ -302,7 +295,11 @@ def store_admin(request):
 def store(request, slugified_store_name):
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
     products = Product.objects.filter(store=store).order_by("-created")[:12]
-    return render(request, "store/store.html", {"store": store, "products": products, "slugified_store_name": slugified_store_name})
+    if Subscription_Timeline.objects.filter(store=store).exists():
+        SEO = True
+    else:
+        SEO = False
+    return render(request, "store/store.html", {"store": store, "products": products, "slugified_store_name": slugified_store_name, "SEO": SEO})
 
 
 @login_required(login_url="/account/login/")
@@ -453,6 +450,10 @@ def all_category(request):
 
 def store_category_products(request, slugified_store_name, slug):
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
+    if Subscription_Timeline.objects.filter(store=store).exists():
+        SEO = True
+    else:
+        SEO = False
     category = get_object_or_404(Category, slug=slug, created_by=store)
     products = Product.objects.filter(
         category=category, store=store)
@@ -467,11 +468,15 @@ def store_category_products(request, slugified_store_name, slug):
     return render(
         request,
         "store/view-more.html",
-        {"products":products, "category": category, "store": store},
+        {"products":products, "category": category, "store": store, "SEO": SEO},
     )
 
 def all_store_products(request, slugified_store_name):
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
+    if Subscription_Timeline.objects.filter(store=store).exists():
+        SEO = True
+    else:
+        SEO = False
     products = Product.objects.filter(store=store)
     page = request.GET.get('page', 1)
     paginator = Paginator(products, 20)
@@ -481,7 +486,7 @@ def all_store_products(request, slugified_store_name):
         products = paginator.page(1)
     except EmptyPage:
         products = paginator.page(paginator.num_pages)
-    return render(request, "store/view-more.html", {"products": products, "store": store})
+    return render(request, "store/view-more.html", {"products": products, "store": store, "SEO": SEO})
 
 
 @login_required(login_url="/account/login/")
