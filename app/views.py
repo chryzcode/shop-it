@@ -710,6 +710,7 @@ def store_review(request, slugified_store_name):
     return render(request, "store/store-review.html", context)
 
 
+@login_required(login_url="/account/login/")
 def store_review_list(request):
     if request.user.store_creator == True:
         store = Store.objects.get(store_name=request.user.store_name)
@@ -760,6 +761,7 @@ def product_store_review(request, slugified_store_name, slug):
     return render(request, "store/store-review.html", context)
 
 
+@login_required(login_url="/account/login/")
 def store_review_detail(request, pk):
     if request.user.store_creator == True:
         store = Store.objects.get(store_name=request.user.store_name)
@@ -771,6 +773,7 @@ def store_review_detail(request, pk):
     return render(request, "store/store-review-detail.html", {"review": review})
 
 
+@login_required(login_url="/account/login/")
 def yearly_subscription_plans(request):
     reccuring_sub = None
     if request.user.store_creator == True:
@@ -794,6 +797,7 @@ def yearly_subscription_plans(request):
     )
 
 
+@login_required(login_url="/account/login/")
 def monthly_subscription_plans(request):
     reccuring_sub = None
     if request.user.store_creator == True:
