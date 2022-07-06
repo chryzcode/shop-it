@@ -269,9 +269,9 @@ def add_store_staff(request):
         if request.user.store_creator == True: 
             store_staffs = store_staff.objects.filter(store=store)
             store_subscription = Subscription_Timeline.objects.get(store=store)
-            if store_subscription.subscription.name == "professional":
+            if store_subscription.subscription.name == "Professional":
                 store_staffs_limit = 10
-            elif store_subscription.subscription.name == "standard":
+            elif store_subscription.subscription.name == "Standard":
                 store_staffs_limit = 3
             else:
                 store_staffs_limit = 0

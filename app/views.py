@@ -516,9 +516,9 @@ def create_coupon(request):
         if Subscription_Timeline.objects.filter(store=store).exists():
             store_coupons = Coupon.objects.filter(store=store)
             store_subscription = Subscription_Timeline.objects.get(store=store)
-            if store_subscription.subscription.name == "professional":
+            if store_subscription.subscription.name == "Professional":
                 store_coupon_limit = 10
-            elif store_subscription.subscription.name == "standard":  
+            elif store_subscription.subscription.name == "Standard":  
                 store_coupon_limit = 3
             else:
                 store_coupon_limit = 0
