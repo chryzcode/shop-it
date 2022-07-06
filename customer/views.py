@@ -244,8 +244,8 @@ def customer_profile(request, slugified_store_name):
 
 
 def customer_wishlist(request, slugified_store_name):
-    if request.user.is_authenticated:
-        store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
+    store = Store.objects.get(slugified_store_name=slugified_store_name)
+    if request.user in store.customers.all():
         user = request.user
         wishlist = Product.objects.filter(wishlist=user)
         page = request.GET.get('page', 1)
@@ -268,8 +268,8 @@ def customer_wishlist(request, slugified_store_name):
 
 
 def address_list(request, slugified_store_name):
-    if request.user.is_authenticated:
-        store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
+    store = Store.objects.get(slugified_store_name=slugified_store_name)
+    if request.user in store.customers.all():
         customer = Customer.objects.get(email=request.user.email)
         address_list = Address.objects.filter(customer=customer).order_by("-default")
         return render(
@@ -284,8 +284,8 @@ def address_list(request, slugified_store_name):
 
 
 def create_address(request, slugified_store_name):
-    if request.user.is_authenticated:
-        store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
+    store = Store.objects.get(slugified_store_name=slugified_store_name)
+    if request.user in store.customers.all():
         customer = Customer.objects.get(email=request.user.email)
         default_address = Address.objects.filter(customer=customer, default=True)
         address_form = AddressForm()
@@ -320,8 +320,8 @@ def create_address(request, slugified_store_name):
 
 
 def edit_address(request, slugified_store_name, id):
-    if request.user.is_authenticated:
-        store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
+    store = Store.objects.get(slugified_store_name=slugified_store_name)
+    if request.user in store.customers.all():
         customer = Customer.objects.get(email=request.user.email)
         address = get_object_or_404(Address, id=id, customer=customer)
         address_form = AddressForm(instance=address)
@@ -344,8 +344,8 @@ def edit_address(request, slugified_store_name, id):
 
 
 def delete_address(request, slugified_store_name, id):
-    if request.user.is_authenticated:
-        store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
+    store = Store.objects.get(slugified_store_name=slugified_store_name)
+    if request.user in store.customers.all():
         customer = Customer.objects.get(email=request.user.email)
         address = get_object_or_404(Address, id=id, customer=customer)
         address.delete()
@@ -359,8 +359,8 @@ def delete_address(request, slugified_store_name, id):
 
 
 def set_default_address(request, slugified_store_name, id):
-    if request.user.is_authenticated:
-        store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
+    store = Store.objects.get(slugified_store_name=slugified_store_name)
+    if request.user in store.customers.all():
         customer = Customer.objects.get(email=request.user.email)
         Address.objects.filter(customer=customer, default=True).update(default=False)
         Address.objects.filter(id=id, customer=customer).update(default=True)
@@ -375,10 +375,10 @@ def set_default_address(request, slugified_store_name, id):
 
 
 def customer_add_wishlist(request, slug):
-    if request.user.is_authenticated:
+    product = get_object_or_404(Product, slug=slug)
+    store = get_object_or_404(Store, store_name=product.store.store_name)
+    if request.user in store.customers.all():
         user = request.user
-        product = get_object_or_404(Product, slug=slug)
-        store = get_object_or_404(Store, store_name=product.store.store_name)
         product.wishlist.add(user)
         return redirect(
             "customer:customer_wishlist", slugified_store_name=slugify(store)
@@ -390,10 +390,10 @@ def customer_add_wishlist(request, slug):
 
 
 def customer_remove_wishlist(request, slug):
-    if request.user.is_authenticated:
-        user = request.user
-        product = get_object_or_404(Product, slug=slug)
-        store = get_object_or_404(Store, store_name=product.store.store_name)
+    product = get_object_or_404(Product, slug=slug)
+    store = get_object_or_404(Store, store_name=product.store.store_name)
+    if request.user in store.customers.all():
+        user = request.user  
         product.wishlist.remove(user)
         return redirect(
             "app:product_detail", slug=product.slug, slugified_store_name=slugify(store)
@@ -415,8 +415,8 @@ def customer_stores(request):
 
 
 def delete_account(request, slugified_store_name):
-    if request.user.is_authenticated:
-        store = Store.objects.get(slugified_store_name=slugified_store_name)
+    store = Store.objects.get(slugified_store_name=slugified_store_name)
+    if request.user in store.customers.all():
         customer = Customer.objects.get(email=request.user.email, store=store)
         customer_stores = Store.objects.filter(customers=request.user)
         if customer:
@@ -434,8 +434,8 @@ def delete_account(request, slugified_store_name):
 
 
 def customer_orders(request, slugified_store_name):
-    if request.user.is_authenticated:
-        store = Store.objects.get(slugified_store_name=slugified_store_name)
+    store = Store.objects.get(slugified_store_name=slugified_store_name)
+    if request.user in store.customers.all():
         customer = Customer.objects.get(email=request.user.email, store=store)
         orders = Order.objects.filter(user=request.user, store=store, billing_status=True)
         if Payment.objects.filter(user=request.user, store=store, order__in=orders):
@@ -469,8 +469,8 @@ def customer_orders(request, slugified_store_name):
 
 
 def unpaid_customer_orders(request, slugified_store_name):
-    if request.user.is_authenticated:
-        store = Store.objects.get(slugified_store_name=slugified_store_name)
+    store = Store.objects.get(slugified_store_name=slugified_store_name)
+    if request.user in store.customers.all():
         customer = Customer.objects.get(email=request.user.email, store=store)
         orders = Order.objects.filter(
             user=request.user, store=store, billing_status=False
@@ -509,8 +509,8 @@ def unpaid_customer_orders(request, slugified_store_name):
 
 
 def customer_order_detail(request, slugified_store_name, pk):
-    if request.user.is_authenticated:
-        store = Store.objects.get(slugified_store_name=slugified_store_name)
+    store = Store.objects.get(slugified_store_name=slugified_store_name)
+    if request.user in store.customers.all():
         customer = Customer.objects.get(email=request.user.email, store=store)
         order = Order.objects.get(id=pk, store=store.id)
         order_items = OrderItem.objects.filter(order=order)
@@ -536,8 +536,8 @@ def customer_order_detail(request, slugified_store_name, pk):
 
 
 def customer_reviews(request, slugified_store_name):
-    if request.user.is_authenticated:
-        store = Store.objects.get(slugified_store_name=slugified_store_name)
+    store = Store.objects.get(slugified_store_name=slugified_store_name)
+    if request.user in store.customers.all():
         customer = Customer.objects.get(email=request.user.email, store=store)
         reviews = Review.objects.filter(email=request.user.email, store=store)
         page = request.GET.get('page', 1)
@@ -582,8 +582,8 @@ def customer_review_detail(request, slugified_store_name, pk):
 
 
 def edit_review(request, slugified_store_name, pk):
-    if request.user.is_authenticated:
-        store = Store.objects.get(slugified_store_name=slugified_store_name)
+    store = Store.objects.get(slugified_store_name=slugified_store_name)
+    if request.user in store.customers.all():
         customer = Customer.objects.get(email=request.user.email, store=store)
         review = Review.objects.get(id=pk, store=store.id)
         if request.method == "POST":
@@ -613,8 +613,8 @@ def edit_review(request, slugified_store_name, pk):
 
 
 def delete_review(request, slugified_store_name, pk):
-    if request.user.is_authenticated:
-        store = Store.objects.get(slugified_store_name=slugified_store_name)
+    store = Store.objects.get(slugified_store_name=slugified_store_name)
+    if request.user in store.customers.all():
         review = Review.objects.get(id=pk, store=store.id)
         review.delete()
         return redirect(
@@ -627,8 +627,8 @@ def delete_review(request, slugified_store_name, pk):
 
 
 def delete_unpaid_order(request, slugified_store_name, pk):
-    if request.user.is_authenticated:
-        store = Store.objects.get(slugified_store_name=slugified_store_name)
+    store = Store.objects.get(slugified_store_name=slugified_store_name)
+    if request.user in store.customers.all():
         order = Order.objects.get(id=pk, store=store.id, billing_status=False)
         if Payment.objects.filter(user=request.user, store=store, order=order).exists():
             payment = Payment.objects.get(user=request.user, store=store, order=order)
