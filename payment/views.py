@@ -194,7 +194,7 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
             product = Product.objects.get(pk=orderitem.product.pk)
             product.availability -= orderitem.quantity
             product.save()
-            if product.availabilty <= 5:
+            if product.availability <= 5:
                 staffs = store_staff.objects.filter(store=store)
                 for staff in staffs:     
                     staff_user = User.objects.get(email=staff.email)
