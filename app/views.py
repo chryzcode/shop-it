@@ -25,6 +25,7 @@ from notifications.signals import notify
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
+
 @login_required(login_url="account:login")
 def mark_notification_read(request, id):
     if Notification.objects.filter(recipient=request.user, id=id).exists():
@@ -75,6 +76,14 @@ def mark_all_notification_read(request):
         notification.unread = False
         notification.save()
     return redirect (current_path)
+
+
+
+
+def a_store(request):
+    store  = get_store(request)
+    print('hi', store)
+    return render (request, "store/store.html", {"store": store})
 
 def custom_error_404(request, exception):
     return render(request, "error-pages/404-page.html")

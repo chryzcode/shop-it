@@ -22,6 +22,7 @@ from .tokens import account_activation_token
 from notifications.signals import notify
 
 
+
 def account_login(request):
     context = {}
     if request.user.is_authenticated:
