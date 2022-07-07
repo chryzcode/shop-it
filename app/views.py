@@ -301,7 +301,7 @@ def store(request, slugified_store_name):
 @login_required(login_url="/account/login/")
 def store_customers(request, slugified_store_name):
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
-    customers = store.customers.all()
+    customers = Customer.objects.filter(store=store)
     page = request.GET.get('page', 1)
     paginator = Paginator(customers, 10)
     try:
@@ -595,13 +595,13 @@ def delete_coupon(request, pk):
 @login_required(login_url="/account/login/")
 def all_customers(request):
     if request.user.store_creator == True:
-        store = request.user.store_name
+        store = Store.objects.get(store_name=request.user.store_name)
     if request.user.store_staff == True:
         store = Store.objects.get(
             store_name=store_staff.objects.get(email=request.user.email).store
         )
 
-    customers = Store.objects.get(store_name=store).customers.all()
+    customers =  Customer.objects.filter(store=store)
     return render(request, "store/customers.html", {"customers": customers})
 
 
@@ -979,32 +979,27 @@ def store_customers_details(request, pk):
         store = Store.objects.get(
             store_name=store_staff.objects.get(email=request.user.email).store
         )
-    else:
-        store = Customer.objects.get(email=request.user.email).store
-    if request.user in store.customers.all():
-        customer = Customer.objects.get(pk=pk)
-        customer_user = User.objects.get(email=customer.email)
-        reviews = Review.objects.filter(email= customer_user.email, store=store)
-        page = request.GET.get('page', 1)
-        paginator = Paginator(reviews, 5)
-        try:
-            reviews = paginator.page(page)
-        except PageNotAnInteger:
-            reviews = paginator.page(1)
-        except EmptyPage:
-            reviews = paginator.page(paginator.num_pages)
-        orders = Order.objects.filter(user=customer_user, store=store)
-        page = request.GET.get('page', 1)
-        paginator = Paginator(orders, 5)
-        try:
-            orders = paginator.page(page)
-        except PageNotAnInteger:
-            orders = paginator.page(1)
-        except EmptyPage:
-            orders = paginator.page(paginator.num_pages)
-        return render(request, "store/customer-details.html", {"customer": customer, "store": store, "reviews": reviews, "orders": orders, "customer_user": customer_user})
-    else:
-        return redirect("/")
+    customer = get_object_or_404(Customer, pk=pk)
+    customer_user = User.objects.get(email=customer.email)
+    reviews = Review.objects.filter(email= customer_user.email, store=store)
+    page = request.GET.get('page', 1)
+    paginator = Paginator(reviews, 5)
+    try:
+        reviews = paginator.page(page)
+    except PageNotAnInteger:
+        reviews = paginator.page(1)
+    except EmptyPage:
+        reviews = paginator.page(paginator.num_pages)
+    orders = Order.objects.filter(user=customer_user, store=store)
+    page = request.GET.get('page', 1)
+    paginator = Paginator(orders, 5)
+    try:
+        orders = paginator.page(page)
+    except PageNotAnInteger:
+        orders = paginator.page(1)
+    except EmptyPage:
+        orders = paginator.page(paginator.num_pages)
+    return render(request, "store/customer-details.html", {"customer": customer, "store": store, "reviews": reviews, "orders": orders, "customer_user": customer_user})
 
 
 
