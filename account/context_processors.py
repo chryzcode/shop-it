@@ -74,8 +74,10 @@ def store_products(request):
     if request.user.is_authenticated:
         if request.user.store_creator == True:
             store = Store.objects.get(owner=request.user)
+        elif request.user.store_staff == True:
+            store = store_staff.objects.get(email=request.user.email).store
         else:
-           store = store_staff.objects.get(email=request.user.email).store
+            store = None
         products = Product.objects.filter(store=store)
         return {"store_products": products}
     else:
@@ -85,8 +87,10 @@ def store_orders(request):
     if request.user.is_authenticated:
         if request.user.store_creator == True:
             store = Store.objects.get(owner=request.user)
-        else:
+        elif request.user.store_staff == True:
             store = store_staff.objects.get(email=request.user.email).store
+        else:
+            store = None
         orders = Order.objects.filter(store=store)
         return {"store_orders": orders}
     else:
@@ -96,8 +100,10 @@ def store_customers(request):
     if request.user.is_authenticated:
         if request.user.store_creator == True:
             store = Store.objects.get(owner=request.user)
-        else:
+        elif request.user.store_staff == True:
             store = store_staff.objects.get(email=request.user.email).store
+        else:
+            store = None
         customers = Customer.objects.filter(store=store)
         return {"store_customers": customers}
     else:

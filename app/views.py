@@ -296,11 +296,8 @@ def store_admin(request):
 def store(request, slugified_store_name):
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
     products = Product.objects.filter(store=store).order_by("-created")[:12]
-    if Subscription_Timeline.objects.filter(store=store).exists():
-        SEO = True
-    else:
-        SEO = False
-    return render(request, "store/store.html", {"store": store, "products": products, "slugified_store_name": slugified_store_name, "SEO": SEO})
+    
+    return render(request, "store/store.html", {"store": store, "products": products, "slugified_store_name": slugified_store_name})
 
 
 @login_required(login_url="/account/login/")
