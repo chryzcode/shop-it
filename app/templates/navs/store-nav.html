@@ -35,7 +35,7 @@
 
       <span>     
           <input type="text" id="side-nav-search-bar" class="side-nav-search-bar active"  onkeypress="myFunction()" placeholder="Search for Customers, Products, orders" />
-          {% comment %} <ul id="search-display">
+          <ul id="search-display">
             {% for product in store_products %}
             <li><a href="{% url 'app:product_detail' product.slug %}">{{product}}</a></li>
             {% endfor %}
@@ -45,7 +45,7 @@
             {% for customer in store_customers %}
             <li><a href="{% url 'app:store_customers_details' customer.pk %}">{{customer.full_name}}</a></li>
             {% endfor %}
-          </ul> {% endcomment %}
+          </ul>
       </span>
       
       <span>

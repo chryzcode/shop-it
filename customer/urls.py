@@ -70,7 +70,7 @@ urlpatterns = [
         views.delete_address,
         name="delete_address",
     ),
-    path("stores/", views.customer_stores, name="customer_stores"),
+    path("my-stores/", views.customer_stores, name="customer_stores"),
     path("<slugified_store_name>/delete", views.delete_account, name="delete_account"),
     path(
         "<slugified_store_name>/orders/", views.customer_orders, name="customer_orders"

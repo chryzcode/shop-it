@@ -1,6 +1,4 @@
 from datetime import datetime, timedelta
-import email
-import re
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -977,31 +975,36 @@ def delete_shipping_method(request, pk):
 def store_customers_details(request, pk):
     if request.user.store_creator == True:
         store = Store.objects.get(owner=request.user)
-    else:
+    elif request.user.store_staff == True:
         store = Store.objects.get(
             store_name=store_staff.objects.get(email=request.user.email).store
         )
-    customer = get_object_or_404(Customer, pk=pk)
-    customer_user = User.objects.get(email=customer.email)
-    reviews = Review.objects.filter(email= customer_user.email, store=store)
-    page = request.GET.get('page', 1)
-    paginator = Paginator(reviews, 5)
-    try:
-        reviews = paginator.page(page)
-    except PageNotAnInteger:
-        reviews = paginator.page(1)
-    except EmptyPage:
-        reviews = paginator.page(paginator.num_pages)
-    orders = Order.objects.filter(user=customer_user, store=store)
-    page = request.GET.get('page', 1)
-    paginator = Paginator(orders, 5)
-    try:
-        orders = paginator.page(page)
-    except PageNotAnInteger:
-        orders = paginator.page(1)
-    except EmptyPage:
-        orders = paginator.page(paginator.num_pages)
-    return render(request, "store/customer-details.html", {"customer": customer, "store": store, "reviews": reviews, "orders": orders, "customer_user": customer_user})
+    else:
+        store = Customer.objects.get(email=request.user.email).store
+    if request.user in store.customers.all():
+        customer = Customer.objects.get(pk=pk)
+        customer_user = User.objects.get(email=customer.email)
+        reviews = Review.objects.filter(email= customer_user.email, store=store)
+        page = request.GET.get('page', 1)
+        paginator = Paginator(reviews, 5)
+        try:
+            reviews = paginator.page(page)
+        except PageNotAnInteger:
+            reviews = paginator.page(1)
+        except EmptyPage:
+            reviews = paginator.page(paginator.num_pages)
+        orders = Order.objects.filter(user=customer_user, store=store)
+        page = request.GET.get('page', 1)
+        paginator = Paginator(orders, 5)
+        try:
+            orders = paginator.page(page)
+        except PageNotAnInteger:
+            orders = paginator.page(1)
+        except EmptyPage:
+            orders = paginator.page(paginator.num_pages)
+        return render(request, "store/customer-details.html", {"customer": customer, "store": store, "reviews": reviews, "orders": orders, "customer_user": customer_user})
+    else:
+        return redirect("/")
 
 
 

@@ -13,12 +13,14 @@
     <div class="review-content-container">
       {% endif %}
       <span class="review-container">
+        
         <p>{{review.title}}</p>
         <div>
           {% if review.product %}
           <div class="review-realated-product">
             <p>Related Product</p>
             <div>
+              
               <a
                 href="{% url 'customer:customer_product_detail' slugified_store_name=store.slugified_store_name slug=review.product.slug %}"
                 >{{review.product}}</a
@@ -28,7 +30,15 @@
           {% endif %}
 
           <div>
-            {% if request.user.is_authenticated %}
+            
+            </span>
+            <p>Comment</p>
+            <div>
+              {{review.comment}}
+            </div>
+          </div>
+          <small>By {{review.full_name}} - {{review.created|timesince}}</small>
+          {% if request.user.is_authenticated %}
             {% if request.user.email == review.email %}
             <span>
               <button type="button" class="update-btn">
@@ -39,13 +49,6 @@
               </button>
               {% endif %}
               {% endif %}
-            </span>
-            <p>Comment</p>
-            <div>
-              {{review.comment}}
-            </div>
-          </div>
-          <small>By {{review.full_name}} - {{review.created|timesince}}</small>
         </div>
       </span>
     </div>
