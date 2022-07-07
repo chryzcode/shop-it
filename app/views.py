@@ -296,20 +296,31 @@ def store_admin(request):
     payments = Payment.objects.filter(store=store, verified=True)
     print(payments)
     total_amount = 0
+    today_total_amount = 0
+    product_dict = {}
     for payment in payments:
         amount = payment.amount
         total_amount = amount + total_amount
-    print(total_amount)
+        #payment made today
+        if payment.date_created == datetime.now().date():
+            amount = payment.amount
+            today_total_amount = amount + today_total_amount
+        else:
+            today_total_amount = 0
+    print('total amount', total_amount)
+    print('today total amount', today_total_amount)
     orders = Order.objects.filter(store=store, billing_status=True)
     for order in orders:
         order_items = OrderItem.objects.filter(order=order)
-        product_quantity= 0
         for order_item in order_items:
-            product = order_item.product
-            quantity = order_item.quantity
-            
+            product_name = order_item.product.name
+            product_quantity = order_item.quantity
+            if product_name in product_dict:
+                product_dict[product_name] = product_dict[product_name] + product_quantity
+            else:
+                product_dict[product_name] = product_quantity         
+    print(product_dict)         
     latest_orders = Order.objects.filter(store=store).order_by("-created")[:5]
-    print(latest_orders)
     return render(request, "store/store-admin.html")
 
 
