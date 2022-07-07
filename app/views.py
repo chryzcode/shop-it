@@ -4,7 +4,6 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
-from django.utils import timezone
 from django.utils.text import slugify
 
 from account.models import *
@@ -288,6 +287,29 @@ def delete_product(request, slug):
 
 @login_required(login_url="/account/login/")
 def store_admin(request):
+    if request.user.store_creator == True:
+        store = Store.objects.get(store_name=request.user.store_name)
+    else:
+        store = Store.objects.get(
+            store_name=store_staff.objects.get(email=request.user.email).store
+        )
+    payments = Payment.objects.filter(store=store, verified=True)
+    print(payments)
+    total_amount = 0
+    for payment in payments:
+        amount = payment.amount
+        total_amount = amount + total_amount
+    print(total_amount)
+    orders = Order.objects.filter(store=store, billing_status=True)
+    for order in orders:
+        order_items = OrderItem.objects.filter(order=order)
+        product_quantity= 0
+        for order_item in order_items:
+            product = order_item.product
+            quantity = order_item.quantity
+            
+    latest_orders = Order.objects.filter(store=store).order_by("-created")[:5]
+    print(latest_orders)
     return render(request, "store/store-admin.html")
 
 

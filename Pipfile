@@ -21,6 +21,7 @@ django-countries = "*"
 six = "*"
 markdown = "*"
 django-notifications-hq = "*"
+celery = "*"
 
 [dev-packages]
 
