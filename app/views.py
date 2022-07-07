@@ -302,7 +302,7 @@ def store_admin(request):
         amount = payment.amount
         total_amount = amount + total_amount
         #payment made today
-        if payment.date_created == datetime.now().date():
+        if payment.date_created < timezone.now() - timedelta(days=1):
             amount = payment.amount
             today_total_amount = amount + today_total_amount
         else:
