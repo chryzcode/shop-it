@@ -80,7 +80,7 @@
               {% for review in reviews %}
               <tr class="table-rows">
                 <td><a href="{% url 'app:store_review_detail' review.id %}">{{review.title|truncatechars:40}}</a></td>
-                <td><td>{{ review.created }}</td></td>
+                <td>{{ review.created }}</td>
               </tr>
               {% endfor %}
             </tbody>

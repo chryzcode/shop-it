@@ -8,17 +8,17 @@
     <span class="review-container">
       <p>{{review.title }}</p>
       <div>
-        {% if review.email %}
         <div>
-          {% if review.full_name %}
           {% if customer != None %}
-          <a href="{% url 'app:store_customers_details' customer.pk %}">{{review.full_name}}</a>
+          <a href="{% url 'app:store_customers_details' customer.pk %}">{{customer.full_name}}</a>
+          {% else %}
+          {% if review.full_name %}
           <span>{{review.full_name}}</span>
           {% endif %}
-          {% endif %}
           <span>{{review.email}}</span>
+          {% endif %}
         </div>
-        {% endif %}
+      
 
         {% if review.product %}
         <div class="review-realated-product">
