@@ -297,18 +297,39 @@ def store_admin(request):
     print(payments)
     total_amount = 0
     today_total_amount = 0
+    customer_count= 0
     product_dict = {}
+    customer_dict = {}
     for payment in payments:
         amount = payment.amount
         total_amount = amount + total_amount
-        #payment made today
-        if payment.date_created < timezone.now() - timedelta(days=1):
+        #payment made in the past 24 hours
+        if payment.date_created > timezone.now() - timedelta(hours=24):
+            today_total_amount = 0
+        else:
             amount = payment.amount
             today_total_amount = amount + today_total_amount
-        else:
-            today_total_amount = 0
+            
+
+        if payment.user:
+            if User.objects.filter(email=payment.user.email).exists():
+                user = User.objects.get(email=payment.user.email)
+                if user in store.customers.all():
+                    customer = Customer.objects.get(email=user.email)
+                    customer_count = customer_count + 1
+                    if customer.email in customer_dict:
+                        customer_dict[customer.email] = customer_dict[customer.email] + customer_count
+                    else:
+                        customer_dict[customer.email] = customer_count
+                else:
+                    customer = None
+    #top five data in customer dict by the highest value
+    
+    customer_dict = (sorted(customer_dict.items(), key=lambda x: x[1], reverse=True))[:5]
+    print('customer dict', customer_dict)
     print('total amount', total_amount)
     print('today total amount', today_total_amount)
+
     orders = Order.objects.filter(store=store, billing_status=True)
     for order in orders:
         order_items = OrderItem.objects.filter(order=order)
@@ -318,8 +339,10 @@ def store_admin(request):
             if product_name in product_dict:
                 product_dict[product_name] = product_dict[product_name] + product_quantity
             else:
-                product_dict[product_name] = product_quantity         
-    print(product_dict)         
+                product_dict[product_name] = product_quantity 
+    
+    product_dict = (sorted(product_dict.items(), key=lambda item: item[1], reverse=True))[:5]
+    print('product_dict', product_dict)          
     latest_orders = Order.objects.filter(store=store).order_by("-created")[:5]
     return render(request, "store/store-admin.html")
 
