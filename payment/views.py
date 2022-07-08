@@ -279,7 +279,7 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
                         'currency': order.currency_symbol,
                     },
                 )
-                to_email = [settings.EMAIL_HOST_USER, settings.LOGISTICS_EMAIL, store.owner.email]
+                to_email = [settings.LOGISTICS_EMAIL, store.owner.email]
                 send_mail(subject, message, from_email, to_email)
     
     else:
