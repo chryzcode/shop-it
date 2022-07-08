@@ -56,8 +56,8 @@
             {% for order in latest_orders %}
           <tr class="table-rows">
             <td><a href="{% url 'app:store_order_detail' order.pk %}">{{order.id|truncatechars:12}}</a></td>
-            <td>{{order.created|timesince}}</td>
-            <td>{{order.amount|intcomma}}</td>
+            <td>{{order.created|timesince}} ago</td>
+            <td>{{order.currency_symbol}}{{order.amount|intcomma}}</td>
           </tr>
             {% endfor %}
             </table>

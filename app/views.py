@@ -316,7 +316,6 @@ def store_admin(request):
         else:
             amount = payment.amount
             today_total_amount = amount + today_total_amount
-            
 
         if payment.user:
             if User.objects.filter(email=payment.user.email).exists():
@@ -343,9 +342,18 @@ def store_admin(request):
             else:
                 product_dict[product_name] = product_quantity
     product_dict = (sorted(product_dict.items(), key=lambda item: item[1], reverse=True))[:5]
-
+    
+    
     latest_orders = Order.objects.filter(store=store).order_by("-created")[:5]
     customers = store.customers.all()
+    total_sales_today_percentage = (today_total_amount / total_amount) * 100 
+    last_24_customers_percentage = (last_24_hours_total_customers / len(customers)) * 100
+    total_sales_percentage = (total_amount / total_amount) * 100
+    total_customers_percentage = (len(customers) / len(customers)) * 100
+    print('total_sales_today_percentage', total_sales_today_percentage)
+    print('total_sales_percentage', total_sales_percentage)
+    print('last_24_customers_percentage', last_24_customers_percentage)
+    print('total_customers_percentage', total_customers_percentage)
     return render(request, "store/store-admin.html", {"customer_dict": customer_dict, "product_dict": product_dict, "total_amount": total_amount, "today_total_amount": today_total_amount, "latest_orders": latest_orders, "last_24_hours_total_customers": last_24_hours_total_customers, 'customers': customers})
 
 
