@@ -1715,6 +1715,17 @@ body::-webkit-scrollbar,
   padding: 20px;
 }
 
+.small-anlytics-card > div p {
+  color: #3d5170;
+}
+
+.small-anlytics-card > div > div {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+  flex-wrap: wrap;
+}
+
 .top-selling-latest-customer-container > div {
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   border-radius: 12px;
