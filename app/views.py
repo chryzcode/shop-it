@@ -345,7 +345,8 @@ def store_admin(request):
     product_dict = (sorted(product_dict.items(), key=lambda item: item[1], reverse=True))[:5]
 
     latest_orders = Order.objects.filter(store=store).order_by("-created")[:5]
-    return render(request, "store/store-admin.html", {"customer_dict": customer_dict, "product_dict": product_dict, "total_amount": total_amount, "today_total_amount": today_total_amount, "latest_orders": latest_orders, "last_24_hours_total_customers": last_24_hours_total_customers})
+    customers = store.customers.all()
+    return render(request, "store/store-admin.html", {"customer_dict": customer_dict, "product_dict": product_dict, "total_amount": total_amount, "today_total_amount": today_total_amount, "latest_orders": latest_orders, "last_24_hours_total_customers": last_24_hours_total_customers, 'customers': customers})
 
 
 def store(request, slugified_store_name):

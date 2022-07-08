@@ -522,4 +522,14 @@
     display: inline-block;
     margin: 10px 10px;
   }
+
+  .small-anlytics-card {
+    display: block;
+    width: 80%;
+    margin: 10px auto;
+  }
+
+  .small-anlytics-card > div {
+    width: 100%;
+  }
 }
