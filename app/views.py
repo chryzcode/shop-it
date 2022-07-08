@@ -297,9 +297,17 @@ def store_admin(request):
     print(payments)
     total_amount = 0
     today_total_amount = 0
+    last_24_hours_total_customers = 0
     customer_count= 0
     product_dict = {}
     customer_dict = {}
+    customers = Customer.objects.filter(store=store)
+    for customer in customers:
+        if customer.time > timezone.now() - timedelta(days=1):
+            last_24_hours_total_customers += 1
+        else:
+            last_24_hours_total_customers += 0
+
     for payment in payments:
         amount = payment.amount
         total_amount = amount + total_amount
@@ -324,9 +332,7 @@ def store_admin(request):
                 else:
                     customer = None
     customer_dict = (sorted(customer_dict.items(), key=lambda x: x[1], reverse=True))[:5]
-    print('customer dict', customer_dict)
-    print('total amount', total_amount)
-    print('today total amount', today_total_amount)
+    
 
     orders = Order.objects.filter(store=store, billing_status=True)
     for order in orders:
@@ -339,10 +345,15 @@ def store_admin(request):
             else:
                 product_dict[product_name] = product_quantity 
     
-    product_dict = (sorted(product_dict.items(), key=lambda item: item[1], reverse=True))[:5]
-    print('product_dict', product_dict)          
+    product_dict = (sorted(product_dict.items(), key=lambda item: item[1], reverse=True))[:5]         
     latest_orders = Order.objects.filter(store=store).order_by("-created")[:5]
-    return render(request, "store/store-admin.html")
+    print('customer dict', customer_dict)
+    print('total amount', total_amount)
+    print('today total amount', today_total_amount)
+    print('product dict', product_dict)
+    print('latest orders', latest_orders)
+    print('last 24 hours total customers', last_24_hours_total_customers)
+    return render(request, "store/store-admin.html", {"customer_dict": customer_dict, "product_dict": product_dict, "total_amount": total_amount, "today_total_amount": today_total_amount, "latest_orders": latest_orders, "last_24_hours_total_customers": last_24_hours_total_customers})
 
 
 def store(request, slugified_store_name):

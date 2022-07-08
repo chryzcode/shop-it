@@ -1689,3 +1689,26 @@ body::-webkit-scrollbar,
   transform: scale(1.1);
   border: 0;
 }
+
+.small-anlytics-card, .top-selling-latest-orders-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 20px;
+  flex-wrap: wrap;
+}
+
+.small-anlytics-card > div {
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  width: 30%;
+  height: 150px;
+  border-radius: 12px;
+  margin: 10px 0;
+}
+
+
+.top-selling-latest-orders-container > div {
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border-radius: 12px;
+  margin: 10px 0;
+}

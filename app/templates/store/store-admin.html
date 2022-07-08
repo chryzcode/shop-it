@@ -9,6 +9,42 @@
     <small class="error">{{message}}</small>
     {% endif %}
     {% endfor %} {% endif %}
+    <div class="store-content-container">
+      <span class="store-products-container">
+          <p>Store Analytics</p>
+          <div class="small-anlytics-card">
+            <div>
+              {{total_amount}}
+            </div>
+            <div>
+              {{today_total_amount}}
+            </div>
+            <div>
+              {{last_24_hours_total_customers}}
+            </div>
+            </div>
+        <p>
+          {% for key, value in customer_dict %}
+          <p>{{key}}: {{value}}</p>
+          {% endfor %}
+        </p>
+
+        <div class="top-selling-latest-orders-container">
+          <div>
+          {% for key, value in product_dict %}
+          <p>{{key}}: {{value}}</p>
+          {% endfor %}
+        </div>
+
+        <div>
+          {% for order in latest_orders %}
+          <p>{{order.id}}</p>
+          {% endfor %}
+        </div>
+        </div>
+        
+      </span>
   </div>
-  {% endblock %}
 </div>
+{% endblock %}
+  
