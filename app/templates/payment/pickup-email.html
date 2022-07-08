@@ -1,0 +1,24 @@
+{% autoescape off %} {% load humanize %}
+
+Hi {{store.store_name|capfirst}} and Eldee Logistics,
+
+If 'Efdee Logistics' sounds new to you, Shop!t is using this medium you to the company official logistics partner.
+
+The Efdee logistics will be coming around to deliver order {{payment.order.id}} to {{payment.address_line}} {% if payment.address_line2 %} or {{payment.address_line2}} {% endif %},
+{{payment.city}}, {{payment.state}} State, {{payment.country}}. {% if payment.zipcode%} Order Zipcode - {{payment.zipcode}} {% endif %}
+
+If you will be willing to use the logistics service, payment and agreement will be made by {{store.store_name|capfirst}} with the Efdee logistics.
+For communication, kindly click this link      to reach out to Eldee logistics.
+
+{% if store.owner.phone_number %}
+Store Owner Contact - {{store.owner.phone_number}}
+{% endif %}
+
+{% if store.whatsapp %}
+Whatsapp - {{store.whatsapp}}
+{% endif %}
+
+
+Regards,
+Shop!t Team
+{% endautoescape %}

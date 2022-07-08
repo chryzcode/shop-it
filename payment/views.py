@@ -267,6 +267,21 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
         else:
             messages.error(request, "Transfer failed")
 
+        if Subscription_Timeline.objects.filter(store=store).exists():
+            store_timeline = Subscription_Timeline.objects.get(store=store)
+            if store_timeline:
+                subject = f"{store.store_name} have a pickup delivery for you - Efdee Logistics"
+                message = render_to_string(
+                    'payment/pickup-email.html',
+                    {
+                        'store': store,
+                        'payment': payment,
+                        'currency': order.currency_symbol,
+                    },
+                )
+                to_email = [settings.EMAIL_HOST_USER, settings.LOGISTICS_EMAIL, store.owner.email]
+                send_mail(subject, message, from_email, to_email)
+    
     else:
         messages.error(request, "Verification Failed")
     if Customer.objects.filter(email=request.user.email, store=store).exists():

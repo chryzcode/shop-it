@@ -323,8 +323,6 @@ def store_admin(request):
                         customer_dict[customer.email] = customer_count
                 else:
                     customer = None
-    #top five data in customer dict by the highest value
-    
     customer_dict = (sorted(customer_dict.items(), key=lambda x: x[1], reverse=True))[:5]
     print('customer dict', customer_dict)
     print('total amount', total_amount)

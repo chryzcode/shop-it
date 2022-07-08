@@ -24,7 +24,7 @@ def print_hello():
 app.conf.beat_schedule = {
     'add-every-24-hour' : {
         'task': 'subscription_check_mail_remainder',
-        'schedule': crontab(hour='*/24')
+        'schedule': crontab(minute='*/1')
     }
 }
 
