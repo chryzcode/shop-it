@@ -310,7 +310,6 @@ def store_admin(request):
     for payment in payments:
         amount = payment.amount
         total_amount = amount + total_amount
-        #payment made in the past 24 hours
         if payment.date_created > timezone.now() - timedelta(hours=24):
             today_total_amount = 0
         else:
@@ -346,15 +345,11 @@ def store_admin(request):
     
     latest_orders = Order.objects.filter(store=store).order_by("-created")[:5]
     customers = store.customers.all()
-    total_sales_today_percentage = (today_total_amount / total_amount) * 100 
-    last_24_customers_percentage = (last_24_hours_total_customers / len(customers)) * 100
-    total_sales_percentage = (total_amount / total_amount) * 100
-    total_customers_percentage = (len(customers) / len(customers)) * 100
-    print('total_sales_today_percentage', total_sales_today_percentage)
-    print('total_sales_percentage', total_sales_percentage)
-    print('last_24_customers_percentage', last_24_customers_percentage)
-    print('total_customers_percentage', total_customers_percentage)
-    return render(request, "store/store-admin.html", {"customer_dict": customer_dict, "product_dict": product_dict, "total_amount": total_amount, "today_total_amount": today_total_amount, "latest_orders": latest_orders, "last_24_hours_total_customers": last_24_hours_total_customers, 'customers': customers})
+    total_sales_today_percentage = int((today_total_amount / total_amount) * 100 )
+    last_24_customers_percentage = int((last_24_hours_total_customers / len(customers)) * 100)
+    total_sales_percentage = int((total_amount / total_amount) * 100)
+    total_customers_percentage = int((len(customers) / len(customers)) * 100)
+    return render(request, "store/store-admin.html", {"customer_dict": customer_dict, "product_dict": product_dict, "total_amount": total_amount, "today_total_amount": today_total_amount, "latest_orders": latest_orders, "last_24_hours_total_customers": last_24_hours_total_customers, 'customers': customers, 'store':store, 'total_sales_today_percentage': total_sales_today_percentage, 'last_24_customers_percentage': last_24_customers_percentage, 'total_sales_percentage': total_sales_percentage, 'total_customers_percentage': total_customers_percentage})
 
 
 def store(request, slugified_store_name):

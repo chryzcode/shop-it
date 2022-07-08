@@ -16,29 +16,29 @@
             <div>
               <p>Total Sales</p>
               <div>
-                <span>{{total_amount|intcomma}}</span>
-                <span>1%</span>
+                <span>{{store.currency.symbol}}{{total_amount|intcomma}}</span>
+                <span>{{total_sales_percentage}}%</span>
               </div>
             </div>
             <div>
               <p>Sales Today</p>
               <div>
-                <span>{{today_total_amount|intcomma}}</span>
-                <span>1%</span>
+                <span>{{store.currency.symbol}}{{today_total_amount|intcomma}}</span>
+                <span>{{total_sales_today_percentage}}%</span>
               </div>
             </div>
             <div>
              <p>New Customers</p>
              <div>
               <span>{{last_24_hours_total_customers}}</span>
-              <span>1%</span>
+              <span>{{last_24_customers_percentage}}%</span>
              </div>
             </div>
           <div>
             <p>All Customers</p>
             <div>
               <span>{{customers.count}}</span>
-              <span>1%</span>
+              <span>{{total_customers_percentage}}%</span>
             </div>
           </div>
             </div>
