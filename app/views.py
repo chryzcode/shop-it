@@ -294,7 +294,6 @@ def store_admin(request):
             store_name=store_staff.objects.get(email=request.user.email).store
         )
     payments = Payment.objects.filter(store=store, verified=True)
-    print(payments)
     total_amount = 0
     today_total_amount = 0
     last_24_hours_total_customers = 0
@@ -332,27 +331,19 @@ def store_admin(request):
                 else:
                     customer = None
     customer_dict = (sorted(customer_dict.items(), key=lambda x: x[1], reverse=True))[:5]
-    
-    product_object_list = []
     orders = Order.objects.filter(store=store, billing_status=True)
     for order in orders:
         order_items = OrderItem.objects.filter(order=order)
         for order_item in order_items:
-            product_name = order_item.product.name
+            product_name = Product.objects.get(id=order_item.product.id, store=store)
             product_quantity = order_item.quantity
-            product_object = Product.objects.get(name=product_name, store=store)
-            print(product_object)
+            # product_object = Product.objects.get(name=product_name, store=store)
             if product_name in product_dict:
                 product_dict[product_name] = product_dict[product_name] + product_quantity
             else:
                 product_dict[product_name] = product_quantity
-            if product_object in product_object_list:
-                pass
-            else:
-                product_object_list.append(product_object)
-           
-    print(product_object_list)
-    product_dict = (sorted(product_dict.items(), key=lambda item: item[1], reverse=True))[:5]         
+    product_dict = (sorted(product_dict.items(), key=lambda item: item[1], reverse=True))[:5]
+
     latest_orders = Order.objects.filter(store=store).order_by("-created")[:5]
     return render(request, "store/store-admin.html", {"customer_dict": customer_dict, "product_dict": product_dict, "total_amount": total_amount, "today_total_amount": today_total_amount, "latest_orders": latest_orders, "last_24_hours_total_customers": last_24_hours_total_customers})
 
