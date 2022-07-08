@@ -23,13 +23,30 @@
               {{last_24_hours_total_customers}}
             </div>
             </div>
-        <p>
-          {% for key, value in customer_dict %}
-          <p>{{key}}: {{value}}</p>
-          {% endfor %}
-        </p>
 
-        <div class="top-selling-latest-orders-container">
+        <div class="latest-orders-container">
+              <div>
+                <div class="table-container">
+            <p>Latest Paid Orders</p>
+            <table class="store-products-table">
+            <tr class="table-rows">
+              <th>Order</th>
+              <th>Date</th>
+              <th>Amount</th>
+            </tr>
+            {% for order in latest_orders %}
+          <tr class="table-rows">
+            <td><a href="{% url 'app:store_order_detail' order.pk %}">{{order.id|truncatechars:12}}</a></td>
+            <td>{{order.created|timesince}}</td>
+            <td>{{order.amount}}</td>
+          </tr>
+            {% endfor %}
+            </table>
+          </div>
+              </div>
+        </div>
+
+        <div class="top-selling-latest-customer-container">
           <div>
             <div class="table-container">
             <p>Top Selling Products</p>
@@ -50,22 +67,22 @@
 
         <div>
           <div class="table-container">
-            <p>Latest Paid Orders</p>
+            <p>Top Customers</p>
             <table class="store-products-table">
             <tr class="table-rows">
-              <th>Order</th>
-              <th>Date</th>
-              <th>Amount</th>
+              <th>Full Name</th>
+              <th>Email</th>
+              <th>Orders Count</th>
             </tr>
-            {% for order in latest_orders %}
+          {% for key, value in customer_dict %}
           <tr class="table-rows">
-            <td><a href="{% url 'app:store_order_detail' order.pk %}">{{order.id|truncatechars:12}}</a></td>
-            <td>{{order.created|timesince}}</td>
-            <td>{{order.amount}}</td>
+            <td><a href="{% url 'app:store_customers_details' key.pk %}">{{key.full_name}}</a></td>
+            <td>{{key.email}}</td>
+            <td>{{value}}</td>
           </tr>
-            {% endfor %}
-            </table>
-          </div>
+          {% endfor %}
+          </table>
+        </div>
         </div>
         </div>
         

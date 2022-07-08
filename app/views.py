@@ -324,10 +324,10 @@ def store_admin(request):
                 if user in store.customers.all():
                     customer = Customer.objects.get(email=user.email)
                     customer_count = customer_count + 1
-                    if customer.email in customer_dict:
-                        customer_dict[customer.email] = customer_dict[customer.email] + customer_count
+                    if customer in customer_dict:
+                        customer_dict[customer] = customer_dict[customer] + customer_count
                     else:
-                        customer_dict[customer.email] = customer_count
+                        customer_dict[customer] = customer_count
                 else:
                     customer = None
     customer_dict = (sorted(customer_dict.items(), key=lambda x: x[1], reverse=True))[:5]
