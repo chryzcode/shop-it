@@ -31,10 +31,22 @@
 
         <div class="top-selling-latest-orders-container">
           <div>
+            <div class="table-container">
+            <p>Top Selling Products</p>
+            <table class="store-products-table">
+            <tr class="table-rows">
+              <th>Product</th>
+              <th>Total Sold</th>
+            </tr>
           {% for key, value in product_dict %}
-          <p>{{key}}: {{value}}</p>
+          <tr class="table-rows">
+            <td><a href="">{{key}}</a></td>
+            <td>{{value}}</td>
+          </tr>
           {% endfor %}
+          </table>
         </div>
+          </div>
 
         <div>
           {% for order in latest_orders %}
