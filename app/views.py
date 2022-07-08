@@ -345,10 +345,22 @@ def store_admin(request):
     
     latest_orders = Order.objects.filter(store=store).order_by("-created")[:5]
     customers = store.customers.all()
-    total_sales_today_percentage = int((today_total_amount / total_amount) * 100 )
-    last_24_customers_percentage = int((last_24_hours_total_customers / len(customers)) * 100)
-    total_sales_percentage = int((total_amount / total_amount) * 100)
-    total_customers_percentage = int((len(customers) / len(customers)) * 100)
+    if total_amount <= 0 or total_amount is None:
+        total_sales_today_percentage = 0
+    else:
+        total_sales_today_percentage = int((today_total_amount / total_amount) * 100 )
+    if len(customers) <= 0 or len(customers) is None:
+        last_24_customers_percentage = 0
+    else:
+        last_24_customers_percentage = int((last_24_hours_total_customers / len(customers)) * 100)
+    if total_amount <= 0 or total_amount is None:
+        total_sales_percentage = 0
+    else:
+        total_sales_percentage = int((total_amount / total_amount) * 100)
+    if len(customers) <= 0 or len(customers) is None:
+        total_customers_percentage = 0
+    else:
+        total_customers_percentage = int((len(customers) / len(customers)) * 100)
     return render(request, "store/store-admin.html", {"customer_dict": customer_dict, "product_dict": product_dict, "total_amount": total_amount, "today_total_amount": today_total_amount, "latest_orders": latest_orders, "last_24_hours_total_customers": last_24_hours_total_customers, 'customers': customers, 'store':store, 'total_sales_today_percentage': total_sales_today_percentage, 'last_24_customers_percentage': last_24_customers_percentage, 'total_sales_percentage': total_sales_percentage, 'total_customers_percentage': total_customers_percentage})
 
 
