@@ -16,15 +16,23 @@
             <div>
               <p>Total Sales</p>
               <div>
+                {% if store.currency.symbol %}
                 <span>{{store.currency.symbol}}{{total_amount|intcomma}}</span>
                 <span>{{total_sales_percentage}}%</span>
+                {% else %}
+                <span>Set your store currency</span>
+                 {% endif %}
               </div>
             </div>
             <div>
               <p>Sales Today</p>
               <div>
+                {% if store.currency.symbol %}
                 <span>{{store.currency.symbol}}{{today_total_amount|intcomma}}</span>
                 <span>{{total_sales_today_percentage}}%</span>
+                {% else %}
+                <span>Set your store currency</span>
+                {% endif %}
               </div>
             </div>
             <div>
