@@ -1,4 +1,4 @@
-{% extends 'navs/store-nav.html' %} {% load static %}{% block title %}<title>
+{% extends 'navs/store-nav.html' %} {% load static %}{% load humanize %}{% block title %}<title>
   Shop !t - {{request.user }} Store View
 </title>
 {% endblock %} {% block content %}
@@ -16,14 +16,14 @@
             <div>
               <p>Total Sales</p>
               <div>
-                <span>{{total_amount}}</span>
+                <span>{{total_amount|intcomma}}</span>
                 <span>1%</span>
               </div>
             </div>
             <div>
               <p>Sales Today</p>
               <div>
-                <span>{{today_total_amount}}</span>
+                <span>{{today_total_amount|intcomma}}</span>
                 <span>1%</span>
               </div>
             </div>
@@ -57,7 +57,7 @@
           <tr class="table-rows">
             <td><a href="{% url 'app:store_order_detail' order.pk %}">{{order.id|truncatechars:12}}</a></td>
             <td>{{order.created|timesince}}</td>
-            <td>{{order.amount}}</td>
+            <td>{{order.amount|intcomma}}</td>
           </tr>
             {% endfor %}
             </table>

@@ -1712,6 +1712,7 @@ body::-webkit-scrollbar,
   height: 150px;
   border-radius: 12px;
   margin: 10px 0;
+  padding: 20px;
 }
 
 .top-selling-latest-customer-container > div {
