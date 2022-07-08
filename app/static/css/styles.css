@@ -1690,7 +1690,8 @@ body::-webkit-scrollbar,
   border: 0;
 }
 
-.small-anlytics-card, .top-selling-latest-orders-container {
+.small-anlytics-card,
+.top-selling-latest-orders-container {
   display: flex;
   justify-content: space-between;
   margin: 0 20px;
@@ -1705,24 +1706,25 @@ body::-webkit-scrollbar,
   margin: 10px 0;
 }
 
-
 .top-selling-latest-orders-container > div {
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   border-radius: 12px;
   margin: 10px 0;
   height: max-content;
+  padding: 20px 0;
 }
 
-.top-selling-latest-orders-container > div:nth-child(1){
+.top-selling-latest-orders-container > div:nth-child(1) {
   width: 30%;
 }
 
-.top-selling-latest-orders-container > div:nth-child(2){
+.top-selling-latest-orders-container > div:nth-child(2) {
   width: 65%;
 }
 
-.top-selling-latest-orders-container > div > div > p{
+.top-selling-latest-orders-container > div > div > p {
   font-size: 19px;
   color: #3d5170;
   text-align: center;
+  margin-bottom: 10px;
 }
