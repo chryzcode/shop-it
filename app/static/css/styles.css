@@ -1690,7 +1690,15 @@ body::-webkit-scrollbar,
   border: 0;
 }
 
-.small-anlytics-card,
+.small-anlytics-card {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  margin: 20px 20px;
+  flex-wrap: wrap;
+}
+
+
 .top-selling-latest-customer-container, .latest-orders-container {
   display: flex;
   justify-content: space-between;
