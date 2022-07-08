@@ -49,9 +49,23 @@
           </div>
 
         <div>
-          {% for order in latest_orders %}
-          <p>{{order.id}}</p>
-          {% endfor %}
+          <div class="tale-container">
+            <p>Latest Paid Orders</p>
+            <table class="store-products-table">
+            <tr class="table-rows">
+              <th>Order</th>
+              <th>Date</th>
+              <th>Amount</th>
+            </tr>
+            {% for order in latest_orders %}
+          <tr class="table-rows">
+            <td><a href="{% url 'app:store_order_detail' order.pk %}">{{order.id|truncatechars:12}}</a></td>
+            <td>{{order.created|timesince}}</td>
+            <td>{{order.amount}}</td>
+          </tr>
+            {% endfor %}
+            </table>
+          </div>
         </div>
         </div>
         
