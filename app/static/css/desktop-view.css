@@ -71,10 +71,9 @@
 
   .store-content-container {
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-    width: calc(70% - 40px);
+    width: 80%;
     margin-left: auto;
     display: block;
-    margin-right: 10%;
   }
 
   .cart-mobile {
@@ -98,11 +97,10 @@
 
   .account-form-container {
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-    padding: 25px;
-    width: calc(60% - 40px);
-    margin-left: auto;
+    padding: 25px 25px 60px 25px;
+    width: 80%;
     display: block;
-    margin-right: 10%;
+    margin-left: auto;
   }
 }
 
