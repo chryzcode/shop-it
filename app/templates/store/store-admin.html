@@ -4,14 +4,15 @@
 {% endblock %} {% block content %}
 <div class="store-page-container">
   {% include 'navs/store-side-nav.html' %}
-     {% if messages %} {% for message in messages %}
-     {% if message %}
-    <small class="error">{{message}}</small>
-    {% endif %}
-    {% endfor %} {% endif %}
     <div class="store-content-container">
       <span class="store-products-container">
           <p>Store Analytics</p>
+          {% if messages %} {% for message in messages %}
+          {% if message %}
+          <small class="error">{{message}}</small>
+          {% endif %}
+          {% endfor %} {% endif %}
+          {% if subscribed == 'True' %}
           <div class="small-anlytics-card">
             <div>
               <p>Total Sales</p>
@@ -147,6 +148,7 @@
         </div>
         </div>
         </div>
+      {% endif %}
         
       </span>
   </div>
