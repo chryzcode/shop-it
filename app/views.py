@@ -306,7 +306,6 @@ def store_admin(request):
             last_24_hours_total_customers += 1
         else:
             last_24_hours_total_customers += 0
-
     for payment in payments:
         amount = payment.amount
         total_amount = amount + total_amount
@@ -335,14 +334,11 @@ def store_admin(request):
         for order_item in order_items:
             product_name = Product.objects.get(id=order_item.product.id, store=store)
             product_quantity = order_item.quantity
-            # product_object = Product.objects.get(name=product_name, store=store)
             if product_name in product_dict:
                 product_dict[product_name] = product_dict[product_name] + product_quantity
             else:
                 product_dict[product_name] = product_quantity
-    product_dict = (sorted(product_dict.items(), key=lambda item: item[1], reverse=True))[:5]
-    
-    
+    product_dict = (sorted(product_dict.items(), key=lambda item: item[1], reverse=True))[:5]  
     latest_orders = Order.objects.filter(store=store).order_by("-created")[:5]
     customers = store.customers.all()
     if total_amount <= 0 or total_amount is None:
@@ -361,6 +357,15 @@ def store_admin(request):
         total_customers_percentage = 0
     else:
         total_customers_percentage = int((len(customers) / len(customers)) * 100)
+    
+    if Order.objects.filter(store=store).order_by("-created")[:1].exists():
+        last_order = Order.objects.filter(store=store).order_by("-created")[:1].first()
+        if store.currency.code != last_order.currency_code:
+            total_amount = 0
+            today_total_amount = 0
+            total_sales_percentage = 0
+            total_sales_today_percentage = 0
+    
     return render(request, "store/store-admin.html", {"customer_dict": customer_dict, "product_dict": product_dict, "total_amount": total_amount, "today_total_amount": today_total_amount, "latest_orders": latest_orders, "last_24_hours_total_customers": last_24_hours_total_customers, 'customers': customers, 'store':store, 'total_sales_today_percentage': total_sales_today_percentage, 'last_24_customers_percentage': last_24_customers_percentage, 'total_sales_percentage': total_sales_percentage, 'total_customers_percentage': total_customers_percentage})
 
 
