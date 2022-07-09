@@ -181,8 +181,6 @@ LOGOUT_REDIRECT_URL = "/"
 
 PASSWORD_RESET_TIMEOUT = 1800  # 30 Mins in Seconds
 
-# EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
@@ -202,6 +200,7 @@ DJANGO_NOTIFICATIONS_CONFIG = { 'USE_JSONFIELD': True}
 DEFAULT_DOMAIN=config("DEFAULT_DOMAIN")
 LOGISTICS_EMAIL = config("LOGISTICS_EMAIL")
 
+# CELERY STUFF
 BROKER_URL = 'redis://localhost:6379'
 CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 CELERY_ACCEPT_CONTENT = ['application/json']
