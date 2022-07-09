@@ -368,8 +368,8 @@ def store_admin(request):
     
     total_sales_today_percentage_dict = {}
     total_sales_percentage_dict = {}
-    total_customers_percentage_list = []
-    last_24_customers_percentage_list = []
+    total_customers_percentage_dict = {}
+    last_24_customers_percentage_dict = {}
 
     total_sales_today_percentage = total_sales_today_percentage
     new_total_sales_today_percentage =  total_sales_today_percentage
@@ -402,15 +402,40 @@ def store_admin(request):
 
 
 
+    total_customers_percentage = total_customers_percentage
+    new_total_customers_percentage = total_customers_percentage
+    total_customers_percentage_dict["total_customers_percentage"] = total_customers_percentage
+    if new_total_customers_percentage == total_customers_percentage_dict["total_customers_percentage"]:
+        customers_growth = 'stagnant'
+    else:
+        total_customers_percentage_dict["new_total_customers_percentage"] = new_total_customers_percentage
+        if total_customers_percentage_dict["new_total_customers_percentage"] > total_customers_percentage_dict["total_customers_percentage"]:
+            customers_growth = 'growth'
+        elif total_customers_percentage_dict["new_total_customers_percentage"] < total_customers_percentage_dict["total_customers_percentage"]:
+            customers_growth = 'shrinking'
+        else:
+            customers_growth = 'stagnant'
 
+    last_24_customers_percentage = last_24_customers_percentage
+    new_last_24_customers_percentage = last_24_customers_percentage
+    last_24_customers_percentage_dict["last_24_customers_percentage"] = last_24_customers_percentage
+    if new_last_24_customers_percentage == last_24_customers_percentage_dict["last_24_customers_percentage"]:
+        last_24_customers_growth = 'stagnant'
+    else:
+        last_24_customers_percentage_dict["new_last_24_customers_percentage"] = new_last_24_customers_percentage
+        if last_24_customers_percentage_dict["new_last_24_customers_percentage"] > last_24_customers_percentage_dict["last_24_customers_percentage"]:
+            last_24_customers_growth = 'growth'
+        elif last_24_customers_percentage_dict["new_last_24_customers_percentage"] < last_24_customers_percentage_dict["last_24_customers_percentage"]:
+            last_24_customers_growth = 'shrinking'
+        else:
+            last_24_customers_growth = 'stagnant'
     
-
     
 
     print(total_sales_today_percentage_dict)
     print(total_sales_percentage_dict)
-    print(total_customers_percentage_list)
-    print(last_24_customers_percentage_list)
+    print(total_customers_percentage_dict)
+    print(last_24_customers_percentage_dict)
     
     return render(request, "store/store-admin.html", {"customer_dict": customer_dict, "product_dict": product_dict, "total_amount": total_amount, "today_total_amount": today_total_amount, "latest_orders": latest_orders, "last_24_hours_total_customers": last_24_hours_total_customers, 'customers': customers, 'store':store, 'total_sales_today_percentage': total_sales_today_percentage, 'last_24_customers_percentage': last_24_customers_percentage, 'total_sales_percentage': total_sales_percentage, 'total_customers_percentage': total_customers_percentage})
 
