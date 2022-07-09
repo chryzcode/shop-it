@@ -12,6 +12,7 @@
           <small class="error">{{message}}</small>
           {% endif %}
           {% endfor %} {% endif %}
+          {% if subscribed == True %}
           <div class="small-anlytics-card">
             <div>
               <p>Total Sales</p>
@@ -147,6 +148,7 @@
         </div>
         </div>
         </div>
+        {% endif %}
       </span>
   </div>
 </div>
