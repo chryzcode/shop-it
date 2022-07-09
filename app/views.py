@@ -379,7 +379,7 @@ def store_admin(request):
     else:
         total_sales_today_percentage_dict["new_total_sales_today_percentage"] = new_total_sales_today_percentage
         if total_sales_today_percentage_dict["new_total_sales_today_percentage"] > total_sales_today_percentage_dict["total_sales_today_percentage"]:
-            sales_today_growth = 'growing'
+            sales_today_growth = 'growth'
         elif total_sales_today_percentage_dict["new_total_sales_today_percentage"] < total_sales_today_percentage_dict["total_sales_today_percentage"]:
             sales_today_growth = 'shrinking'
         else:
@@ -387,7 +387,7 @@ def store_admin(request):
 
     
     total_sales_percentage = total_sales_percentage
-    new_total_sales_percentage = total_sales_percentage
+    new_total_sales_percentage = -total_sales_percentage
     total_sales_percentage_dict["total_sales_percentage"] = total_sales_percentage
     if new_total_sales_percentage == total_sales_percentage_dict["total_sales_percentage"]: 
         sales_total_growth = 'stagnant'
@@ -395,7 +395,7 @@ def store_admin(request):
         total_sales_percentage_dict["new_total_sales_percentage"] = new_total_sales_percentage
         if total_sales_percentage_dict["new_total_sales_percentage"] > total_sales_percentage_dict["total_sales_percentage"]:
             sales_total_growth = 'growth'
-        elif total_sales_percentage_dict["new_total_sales_percentage"] > total_sales_percentage_dict["total_sales_percentage"]:
+        elif total_sales_percentage_dict["new_total_sales_percentage"] < total_sales_percentage_dict["total_sales_percentage"]:
             sales_total_growth = 'shrinking'
         else:
             sales_total_growth = 'stagnant'
@@ -429,13 +429,6 @@ def store_admin(request):
             last_24_customers_growth = 'shrinking'
         else:
             last_24_customers_growth = 'stagnant'
-    
-    
-
-    print(total_sales_today_percentage_dict)
-    print(total_sales_percentage_dict)
-    print(total_customers_percentage_dict)
-    print(last_24_customers_percentage_dict)
     
     return render(request, "store/store-admin.html", {"customer_dict": customer_dict, "product_dict": product_dict, "total_amount": total_amount, "today_total_amount": today_total_amount, "latest_orders": latest_orders, "last_24_hours_total_customers": last_24_hours_total_customers, 'customers': customers, 'store':store, 'total_sales_today_percentage': total_sales_today_percentage, 'last_24_customers_percentage': last_24_customers_percentage, 'total_sales_percentage': total_sales_percentage, 'total_customers_percentage': total_customers_percentage ,'sales_today_growth': sales_today_growth, 'sales_total_growth': sales_total_growth, 'customers_growth': customers_growth, 'last_24_customers_growth': last_24_customers_growth})
 

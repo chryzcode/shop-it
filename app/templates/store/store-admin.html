@@ -18,7 +18,16 @@
               <div>
                 {% if store.currency.symbol %}
                 <span>{{store.currency.symbol}}{{total_amount|intcomma}}</span>
-                <span>{{total_sales_percentage}}%</span>
+                <span>
+                  {% if sales_total_growth == 'growth' %}
+                  <i class="fas fa-caret-up growth-up"></i>
+                  {% elif sales_total_growth == 'stagnant' %}
+                  <i class="fas fa-horizontal-rule growth-stagnant"></i>
+                  {% elif sales_total_growth == 'shrinking' %}
+                  <i class="fas fa-caret-down growth-shrink"></i>
+                  {% endif %}
+                  {{total_sales_percentage}}%
+                </span>
                 {% else %}
                 <span>Set your store currency</span>
                  {% endif %}
@@ -29,26 +38,52 @@
               <div>
                 {% if store.currency.symbol %}
                 <span>{{store.currency.symbol}}{{today_total_amount|intcomma}}</span>
-                <span>{{total_sales_today_percentage}}%</span>
+                <span>
+                  {% if sales_today_growth == 'growth' %}
+                  <i class="fas fa-caret-up growth-up"></i>
+                  {% elif sales_today_growth == 'stagnant' %}
+                  <i class="fas fa-horizontal-rule growth-stagnant"></i>
+                  {% elif sales_today_growth == 'shrinking' %}
+                  <i class="fas fa-caret-down growth-shrink"></i>
+                  {% endif %}
+                  {{total_sales_today_percentage}}
+                  %</span>
                 {% else %}
                 <span>Set your store currency</span>
                 {% endif %}
               </div>
             </div>
             <div>
-             <p>New Customers</p>
-             <div>
-              <span>{{last_24_hours_total_customers}}</span>
-              <span>{{last_24_customers_percentage}}%</span>
-             </div>
-            </div>
-          <div>
             <p>All Customers</p>
             <div>
               <span>{{customers.count}}</span>
-              <span>{{total_customers_percentage}}%</span>
+              <span>
+                {% if customers_growth == 'growth' %}
+                  <i class="fas fa-caret-up growth-up"></i>
+                  {% elif customers_growth == 'stagnant' %}
+                  <i class="fas fa-horizontal-rule growth-stagnant"></i>
+                  {% elif customers_growth == 'shrinking' %}
+                  <i class="fas fa-caret-down growth-shrink"></i>
+                  {% endif %}
+                {{total_customers_percentage}}%</span>
             </div>
           </div>
+            <div>
+             <p>New Customers last 24 hours</p>
+             <div>
+              <span>{{last_24_hours_total_customers}}</span>
+              <span>
+                {% if last_24_customers_growth == 'growth' %}
+                  <i class="fas fa-caret-up growth-up"></i>
+                  {% elif last_24_customers_growth == 'stagnant' %}
+                  <i class="fas fa-horizontal-rule growth-stagnant"></i>
+                  {% elif last_24_customers_growth == 'shrinking' %}
+                  <i class="fas fa-caret-down growth-shrink"></i>
+                  {% endif %}
+                {{last_24_customers_percentage}}%
+              </span>
+             </div>
+            </div>
             </div>
 
         <div class="latest-orders-container">

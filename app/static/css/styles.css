@@ -1758,3 +1758,16 @@ body::-webkit-scrollbar,
   text-align: center;
   margin-bottom: 10px;
 }
+
+.growth-up {
+  color: #17c671;
+}
+
+.growth-stagnant {
+  color: #fdd203;
+}
+
+
+.growth-shrink {
+  color: #c4183c;
+}
