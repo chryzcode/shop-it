@@ -295,7 +295,8 @@ def store_admin(request):
         )
     if Subscription_Timeline.objects.filter(store=store).exists():
         subscribed = True
-        payments = Payment.objects.filter(store=store, verified=True)
+        orders = Order.objects.filter(store=store, billing_status=True)
+        last_24_orders = orders.filter(created__gt=timezone.now() - timedelta(hours=24))
         total_amount = 0
         today_total_amount = 0
         last_24_hours_total_customers = 0
@@ -303,23 +304,20 @@ def store_admin(request):
         product_dict = {}
         customer_dict = {}
         customers = Customer.objects.filter(store=store)
-        for customer in customers:
-            if customer.time > timezone.now() - timedelta(days=1):
-                last_24_hours_total_customers += 1
-            else:
-                last_24_hours_total_customers += 0
-        for payment in payments:
-            amount = payment.amount
+        last_24_customers = customers.filter(time__gt=timezone.now() - timedelta(hours=24))
+        print(last_24_customers)
+        for last_24_customer in last_24_customers:
+            last_24_hours_total_customers += 1
+            
+        for last_24_order in last_24_orders:
+            amount = last_24_order.amount
+            today_total_amount = amount + today_total_amount
+        for order in orders:
+            amount = order.amount
             total_amount = amount + total_amount
-            if payment.date_created > timezone.now() - timedelta(hours=24):
-                today_total_amount = 0
-            else:
-                amount = payment.amount
-                today_total_amount = amount + today_total_amount
-
-            if payment.user:
-                if User.objects.filter(email=payment.user.email).exists():
-                    user = User.objects.get(email=payment.user.email)
+            if order.user:
+                if User.objects.filter(email=order.user.email).exists():
+                    user = User.objects.get(email=order.user.email)
                     if user in store.customers.all():
                         customer = Customer.objects.get(email=user.email)
                         customer_count = customer_count + 1

@@ -421,7 +421,8 @@ def delete_account(request, slugified_store_name):
         customer = Customer.objects.get(email=request.user.email, store=store)
         customer_stores = Store.objects.filter(customers=request.user)
         if customer:
-            store.customers.remove(customer.user)
+            customer_user = User.objects.get(email=request.user.email)
+            store.customers.remove(customer_user)
             customer.delete()
             if customer_stores or request.user.store_creator == True:
                 return redirect("app:store", store.slugified_store_name)
