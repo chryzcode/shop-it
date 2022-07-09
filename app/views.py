@@ -294,150 +294,144 @@ def store_admin(request):
             store_name=store_staff.objects.get(email=request.user.email).store
         )
     if Subscription_Timeline.objects.filter(store=store).exists():
-        subscription_timeline = Subscription_Timeline.objects.get(store=store)
-        if subscription_timeline:
-            subscribed = True
-            payments = Payment.objects.filter(store=store, verified=True)
-            total_amount = 0
-            today_total_amount = 0
-            last_24_hours_total_customers = 0
-            customer_count= 0
-            product_dict = {}
-            customer_dict = {}
-            customers = Customer.objects.filter(store=store)
-            for customer in customers:
-                if customer.time > timezone.now() - timedelta(days=1):
-                    last_24_hours_total_customers += 1
-                else:
-                    last_24_hours_total_customers += 0
-            for payment in payments:
+        subscribed = True
+        payments = Payment.objects.filter(store=store, verified=True)
+        total_amount = 0
+        today_total_amount = 0
+        last_24_hours_total_customers = 0
+        customer_count= 0
+        product_dict = {}
+        customer_dict = {}
+        customers = Customer.objects.filter(store=store)
+        for customer in customers:
+            if customer.time > timezone.now() - timedelta(days=1):
+                last_24_hours_total_customers += 1
+            else:
+                last_24_hours_total_customers += 0
+        for payment in payments:
+            amount = payment.amount
+            total_amount = amount + total_amount
+            if payment.date_created > timezone.now() - timedelta(hours=24):
+                today_total_amount = 0
+            else:
                 amount = payment.amount
-                total_amount = amount + total_amount
-                if payment.date_created > timezone.now() - timedelta(hours=24):
-                    today_total_amount = 0
-                else:
-                    amount = payment.amount
-                    today_total_amount = amount + today_total_amount
+                today_total_amount = amount + today_total_amount
 
-                if payment.user:
-                    if User.objects.filter(email=payment.user.email).exists():
-                        user = User.objects.get(email=payment.user.email)
-                        if user in store.customers.all():
-                            customer = Customer.objects.get(email=user.email)
-                            customer_count = customer_count + 1
-                            if customer in customer_dict:
-                                customer_dict[customer] = customer_dict[customer] + customer_count
-                            else:
-                                customer_dict[customer] = customer_count
+            if payment.user:
+                if User.objects.filter(email=payment.user.email).exists():
+                    user = User.objects.get(email=payment.user.email)
+                    if user in store.customers.all():
+                        customer = Customer.objects.get(email=user.email)
+                        customer_count = customer_count + 1
+                        if customer in customer_dict:
+                            customer_dict[customer] = customer_dict[customer] + customer_count
                         else:
-                            customer = None
-            customer_dict = (sorted(customer_dict.items(), key=lambda x: x[1], reverse=True))[:5]
-            orders = Order.objects.filter(store=store, billing_status=True)
-            for order in orders:
-                order_items = OrderItem.objects.filter(order=order)
-                for order_item in order_items:
-                    product_name = Product.objects.get(id=order_item.product.id, store=store)
-                    product_quantity = order_item.quantity
-                    if product_name in product_dict:
-                        product_dict[product_name] = product_dict[product_name] + product_quantity
+                            customer_dict[customer] = customer_count
                     else:
-                        product_dict[product_name] = product_quantity
-            product_dict = (sorted(product_dict.items(), key=lambda item: item[1], reverse=True))[:5]  
-            latest_orders = Order.objects.filter(store=store).order_by("-created")[:5]
-            customers = store.customers.all()
-            if total_amount <= 0 or total_amount is None:
-                total_sales_today_percentage = 0
-            else:
-                total_sales_today_percentage = int((today_total_amount / total_amount) * 100 )
-            if len(customers) <= 0 or len(customers) is None:
-                last_24_customers_percentage = 0
-            else:
-                last_24_customers_percentage = int((last_24_hours_total_customers / len(customers)) * 100)
-            if total_amount <= 0 or total_amount is None:
-                total_sales_percentage = 0
-            else:
-                total_sales_percentage = int((total_amount / total_amount) * 100)
-            if len(customers) <= 0 or len(customers) is None:
-                total_customers_percentage = 0
-            else:
-                total_customers_percentage = int((len(customers) / len(customers)) * 100)
-            
-            if Order.objects.filter(store=store).order_by("-created")[:1].exists():
-                last_order = Order.objects.filter(store=store).order_by("-created")[:1].first()
-                if store.currency.code != last_order.currency_code:
-                    total_amount = 0
-                    today_total_amount = 0
-                    total_sales_percentage = 0
-                    total_sales_today_percentage = 0
-            
-            total_sales_today_percentage_dict = {}
-            total_sales_percentage_dict = {}
-            total_customers_percentage_dict = {}
-            last_24_customers_percentage_dict = {}
-
-            total_sales_today_percentage = total_sales_today_percentage
-            new_total_sales_today_percentage =  total_sales_today_percentage
-            total_sales_today_percentage_dict["total_sales_today_percentage"] = total_sales_today_percentage
-            if new_total_sales_today_percentage == total_sales_today_percentage_dict["total_sales_today_percentage"]:
-                sales_today_growth = 'stagnant'
-            else:
-                total_sales_today_percentage_dict["new_total_sales_today_percentage"] = new_total_sales_today_percentage
-                if total_sales_today_percentage_dict["new_total_sales_today_percentage"] > total_sales_today_percentage_dict["total_sales_today_percentage"]:
-                    sales_today_growth = 'growth'
-                elif total_sales_today_percentage_dict["new_total_sales_today_percentage"] < total_sales_today_percentage_dict["total_sales_today_percentage"]:
-                    sales_today_growth = 'shrinking'
+                        customer = None
+        customer_dict = (sorted(customer_dict.items(), key=lambda x: x[1], reverse=True))[:5]
+        orders = Order.objects.filter(store=store, billing_status=True)
+        for order in orders:
+            order_items = OrderItem.objects.filter(order=order)
+            for order_item in order_items:
+                product_name = Product.objects.get(id=order_item.product.id, store=store)
+                product_quantity = order_item.quantity
+                if product_name in product_dict:
+                    product_dict[product_name] = product_dict[product_name] + product_quantity
                 else:
-                    sales_today_growth = 'stagnant'
-
-            
-            total_sales_percentage = total_sales_percentage
-            new_total_sales_percentage = total_sales_percentage
-            total_sales_percentage_dict["total_sales_percentage"] = total_sales_percentage
-            if new_total_sales_percentage == total_sales_percentage_dict["total_sales_percentage"]: 
-                sales_total_growth = 'stagnant'
-            else:
-                total_sales_percentage_dict["new_total_sales_percentage"] = new_total_sales_percentage
-                if total_sales_percentage_dict["new_total_sales_percentage"] > total_sales_percentage_dict["total_sales_percentage"]:
-                    sales_total_growth = 'growth'
-                elif total_sales_percentage_dict["new_total_sales_percentage"] < total_sales_percentage_dict["total_sales_percentage"]:
-                    sales_total_growth = 'shrinking'
-                else:
-                    sales_total_growth = 'stagnant'
-
-
-
-            total_customers_percentage = total_customers_percentage
-            new_total_customers_percentage = total_customers_percentage
-            total_customers_percentage_dict["total_customers_percentage"] = total_customers_percentage
-            if new_total_customers_percentage == total_customers_percentage_dict["total_customers_percentage"]:
-                customers_growth = 'stagnant'
-            else:
-                total_customers_percentage_dict["new_total_customers_percentage"] = new_total_customers_percentage
-                if total_customers_percentage_dict["new_total_customers_percentage"] > total_customers_percentage_dict["total_customers_percentage"]:
-                    customers_growth = 'growth'
-                elif total_customers_percentage_dict["new_total_customers_percentage"] < total_customers_percentage_dict["total_customers_percentage"]:
-                    customers_growth = 'shrinking'
-                else:
-                    customers_growth = 'stagnant'
-
-            last_24_customers_percentage = last_24_customers_percentage
-            new_last_24_customers_percentage = last_24_customers_percentage
-            last_24_customers_percentage_dict["last_24_customers_percentage"] = last_24_customers_percentage
-            if new_last_24_customers_percentage == last_24_customers_percentage_dict["last_24_customers_percentage"]:
-                last_24_customers_growth = 'stagnant'
-            else:
-                last_24_customers_percentage_dict["new_last_24_customers_percentage"] = new_last_24_customers_percentage
-                if last_24_customers_percentage_dict["new_last_24_customers_percentage"] > last_24_customers_percentage_dict["last_24_customers_percentage"]:
-                    last_24_customers_growth = 'growth'
-                elif last_24_customers_percentage_dict["new_last_24_customers_percentage"] < last_24_customers_percentage_dict["last_24_customers_percentage"]:
-                    last_24_customers_growth = 'shrinking'
-                else:
-                    last_24_customers_growth = 'stagnant'
-            return render(request, "store/store-admin.html", {"customer_dict": customer_dict, "product_dict": product_dict, "total_amount": total_amount, "today_total_amount": today_total_amount, "latest_orders": latest_orders, "last_24_hours_total_customers": last_24_hours_total_customers, 'customers': customers, 'store':store, 'total_sales_today_percentage': total_sales_today_percentage, 'last_24_customers_percentage': last_24_customers_percentage, 'total_sales_percentage': total_sales_percentage, 'total_customers_percentage': total_customers_percentage ,'sales_today_growth': sales_today_growth, 'sales_total_growth': sales_total_growth, 'customers_growth': customers_growth, 'last_24_customers_growth': last_24_customers_growth, 'subscribed':subscribed})   
+                    product_dict[product_name] = product_quantity
+        product_dict = (sorted(product_dict.items(), key=lambda item: item[1], reverse=True))[:5]  
+        latest_orders = Order.objects.filter(store=store).order_by("-created")[:5]
+        customers = store.customers.all()
+        if total_amount <= 0 or total_amount is None:
+            total_sales_today_percentage = 0
         else:
-            subscribed = False
-            messages.error(request, "You need to subscribe view this page.")
-            return render(request, 'store/store-admin.html', {'subscribed':subscribed})
+            total_sales_today_percentage = int((today_total_amount / total_amount) * 100 )
+        if len(customers) <= 0 or len(customers) is None:
+            last_24_customers_percentage = 0
+        else:
+            last_24_customers_percentage = int((last_24_hours_total_customers / len(customers)) * 100)
+        if total_amount <= 0 or total_amount is None:
+            total_sales_percentage = 0
+        else:
+            total_sales_percentage = int((total_amount / total_amount) * 100)
+        if len(customers) <= 0 or len(customers) is None:
+            total_customers_percentage = 0
+        else:
+            total_customers_percentage = int((len(customers) / len(customers)) * 100)
+        
+        if Order.objects.filter(store=store).order_by("-created")[:1].exists():
+            last_order = Order.objects.filter(store=store).order_by("-created")[:1].first()
+            if store.currency.code != last_order.currency_code:
+                total_amount = 0
+                today_total_amount = 0
+                total_sales_percentage = 0
+                total_sales_today_percentage = 0
+        
+        total_sales_today_percentage_dict = {}
+        total_sales_percentage_dict = {}
+        total_customers_percentage_dict = {}
+        last_24_customers_percentage_dict = {}
+
+        total_sales_today_percentage = total_sales_today_percentage
+        new_total_sales_today_percentage =  total_sales_today_percentage
+        total_sales_today_percentage_dict["total_sales_today_percentage"] = total_sales_today_percentage
+        if new_total_sales_today_percentage == total_sales_today_percentage_dict["total_sales_today_percentage"]:
+            sales_today_growth = 'stagnant'
+        else:
+            total_sales_today_percentage_dict["new_total_sales_today_percentage"] = new_total_sales_today_percentage
+            if total_sales_today_percentage_dict["new_total_sales_today_percentage"] > total_sales_today_percentage_dict["total_sales_today_percentage"]:
+                sales_today_growth = 'growth'
+            elif total_sales_today_percentage_dict["new_total_sales_today_percentage"] < total_sales_today_percentage_dict["total_sales_today_percentage"]:
+                sales_today_growth = 'shrinking'
+            else:
+                sales_today_growth = 'stagnant'
+
+        
+        total_sales_percentage = total_sales_percentage
+        new_total_sales_percentage = total_sales_percentage
+        total_sales_percentage_dict["total_sales_percentage"] = total_sales_percentage
+        if new_total_sales_percentage == total_sales_percentage_dict["total_sales_percentage"]: 
+            sales_total_growth = 'stagnant'
+        else:
+            total_sales_percentage_dict["new_total_sales_percentage"] = new_total_sales_percentage
+            if total_sales_percentage_dict["new_total_sales_percentage"] > total_sales_percentage_dict["total_sales_percentage"]:
+                sales_total_growth = 'growth'
+            elif total_sales_percentage_dict["new_total_sales_percentage"] < total_sales_percentage_dict["total_sales_percentage"]:
+                sales_total_growth = 'shrinking'
+            else:
+                sales_total_growth = 'stagnant'
+
+
+
+        total_customers_percentage = total_customers_percentage
+        new_total_customers_percentage = total_customers_percentage
+        total_customers_percentage_dict["total_customers_percentage"] = total_customers_percentage
+        if new_total_customers_percentage == total_customers_percentage_dict["total_customers_percentage"]:
+            customers_growth = 'stagnant'
+        else:
+            total_customers_percentage_dict["new_total_customers_percentage"] = new_total_customers_percentage
+            if total_customers_percentage_dict["new_total_customers_percentage"] > total_customers_percentage_dict["total_customers_percentage"]:
+                customers_growth = 'growth'
+            elif total_customers_percentage_dict["new_total_customers_percentage"] < total_customers_percentage_dict["total_customers_percentage"]:
+                customers_growth = 'shrinking'
+            else:
+                customers_growth = 'stagnant'
+
+        last_24_customers_percentage = last_24_customers_percentage
+        new_last_24_customers_percentage = last_24_customers_percentage
+        last_24_customers_percentage_dict["last_24_customers_percentage"] = last_24_customers_percentage
+        if new_last_24_customers_percentage == last_24_customers_percentage_dict["last_24_customers_percentage"]:
+            last_24_customers_growth = 'stagnant'
+        else:
+            last_24_customers_percentage_dict["new_last_24_customers_percentage"] = new_last_24_customers_percentage
+            if last_24_customers_percentage_dict["new_last_24_customers_percentage"] > last_24_customers_percentage_dict["last_24_customers_percentage"]:
+                last_24_customers_growth = 'growth'
+            elif last_24_customers_percentage_dict["new_last_24_customers_percentage"] < last_24_customers_percentage_dict["last_24_customers_percentage"]:
+                last_24_customers_growth = 'shrinking'
+            else:
+                last_24_customers_growth = 'stagnant'
+        return render(request, "store/store-admin.html", {"customer_dict": customer_dict, "product_dict": product_dict, "total_amount": total_amount, "today_total_amount": today_total_amount, "latest_orders": latest_orders, "last_24_hours_total_customers": last_24_hours_total_customers, 'customers': customers, 'store':store, 'total_sales_today_percentage': total_sales_today_percentage, 'last_24_customers_percentage': last_24_customers_percentage, 'total_sales_percentage': total_sales_percentage, 'total_customers_percentage': total_customers_percentage ,'sales_today_growth': sales_today_growth, 'sales_total_growth': sales_total_growth, 'customers_growth': customers_growth, 'last_24_customers_growth': last_24_customers_growth, 'subscribed':subscribed})   
     else:
         subscribed = False
         messages.error(request, "You need to subscribe view this page.")
