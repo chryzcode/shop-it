@@ -129,9 +129,9 @@
               </div>
             </div>
             <div>
-            <p>All Customers last 7 days</p>
+            <p>All Customers last 1 year</p>
             <div>
-              <span>{{last_7_days_total_customer}}</span>
+              <span>{{last_1_year_total_customer}}</span>
               <span>
                 {% if customers_growth == 'growth' %}
                   <i class="fas fa-caret-up growth-up"></i>
@@ -140,13 +140,13 @@
                   {% elif customers_growth == 'shrinking' %}
                   <i class="fas fa-caret-down growth-shrink"></i>
                   {% endif %}
-                {{last_7_days_customers_percentage}}%</span>
+                {{last_1_year_customers_percentage}}%</span>
             </div>
           </div>
             <div>
-             <p>New Customers last 24 hours</p>
+             <p>New Customers last 1 month</p>
              <div>
-              <span>{{last_24_hours_total_customers}}</span>
+              <span>{{last_1_month_total_customer}}</span>
               <span>
                 {% if last_24_customers_growth == 'growth' %}
                   <i class="fas fa-caret-up growth-up"></i>
@@ -155,7 +155,7 @@
                   {% elif last_24_customers_growth == 'shrinking' %}
                   <i class="fas fa-caret-down growth-shrink"></i>
                   {% endif %}
-                {{last_24_customers_percentage}}%
+                {{last_1_month_customers_percentage}}%
               </span>
              </div>
             </div>
