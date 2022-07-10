@@ -307,24 +307,18 @@ def store_admin(request):
         customers = Customer.objects.filter(store=store)
         last_24_customers = customers.filter(time__gt=timezone.now() - timedelta(hours=24))
 
-
         for last_24_customer in last_24_customers:
             last_24_hours_total_customers += 1
         
-
-        total_sales_today_percentage_dict = {}
         for last_24_order in last_24_orders:
             amount = last_24_order.amount
-            today_total_amount = amount + today_total_amount    
-        last_24_orders_percentage = last_24_orders.count() / (orders.count() + last_24_orders.count()) * 100
+            today_total_amount = amount + today_total_amount  
+        if last_24_orders.count() > 0:  
+            last_24_orders_percentage = last_24_orders.count() / orders.count()  * 100
+        else:
+            last_24_orders_percentage = 0
+        print(last_24_orders.count())
         print(last_24_orders_percentage)
-  
-        
-
-
-
-
-     
 
         for order in orders:
             # amount = order.amount
@@ -363,16 +357,11 @@ def store_admin(request):
             last_order = Order.objects.filter(store=store).order_by("-created")[:1].first()
             if store.currency.code != last_order.currency_code:
                 today_total_amount = 0
-              
                 total_sales_today_percentage = 0
+    
         
 
-        total_customers_percentage_dict = {}
-        last_24_customers_percentage_dict = {}
-        
-        
-
-        return render(request, "store/store-admin.html", {"customer_dict": customer_dict, "product_dict": product_dict, "today_total_amount": today_total_amount, "latest_orders": latest_orders, "last_24_hours_total_customers": last_24_hours_total_customers, 'customers': customers, 'store':store, 'subscribed':subscribed})   
+        return render(request, "store/store-admin.html", {"customer_dict": customer_dict, "product_dict": product_dict, "today_total_amount": today_total_amount, "latest_orders": latest_orders, "last_24_hours_total_customers": last_24_hours_total_customers, 'customers': customers, 'store':store, 'subscribed':subscribed, 'last_24_orders_percentage':last_24_orders_percentage})   
     else:
         subscribed = False
         messages.error(request, "You need to subscribe view this page.")
