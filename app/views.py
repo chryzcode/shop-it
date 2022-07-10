@@ -298,35 +298,41 @@ def store_admin(request):
         subscribed = True
         orders = Order.objects.filter(store=store, billing_status=True)
         last_24_orders = orders.filter(created__gt=timezone.now() - timedelta(hours=24))
-        total_amount = 0
-        today_total_amount = 0
-        last_24_hours_total_customers = 0
-        customer_count= 0
+        last_7_days_orders = orders.filter(created__gt=timezone.now() - timedelta(days=7))
+   
         product_dict = {}
         customer_dict = {}
         customers = Customer.objects.filter(store=store)
         last_24_customers = customers.filter(time__gt=timezone.now() - timedelta(hours=24))
 
+        last_24_hours_total_customers = 0
         for last_24_customer in last_24_customers:
-            last_24_hours_total_customers += 1
+            last_24_hours_total_customers = last_24_hours_total_customers + 1
         if last_24_customers.count() > 0 and customers.count() > 0:
             last_24_customers_percentage =  last_24_customers.count() / customers.count() * 100
         else:
             last_24_customers_percentage = 0
-        print(last_24_customers_percentage)
         
+        today_total_amount = 0
         for last_24_order in last_24_orders:
             amount = last_24_order.amount
             today_total_amount = amount + today_total_amount  
-        if last_24_orders.count() > 0 or orders.count() > 0: 
+        if last_24_orders.count() > 0 and orders.count() > 0: 
             last_24_orders_percentage = last_24_orders.count() / orders.count()  * 100
         else:
             last_24_orders_percentage = 0
 
+        
+        last_7_days_total_amount = 0
+        for order in last_7_days_orders:
+            last_7_days_amount = order.amount
+            last_7_days_total_amount = last_7_days_total_amount + last_7_days_amount
+        if last_7_days_orders.count() > 0 and orders.count() > 0:
+            last_7_days_orders_percentage = last_7_days_orders.count() / orders.count() * 100
+        else:
+            last_7_days_orders_percentage = 0
 
         for order in orders:
-            # amount = order.amount
-            # total_amount = amount + total_amount
             if order.user:
                 if User.objects.filter(email=order.user.email).exists():
                     user = User.objects.get(email=order.user.email)
@@ -362,9 +368,10 @@ def store_admin(request):
             if store.currency.code != last_order.currency_code:
                 today_total_amount = 0
                 last_24_orders_percentage = 0
-        
+                last_7_days_total_amount= 0
+                last_7_days_orders_percentage = 0
 
-        return render(request, "store/store-admin.html", {"customer_dict": customer_dict, "product_dict": product_dict, "today_total_amount": today_total_amount, "latest_orders": latest_orders, "last_24_hours_total_customers": last_24_hours_total_customers, 'customers': customers, 'store':store, 'subscribed':subscribed, 'last_24_orders_percentage':last_24_orders_percentage})   
+        return render(request, "store/store-admin.html", {"customer_dict": customer_dict, "product_dict": product_dict, "today_total_amount": today_total_amount, "latest_orders": latest_orders, "last_24_hours_total_customers": last_24_hours_total_customers, 'customers': customers, 'store':store, 'subscribed':subscribed, 'last_24_orders_percentage':last_24_orders_percentage, 'last_24_customers_percentage':last_24_customers_percentage, 'last_7_days_orders_percentage':last_7_days_orders_percentage, 'last_7_days_total_amount':last_7_days_total_amount}) 
     else:
         subscribed = False
         messages.error(request, "You need to subscribe view this page.")
