@@ -341,6 +341,36 @@ def store_admin(request):
         else:
             last_7_days_customers_percentage = 0
 
+        last_1_month_orders = orders.filter(created__gt=timezone.now() - timedelta(days=30))
+        last_1_month_total_amount = 0
+        for order in last_1_month_orders:
+            last_1_month_amount = order.amount
+            last_1_month_total_amount = last_1_month_total_amount + last_1_month_amount
+        if last_1_month_orders.count() > 0 and orders.count() > 0:
+            last_1_month_orders_percentage = last_1_month_orders.count() / orders.count() * 100
+        else:
+            last_1_month_orders_percentage = 0
+
+        last_1_year_orders = orders.filter(created__gt=timezone.now() - timedelta(days=365))
+        last_1_year_total_amount = 0
+        for order in last_1_year_orders:
+            last_1_year_amount = order.amount
+            last_1_year_total_amount = last_1_year_total_amount + last_1_year_amount
+        if last_1_year_orders.count() > 0 and orders.count() > 0:
+            last_1_year_orders_percentage = last_1_year_orders.count() / orders.count() * 100
+        else:
+            last_1_year_orders_percentage = 0
+
+        last_1_year_customers = customers.filter(time__gt=timezone.now() - timedelta(days=365))
+        last_1_year_total_customer = 0
+        for customer in last_1_year_customers:
+            last_1_year_total_customer = last_1_year_total_customer + 1
+        if last_1_year_customers.count() > 0 and customers.count() > 0:
+            last_1_year_customers_percentage = last_1_year_customers.count() / customers.count() * 100
+        else:
+            last_1_year_customers_percentage = 0
+
+
         for order in orders:
             if order.user:
                 if User.objects.filter(email=order.user.email).exists():
@@ -379,9 +409,14 @@ def store_admin(request):
                 last_24_orders_percentage = 0
                 last_7_days_total_amount= 0
                 last_7_days_orders_percentage = 0
+                last_1_month_amount = 0
+                last_1_month_orders_percentage = 0
+                last_1_year_total_amount = 0
+                last_1_year_orders_percentage = 0
 
         return render(request, "store/store-admin.html", {"customer_dict": customer_dict, "product_dict": product_dict, "today_total_amount": today_total_amount, "latest_orders": latest_orders, "last_24_hours_total_customers": last_24_hours_total_customers, 'customers': customers, 'store':store, 'subscribed':subscribed, 'last_24_orders_percentage':last_24_orders_percentage, 'last_24_customers_percentage':last_24_customers_percentage, 'last_7_days_orders_percentage':last_7_days_orders_percentage, 'last_7_days_total_amount':last_7_days_total_amount, 'last_7_days_total_customer':last_7_days_total_customer,
-        'last_7_days_customers_percentage':last_7_days_customers_percentage}) 
+        'last_7_days_customers_percentage':last_7_days_customers_percentage, 'last_1_month_orders_percentage':last_1_month_orders_percentage, 'last_1_month_total_amount':last_1_month_total_amount, 'last_1_year_orders_percentage':last_1_year_orders_percentage, 'last_1_year_total_amount':last_1_year_total_amount
+        , 'last_1_year_customers_percentage':last_1_year_customers_percentage, 'last_1_year_total_customer':last_1_year_total_customer})
     else:
         subscribed = False
         messages.error(request, "You need to subscribe view this page.")
