@@ -55,9 +55,9 @@
               </div>
             </div>
             <div>
-            <p>All Customers</p>
+            <p>All Customers last 7 days</p>
             <div>
-              <span>{{customers.count}}</span>
+              <span>{{last_7_days_total_customer}}</span>
               <span>
                 {% if customers_growth == 'growth' %}
                   <i class="fas fa-caret-up growth-up"></i>
@@ -66,7 +66,7 @@
                   {% elif customers_growth == 'shrinking' %}
                   <i class="fas fa-caret-down growth-shrink"></i>
                   {% endif %}
-                {{total_customers_percentage}}%</span>
+                {{last_7_days_customers_percentage}}%</span>
             </div>
           </div>
             <div>
