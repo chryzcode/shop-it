@@ -309,6 +309,11 @@ def store_admin(request):
 
         for last_24_customer in last_24_customers:
             last_24_hours_total_customers += 1
+        if last_24_customers.count() > 0 and customers.count() > 0:
+            last_24_customers_percentage =  last_24_customers.count() / customers.count() * 100
+        else:
+            last_24_customers_percentage = 0
+        print(last_24_customers_percentage)
         
         for last_24_order in last_24_orders:
             amount = last_24_order.amount
