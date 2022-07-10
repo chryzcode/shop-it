@@ -13,7 +13,7 @@ const analytics_timelinet_toogle = document.getElementById("analtics-timeline-to
 const monthly_yearly_analytics = document.getElementById("small-anlytics-card-monthly-yearly");
 const hourly_weekly_analytics = document.getElementById("small-anlytics-card-hourly-weekly");
 
-console.log(analytics_timelinet_toogle);
+
 
 document.onclick = function (e) {
   if (e.target.id == "a-nav-link") {

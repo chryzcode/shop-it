@@ -1690,7 +1690,15 @@ body::-webkit-scrollbar,
   border: 0;
 }
 
-
+#analtics-timeline-toogle {
+  width: max-content;
+  margin-left: auto;
+  color: #fff;
+  background-color: #3d5170;
+  padding: 10px;
+  margin-right: 30px;
+  cursor: pointer;
+}
 
 #small-anlytics-card-monthly-yearly.active {
   display: flex;
