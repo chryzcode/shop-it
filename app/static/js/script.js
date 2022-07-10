@@ -9,7 +9,9 @@ const notification = document.getElementById("notification");
 const notification_dropdown = document.getElementById("notification-dropdown");
 const search_bar = document.getElementById("side-nav-search-bar");
 const search_display = document.getElementById("search-display");
-
+const analytics_timelinet_toogle = document.getElementById("analtics-timeline-toogle");
+const monthly_yearly_analytics = document.getElementById("small-anlytics-card-monthly-yearly");
+const hourly_weekly_analytics = document.getElementById("small-anlytics-card-hourly-weekly");
 
 document.onclick = function (e) {
   if (e.target.id == "a-nav-link") {
