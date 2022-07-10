@@ -13,6 +13,8 @@ const analytics_timelinet_toogle = document.getElementById("analtics-timeline-to
 const monthly_yearly_analytics = document.getElementById("small-anlytics-card-monthly-yearly");
 const hourly_weekly_analytics = document.getElementById("small-anlytics-card-hourly-weekly");
 
+console.log(analytics_timelinet_toogle);
+
 document.onclick = function (e) {
   if (e.target.id == "a-nav-link") {
     nav_links.classList.remove("active");
@@ -90,6 +92,13 @@ if (search_bar) {
         search_display.classList.remove("active");
       }
     }
+  }
+}
+
+if (analytics_timelinet_toogle) {
+  analytics_timelinet_toogle.onclick = function () {
+    monthly_yearly_analytics.classList.toggle("active");
+    hourly_weekly_analytics.classList.toggle("inactive");
   }
 }
 

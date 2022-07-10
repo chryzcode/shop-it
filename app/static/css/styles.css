@@ -1690,21 +1690,24 @@ body::-webkit-scrollbar,
   border: 0;
 }
 
-#small-anlytics-card-monthly-yearly {
-  display: none;
-}
+
 
 #small-anlytics-card-monthly-yearly.active {
   display: flex;
 }
 
-#small-anlytics-card-hourly-weekly {
+#small-anlytics-card-monthly-yearly {
   display: none;
 }
 
-#small-anlytics-card-hourly-weekly.active {
+#small-anlytics-card-hourly-weekly.inactive {
+  display: none;
+}
+
+#small-anlytics-card-hourly-weekly {
   display: flex;
 }
+
 
 .small-anlytics-card {
   display: flex;
