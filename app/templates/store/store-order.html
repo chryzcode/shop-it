@@ -6,7 +6,7 @@
   {% include 'navs/store-side-nav.html' %}
   <div class="store-content-container">
     <span class="store-products-container">
-      <p>Store {% if 'unpaid' in request.get_full_path %}Unpaid{% endif %} Orders</p>
+      <p>Store {% if 'unpaid' in request.get_full_path %}Unpaid{% endif %} Orders - {% if orders_count %}{{orders_count}}{% else %}0{% endif %}</p>
       <div class="table-container">
         <table class="store-products-table">
         <p>

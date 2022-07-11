@@ -760,6 +760,7 @@ def store_orders(request):
             store_name=store_staff.objects.get(email=request.user.email).store
         )
     orders = Order.objects.filter(store=store)
+    orders_count = orders.count()
     if Payment.objects.filter(store=store.id, order__in=orders).exists():
         payment = Payment.objects.filter(store=store.id, order__in=orders)
     else:
@@ -773,7 +774,7 @@ def store_orders(request):
     except EmptyPage:
         orders = paginator.page(paginator.num_pages)
     return render(
-        request, "store/store-order.html", {"orders": orders, "payment": payment}
+        request, "store/store-order.html", {"orders": orders, "payment": payment, "orders_count": orders_count}
     )
 
 
