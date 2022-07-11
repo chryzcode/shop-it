@@ -102,6 +102,7 @@ def a_store_all_products(request):
             store_name=store_staff.objects.get(email=request.user.email).store
         )
     all_products = Product.objects.filter(store=store)
+    all_products_count = all_products.count()
     page = request.GET.get('page', 1)
     paginator = Paginator(all_products, 10)
     try:
@@ -113,7 +114,7 @@ def a_store_all_products(request):
     return render(
         request,
         "store/products.html",
-        {"all_products": all_products, "store": store},
+        {"all_products": all_products, "store": store, "all_products_count": all_products_count},
     )
 
 

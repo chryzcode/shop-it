@@ -6,7 +6,7 @@
   {% include 'navs/store-side-nav.html' %}
   <div class="store-content-container">
     <span class="store-products-container">
-      <p>All Products</p>
+      <p>All Products - {% if all_products_count %}{{all_products_count}}{% else %}0{% endif %}</p>
       <span>
         <a href="{% url 'app:create_product' %}">Add Product</a>
       </span>
