@@ -39,7 +39,7 @@
               </div>
             </div>
             <div>
-              <p>Sales Last 24 hours</p>
+              <p>Sales last 24 hours</p>
               <div>
                 {% if store.currency.symbol %}
                 <span>{{store.currency.symbol}}{{today_total_amount|intcomma}}</span>
@@ -93,7 +93,7 @@
 
           <div class="small-anlytics-card" id="small-anlytics-card-monthly-yearly">
             <div>
-              <p>Total Sales last year</p>
+              <p>Sales this year</p>
               <div>
                 {% if store.currency.symbol %}
                 <span>{{store.currency.symbol}}{{last_1_year_total_amount|intcomma}}</span>
@@ -148,7 +148,7 @@
             </div>
           </div>
             <div>
-             <p>Customers 30 days</p>
+             <p>Customers last 30 days</p>
              <div>
               <span>{{last_1_month_total_customer}}</span>
               <span>

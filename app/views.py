@@ -350,7 +350,7 @@ def store_admin(request):
             last_1_month_orders_percentage = last_1_month_orders.count() / orders.count() * 100
         else:
             last_1_month_orders_percentage = 0
-
+        
         last_1_year_orders = orders.filter(created__gt=timezone.now() - timedelta(days=365))
         last_1_year_total_amount = 0
         for order in last_1_year_orders:
@@ -422,6 +422,9 @@ def store_admin(request):
                 last_1_month_orders_percentage = 0
                 last_1_year_total_amount = 0
                 last_1_year_orders_percentage = 0
+
+
+       
 
         return render(request, "store/store-admin.html", {"customer_dict": customer_dict, "product_dict": product_dict, "today_total_amount": today_total_amount, "latest_orders": latest_orders, "last_24_hours_total_customers": last_24_hours_total_customers, 'customers': customers, 'store':store, 'subscribed':subscribed, 'last_24_orders_percentage':int(last_24_orders_percentage), 'last_24_customers_percentage':int(last_24_customers_percentage), 'last_7_days_orders_percentage':int(last_7_days_orders_percentage), 'last_7_days_total_amount':last_7_days_total_amount, 'last_7_days_total_customer':last_7_days_total_customer,
         'last_7_days_customers_percentage':int(last_7_days_customers_percentage), 'last_1_month_orders_percentage':int(last_1_month_orders_percentage), 'last_1_month_total_amount':last_1_month_total_amount, 'last_1_year_orders_percentage':int(last_1_year_orders_percentage), 'last_1_year_total_amount':last_1_year_total_amount
