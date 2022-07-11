@@ -19,7 +19,7 @@
 
           <div class="small-anlytics-card" id="small-anlytics-card-hourly-weekly">
             <div>
-              <p>Total Sales last 7 days</p>
+              <p>Sales last 7 days</p>
               <div>
                 {% if store.currency.symbol %}
                 <span>{{store.currency.symbol}}{{last_7_days_total_amount|intcomma}}</span>
@@ -59,7 +59,7 @@
               </div>
             </div>
             <div>
-            <p>All Customers last 7 days</p>
+            <p>Customers last 7 days</p>
             <div>
               <span>{{last_7_days_total_customer}}</span>
               <span>
@@ -74,7 +74,7 @@
             </div>
           </div>
             <div>
-             <p>New Customers last 24 hours</p>
+             <p>Customers last 24 hours</p>
              <div>
               <span>{{last_24_hours_total_customers}}</span>
               <span>
@@ -113,7 +113,7 @@
               </div>
             </div>
             <div>
-              <p>Sales Last month</p>
+              <p>Sales Last 30 days</p>
               <div>
                 {% if store.currency.symbol %}
                 <span>{{store.currency.symbol}}{{last_1_month_total_amount|intcomma}}</span>
@@ -133,7 +133,7 @@
               </div>
             </div>
             <div>
-            <p>All Customers last year</p>
+            <p>Customers this year</p>
             <div>
               <span>{{last_1_year_total_customer}}</span>
               <span>
@@ -148,7 +148,7 @@
             </div>
           </div>
             <div>
-             <p>New Customers last month</p>
+             <p>Customers 30 days</p>
              <div>
               <span>{{last_1_month_total_customer}}</span>
               <span>
