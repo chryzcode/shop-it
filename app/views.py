@@ -631,11 +631,63 @@ def store_admin(request):
             else:
                 last_24_customers_growth = 'shrinking'
 
+        
+        if yearly_sales.objects.filter(store=store).exists():
+            if yearly_sales.objects.filter(store=store).count() == 2:
+                first_data = yearly_sales.objects.filter(store=store).first()
+                second_data = yearly_sales.objects.filter(store=store).last()
+                if second_data.percentage != last_1_year_orders_percentage:
+                    first_data.percentage = second_data.percentage
+                    first_data.save()
+                    second_data.percentage = last_1_year_orders_percentage
+                    second_data.save()
+                    if second_data.percentage > first_data.percentage:
+                        yearly_sales_total_growth = 'growth'
+                    elif second_data.percentage == first_data.percentage:
+                        yearly_sales_total_growth = 'stagnant'
+                    elif second_data.percentage < first_data.percentage:
+                        yearly_sales_total_growth ='shrinking'
+                    else:
+                        yearly_sales_total_growth = 'shrinking'
+                if last_1_year_orders_percentage > 0:
+                    yearly_sales_total_growth = 'growth'
+                else:
+                    yearly_sales_total_growth = 'shrinking'
+            elif yearly_sales.objects.filter(store=store).count() == 1:
+                first_data = yearly_sales.objects.filter(store=store).first()
+                if first_data.percentage != last_24_customers_percentage:
+                    second_data = yearly_sales.objects.create(
+                        store = store,
+                        percentage = last_1_year_orders_percentage
+                    )
+                    if second_data.percentage > first_data.percentage:
+                        yearly_sales_total_growth = 'growth'
+                    elif second_data.percentage == first_data.percentage:
+                        yearly_sales_total_growth = 'stagnant'
+                    elif second_data.percentage < first_data.percentage:
+                        yearly_sales_total_growth ='shrinking'
+                    else:
+                        yearly_sales_total_growth = 'shrinking'
+                else:
+                    if last_1_year_orders_percentage > 0:
+                        yearly_sales_total_growth = 'growth'
+                    else:
+                        yearly_sales_total_growth = 'shrinking'
+        else:
+            yearly_sales.objects.create(
+                    store = store,
+                    percentage = last_1_year_orders_percentage
+                )
+            if last_1_year_orders_percentage > 0:
+                yearly_sales_total_growth = 'growth'
+            else:
+                yearly_sales_total_growth = 'shrinking'
+
 
     
         return render(request, "store/store-admin.html", {"customer_dict": customer_dict, "product_dict": product_dict, "today_total_amount": today_total_amount, "latest_orders": latest_orders, "last_24_hours_total_customers": last_24_hours_total_customers, 'customers': customers, 'store':store, 'subscribed':subscribed, 'last_24_orders_percentage':int(last_24_orders_percentage), 'last_24_customers_percentage':int(last_24_customers_percentage), 'last_7_days_orders_percentage':int(last_7_days_orders_percentage), 'last_7_days_total_amount':last_7_days_total_amount, 'last_7_days_total_customer':last_7_days_total_customer,
         'last_7_days_customers_percentage':int(last_7_days_customers_percentage), 'last_1_month_orders_percentage':int(last_1_month_orders_percentage), 'last_1_month_total_amount':last_1_month_total_amount, 'last_1_year_orders_percentage':int(last_1_year_orders_percentage), 'last_1_year_total_amount':last_1_year_total_amount
-        , 'last_1_year_customers_percentage':int(last_1_year_customers_percentage), 'last_1_year_total_customer':last_1_year_total_customer, 'last_1_month_customers_percentage':int(last_1_month_customers_percentage), 'last_1_month_total_customer':last_1_month_total_customer, 'last_7_days_sales_total_growth':last_7_days_sales_total_growth, 'last_24_hours_sales_total_growth':last_24_hours_sales_total_growth, 'last_7_days_customers_growth':last_7_days_customers_growth, 'last_24_customers_growth':last_24_customers_growth})
+        , 'last_1_year_customers_percentage':int(last_1_year_customers_percentage), 'last_1_year_total_customer':last_1_year_total_customer, 'last_1_month_customers_percentage':int(last_1_month_customers_percentage), 'last_1_month_total_customer':last_1_month_total_customer, 'last_7_days_sales_total_growth':last_7_days_sales_total_growth, 'last_24_hours_sales_total_growth':last_24_hours_sales_total_growth, 'last_7_days_customers_growth':last_7_days_customers_growth, 'last_24_customers_growth':last_24_customers_growth, 'yearly_sales_total_growth':yearly_sales_total_growth})
     else:
         subscribed = False
         messages.error(request, "You need to subscribe view this page.")
