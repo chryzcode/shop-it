@@ -218,7 +218,7 @@ class last_30_days_sales(models.Model):
     class Meta:
         verbose_name_plural = "last_30_days_sales"
 
-class customers_last_7_days(models.Model):
+class customers_yearly(models.Model):
     store = models.ForeignKey(Store, on_delete=models.CASCADE)
     percentage = models.IntegerField(default=0)
 
@@ -226,4 +226,4 @@ class customers_last_7_days(models.Model):
         return str(self.store.store_name) + ' ' + str(self.percentage)+'%'
 
     class Meta:
-        verbose_name_plural = "customers_last_7_days"
+        verbose_name_plural = "customers_yearly"
