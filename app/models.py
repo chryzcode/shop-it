@@ -207,3 +207,13 @@ class yearly_sales(models.Model):
 
     class Meta:
         verbose_name_plural = "yearly_sales"
+
+class last_30_days_sales(models.Model):
+    store = models.ForeignKey(Store, on_delete=models.CASCADE)
+    percentage = models.IntegerField(default=0)
+
+    def __str__ (self):
+        return str(self.store.store_name) + ' ' + str(self.percentage)+'%'
+
+    class Meta:
+        verbose_name_plural = "last30_days_sales"
