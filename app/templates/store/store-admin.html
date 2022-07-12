@@ -14,8 +14,7 @@
           {% endfor %} {% endif %}
           {% if subscribed == True %}
                        
-          <div id="analtics-timeline-toogle">Toogle Timeline</div>
-
+          <div id="analtics-timeline-toogle">Change Timeline</div>
 
           <div class="small-anlytics-card" id="small-anlytics-card-hourly-weekly">
             <div>
@@ -24,11 +23,11 @@
                 {% if store.currency.symbol %}
                 <span>{{store.currency.symbol}}{{last_7_days_total_amount|intcomma}}</span>
                 <span>
-                  {% if sales_total_growth == 'growth' %}
+                  {% if last_7_days_sales_total_growth == 'growth' %}
                   <i class="fas fa-caret-up growth-up"></i>
-                  {% elif sales_total_growth == 'stagnant' %}
+                  {% elif last_7_days_sales_total_growth == 'stagnant' %}
                   <i class="fas fa-horizontal-rule growth-stagnant"></i>
-                  {% elif sales_total_growth == 'shrinking' %}
+                  {% elif last_7_days_sales_total_growth == 'shrinking' %}
                   <i class="fas fa-caret-down growth-shrink"></i>
                   {% endif %}
                   {{last_7_days_orders_percentage}}%
@@ -44,11 +43,11 @@
                 {% if store.currency.symbol %}
                 <span>{{store.currency.symbol}}{{today_total_amount|intcomma}}</span>
                 <span>
-                  {% if sales_today_growth == 'growth' %}
+                  {% if last_24_hours_sales_total_growth == 'growth' %}
                   <i class="fas fa-caret-up growth-up"></i>
-                  {% elif sales_today_growth == 'stagnant' %}
+                  {% elif last_24_hours_sales_total_growth == 'stagnant' %}
                   <i class="fas fa-horizontal-rule growth-stagnant"></i>
-                  {% elif sales_today_growth == 'shrinking' %}
+                  {% elif last_24_hours_sales_total_growth == 'shrinking' %}
                   <i class="fas fa-caret-down growth-shrink"></i>
                   {% endif %}
                   {{last_24_orders_percentage}}
@@ -63,11 +62,11 @@
             <div>
               <span>{{last_7_days_total_customer}}</span>
               <span>
-                {% if customers_growth == 'growth' %}
+                {% if last_7_days_customers_growth == 'growth' %}
                   <i class="fas fa-caret-up growth-up"></i>
-                  {% elif customers_growth == 'stagnant' %}
+                  {% elif last_7_days_customers_growth == 'stagnant' %}
                   <i class="fas fa-horizontal-rule growth-stagnant"></i>
-                  {% elif customers_growth == 'shrinking' %}
+                  {% elif last_7_days_customers_growth == 'shrinking' %}
                   <i class="fas fa-caret-down growth-shrink"></i>
                   {% endif %}
                 {{last_7_days_customers_percentage}}%</span>
