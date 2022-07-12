@@ -117,11 +117,11 @@
                 {% if store.currency.symbol %}
                 <span>{{store.currency.symbol}}{{last_1_month_total_amount|intcomma}}</span>
                 <span>
-                  {% if sales_total_growth == 'growth' %}
+                  {% if last_1_month_sales_growth == 'growth' %}
                   <i class="fas fa-caret-up growth-up"></i>
-                  {% elif sales_total_growth == 'stagnant' %}
+                  {% elif last_1_month_sales_growth == 'stagnant' %}
                   <i class="fas fa-horizontal-rule growth-stagnant"></i>
-                  {% elif sales_total_growth == 'shrinking' %}
+                  {% elif last_1_month_sales_growth == 'shrinking' %}
                   <i class="fas fa-caret-down growth-shrink"></i>
                   {% endif %}
                   {{last_1_month_orders_percentage}}%
