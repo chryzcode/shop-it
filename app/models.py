@@ -227,3 +227,13 @@ class customers_yearly(models.Model):
 
     class Meta:
         verbose_name_plural = "customers_yearly"
+
+class customers_monthly(models.Model):
+    store = models.ForeignKey(Store, on_delete=models.CASCADE)
+    percentage = models.IntegerField(default=0)
+
+    def __str__ (self):
+        return str(self.store.store_name) + ' ' + str(self.percentage)+'%'
+
+    class Meta:
+        verbose_name_plural = "customers_monthly"

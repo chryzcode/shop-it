@@ -151,11 +151,11 @@
              <div>
               <span>{{last_1_month_total_customer}}</span>
               <span>
-                {% if last_24_customers_growth == 'growth' %}
+                {% if last_30_customers_growth == 'growth' %}
                   <i class="fas fa-caret-up growth-up"></i>
-                  {% elif last_24_customers_growth == 'stagnant' %}
+                  {% elif last_30_customers_growth == 'stagnant' %}
                   <i class="fas fa-horizontal-rule growth-stagnant"></i>
-                  {% elif last_24_customers_growth == 'shrinking' %}
+                  {% elif last_30_customers_growth == 'shrinking' %}
                   <i class="fas fa-caret-down growth-shrink"></i>
                   {% endif %}
                 {{last_1_month_customers_percentage}}%
