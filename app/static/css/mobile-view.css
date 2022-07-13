@@ -25,12 +25,6 @@
     display: table;
   }
 
-  /* .main-logo {
-    position: relative;
-    top: 35px;
-    padding-left: 50px;
-  } */
-
   .main-container-large {
     margin-top: 140px;
   }
@@ -182,7 +176,7 @@
 
   #toogle {
     position: absolute;
-    top: 30px;
+    top: 40px;
     right: 0;
     width: 60px;
     cursor: pointer;
@@ -346,6 +340,16 @@
 
   .subscription-grid-container {
     grid-template-columns: 1fr;
+  }
+
+  .side-nav-search-bar {
+    display: none;
+  }
+
+  .side-nav-search-bar.mobile {
+    width: 90%;
+    margin: 0 auto;
+    display: block;
   }
 }
 

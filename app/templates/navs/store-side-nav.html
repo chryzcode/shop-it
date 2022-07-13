@@ -1,6 +1,20 @@
 <div class="store-sidenav" id="store-sidenav">
     <span class="store-sidenav-seg">
       <p>{{a_staff_store_store |capfirst }}</p>
+      <span>     
+          <input type="text" id="side-nav-search-bar" class="side-nav-search-bar active mobile"  onkeypress="myFunction()" placeholder="Search for Customers, Products, orders" />
+          <ul id="search-display">
+            {% for product in store_products %}
+            <li><a href="{% url 'app:product_detail' product.slug %}">{{product}}</a></li>
+            {% endfor %}
+            {% for order in store_orders %}
+            <li><a href="{% url 'app:store_order_detail' order.id %}">{{order.id}}</a></li>
+            {% endfor %}
+            {% for customer in store_customers %}
+            <li><a href="{% url 'app:store_customers_details' customer.pk %}">{{customer.full_name}}</a></li>
+            {% endfor %}
+          </ul>
+      </span>
       <ul>
         <li><a href="{% url 'app:store_admin' %}">My Store</a></li>
         <li><a href="{% url "app:all_customers" %}">Customers</a></li>
