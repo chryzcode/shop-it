@@ -77,9 +77,8 @@
   }
 
   .cart-mobile {
-  display: none !important;
-}
-
+    display: none !important;
+  }
 
   .cart-icon-container > a > i {
     color: #6d7d89;
@@ -154,6 +153,4 @@
     object-fit: cover;
     object-position: center;
   }
-
-  
 }

@@ -1811,7 +1811,10 @@ body::-webkit-scrollbar,
   color: #fdd203;
 }
 
-
 .growth-shrink {
   color: #c4183c;
+}
+
+.side-nav-search-bar.mobile {
+    display: none;
 }
