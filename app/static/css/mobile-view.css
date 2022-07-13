@@ -377,6 +377,7 @@
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     align-items: center;
     transition: transform 2s;
+    border-radius: 8px;
   }
 
   .an-illustration-grid:hover {
