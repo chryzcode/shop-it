@@ -78,6 +78,8 @@ body {
 .illustration-grid-content {
   padding: 50px;
   font-size: 20px;
+  height: 200px;
+  overflow: scroll;
 }
 
 .illustration-container > img:hover {
@@ -1640,7 +1642,7 @@ small {
 body::-webkit-scrollbar,
 .store-sidenav::-webkit-scrollbar,
 #search-display::-webkit-scrollbar,
-.subscription-grid-container > .a-related-container > div::-webkit-scrollbar {
+.subscription-grid-container > .a-related-container > div::-webkit-scrollbar, .illustration-grid-content::-webkit-scrollbar {
   width: 0;
   background: transparent;
   display: none !important;
