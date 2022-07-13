@@ -1580,3 +1580,24 @@ def product_review_list(request, slugified_store_name, slug):
         reviews = paginator.page(paginator.num_pages)
     return render( request, "customer/product-review-list.html",
         {  "reviews": reviews, "product": product, "store": store })
+
+
+def company_review(request):
+    if request.user.is_authenticated:
+        form = CompanyAuthReviewForm
+    else:
+        form = CompanyAuthReviewForm
+    if request.method == "POST":
+        form = CompanyAuthReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            if request.user.is_authenticated:
+                from_email = request.user.email
+            else:
+                from_email = form.cleaned_data["email"]
+            to_email = settings.EMAIL_HOST_USER
+            subject = "Shopit Review from " + from_email
+            message = form.cleaned_data["review"]
+            send_mail(subject, message, from_email, [to_email])
+            return redirect("/")
+    return render(request, "apps/company-review.html", {"form": form})
