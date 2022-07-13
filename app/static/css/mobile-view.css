@@ -132,9 +132,9 @@
   }
 
   #nav-links > .side-nav-search-bar {
-    width: 100%;
+    width: 90%;
     display: block;
-    margin-top: 40px;
+    margin: 40px auto 0 auto;
   }
 
   .nav-user-profile {
