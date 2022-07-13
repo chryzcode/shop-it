@@ -30,14 +30,12 @@
   <body>
     <nav data-aos="fade-down" data-aos-duration="1500" class="store-nav" id="nav">
       <span class="store-nav-logo">
-        {% if a_staff_store_store %}
         {% if a_staff_store_store.store_image %}
         <span>
           <img src="{{a_staff_store_store.store_image.url}}" alt="">
         </span>
         {% else %}
         <a href="{% url 'app:store_admin' %}">{{a_staff_store_store|upper}}</a>
-        {% endif %}
         {% endif %}
       </span>
 
