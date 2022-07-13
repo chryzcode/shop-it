@@ -15,6 +15,22 @@ body {
   margin-top: 100px;
 }
 
+.store-nav-logo a{
+  text-decoration: none;
+  color: #6b69f8;
+  font-size: 20px;
+}
+
+.store-nav-logo > span:nth-child(1){
+  display: inline-block;
+  width: 40px;
+}
+
+.store-nav-logo > span:nth-child(1) > img {
+  width: 100%;
+  object-fit: cover;
+}
+
 .main-container-large {
   margin-top: 100px;
   margin-bottom: 50px;
