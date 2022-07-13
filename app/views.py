@@ -1,11 +1,10 @@
 from datetime import datetime, timedelta
-from re import I
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.text import slugify
+from django.conf import settings
 
 from account.models import *
 from cart.cart import *
@@ -87,10 +86,12 @@ def custom_error_500(request):
 
 
 def home_page(request):
-    # if request.user.is_authenticated:
-    #     subscription_check(request)
-    #     subscription_check_mail_remainder(request)
-    #     unpaid_order_mail_remainder(request)
+    domain = request.META['HTTP_HOST']
+    if domain == settings.DEFAULT_DOMAIN:
+        if request.user.is_authenticated:
+            subscription_check(request)
+            subscription_check_mail_remainder(request)
+            unpaid_order_mail_remainder(request)
     return render(request, "base/index.html")
 
 
