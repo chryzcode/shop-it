@@ -270,3 +270,70 @@ class ShippingMethodForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(ShippingMethodForm, self).__init__(*args, **kwargs)
 
+
+class CompanyAuthReviewForm(forms.Form):
+    title = forms.CharField(
+        widget=forms.TextInput(
+            attrs={"class": "form-control", "placeholder": "Title"}
+        )
+    )
+    review = forms.CharField(
+        widget=forms.Textarea(
+            attrs={"class": "form-control", "placeholder": "Comment"}
+        )
+    )
+
+    def clean_review(self):
+        review = self.cleaned_data.get("comment")
+        if review is None:
+            raise forms.ValidationError("Field is required")
+        if len(review) <= 5:
+            raise forms.ValidationError("Field is requires more than 5 characters")
+        return review
+
+    def clean_title(self):
+        title = self.cleaned_data.get("title")
+        if title is None:
+            raise forms.ValidationError("Field is required")
+        return title
+
+
+class CompanyNonAuthPReviewForm(forms.Form):
+    title = forms.CharField(
+        widget=forms.TextInput(
+            attrs={"class": "form-control", "placeholder": "Title"}
+        )
+    )
+    email = forms.EmailField(
+        widget=forms.EmailInput(
+            attrs={"class": "form-control", "placeholder": "Email"}
+        )
+    )
+    review = forms.CharField(
+        widget=forms.Textarea(
+            attrs={"class": "form-control", "placeholder": "Comment"}
+        )
+    )
+
+    def clean_review(self):
+        review = self.cleaned_data.get("comment")
+        if review is None:
+            raise forms.ValidationError("Field is required")
+        if len(review) <= 5:
+            raise forms.ValidationError("Field is requires more than 5 characters")
+        return review
+
+    def clean_title(self):
+        title = self.cleaned_data.get("title")
+        if title is None:
+            raise forms.ValidationError("Field is required")
+        return title
+
+    def clean_email(self):
+        email = self.cleaned_data.get("email")
+        if email is None:
+            raise forms.ValidationError("Field is required")
+        if '@' not in email:
+            raise forms.ValidationError("Invalid email")
+        return email
+
