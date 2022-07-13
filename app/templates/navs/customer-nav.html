@@ -33,9 +33,13 @@
   </head>
   <body>
     <nav data-aos="fade-down" data-aos-duration="1500" class="nav" id="nav">
-      <span>
+      <span class="store-nav-logo">
         {% if store %}
-        <a href="{% url 'app:store' store.slugified_store_name %}" class="main-logo">{{store.store_name}}</a>
+        <span>
+          <img src="{{store.store_image.url}}" alt="">
+        </span>
+        {% else %}
+        <a href="{% url 'app:store' store.slugified_store_name %}">{{store.store_name|upper}}</a>
         {% endif %}
       </span>
 
