@@ -343,6 +343,10 @@
   .store-socials {
     width: 30vw;
   }
+
+  .subscription-grid-container {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media all and (max-width: 850px) {
@@ -531,5 +535,9 @@
 
   .small-anlytics-card > div {
     width: 100%;
+  }
+
+  .a-related-container {
+    width: 80%;
   }
 }

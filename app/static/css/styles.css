@@ -558,10 +558,13 @@ body > nav > span:nth-child(2) > i {
 
 .subscription-grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: 1fr 1fr;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
   position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+
 }
 
 .subscription-grid-container a {
@@ -597,10 +600,6 @@ body > nav > span:nth-child(2) > i {
 
 .a-related-container > div {
   width: 300px;
-  /* height: 300px;
-  overflow-y: scroll;
-  overflow-x: hidden; 
-  margin-bottom: 30px;*/
   padding: 15px;
   font-size: 15px;
 }

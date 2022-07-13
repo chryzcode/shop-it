@@ -28,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = str(os.getenv("SECRET_KEY"))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['shopitapps.herokuapp.com', '127.0.0.1', 'localhost']
 
@@ -53,7 +53,6 @@ INSTALLED_APPS = [
     "order",
     "payment",
     "subscriptions",
-
     "notifications",
 ]
 
@@ -68,6 +67,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "core.urls"
+
 
 TEMPLATES = [
     {
@@ -199,6 +199,8 @@ DJANGO_NOTIFICATIONS_CONFIG = { 'USE_JSONFIELD': True}
 
 DEFAULT_DOMAIN=config("DEFAULT_DOMAIN")
 LOGISTICS_EMAIL = config("LOGISTICS_EMAIL")
+
+
 
 # CELERY STUFF
 BROKER_URL = 'redis://localhost:6379'
