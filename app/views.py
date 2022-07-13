@@ -1600,4 +1600,4 @@ def company_review(request):
             message = form.cleaned_data["review"]
             send_mail(subject, message, from_email, [to_email])
             return redirect("/")
-    return render(request, "apps/company-review.html", {"form": form})
+    return render(request, "company-review.html", {"form": form})

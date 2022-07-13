@@ -1,0 +1,33 @@
+{% extends 'navs/base.html' %} {% load static %} {% block title %} <title>Shop!t - Company Review</title> {% endblock %}
+{% block content %}
+<div class="auth-form-container position-absolute-center">
+  <form method="post">
+    {% csrf_token %}
+    <div class="above-create-form">
+      <p>Shop!t Comapny Review</p>
+    </div>
+    <div class="input-container">
+          <label for="title">Title<span class="form-required">*</span></label>
+          <p>{{ form.title.errors }}</p>
+          <input type="text" name="title" class="form-control" id="title" />
+        </div>
+
+        {% if not request.user.is_authenticated %}
+        <div class="input-container">
+          <label for="email">Email<span class="form-required">*</span></label>
+          <p>{{ form.email.errors }}</p>
+          <input type="email" name="email" class="form-control" id="email" />
+        </div>
+        {% endif %}
+
+        <div class="input-container">
+          <label for="review">Review<span class="form-required">*</span></label>
+          <p>{{ form.review.errors }}</p>
+          {{form.review}}
+        </div>
+
+    <button class="form-btn" type="submit">Send Review/button>
+  </form>
+</div>
+
+{% endblock %}
