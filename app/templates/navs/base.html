@@ -35,7 +35,6 @@
       </span>
 
       <ul id="nav-links">
-        <li><a href="" id="a-nav-link">Pricing</a></li>
         {% if request.user.is_authenticated %}
         {% if request.user.store_creator == True %}
         <li><a href="{% url "app:store_admin" %}" id="a-nav-link">My Store</a></li>
