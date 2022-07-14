@@ -284,7 +284,7 @@ class CompanyAuthReviewForm(forms.Form):
     )
 
     def clean_review(self):
-        review = self.cleaned_data.get("comment")
+        review = self.cleaned_data.get("review")
         if review is None:
             raise forms.ValidationError("Field is required")
         if len(review) <= 5:
@@ -298,7 +298,7 @@ class CompanyAuthReviewForm(forms.Form):
         return title
 
 
-class CompanyNonAuthPReviewForm(forms.Form):
+class CompanyNonAuthReviewForm(forms.Form):
     title = forms.CharField(
         widget=forms.TextInput(
             attrs={"class": "form-control", "placeholder": "Title"}
@@ -316,7 +316,7 @@ class CompanyNonAuthPReviewForm(forms.Form):
     )
 
     def clean_review(self):
-        review = self.cleaned_data.get("comment")
+        review = self.cleaned_data.get("review")
         if review is None:
             raise forms.ValidationError("Field is required")
         if len(review) <= 5:

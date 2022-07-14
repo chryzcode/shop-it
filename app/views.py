@@ -1586,11 +1586,10 @@ def company_review(request):
     if request.user.is_authenticated:
         form = CompanyAuthReviewForm
     else:
-        form = CompanyAuthReviewForm
+        form = CompanyNonAuthReviewForm
     if request.method == "POST":
-        form = CompanyAuthReviewForm(request.POST)
+        form = form(request.POST)
         if form.is_valid():
-            review = form.save(commit=False)
             if request.user.is_authenticated:
                 from_email = request.user.email
             else:
