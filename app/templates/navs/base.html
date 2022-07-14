@@ -46,6 +46,7 @@
         <li><a href="{% url 'customer:customer_stores' %}">Stores</a></li>
         <li><a href="{% url 'account:create_store' %}">Create Store</a></li>
         {% endif %}
+        <li><a href="{% url 'account:logout' %}" id="a-nav-link">Sign Out</a></li>
         {% else %}
         <li><a href="{% url 'account:login' %}" id="a-nav-link">Sign In</a></li>
         <li><a href="{% url 'account:register' %}" id="a-nav-link">Sign Up</a></li>
