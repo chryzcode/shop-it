@@ -1843,14 +1843,14 @@ body::-webkit-scrollbar,
   padding: 20px 10px;
 }
 
-.company-team-grid > div > span {
+.member-image{
   display: block;
   width: 150px;
   border-radius: 50%;
   margin: 0 auto;
 }
 
-.company-team-grid > div > span img {
+.member-image img {
   width: 100%;
   object-fit: cover;
   border-radius: 50%;
