@@ -82,4 +82,5 @@ urlpatterns = [
     path("customer/detail/<str:pk>/", views.store_customers_details, name="store_customers_details"),
     path("store/<slugified_store_name>/product/<slug:slug>/reviews/", views.product_review_list, name="product_review_list"),
     path("comapny/reviews/", views.company_review, name="company_review"),
+    path("company/team/", views.company_team, name="company_team"),
 ]
