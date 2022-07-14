@@ -1860,6 +1860,7 @@ body::-webkit-scrollbar,
   text-align: center;
   font-size: 19px;
   color: #6b69f8;
+  margin: 5px 0;
 }
 
 .company-team-grid > div > div {
