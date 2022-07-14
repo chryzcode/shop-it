@@ -1841,8 +1841,7 @@ body::-webkit-scrollbar,
 .company-team-grid > div {
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   border-radius: 12px;
-  /* margin: 10px 0; */
-  height: 250px;
+  height: 300px;
   padding: 20px 10px;
 }
 
@@ -1863,4 +1862,24 @@ body::-webkit-scrollbar,
   text-align: center;
   font-size: 19px;
   color: #6b69f8;
+}
+
+.company-team-grid > div > div {
+  text-align: center;
+  font-size: 20px;
+  margin: 5px 0;
+  color: #3d5170;
+}
+
+.company-team-grid > div > span {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.company-team-grid > div > span a {
+  color: #3d5170;
+  text-decoration: none;
+  font-size: 20px;
+  padding: 0 5px ;
 }
