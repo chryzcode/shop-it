@@ -545,4 +545,8 @@
   .a-related-container {
     width: 80%;
   }
+
+  .company-team-grid > div  {
+    width: 100%;
+  }
 }
