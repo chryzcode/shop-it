@@ -1600,3 +1600,6 @@ def company_review(request):
             send_mail(subject, message, from_email, [to_email])
             return redirect("/")
     return render(request, "company-review.html", {"form": form})
+
+def company_team(request):
+    return render(request, "company-team.html")
