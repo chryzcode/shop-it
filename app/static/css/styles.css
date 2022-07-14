@@ -1818,3 +1818,49 @@ body::-webkit-scrollbar,
 .side-nav-search-bar.mobile {
     display: none;
 }
+
+.company-team-container {
+  width: 90%;
+  margin: 0 auto;
+}
+
+.company-team-container > p {
+  font-size: 27px;
+  color: #3d5170;
+  text-align: center;
+  padding: 20px 0;
+}
+
+.company-team-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 20px;
+  margin: 20px 0;
+}
+
+.company-team-grid > div {
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border-radius: 12px;
+  /* margin: 10px 0; */
+  height: 250px;
+  padding: 20px 10px;
+}
+
+.company-team-grid > div > span {
+  display: block;
+  width: 100px;
+  border-radius: 50%;
+  margin: 0 auto;
+}
+
+.company-team-grid > div > span img {
+  width: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.company-team-grid > div > p {
+  text-align: center;
+  font-size: 19px;
+  color: #6b69f8;
+}
