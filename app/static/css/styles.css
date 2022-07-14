@@ -1658,7 +1658,8 @@ small {
 body::-webkit-scrollbar,
 .store-sidenav::-webkit-scrollbar,
 #search-display::-webkit-scrollbar,
-.subscription-grid-container > .a-related-container > div::-webkit-scrollbar, .illustration-grid-content::-webkit-scrollbar {
+.subscription-grid-container > .a-related-container > div::-webkit-scrollbar, .illustration-grid-content::-webkit-scrollbar,
+.company-team-grid > div > div::-webkit-scrollbar {
   width: 0;
   background: transparent;
   display: none !important;
@@ -1819,10 +1820,7 @@ body::-webkit-scrollbar,
     display: none;
 }
 
-.company-team-container {
-  width: 90%;
-  margin: 0 auto;
-}
+
 
 .company-team-container > p {
   font-size: 27px;
@@ -1833,7 +1831,7 @@ body::-webkit-scrollbar,
 
 .company-team-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   grid-gap: 20px;
   margin: 20px 0;
 }
@@ -1841,13 +1839,13 @@ body::-webkit-scrollbar,
 .company-team-grid > div {
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   border-radius: 12px;
-  height: 300px;
+  height: 350px;
   padding: 20px 10px;
 }
 
 .company-team-grid > div > span {
   display: block;
-  width: 100px;
+  width: 150px;
   border-radius: 50%;
   margin: 0 auto;
 }
@@ -1865,19 +1863,26 @@ body::-webkit-scrollbar,
 }
 
 .company-team-grid > div > div {
-  text-align: center;
+  display: flex;
   font-size: 20px;
-  margin: 5px 0;
   color: #3d5170;
+  overflow: scroll;
+  height: 80px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
-.company-team-grid > div > span {
+.team-member-social {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
+  width: 100%;
+  justify-content: center;
+  margin-top: 10px;
 }
 
-.company-team-grid > div > span a {
+.team-member-social a {
   color: #3d5170;
   text-decoration: none;
   font-size: 20px;

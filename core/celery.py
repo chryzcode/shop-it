@@ -18,10 +18,14 @@ app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 def debug_task(self):
     print('Request: {0!r}'.format(self.request))
 
+@app.task(bind=True)
+def print_hello(self):
+    print('Hello World!')
 
-# app.conf.beat_schedule = {
-#     'add-every-24-hour' : {
-#         'task': 'hello',
-#         'schedule': crontab(minute='*/1')
-#     }
-# }
+
+app.conf.beat_schedule = {
+    'add-every-24-hour' : {
+        'task': 'hello',
+        'schedule': crontab(minute='*/1')
+    }
+}

@@ -4,7 +4,6 @@ from django.utils import timezone
 from datetime import datetime, timedelta
 
 
-
 from celery.task.schedules import crontab
 from celery.decorators import periodic_task
 
