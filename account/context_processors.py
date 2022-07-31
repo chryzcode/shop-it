@@ -6,6 +6,7 @@ from order.models import *
 from customer.models import *
 from subscriptions.models import *
 
+
 def a_staff_store_store(request):
     if request.user.is_authenticated:
         if request.user.store_creator == True:
@@ -110,5 +111,24 @@ def store_customers(request):
         return {"store_customers": customers}
     else:
         return {"store_customers": None}
+
+
+def get_store(request):
+    url = request.path
+    if 'store' in url:
+        if url.split('/')[2]:
+            store_slug = url.split('/')[2]
+            if Store.objects.filter(slugified_store_name=store_slug).exists():
+                store = Store.objects.get(slugified_store_name=store_slug)
+                if store:
+                    return {"get_store": store}
+                else:
+                    return {"get_store": None}
+            else:
+                return {"get_store": None}
+        else:
+            return {"get_store": None}
+    else:
+        return {"get_store": None}
 
 
