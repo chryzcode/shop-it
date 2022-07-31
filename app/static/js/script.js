@@ -58,31 +58,49 @@ if (notification) {
 }
 
 
-function myFunction() {
-  var input, filter, ul, li, a, i, txtValue;
-  input = document.getElementById("side-nav-search-bar");
-  filter = input.value.toUpperCase();
-  ul = document.getElementById("search-display");
-  li = ul.getElementsByTagName("li");
+// function myFunction() {
+//   var input, filter, ul, li, a, i, txtValue;
+//   input = document.getElementById("side-nav-search-bar");
+//   filter = input.value.toUpperCase();
+//   ul = document.getElementById("search-display");
+//   li = ul.getElementsByTagName("li");
 
   
 
-  ul.classList.add("active");
+//   ul.classList.add("active");
 
-  for (i = 0; i < li.length; i++) {
-    a = li[i].getElementsByTagName("a")[0];
-    if (a) {
-      console.log(a)
-      txtValue = a.textContent || a.innerText;
-      console.log(txtValue);
-      if (txtValue.toUpperCase().indexOf(filter) > -1) {
-        li[i].style.display = "";
-      } else {
-        ul.innerHTML = "<li>No available search</li>";
-      }
-    }
-  }
-}
+//   for (i = 0; i < li.length; i++) {
+//     a = li[i].getElementsByTagName("a")[0];
+//     if (a) {
+//       console.log(a)
+//       txtValue = a.textContent || a.innerText;
+//       console.log(txtValue);
+//       if (txtValue.toUpperCase().indexOf(filter) > -1) {
+//         li[i].style.display = "";
+//       } else {
+//         ul.innerHTML = "<li>No available search</li>";
+//       }
+//     }
+//   }
+// }
+
+
+// if (search_bar) {
+//   document.onclick = function (e) {
+//     if (search_display) {
+//       if (e.target.id != "side-nav-search-bar") {
+//         search_display.classList.remove("active");
+//       }
+//     }
+//   }
+// }
+
+// if (analytics_timelinet_toogle) {
+//   analytics_timelinet_toogle.onclick = function () {
+//     monthly_yearly_analytics.classList.toggle("active");
+//     hourly_weekly_analytics.classList.toggle("inactive");
+//   }
+// }
 
 
 if (search_bar) {
@@ -90,20 +108,34 @@ if (search_bar) {
     if (search_display) {
       if (e.target.id != "side-nav-search-bar") {
         search_display.classList.remove("active");
+      } else {
+        search_display.classList.add("active");
       }
+    }
+  };
+}
+
+
+function myFunction() {
+  // Declare variables
+  var input, filter, ul, li, a, i, txtValue;
+
+  input = document.getElementById("side-nav-search-bar");
+  filter = input.value.toUpperCase();
+  ul = document.getElementById("search-display");
+  li = ul.getElementsByTagName("li");
+
+  // Loop through all list items, and hide those who don't match the search query
+  for (i = 0; i < li.length; i++) {
+    a = li[i].getElementsByTagName("a")[0];
+    txtValue = a.textContent || a.innerText;
+    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+      li[i].style.display = "";
+    } else {
+      li[i].style.display = "none";
     }
   }
 }
-
-if (analytics_timelinet_toogle) {
-  analytics_timelinet_toogle.onclick = function () {
-    monthly_yearly_analytics.classList.toggle("active");
-    hourly_weekly_analytics.classList.toggle("inactive");
-  }
-}
-
-
-
 
 
 

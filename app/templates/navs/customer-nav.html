@@ -63,7 +63,7 @@
         </span>
 
        
-          <input type="text" id="side-nav-search-bar" class="side-nav-search-bar"  placeholder="Search for Products" />
+          <input type="text" id="side-nav-search-bar" class="side-nav-search-bar"  placeholder="Search for Products" onkeyup="myFunction()"/>
           <ul id="search-display">
             {% if get_store_products %}
             {% for product in get_store_products %}
