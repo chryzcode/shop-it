@@ -117,7 +117,6 @@ if (search_bar) {
 
 
 function myFunction() {
-  // Declare variables
   var input, filter, ul, li, a, i, txtValue;
 
   input = document.getElementById("side-nav-search-bar");
@@ -135,6 +134,9 @@ function myFunction() {
       li[i].style.display = "none";
     }
   }
+  ul.style.height = "auto";
+// if li is empty, display no available search
+ 
 }
 
 

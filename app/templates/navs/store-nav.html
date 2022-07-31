@@ -40,7 +40,7 @@
       </span>
 
       <span>     
-          <input type="text" id="side-nav-search-bar" class="side-nav-search-bar active"  onkeypress="myFunction()" placeholder="Search for Customers, Products, orders" />
+          <input type="text" id="side-nav-search-bar" class="side-nav-search-bar active"  onkeyup="myFunction()" placeholder="Search for Customers, Products, orders" />
           <ul id="search-display">
             {% for product in store_products %}
             <li><a href="{% url 'app:product_detail' product.slug %}">{{product}}</a></li>
