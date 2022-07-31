@@ -1900,3 +1900,8 @@ body::-webkit-scrollbar,
   padding: 0 5px ;
   font-size: 25px;
 }
+
+.footer-company-logo {
+  width: 200px;
+  object-fit: contain;
+}
