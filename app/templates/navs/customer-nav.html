@@ -64,7 +64,15 @@
 
        
           <input type="text" id="side-nav-search-bar" class="side-nav-search-bar"  placeholder="Search for Products" />
-         
+          <ul id="search-display">
+            {% if get_store_products %}
+            {% for product in get_store_products %}
+            <li><a href="{% url 'app:product_detail' product.slug %}">{{product}}</a></li>
+            {% endfor %}
+            {% else %}
+            <span>No products available</span>
+            {% endif %}
+          </ul>
       
 
         <span class="cart-icon-container cart-desktop">

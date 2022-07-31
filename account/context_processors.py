@@ -132,3 +132,23 @@ def get_store(request):
         return {"get_store": None}
 
 
+def get_store_products(request):
+    url = request.path
+    if 'store' in url:
+        if url.split('/')[2]:
+            store_slug = url.split('/')[2]
+            if Store.objects.filter(slugified_store_name=store_slug).exists():
+                store = Store.objects.get(slugified_store_name=store_slug)
+                if store:
+                    products = Product.objects.filter(store=store)
+                    return {"get_store_products": products}
+                else:
+                    return {"get_store_products": None}
+            else:
+                return {"get_store_products": None}
+        else:
+            return {"get_store_products": None}
+    else:
+        return {"get_store_products": None}
+
+
