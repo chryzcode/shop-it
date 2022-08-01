@@ -386,7 +386,7 @@
   }
 
   .customer-search-display {
-    top: 230px !important;
+    top: 190px !important;
   }
 
   #search-display {
@@ -395,7 +395,7 @@
 
   .cart-icon-container {
     position: absolute;
-    top: 100px;
+    top: 70px;
   }
 }
 

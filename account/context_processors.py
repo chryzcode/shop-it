@@ -167,6 +167,7 @@ def get_store_category_products(request):
                 if store:
                     if Category.objects.filter(created_by=store, name=product_category).exists():
                         category = Category.objects.get(created_by=store, name=product_category)
+                        print(category)
                         if Product.objects.filter(store=store, category=category.id).exists():
                             products = Product.objects.filter(store=store, category=category.id)
                             return {"get_store_category_products": products}

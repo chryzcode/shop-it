@@ -70,7 +70,8 @@
             {% for product in get_store_category_products %}
             <li><a href="{% url 'app:product_detail' product.slug %}">{{product.name}}</a></li>
             {% endfor %}
-            
+             {% else %}
+            <span>No products available</span>
             {% endif %}
             {% else %}
             {% if get_store_products %}

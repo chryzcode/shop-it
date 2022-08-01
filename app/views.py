@@ -1015,6 +1015,7 @@ def store_category_products(request, slugified_store_name, slug):
     else:
         SEO = False
     category = get_object_or_404(Category, slug=slug, created_by=store)
+    get_store_category_products(request)
     products = Product.objects.filter(
         category=category, store=store)
     page = request.GET.get('page', 1)
