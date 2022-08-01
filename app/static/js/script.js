@@ -27,11 +27,7 @@ toogle.onclick = function () {
   toogle.classList.toggle("active");
   if (nav_links) {
     nav_links.classList.toggle("active");
-    if (nav.style.overflow = "visible") {
-      nav.style.overflow = "none";
-    } else {
-       nav.style.overflow = "visible";
-    }
+    nav.classList.toggle("active");
   }
   if (store_side_nav) {
     store_side_nav.classList.toggle("active");

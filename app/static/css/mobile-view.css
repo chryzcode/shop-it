@@ -8,8 +8,12 @@
     /* height: 100px; */
     background-color: #fff;
     bottom: 10px;
-    overflow: hidden;
     height: 80px;
+    overflow: hidden;
+  }
+
+  #nav.active {
+    overflow: visible;
   }
 
   .store-nav {
