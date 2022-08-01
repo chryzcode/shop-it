@@ -91,6 +91,7 @@ TEMPLATES = [
                 "account.context_processors.store_customers",
                 "account.context_processors.get_store",
                 "account.context_processors.get_store_products",
+                "account.context_processors.get_store_category_products",
             ],
         },
     },

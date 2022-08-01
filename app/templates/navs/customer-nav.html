@@ -65,12 +65,21 @@
        
           <input type="text" id="side-nav-search-bar" class="side-nav-search-bar customer-search-bar"  placeholder="Search for Products" onkeyup="myFunction()"/>
           <ul id="search-display" class="customer-search-display">
+            {% if 'store' and 'category' in request.get_full_path %}
+            {% if get_store_category_products %}
+            {% for product in get_store_category_products %}
+            <li><a href="{% url 'app:product_detail' product.slug %}">{{product.name}}</a></li>
+            {% endfor %}
+            
+            {% endif %}
+            {% else %}
             {% if get_store_products %}
             {% for product in get_store_products %}
-            <li><a href="{% url 'app:product_detail' product.slug %}">{{product}}</a></li>
+            <li><a href="{% url 'app:product_detail' product.slug %}">{{product.name}}</a></li>
             {% endfor %}
             {% else %}
             <span>No products available</span>
+            {% endif %}
             {% endif %}
           </ul>
       

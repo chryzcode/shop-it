@@ -1,3 +1,5 @@
+from itertools import product
+from unicodedata import category
 from django.utils.text import slugify
 
 from .models import *
@@ -140,8 +142,11 @@ def get_store_products(request):
             if Store.objects.filter(slugified_store_name=store_slug).exists():
                 store = Store.objects.get(slugified_store_name=store_slug)
                 if store:
-                    products = Product.objects.filter(store=store)
-                    return {"get_store_products": products}
+                    if Product.objects.filter(store=store).exists():
+                        products = Product.objects.filter(store=store)
+                        return {"get_store_products": products}
+                    else:
+                        return {"get_store_products": None}
                 else:
                     return {"get_store_products": None}
             else:
@@ -151,4 +156,29 @@ def get_store_products(request):
     else:
         return {"get_store_products": None}
 
-
+def get_store_category_products(request):
+    url = request.path
+    if 'store' and 'category' in url:
+        if url.split('/')[2] and url.split('/')[4]:
+            store_slug = url.split('/')[2]
+            product_category = url.split('/')[4]
+            if Store.objects.filter(slugified_store_name=store_slug).exists():
+                store = Store.objects.get(slugified_store_name=store_slug)
+                if store:
+                    if Category.objects.filter(created_by=store, name=product_category).exists():
+                        category = Category.objects.get(created_by=store, name=product_category)
+                        if Product.objects.filter(store=store, category=category.id).exists():
+                            products = Product.objects.filter(store=store, category=category.id)
+                            return {"get_store_category_products": products}
+                        else:
+                            return {"get_store_category_products": None}
+                    else:
+                        return {"get_store_category_products": None}
+                else:
+                    return {"get_store_category_products": None}
+            else:
+                return {"get_store_category_products": None}
+        else:
+            return {"get_store_category_products": None}
+    else:
+        return {"get_store_category_products": None}
