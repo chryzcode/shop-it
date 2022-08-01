@@ -323,20 +323,32 @@
     font-size: 16px;
   }
 
-  #search-display.desktop {
+  #search-display-mobile {
     display: none;
   }
 
-  #search-display.active {
-    width: 95%;
+  #search-display-mobile.active {
+    width: 100%;
     left: 0;
-    top: 220px;
+    /* top: 220px; */
     margin-left: auto;
     height: max-content;
     overflow-y: scroll;
     overflow-x: hidden;
     height: 150px;
     position: relative;
+    display: block;
+  }
+
+  #search-display-mobile > li {
+    color: #3d5170;
+    margin: 10px 0;
+    display: block;
+    text-align: center;
+  }
+
+  #search-display-mobile > li a {
+    color: #3d5170;
   }
 
   .store-socials {

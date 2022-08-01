@@ -24,13 +24,13 @@ body {
   object-fit: contain;
 }
 
-.store-nav-logo a{
+.store-nav-logo a {
   text-decoration: none;
   color: #6b69f8;
   font-size: 20px;
 }
 
-.store-nav-logo > span:nth-child(1){
+.store-nav-logo > span:nth-child(1) {
   display: inline-block;
   width: 40px;
 }
@@ -591,7 +591,6 @@ body > nav > span:nth-child(2) > i {
   position: relative;
   left: 50%;
   transform: translateX(-50%);
-
 }
 
 .subscription-grid-container a {
@@ -1062,6 +1061,7 @@ button {
   list-style: none;
   overflow-y: scroll;
   overflow-x: hidden;
+  display: block;
 }
 
 #search-display > li {
@@ -1667,7 +1667,8 @@ small {
 body::-webkit-scrollbar,
 .store-sidenav::-webkit-scrollbar,
 #search-display::-webkit-scrollbar,
-.subscription-grid-container > .a-related-container > div::-webkit-scrollbar, .illustration-grid-content::-webkit-scrollbar,
+.subscription-grid-container > .a-related-container > div::-webkit-scrollbar,
+.illustration-grid-content::-webkit-scrollbar,
 .company-team-grid > div > div::-webkit-scrollbar {
   width: 0;
   background: transparent;
@@ -1743,7 +1744,6 @@ body::-webkit-scrollbar,
   display: flex;
 }
 
-
 .small-anlytics-card {
   display: flex;
   justify-content: space-evenly;
@@ -1752,8 +1752,8 @@ body::-webkit-scrollbar,
   flex-wrap: wrap;
 }
 
-
-.top-selling-latest-customer-container, .latest-orders-container {
+.top-selling-latest-customer-container,
+.latest-orders-container {
   display: flex;
   justify-content: space-between;
   margin: 20px 20px;
@@ -1806,7 +1806,8 @@ body::-webkit-scrollbar,
   width: 65%;
 }
 
-.top-selling-latest-customer-container > div > div > p, .latest-orders-container > div > div > p {
+.top-selling-latest-customer-container > div > div > p,
+.latest-orders-container > div > div > p {
   font-size: 19px;
   color: #3d5170;
   text-align: center;
@@ -1826,10 +1827,8 @@ body::-webkit-scrollbar,
 }
 
 .side-nav-search-bar.mobile {
-    display: none;
+  display: none;
 }
-
-
 
 .company-team-container > p {
   font-size: 27px;
@@ -1853,7 +1852,7 @@ body::-webkit-scrollbar,
   width: 300px;
 }
 
-.member-image{
+.member-image {
   display: block;
   width: 150px;
   border-radius: 50%;
@@ -1897,7 +1896,7 @@ body::-webkit-scrollbar,
   color: #3d5170;
   text-decoration: none;
   font-size: 20px;
-  padding: 0 5px ;
+  padding: 0 5px;
   font-size: 25px;
 }
 
@@ -1905,3 +1904,5 @@ body::-webkit-scrollbar,
   width: 200px;
   object-fit: contain;
 }
+
+

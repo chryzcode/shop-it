@@ -9,12 +9,12 @@ const notification = document.getElementById("notification");
 const notification_dropdown = document.getElementById("notification-dropdown");
 const search_bar = document.getElementById("side-nav-search-bar");
 const search_display = document.getElementById("search-display");
-const analytics_timelinet_toogle = document.getElementById("analtics-timeline-toogle");
+const analytics_timeline_toogle = document.getElementById("analtics-timeline-toogle");
 const monthly_yearly_analytics = document.getElementById("small-anlytics-card-monthly-yearly");
 const hourly_weekly_analytics = document.getElementById("small-anlytics-card-hourly-weekly");
-
-
-
+const mobile_search_bar = document.getElementById("side-nav-search-bar-mobile");
+const mobile_search_display = document.getElementById("search-display-mobile");
+const searchMediaQuery = window.matchMedia("(min-width: 990px)");
 
 document.onclick = function (e) {
   if (e.target.id == "a-nav-link") {
@@ -96,16 +96,23 @@ if (notification) {
 //   }
 // }
 
-// if (analytics_timelinet_toogle) {
-//   analytics_timelinet_toogle.onclick = function () {
-//     monthly_yearly_analytics.classList.toggle("active");
-//     hourly_weekly_analytics.classList.toggle("inactive");
-//   }
-// }
+
+if (analytics_timeline_toogle) {
+  analytics_timeline_toogle.onclick = function () {
+    monthly_yearly_analytics.classList.toggle("active");
+    hourly_weekly_analytics.classList.toggle("inactive");
+  }
+}
 
 
-if (search_bar) {
+
+
+
+function desktopSearchBar() {
+  if (search_bar) {
+  console.log(search_bar);
   document.onclick = function (e) {
+  console.log(search_display);
     if (search_display) {
       if (e.target.id != "side-nav-search-bar") {
         search_display.classList.remove("active");
@@ -115,22 +122,30 @@ if (search_bar) {
     }
   };
 }
+}
+
+
+
+
+
 
 
 function myFunction() {
   var input, filter, ul, li, a, i, txtValue;
-  //if media query width is higher than  990px
-  if (window.matchMedia("(min-width: 990px)").matches) {
+  input = document.getElementById("side-nav-search-bar");
+  if (searchMediaQuery.matches) {
     input = document.getElementById("side-nav-search-bar");
     ul = document.getElementById("search-display");
+    console.log(input);
   } else {
     input = document.getElementById("side-nav-search-bar-mobile");
     ul = document.getElementById("search-display-mobile");
+     console.log(input);
   }
   filter = input.value.toUpperCase();
   
   li = ul.getElementsByTagName("li");
-  console.log(input);
+ 
   // Loop through all list items, and hide those who don't match the search query
   for (i = 0; i < li.length; i++) {
     a = li[i].getElementsByTagName("a")[0];
@@ -147,8 +162,12 @@ function myFunction() {
 
 
 
-
-
+if (mobile_search_bar) {
+  mobile_search_bar.onclick = function () {
+    mobile_search_display.classList.toggle("active");
+    mobile_search_bar.classList.toggle("active");
+  }
+}
 
 
 

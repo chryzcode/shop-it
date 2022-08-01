@@ -101,6 +101,10 @@
     display: block;
     margin-left: auto;
   }
+
+  #search-display-mobile {
+    display: none;
+  }
 }
 
 @media all and (min-width: 850px) {
