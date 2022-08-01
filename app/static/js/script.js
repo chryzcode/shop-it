@@ -171,7 +171,12 @@ if (mobile_search_bar) {
 
 
 
-
+if (search_bar) {
+  search_bar.onclick = function () {
+    search_display.classList.toggle("active");
+    search_bar.classList.toggle("active");
+  };
+}
 
 
 
