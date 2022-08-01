@@ -370,6 +370,14 @@
     display: block;
     position: relative;
   }
+
+  #search-display.active {
+    top: 100px;
+    width: 90%;
+    margin: 0 auto;
+    display: block;
+    z-index: 10;
+  }
 }
 
 @media all and (max-width: 850px) {
