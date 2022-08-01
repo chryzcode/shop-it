@@ -1039,13 +1039,6 @@ button {
   position: relative;
 }
 
-.customer-search-bar {
- position: absolute;
-  top: 35px;
-  width: 44%;
-  left: calc(50% - 22.5%);
-  z-index: 1;
-}
 
 .customer-search-display {
   top: 70px !important;
