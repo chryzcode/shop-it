@@ -330,7 +330,6 @@
   #search-display-mobile.active {
     width: 100%;
     left: 0;
-    /* top: 220px; */
     margin-left: auto;
     height: max-content;
     overflow-y: scroll;
@@ -338,6 +337,7 @@
     height: 150px;
     position: relative;
     display: block;
+    overflow: hidden;
   }
 
   #search-display-mobile > li {
@@ -349,6 +349,7 @@
 
   #search-display-mobile > li a {
     color: #3d5170;
+    display: inline-block;
   }
 
   .store-socials {
