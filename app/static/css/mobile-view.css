@@ -323,15 +323,20 @@
     font-size: 16px;
   }
 
+  #search-display.desktop {
+    display: none;
+  }
+
   #search-display.active {
     width: 95%;
     left: 0;
-    top: 45px;
+    top: 220px;
     margin-left: auto;
     height: max-content;
     overflow-y: scroll;
     overflow-x: hidden;
     height: 150px;
+    position: relative;
   }
 
   .store-socials {
@@ -350,6 +355,7 @@
     width: 90%;
     margin: 0 auto;
     display: block;
+    position: relative;
   }
 }
 

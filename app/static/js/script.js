@@ -15,6 +15,7 @@ const hourly_weekly_analytics = document.getElementById("small-anlytics-card-hou
 
 
 
+
 document.onclick = function (e) {
   if (e.target.id == "a-nav-link") {
     nav_links.classList.remove("active");
@@ -118,12 +119,18 @@ if (search_bar) {
 
 function myFunction() {
   var input, filter, ul, li, a, i, txtValue;
-
-  input = document.getElementById("side-nav-search-bar");
+  //if media query width is higher than  990px
+  if (window.matchMedia("(min-width: 990px)").matches) {
+    input = document.getElementById("side-nav-search-bar");
+    ul = document.getElementById("search-display");
+  } else {
+    input = document.getElementById("side-nav-search-bar-mobile");
+    ul = document.getElementById("search-display-mobile");
+  }
   filter = input.value.toUpperCase();
-  ul = document.getElementById("search-display");
+  
   li = ul.getElementsByTagName("li");
-
+  console.log(input);
   // Loop through all list items, and hide those who don't match the search query
   for (i = 0; i < li.length; i++) {
     a = li[i].getElementsByTagName("a")[0];
@@ -135,8 +142,6 @@ function myFunction() {
     }
   }
   ul.style.height = "auto";
-// if li is empty, display no available search
- 
 }
 
 

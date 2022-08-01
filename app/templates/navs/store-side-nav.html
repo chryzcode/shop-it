@@ -1,9 +1,10 @@
+
 <div class="store-sidenav" id="store-sidenav">
     <span class="store-sidenav-seg">
       <p>{{a_staff_store_store |capfirst }}</p>
       <span>     
-          <input type="text" id="side-nav-search-bar" class="side-nav-search-bar active mobile"  onkeypress="myFunction()" placeholder="Search for Customers, Products, orders" />
-          <ul id="search-display">
+          <input type="text" id="side-nav-search-bar-mobile" class="side-nav-search-bar active mobile"  onkeyup="myFunction()" placeholder="Search for Customers, Products, orders" />
+          <ul id="search-display-mobile">
             {% for product in store_products %}
             <li><a href="{% url 'app:product_detail' product.slug %}">{{product}}</a></li>
             {% endfor %}
