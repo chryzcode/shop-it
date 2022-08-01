@@ -8,7 +8,7 @@
     /* height: 100px; */
     background-color: #fff;
     bottom: 10px;
-    height: 80px;
+    height: 70px;
     overflow: hidden;
   }
 
@@ -395,6 +395,7 @@
 
   .cart-icon-container {
     position: absolute;
+    top: 100px;
   }
 }
 
