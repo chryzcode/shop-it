@@ -27,6 +27,11 @@ toogle.onclick = function () {
   toogle.classList.toggle("active");
   if (nav_links) {
     nav_links.classList.toggle("active");
+    if (nav.style.overflow = "visible") {
+      nav.style.overflow = "none";
+    } else {
+       nav.style.overflow = "visible";
+    }
   }
   if (store_side_nav) {
     store_side_nav.classList.toggle("active");
@@ -137,10 +142,13 @@ function myFunction() {
     input = document.getElementById("side-nav-search-bar");
     ul = document.getElementById("search-display");
     console.log(input);
-  } else {
+  } else if (mobile_search_display) {
     input = document.getElementById("side-nav-search-bar-mobile");
     ul = document.getElementById("search-display-mobile");
-     console.log(input);
+    console.log(input);
+  } else {
+    input = document.getElementById("side-nav-search-bar");
+    ul = document.getElementById("search-display");
   }
   filter = input.value.toUpperCase();
   
