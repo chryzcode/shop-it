@@ -1,5 +1,5 @@
 from itertools import product
-from unicodedata import category
+from unicodedata import category, name
 from django.utils.text import slugify
 
 from .models import *
@@ -165,11 +165,11 @@ def get_store_category_products(request):
             if Store.objects.filter(slugified_store_name=store_slug).exists():
                 store = Store.objects.get(slugified_store_name=store_slug)
                 if store:
-                    if Category.objects.filter(created_by=store, name=product_category).exists():
-                        category = Category.objects.get(created_by=store, name=product_category)
-                        print(category)
+                    if Category.objects.filter(created_by=store, slug=product_category).exists():   
+                        category = Category.objects.get(created_by=store, slug=product_category)
                         if Product.objects.filter(store=store, category=category.id).exists():
                             products = Product.objects.filter(store=store, category=category.id)
+                            print(products)
                             return {"get_store_category_products": products}
                         else:
                             return {"get_store_category_products": None}
