@@ -1039,14 +1039,6 @@ button {
   position: relative;
 }
 
-
-.customer-search-display {
-  top: 70px !important;
-  width: 44% !important;
-  left: calc(50% - 22.5%) !important;
-  margin: 0 !important;
-}
-
 #search-display {
   display: none;
 }

@@ -113,6 +113,13 @@
     left: calc(50% - 22.5%);
     z-index: 1;
   }
+
+  .customer-search-display {
+    top: 70px !important;
+    width: 44% !important;
+    left: calc(50% - 22.5%) !important;
+    margin: 0 !important;
+  }
 }
 
 @media all and (min-width: 850px) {
