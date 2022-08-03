@@ -63,7 +63,7 @@
         </span>
 
        
-          <input type="text" id="side-nav-search-bar" class="side-nav-search-bar customer-search-bar"  placeholder="Search for Products" onkeyup="myFunction()"/>
+          <input type="text" id="side-nav-search-bar-customer" class="side-nav-search-bar customer-search-bar"  placeholder="Search for Products" onkeyup="myFunction()" onclick="customerSearchBar()"/>
           <ul id="search-display" class="customer-search-display">
             {% if 'store' and 'category' in request.get_full_path %}
             {% if get_store_category_products %}

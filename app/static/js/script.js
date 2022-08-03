@@ -15,6 +15,8 @@ const hourly_weekly_analytics = document.getElementById("small-anlytics-card-hou
 const mobile_search_bar = document.getElementById("side-nav-search-bar-mobile");
 const mobile_search_display = document.getElementById("search-display-mobile");
 const searchMediaQuery = window.matchMedia("(min-width: 990px)");
+const customerNav = document.getElementById("side-nav-search-bar-customer");
+
 
 document.onclick = function (e) {
   if (e.target.id == "a-nav-link") {
@@ -111,9 +113,7 @@ if (analytics_timeline_toogle) {
 
 function desktopSearchBar() {
   if (search_bar) {
-  console.log(search_bar);
   document.onclick = function (e) {
-  console.log(search_display);
     if (search_display) {
       if (e.target.id != "side-nav-search-bar") {
         search_display.classList.remove("active");
@@ -125,7 +125,33 @@ function desktopSearchBar() {
 }
 }
 
+function customerSearchBar() {
+  if (customerNav) {
+    document.onclick = function (e) {
+      if (search_display) {
+        if (e.target.id != "side-nav-search-bar-customer") {
+          search_display.classList.remove("active");
+        } else {
+          search_display.classList.add("active");
+        }
+      }
+    };
+  }
+}
 
+function storeMobileSearchBar() {
+  if (mobile_search_bar) {
+    document.onclick = function (e) {
+      if (mobile_search_display) {
+        if (e.target.id != "side-nav-search-bar-mobile") {
+          mobile_search_display.classList.remove("active");
+        } else {
+          mobile_search_display.classList.add("active");
+        }
+      }
+    };
+  }
+}
 
 
 
@@ -133,17 +159,40 @@ function desktopSearchBar() {
 
 function myFunction() {
   var input, filter, ul, li, a, i, txtValue;
-  input = document.getElementById("side-nav-search-bar");
-  if (searchMediaQuery.matches) {
+  if (search_bar) {
     input = document.getElementById("side-nav-search-bar");
-    ul = document.getElementById("search-display");
+  } else if (customerNav) {
+    input = document.getElementById("side-nav-search-bar-customer");
+  }
+  // else if (storeMobileNav) {
+  //   input = document.getElementById("store-side-nav-search-bar-mobile");
+  //   }
+  if (searchMediaQuery.matches) {
+     if (search_bar) {
+       input = document.getElementById("side-nav-search-bar");
+     } else if (customerNav) {
+       input = document.getElementById("side-nav-search-bar-customer");
+     }
+    //  else if (storeMobileNav) {
+    //    input = document.getElementById("store-side-nav-search-bar-mobile");
+    //   }
+       ul = document.getElementById("search-display");
     console.log(input);
   } else if (mobile_search_display) {
-    input = document.getElementById("side-nav-search-bar-mobile");
+    if (mobile_search_bar) {
+      input = document.getElementById("side-nav-search-bar-mobile");
+    }
+    // else if (storeMobileNav) {
+    //   input = document.getElementById("store-side-nav-search-bar-mobile");
+    // }
     ul = document.getElementById("search-display-mobile");
     console.log(input);
   } else {
-    input = document.getElementById("side-nav-search-bar");
+    if (search_bar) {
+      input = document.getElementById("side-nav-search-bar");
+    } else if (customerNav) {
+      input = document.getElementById("side-nav-search-bar-customer");
+    }
     ul = document.getElementById("search-display");
   }
   filter = input.value.toUpperCase();
@@ -163,24 +212,6 @@ function myFunction() {
   ul.style.height = "auto";
 }
 
-
-
-
-if (mobile_search_bar) {
-  mobile_search_bar.onclick = function () {
-    mobile_search_display.classList.toggle("active");
-    mobile_search_bar.classList.toggle("active");
-  }
-}
-
-
-
-if (search_bar) {
-  search_bar.onclick = function () {
-    search_display.classList.toggle("active");
-    search_bar.classList.toggle("active");
-  };
-}
 
 
 

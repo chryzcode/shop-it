@@ -3,7 +3,7 @@
     <span class="store-sidenav-seg">
       <p>{{a_staff_store_store |capfirst }}</p>
       <span>     
-          <input type="text" id="side-nav-search-bar-mobile" class="side-nav-search-bar active mobile"  onkeyup="myFunction()" placeholder="Search for Customers, Products, orders" />
+          <input type="text" id="side-nav-search-bar-mobile" class="side-nav-search-bar active mobile"  onkeyup="myFunction()" onclick="storeMobileSearchBar()" placeholder="Search for Customers, Products, orders" />
           <ul id="search-display-mobile">
             {% for product in store_products %}
             <li><a href="{% url 'app:product_detail' product.slug %}">{{product}}</a></li>
