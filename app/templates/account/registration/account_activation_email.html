@@ -1,7 +1,7 @@
 {% autoescape off %}
 Hi {{user.full_name}},
 
-Your Shop!t account has been successfully created. Kindly click the link below to activate your account.
+Your Shopit account has been successfully created. Kindly click the link below to activate your account.
 
 https://{{ domain }}{% url 'account:activate_account' uidb64=uid token=token %}
 

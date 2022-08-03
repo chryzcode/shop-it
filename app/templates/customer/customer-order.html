@@ -8,9 +8,6 @@
     <div class="store-content-container">
       <span class="store-products-container">
         <p>My {% if 'unpaid' in request.get_full_path %}Unpaid{% endif %} Orders</p>
-        <div class="table-container">
-          <table class="store-products-table">
-          
           <p>
             {% if 'unpaid' in request.get_full_path %}
             <a href="{% url 'customer:customer_orders' store.slugified_store_name %}">Paid Orders</a>           
@@ -19,6 +16,8 @@
             <a href="{% url 'customer:unpaid_customer_orders' store.slugified_store_name %}">Unpaid Orders</a>
             {% endif %}
           </p>
+        <div class="table-container">
+          <table class="store-products-table">
           <tr class="table-rows">
             <th>Order Id</th>
             <th>Name</th>

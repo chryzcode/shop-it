@@ -42,6 +42,8 @@ class Store(models.Model):
     instagram = models.CharField(max_length=100, blank=True)
     twitter = models.CharField(max_length=100, blank=True)
     whatsapp = models.CharField(max_length=100, blank=True)
+    country = models.CharField(max_length=200, blank=True)
+    state = models.CharField(max_length=200, blank=True)
 
     class Meta:
         verbose_name = "Store"

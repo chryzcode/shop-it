@@ -1,4 +1,4 @@
-{% extends 'navs/customer-nav.html' %} {% load static %} {% block title %} <title>Shop!t - Customer Login</title>
+{% extends 'navs/customer-nav.html' %} {% load static %} {% block title %} <title>Shopit - Customer Login</title>
 {% endblock %} {% block content %}
 
 <div class="auth-form-container">
@@ -40,7 +40,7 @@
     <button class="form-btn" type="submit">Sign Up</button>
   </form>
   <div class="form-bottom">
-    <a href="{% url 'customer:existing_user_customer_register' store.slugified_store_name %}">Sign Up for Shop!t users</a>
+    <a href="{% url 'customer:existing_user_customer_register' store.slugified_store_name %}">Sign Up for Shopit users</a>
   </div>
 </div>
 

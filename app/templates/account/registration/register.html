@@ -1,4 +1,4 @@
-{% extends 'navs/base.html' %} {% load static %} {% block title %} <title>Shop!t - Sign Up</title> {% endblock %} {% block content %}
+{% extends 'navs/base.html' %} {% load static %} {% block title %} <title>Shopit - Sign Up</title> {% endblock %} {% block content %}
 <div class="auth-form-container">
   <form action="" method="post">
     {% csrf_token %}
@@ -9,7 +9,7 @@
     <div class="input-container">
       <label for="store_name">Store Name<span class="form-required">*</span></label>
       <p>{{ form.store_name.errors }}</p>
-      <input class="form-control" type="text" name="store_name" id="store_name" placeholder="Shop!t Store" />
+      <input class="form-control" type="text" name="store_name" id="store_name" placeholder="Shopit Store" />
     </div>
 
     <div class="input-container">

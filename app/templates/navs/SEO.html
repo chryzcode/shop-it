@@ -1,6 +1,6 @@
 {% if store %}
 <meta name="description" {% if store.store_description %} content="{{store.store_description}}"
-  {% else %} content="{{store.store_name}} - is an online store on Shop!t." {% endif %}
+  {% else %} content="{{store.store_name}} - is an online store on Shopit." {% endif %}
 />
 <meta name="author" content="{{store.store_name}}" />
 
@@ -8,7 +8,7 @@
 <meta itemprop="name" content="{{store.store_name}}" />
 <meta itemprop="description"
   {% if store.store_description %} content="{{store.store_description}}"
-{% else %} content="{{store.store_name}} - is an online store on Shop!t." {% endif %}/>
+{% else %} content="{{store.store_name}} - is an online store on Shopit." {% endif %}/>
 
 {% if store.store_image %}
 <meta itemprop="image"
@@ -18,7 +18,7 @@
 <meta
   name="keywords"
   content="{{store.store_name|capfirst}}, {{store.store_name|lower}}, {{store.store_name|title}}, {% if store.store_description %} {{store.store_description}}
-    {% else %} {{store.store_name}} - is an online store on Shop!t.
+    {% else %} {{store.store_name}} - is an online store on Shopit.
     {% endif %}"
 />
 
@@ -31,7 +31,7 @@
   {% if store.store_description %}
   content="{{store.store_description}}"
   {% else %}
-  content="{{store.store_name}} - is an online store on Shop!t."
+  content="{{store.store_name}} - is an online store on Shopit."
   {% endif %} 
 />
 {% if store.store_image %}
@@ -44,7 +44,7 @@
 <meta name="twitter:description" {% if store.store_description %}
   content="{{store.store_description}}"
   {% else %}
-  content="{{store.store_name}} - is an online store on Shop!t."
+  content="{{store.store_name}} - is an online store on Shopit."
   {% endif %} />
 
 {% if store.store_image %}

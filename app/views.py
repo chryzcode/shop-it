@@ -1171,6 +1171,7 @@ def all_customers(request):
 
 @login_required(login_url="/account/login/")
 def store_orders(request):
+    payment = None
     if request.user.store_creator == True:
         store = Store.objects.get(store_name=request.user.store_name)
     if request.user.store_staff == True:
@@ -1200,6 +1201,7 @@ def store_orders(request):
 
 @login_required(login_url="/account/login/")
 def unpaid_store_orders(request):
+    payment = None
     if request.user.store_creator == True:
         store = Store.objects.get(store_name=request.user.store_name)
     if request.user.store_staff == True:
@@ -1207,13 +1209,15 @@ def unpaid_store_orders(request):
             store_name=store_staff.objects.get(email=request.user.email).store
         )
     orders = Order.objects.filter(store=store, billing_status=False)
-    if Payment.objects.filter(store=store.id, order__in=orders).exists():
-        payment = Payment.objects.filter(store=store.id, order__in=orders)
-    else:
-        payment = None
-    for order in orders:
-        if order.date_created < datetime.now() - timedelta(days=30):
-            order.delete()
+    orders_count = orders.count()
+    if orders:
+        for order in orders:
+            if order.date_created < timezone.now() - timedelta(days=30):
+                order.delete()
+            if Payment.objects.filter(order=order).exists():
+                payment = Payment.objects.get(order=order)
+            else:
+                payment = None   
     page = request.GET.get('page', 1)
     paginator = Paginator(orders, 10)
     try:
@@ -1223,7 +1227,7 @@ def unpaid_store_orders(request):
     except EmptyPage:
         orders = paginator.page(paginator.num_pages)
     return render(
-        request, "store/store-order.html", {"orders": orders, "payment": payment}
+        request, "store/store-order.html", {"orders": orders, "payment": payment, 'orders_count':orders_count}
     )
 
 

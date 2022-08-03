@@ -1,4 +1,4 @@
-{% extends 'navs/store-nav.html' %} {% load static %} {% block title %} <title>Shop!t - Edit Account</title>
+{% extends 'navs/store-nav.html' %} {% load static %} {% block title %} <title>Shopit - Edit Account</title>
 {% endblock %} {% block content %}
 
 <div class="store-page-container">
@@ -43,6 +43,20 @@
           <p>{{ storeform.currency.errors }}</p>
           {{storeform.currency}}
         </div>
+
+        <div class="input-container">
+        <label for="country">Country</label>
+        <select name="country" class="countries form-control" id="countryId">
+          <option value="">Select Country</option>
+        </select>
+      </div>
+
+      <div class="input-container">
+        <label for="state">State</label>
+        <select name="state" class="states form-control" id="stateId">
+          <option value="">Select State</option>
+        </select>
+      </div>
       </div>
 
         <div class="acc-form-seg">
@@ -77,7 +91,8 @@
       </div>
     </form>
   </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="https://geodata.solutions/includes/countrystatecity.js"></script>
 </div>
-
 
 {% endblock %}

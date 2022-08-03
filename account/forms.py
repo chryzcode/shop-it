@@ -56,6 +56,8 @@ class StoreForm(ModelForm):
             "store_image",
             "store_description",
             "currency",
+            "country",
+            "state",
             "instagram",
             "twitter",
             "facebook",
@@ -74,6 +76,8 @@ class StoreForm(ModelForm):
                 }
             ),
             "currency": forms.Select(attrs={"class": "form-control"}),
+            "country": forms.Select(attrs={"class": "form-control"}),
+            "state": forms.Select(attrs={"class": "form-control"}),
             "instagram": forms.TextInput(
                 attrs={
                     "class": "form-control",

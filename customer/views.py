@@ -436,16 +436,19 @@ def delete_account(request, slugified_store_name):
 
 
 def customer_orders(request, slugified_store_name):
+    payment = None
     store = Store.objects.get(slugified_store_name=slugified_store_name)
     if request.user in store.customers.all():
         customer = Customer.objects.get(email=request.user.email, store=store)
         orders = Order.objects.filter(user=request.user, store=store, billing_status=True)
-        if Payment.objects.filter(user=request.user, store=store, order__in=orders):
-            payment = Payment.objects.filter(
-                user=request.user, store=store, order__in=orders
-            )
-        else:
-            payment = None
+        if orders:
+            for order in orders:
+                if Payment.objects.filter(user=request.user, store=store, order=order):
+                    payment = Payment.objects.filter(
+                        user=request.user, store=store, order=order
+                    )
+                else:
+                    payment = None
         page = request.GET.get('page', 1)
         paginator = Paginator(orders, 10)
         try:
@@ -471,21 +474,23 @@ def customer_orders(request, slugified_store_name):
 
 
 def unpaid_customer_orders(request, slugified_store_name):
+    payment = None
     store = Store.objects.get(slugified_store_name=slugified_store_name)
     if request.user in store.customers.all():
         customer = Customer.objects.get(email=request.user.email, store=store)
         orders = Order.objects.filter(
             user=request.user, store=store, billing_status=False
         )
-        if Payment.objects.filter(user=request.user, store=store, order__in=orders):
-            payment = Payment.objects.filter(
-                user=request.user, store=store, order__in=orders
-            )
-        else:
-            payment = None
-        for order in orders:
-            if order.date_created < timezone.now() - timedelta(days=30):
-                order.delete()
+        if orders:
+            for order in orders:
+                if order.date_created < timezone.now() - timedelta(days=30):
+                    order.delete()
+                if Payment.objects.filter(user=request.user, store=store, order=order):
+                    payment = Payment.objects.filter(
+                        user=request.user, store=store, order=order
+                    )
+                else:
+                    payment = None
         page = request.GET.get('page', 1)
         paginator = Paginator(orders, 10)
         try:

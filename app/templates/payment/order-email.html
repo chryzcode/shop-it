@@ -1,7 +1,7 @@
 {% autoescape off %} {% load humanize %}
 Hello {{payment.full_name|capfirst }} ({{payment.email}}),
 
-You just paid a total amount of {{currency}}{{payment.amount|intcomma}} for an order placed on {{ store.store_name|capfirst }} store, on the Shop!t platform.
+You just paid a total amount of {{currency}}{{payment.amount|intcomma}} for an order placed on {{ store.store_name|capfirst }} store, on the Shopit platform.
 
 {% if customer == True %}
 For more information and details on the order, kindly click this link https://{{domain}}
@@ -10,5 +10,5 @@ For more information and details on the order, kindly click this link https://{{
 Thank you for your continued support.
 
 Regards,
-Shop!t Team
+Shopit Team
 {% endautoescape %}

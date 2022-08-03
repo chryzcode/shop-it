@@ -270,17 +270,19 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
         if Subscription_Timeline.objects.filter(store=store).exists():
             store_timeline = Subscription_Timeline.objects.get(store=store)
             if store_timeline:
-                subject = f"{store.store_name} have a pickup delivery for you - Efdee Logistics"
-                message = render_to_string(
-                    'payment/pickup-email.html',
-                    {
-                        'store': store,
-                        'payment': payment,
-                        'currency': order.currency_symbol,
-                    },
-                )
-                to_email = [settings.LOGISTICS_EMAIL, store.owner.email]
-                send_mail(subject, message, from_email, to_email)
+                if store.country =="Nigeria" and store.state == "Lagos":
+                    if payment.country =="Nigeria" and payment.state == "Lagos":
+                        subject = f"{store.store_name} have a pickup delivery for you - Efdee Logistics"
+                        message = render_to_string(
+                            'payment/pickup-email.html',
+                            {
+                                'store': store,
+                                'payment': payment,
+                                'currency': order.currency_symbol,
+                            },
+                        )
+                        to_email = [settings.LOGISTICS_EMAIL, store.owner.email]
+                        send_mail(subject, message, from_email, to_email)
     
     else:
         messages.error(request, "Verification Failed")

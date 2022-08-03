@@ -7,9 +7,7 @@
   <div class="store-content-container">
     <span class="store-products-container">
       <p>Store {% if 'unpaid' in request.get_full_path %}Unpaid{% endif %} Orders - {% if orders_count %}{{orders_count}}{% else %}0{% endif %}</p>
-      <div class="table-container">
-        <table class="store-products-table">
-        <p>
+      <p>
           {% if 'unpaid' in request.get_full_path %}
           <a href="{% url 'app:store_orders' %}">Paid Orders</a>
           <small>Unpaid orders will be deleted after 30 days</small>
@@ -17,6 +15,9 @@
           <a href="{% url 'app:unpaid_store_orders'%}">Unpaid Orders</a>
           {% endif %}
         </p>
+      <div class="table-container">
+        <table class="store-products-table">
+        
         <tr class="table-rows">
           <th>Order Id</th>
           <th>Name</th>
@@ -26,7 +27,6 @@
         </tr>
 
         {% for order in orders %} 
-        {% comment %} {% for payment in payment %} {% endcomment %}
         <tr class="table-rows">
           <td><a href="{% url 'app:store_order_detail' order.pk %}">{{order.id|truncatechars:12}}</a></td>
           <td>
@@ -44,7 +44,6 @@
           <td>{% if order.billing_status == True %} Paid {% else %} Unpaid {% endif %}</td>
         </tr>
         {% endfor %}
-         {% comment %} {% endfor %} {% endcomment %}
       </table>
       </div>
       {% if orders.has_other_pages %}
