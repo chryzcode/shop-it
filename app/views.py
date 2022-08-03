@@ -1181,13 +1181,10 @@ def store_orders(request):
     orders_count = orders.count()
     if orders:
         for order in orders:
-            payment = Payment.objects.filter(order=order)
-        else:
-            payment = None
-    # if Payment.objects.filter(store=store.id, order__in=orders).exists():
-    #     payment = Payment.objects.filter(store=store.id, order__in=orders)
-    # else:
-    #     payment = None
+            if Payment.objects.filter(order=order).exists():
+                payment = Payment.objects.get(order=order)
+            else:
+                payment = None
     page = request.GET.get('page', 1)
     paginator = Paginator(orders, 10)
     try:
