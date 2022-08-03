@@ -182,3 +182,27 @@ def get_store_category_products(request):
             return {"get_store_category_products": None}
     else:
         return {"get_store_category_products": None}
+
+
+def get_store_category(request):
+    url = request.path
+    if 'store' and 'category' in url:
+        if url.split('/')[2] and url.split('/')[4]:
+            store_slug = url.split('/')[2]
+            product_category = url.split('/')[4]
+            if Store.objects.filter(slugified_store_name=store_slug).exists():
+                store = Store.objects.get(slugified_store_name=store_slug)
+                if store:
+                    if Category.objects.filter(created_by=store, slug=product_category).exists():   
+                        category = Category.objects.get(created_by=store, slug=product_category)
+                        return {"get_store_category": category}
+                    else:
+                        return {"get_store_category": None}
+                else:
+                    return {"get_store_category": None}
+            else:
+                return {"get_store_category": None}
+        else:
+            return {"get_store_category": None}
+    else:
+        return {"get_store_category": None}
