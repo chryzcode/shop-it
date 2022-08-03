@@ -3,7 +3,7 @@ const toogle = document.getElementById("toogle");
 const nav_links = document.getElementById("nav-links");
 const store_side_nav = document.getElementById("store-sidenav");
 const profile_dropdown = document.getElementById("acc-store-nav-links");
-const profile_section = document.getElementById("nav-user-profile")
+const profile_section = document.getElementById("nav-user-profile");
 const profile_icon = document.getElementById("profile-icon");
 const notification = document.getElementById("notification");
 const notification_dropdown = document.getElementById("notification-dropdown");
@@ -16,7 +16,6 @@ const mobile_search_bar = document.getElementById("side-nav-search-bar-mobile");
 const mobile_search_display = document.getElementById("search-display-mobile");
 const searchMediaQuery = window.matchMedia("(min-width: 990px)");
 const customerNav = document.getElementById("side-nav-search-bar-customer");
-
 
 document.onclick = function (e) {
   if (e.target.id == "a-nav-link") {
@@ -42,8 +41,8 @@ if (profile_section) {
       profile_dropdown.classList.toggle("active");
       profile_icon.classList.toggle("active");
     }
-  }
-};
+  };
+}
 
 document.onclick = function (e) {
   if (store_side_nav) {
@@ -58,71 +57,30 @@ if (notification) {
   notification.onclick = function () {
     notification_dropdown.classList.toggle("active");
     notification.classList.toggle("active");
-  }
+  };
 }
 
-
-// function myFunction() {
-//   var input, filter, ul, li, a, i, txtValue;
-//   input = document.getElementById("side-nav-search-bar");
-//   filter = input.value.toUpperCase();
-//   ul = document.getElementById("search-display");
-//   li = ul.getElementsByTagName("li");
-
-  
-
-//   ul.classList.add("active");
-
-//   for (i = 0; i < li.length; i++) {
-//     a = li[i].getElementsByTagName("a")[0];
-//     if (a) {
-//       console.log(a)
-//       txtValue = a.textContent || a.innerText;
-//       console.log(txtValue);
-//       if (txtValue.toUpperCase().indexOf(filter) > -1) {
-//         li[i].style.display = "";
-//       } else {
-//         ul.innerHTML = "<li>No available search</li>";
-//       }
-//     }
-//   }
-// }
-
-
-// if (search_bar) {
-//   document.onclick = function (e) {
-//     if (search_display) {
-//       if (e.target.id != "side-nav-search-bar") {
-//         search_display.classList.remove("active");
-//       }
-//     }
-//   }
-// }
 
 
 if (analytics_timeline_toogle) {
   analytics_timeline_toogle.onclick = function () {
     monthly_yearly_analytics.classList.toggle("active");
     hourly_weekly_analytics.classList.toggle("inactive");
-  }
+  };
 }
-
-
-
-
 
 function desktopSearchBar() {
   if (search_bar) {
-  document.onclick = function (e) {
-    if (search_display) {
-      if (e.target.id != "side-nav-search-bar") {
-        search_display.classList.remove("active");
-      } else {
-        search_display.classList.add("active");
+    document.onclick = function (e) {
+      if (search_display) {
+        if (e.target.id != "side-nav-search-bar") {
+          search_display.classList.remove("active");
+        } else {
+          search_display.classList.add("active");
+        }
       }
-    }
-  };
-}
+    };
+  }
 }
 
 function customerSearchBar() {
@@ -153,10 +111,6 @@ function storeMobileSearchBar() {
   }
 }
 
-
-
-
-
 function myFunction() {
   var input, filter, ul, li, a, i, txtValue;
   if (search_bar) {
@@ -164,27 +118,19 @@ function myFunction() {
   } else if (customerNav) {
     input = document.getElementById("side-nav-search-bar-customer");
   }
-  // else if (storeMobileNav) {
-  //   input = document.getElementById("store-side-nav-search-bar-mobile");
-  //   }
   if (searchMediaQuery.matches) {
-     if (search_bar) {
-       input = document.getElementById("side-nav-search-bar");
-     } else if (customerNav) {
-       input = document.getElementById("side-nav-search-bar-customer");
-     }
-    //  else if (storeMobileNav) {
-    //    input = document.getElementById("store-side-nav-search-bar-mobile");
-    //   }
-       ul = document.getElementById("search-display");
+    if (search_bar) {
+      input = document.getElementById("side-nav-search-bar");
+    } else if (customerNav) {
+      input = document.getElementById("side-nav-search-bar-customer");
+    }
+    ul = document.getElementById("search-display");
     console.log(input);
   } else if (mobile_search_display) {
     if (mobile_search_bar) {
       input = document.getElementById("side-nav-search-bar-mobile");
     }
-    // else if (storeMobileNav) {
-    //   input = document.getElementById("store-side-nav-search-bar-mobile");
-    // }
+
     ul = document.getElementById("search-display-mobile");
     console.log(input);
   } else {
@@ -196,9 +142,9 @@ function myFunction() {
     ul = document.getElementById("search-display");
   }
   filter = input.value.toUpperCase();
-  
+
   li = ul.getElementsByTagName("li");
- 
+
   // Loop through all list items, and hide those who don't match the search query
   for (i = 0; i < li.length; i++) {
     a = li[i].getElementsByTagName("a")[0];
@@ -211,11 +157,3 @@ function myFunction() {
   }
   ul.style.height = "auto";
 }
-
-
-
-
-
-
-
-
