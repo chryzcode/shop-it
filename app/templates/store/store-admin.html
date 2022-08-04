@@ -174,7 +174,7 @@
               <th>Date</th>
               <th>Amount</th>
             </tr>
-            {% for order in latest_orders %}
+            {% for order in latest_paid_orders %}
           <tr class="table-rows">
             <td><a href="{% url 'app:store_order_detail' order.pk %}">{{order.id|truncatechars:12}}</a></td>
             <td>{{order.created|timesince}} ago</td>

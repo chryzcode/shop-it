@@ -460,12 +460,6 @@
   .top-selling-latest-customer-container > div:nth-child(2) {
     width: 100%;
   }
-
-  .footer-company-logo {
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-  }
 }
 
 @media all and (max-width: 500px) {
@@ -603,7 +597,6 @@
   }
 
   .footer-company-logo {
-    width: 100px;
-    height: 100px;
+    width: 150px;
   }
 }

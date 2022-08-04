@@ -412,6 +412,7 @@ def store_admin(request):
                     product_dict[product_name] = product_quantity
         product_dict = (sorted(product_dict.items(), key=lambda item: item[1], reverse=True))[:5]  
         latest_orders = Order.objects.filter(store=store).order_by("-created")[:5]
+        latest_paid_orders = Order.objects.filter(store=store, billing_status=True).order_by("-created")[:5]
         customers = store.customers.all()
         
         
@@ -842,9 +843,8 @@ def store_admin(request):
             else:
                 last_30_customers_growth = 'shrinking'
 
-
     
-        return render(request, "store/store-admin.html", {"customer_dict": customer_dict, "product_dict": product_dict, "today_total_amount": today_total_amount, "latest_orders": latest_orders, "last_24_hours_total_customers": last_24_hours_total_customers, 'customers': customers, 'store':store, 'subscribed':subscribed, 'last_24_orders_percentage':int(last_24_orders_percentage), 'last_24_customers_percentage':int(last_24_customers_percentage), 'last_7_days_orders_percentage':int(last_7_days_orders_percentage), 'last_7_days_total_amount':last_7_days_total_amount, 'last_7_days_total_customer':last_7_days_total_customer,
+        return render(request, "store/store-admin.html", {"customer_dict": customer_dict, "product_dict": product_dict, "today_total_amount": today_total_amount, "latest_paid_orders":latest_paid_orders, "latest_orders": latest_orders, "last_24_hours_total_customers": last_24_hours_total_customers, 'customers': customers, 'store':store, 'subscribed':subscribed, 'last_24_orders_percentage':int(last_24_orders_percentage), 'last_24_customers_percentage':int(last_24_customers_percentage), 'last_7_days_orders_percentage':int(last_7_days_orders_percentage), 'last_7_days_total_amount':last_7_days_total_amount, 'last_7_days_total_customer':last_7_days_total_customer,
         'last_7_days_customers_percentage':int(last_7_days_customers_percentage), 'last_1_month_orders_percentage':int(last_1_month_orders_percentage), 'last_1_month_total_amount':last_1_month_total_amount, 'last_1_year_orders_percentage':int(last_1_year_orders_percentage), 'last_1_year_total_amount':last_1_year_total_amount
         , 'last_1_year_customers_percentage':int(last_1_year_customers_percentage), 'last_1_year_total_customer':last_1_year_total_customer, 'last_1_month_customers_percentage':int(last_1_month_customers_percentage), 'last_1_month_total_customer':last_1_month_total_customer, 'last_7_days_sales_total_growth':last_7_days_sales_total_growth, 'last_24_hours_sales_total_growth':last_24_hours_sales_total_growth, 'last_7_days_customers_growth':last_7_days_customers_growth, 'last_24_customers_growth':last_24_customers_growth, 'yearly_sales_total_growth':yearly_sales_total_growth, 'last_1_month_sales_growth':last_1_month_sales_growth, 'customers_growth':customers_growth, 'last_30_customers_growth':last_30_customers_growth})
     else:
@@ -1572,8 +1572,6 @@ def store_customers_details(request, pk):
         orders = paginator.page(paginator.num_pages)
     return render(request, "store/customer-details.html", {"customer": customer, "store": store, "reviews": reviews, "orders": orders, "customer_user": customer_user})
 
-
-
 def product_review_list(request, slugified_store_name, slug):
     store = Store.objects.get(slugified_store_name=slugified_store_name)
     product = Product.objects.get(slug=slug, store=store)
@@ -1589,6 +1587,24 @@ def product_review_list(request, slugified_store_name, slug):
     return render( request, "customer/product-review-list.html",
         {  "reviews": reviews, "product": product, "store": store })
 
+
+def generate_wallet(request, currency_code):
+    if request.user.store_creator == True:
+        store = Store.objects.get(owner=request.user)
+        currency = Currency.objects.get(code=currency_code)
+        if not Wallet.objects.filter(store=store, currency=currency).exists():  
+            wallet = Wallet.objects.create(
+                store= store,
+                currency= currency, 
+            )
+            return render(request, "store/wallet.html")
+        else:
+            messages.error(request, currency.code + ' ' + "wallet exists")
+            return render(request, "store/wallet.html")                                             
+    else:
+        messages.error(request, "You are not authorized")
+        return render(request, "store/wallet.html")
+    
 
 def company_review(request):
     if request.user.is_authenticated:

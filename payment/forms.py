@@ -2,6 +2,7 @@ from django import forms
 from django.forms import ModelForm
 
 from .models import *
+from account.models import *
 
 
 class NonCustomerPaymentForm(ModelForm):
@@ -95,3 +96,27 @@ class CustomerPaymentForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(CustomerPaymentForm, self).__init__(*args, **kwargs)
+
+
+class WalletForm(ModelForm):
+    class Meta:
+        model = Wallet
+        fields = (
+            "amount",
+        )
+        widgets = {
+            "amount": forms.TextInput(attrs={"class": "form-control"}),
+        }
+
+    def clean_amount(self):
+        amount = self.cleaned_data.get("amount")
+        if amount is None:
+            raise forms.ValidationError("Kindly put in amount for withdrawal")
+        if len(amount) <= 3:
+            raise forms.ValidationError("Amount for withdrawal should be more than 3 figures")
+        if str(amount).startswith(0):
+            raise forms.ValidationError("Invalid amount")
+        return amount
+
+    def __init__(self, *args, **kwargs):
+        super(WalletForm, self).__init__(*args, **kwargs)

@@ -19,6 +19,7 @@ from .forms import *
 from .models import *
 from app.models import *
 from app.forms import *
+
 from .tokens import account_activation_token
 from notifications.signals import notify
 
@@ -163,10 +164,17 @@ def store_account(
             storeform = StoreForm(request.POST, request.FILES, instance=store)
             if storeform.is_valid():
                 store_name = storeform.cleaned_data["store_name"]
+                currency = storeform.cleaned_data["currency"]
                 form = storeform.save(commit=False)
                 form.owner = request.user
                 form.slugified_store_name = slugify(store_name)
                 form.save()
+                currency = Currency.objects.get(name=currency)
+                if not Wallet.objects.filter(store=store, currency=currency).exists():
+                    Wallet.objects.create(
+                        currency = currency,
+                        store = store,
+                    )
                 request.user.store_name = store_name
                 request.user.save()
                 return redirect("account:store_account")

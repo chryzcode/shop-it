@@ -9,9 +9,11 @@ from django.contrib.sites.shortcuts import get_current_site
 
 
 from app.models import *
+from app.views import generate_wallet
 from cart.cart import *
 from customer.models import Address, Customer
 from order.models import *
+from account.models import *
 
 from .forms import *
 from .models import *
@@ -173,10 +175,6 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
     cart = Cart(request)
     payment = get_object_or_404(Payment, ref=ref)
     store = Store.objects.get(pk=payment.store.pk)
-    if Bank_Info.objects.filter(store=store).exists():
-        store_bank = Bank_Info.objects.get(store=store)
-    else:
-        messages.error(request, "Store bank info not found")
     paystack = Paystack()
     status, result = paystack.verify_payment(payment.ref, payment.amount)
     if status:
@@ -210,62 +208,66 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
                 amount =  int(payment.amount - (payment.amount * 0.01))
         else:
             amount = int(payment.amount - (payment.amount * 0.02))
-        narration = f"{payment.full_name} just paid {order.currency_symbol}{amount} for some products from {store.store_name} on Shop!t"
-        transfer = initiate_transfer(request, store_bank.account_name, store_bank.account_number, amount, order.currency_code, store_bank.account_name, narration)
-        if transfer:
-            messages.success(request, "Transfer initiated successfully")
-            staffs = store_staff.objects.filter(store=store)
-            message = "A payment for an order has been paid"
-            for staff in staffs:     
-                staff_user = User.objects.get(email=staff.email)
-                notify.send(store.owner, recipient=staff_user, verb=message, payment = payment.order.id) 
-            notify.send(store.owner, recipient=store.owner, verb=message, payment = payment.order.id)          
-            subject = f"{store.store_name} just sold some product on Shop!t"
-            current_site = get_current_site(request)
-            path = f"order/{order.id}"
-            message = render_to_string(
-                "payment/transfer-email.html",
-                {
-                    "store": store,
-                    "domain": current_site.domain+"/"+path,
-                    "amount":amount,
-                    "currency": order.currency_symbol,
-                    "beneficiary_name": payment.full_name,
-                    "payment": payment,
-                },
-            )
-            from_email = settings.EMAIL_HOST_USER
-            to_email = [store.owner.email]
-            send_mail(subject, message, from_email, to_email)
+        currency = Currency.objects.get(code=payment.order.currency_code)
+        if not Wallet.objects.filter(store=store, currency=currency).exists():
+            generate_wallet(request, payment.order.currency_code)
+        store_wallet = Wallet.objects.get(store=store, currency=currency)
+        store_wallet_amount = store_wallet.amount
+        store_wallet.amount = int(amount + store_wallet_amount)
+        store_wallet.save()
+        Wallet_Transanction.objects.create(
+            currency = currency,
+            store = store,
+            amount = amount
+        )
+        staffs = store_staff.objects.filter(store=store)
+        message = "Your" + ' ' + store_wallet.currency.code + ' ' + "wallet just recieved some funds"
+        for staff in staffs:     
+            staff_user = User.objects.get(email=staff.email)
+            notify.send(store.owner, recipient=staff_user, verb=message, payment = payment.order.id) 
+        notify.send(store.owner, recipient=store.owner, verb=message, payment = payment.order.id)          
+        subject = f"{store.store_name} just sold some product on Shop!t"
+        current_site = get_current_site(request)
+        path = f"order/{order.id}"
+        message = render_to_string(
+            "payment/wallet-credit-alert-email.html",
+            {
+                "store": store,
+                "domain": current_site.domain+"/"+path,
+                "amount":amount,
+                "currency": order.currency_symbol,
+                "beneficiary_name": payment.full_name,
+                "payment": payment,
+            },
+        )
+        from_email = settings.EMAIL_HOST_USER
+        to_email = [store.owner.email]
+        send_mail(subject, message, from_email, to_email)
 
-            if store_staff.objects.filter(store=store).exists():
-                for staff in store_staff.filter(store=store):
-                    staff_email = staff.email
-                    send_mail(subject, message, from_email, [staff_email])
+        if store_staff.objects.filter(store=store).exists():
+            for staff in store_staff.filter(store=store):
+                staff_email = staff.email
+                send_mail(subject, message, from_email, [staff_email])
 
-            subject = f"You just ordered some products on {store.store_name} on Shop!t platform"
-            path = f"{store.slugified_store_name}/order/{order.id}"
-            if payment.user in store.customers.all():
-                customer = True
-            else:
-                customer = False
-            message = render_to_string(
-                "payment/order-email.html",
-                {
-                    "store": store,
-                    "order": order,
-                    "payment": payment,
-                    "domain": current_site.domain+"/"+path,
-                    "customer": customer,
-                    "currency": order.currency_symbol,
-                },
-            )
-            to_email = [payment.email]
-            send_mail(subject, message, from_email, to_email)
-
-    
+        subject = f"You just ordered some products on {store.store_name} on Shop!t platform"
+        path = f"{store.slugified_store_name}/order/{order.id}"
+        if payment.user in store.customers.all():
+            customer = True
         else:
-            messages.error(request, "Transfer failed")
+            customer = False
+        message = render_to_string(
+            "payment/order-email.html",
+            {
+                "store": store,
+                "order": order,
+                "payment": payment,
+                "domain": current_site.domain+"/"+path,
+                "customer": customer,
+                "currency": order.currency_symbol,
+            },
+        )
+        to_email = [payment.email]
+        send_mail(subject, message, from_email, to_email)
 
         if Subscription_Timeline.objects.filter(store=store).exists():
             store_timeline = Subscription_Timeline.objects.get(store=store)
@@ -283,13 +285,52 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
                         )
                         to_email = [settings.LOGISTICS_EMAIL, store.owner.email]
                         send_mail(subject, message, from_email, to_email)
-    
+
+        if Customer.objects.filter(email=request.user.email, store=store).exists():
+            return redirect("customer:customer_orders", store.slugified_store_name)
+        else:
+            return redirect("app:store", store.slugified_store_name)
+
+
+def withdraw_funds(request, currency_code):
+    if request.user.store_creator == True:
+        store = Store.objects.get(owner=request.user)
+        currency = Currency.objects.get(code=currency_code)
+        if Wallet.objects.filter(store=store, currency=currency).exists():
+            store_wallet = Wallet.objects.get(store=store, currency=currency)
+            if store_wallet:
+                form = WalletForm
+                if request.method == "POST":
+                    form = WalletForm(request.POST)
+                    if form.is_valid():
+                        amount = form.cleaned_data["amount"]
+                        if amount > store_wallet.amount:
+                            messages.error(request, "Insucfficient Funds") 
+                          
+                        else:
+                            narration = f"{store.store_name} just withdraw {currency.symbol}{amount} from {store_wallet.currency.code} wallet on Shop!t"
+                            if Bank_Info.objects.filter(store=store).exists():
+                                store_bank = Bank_Info.objects.get(store=store)
+                                transfer = initiate_transfer(request, store_bank.account_name, store_bank.account_number, amount, store_wallet.currency.code, store_bank.account_name, narration)
+                                if transfer:
+                                    store_wallet.amount = store_wallet.amount - amount
+                                    store_wallet.save()
+                                    Withdrawal_Transanction.objects.create(
+                                        currency= currency,
+                                        store= store,
+                                        amount= amount,
+                                        account_number = store_bank.account_number,
+                                        account_name = store_bank.account_name,
+                                        account_bank = store_bank.bank_name,
+                                    )
+                                    messages.error(request, "Withdrawal Successful")      
+                                else:
+                                    messages.error(request, "Withdrawal Failed")
+                            else:
+                                messages.error(request, "Store bank info not found")  
+                    else:
+                        messages.error(request, "Form input is not valid")                  
+        else:
+            messages.error(request, "Wallet does not exist")
     else:
-        messages.error(request, "Verification Failed")
-    if Customer.objects.filter(email=request.user.email, store=store).exists():
-        return redirect("customer:customer_orders", store.slugified_store_name)
-    else:
-        return redirect("app:store", store.slugified_store_name)
-
-
-
+        messages.error(request, "You are not authorized")
