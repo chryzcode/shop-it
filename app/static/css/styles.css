@@ -20,7 +20,7 @@ body {
 }
 
 .nav-company-logo {
-  width: 60px;
+  width: 250px;
   object-fit: contain;
 }
 
@@ -1906,6 +1906,6 @@ body::-webkit-scrollbar,
 }
 
 .footer-company-logo {
-  width: 200px;
+  width: 400px;
   object-fit: contain;
 }
