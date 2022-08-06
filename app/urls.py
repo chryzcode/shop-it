@@ -13,6 +13,7 @@ urlpatterns = [
     path("add-wishlist/<slug>", views.add_wishlist, name="add_wishlist"),
     path("remove-wishlist/<slug>", views.remove_wishlist, name="remove_wishlist"),
     path("wishlist/", views.wishlist, name="wishlist"),
+    path("wallet/", views.store_wallet, name="store_wallet"),
     path(
         "products/",
         views.a_store_all_products,

@@ -9,7 +9,6 @@ from django.contrib.sites.shortcuts import get_current_site
 
 
 from app.models import *
-from app.views import generate_wallet
 from cart.cart import *
 from customer.models import Address, Customer
 from order.models import *
@@ -23,7 +22,30 @@ from subscriptions.models import *
 from notifications.signals import notify
 
 
-# Create your views here.
+
+
+def generate_wallet(request, currency_code):
+    if request.user.store_creator == True:
+        store = Store.objects.get(owner=request.user)
+        if Currency.objects.filter(code=currency_code).exists():
+            currency = Currency.objects.get(code=currency_code)
+            if not Wallet.objects.filter(store=store, currency=currency).exists():  
+                wallet = Wallet.objects.create(
+                    store= store,
+                    currency= currency, 
+                )
+                return redirect("app:store_wallet")
+            else:
+                messages.error(request, currency.code + ' ' + "wallet exists")
+                return redirect("app:store_wallet")
+        else:
+            messages.error(request, "Currency not currently active")   
+            return redirect("app:store_wallet")                                          
+    else:
+        messages.error(request, "You are not authorized")
+        return redirect("app:store_wallet")
+
+
 def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
     cart = Cart(request)
     addresses = ""
@@ -31,6 +53,20 @@ def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
     store = Store.objects.get(pk=order.store.pk)
     currency_symbol = order.currency_symbol
     currency_code = order.currency_code
+    url = "https://api.countrystatecity.in/v1/countries"
+
+    headers = {
+    'X-CSCAPI-KEY': settings.COUNTRY_STATE_CITY_API_KEY
+    }
+
+    response = requests.request("GET", url, headers=headers)
+    data = response.json()
+    #get all names from data
+    country_names = []
+    for country in data:
+        country_names.append(country['name'])
+    print(country_names)
+  
     if Payment.objects.filter(order=order).exists():
         payment = Payment.objects.get(order=order)
         if payment.verified:
@@ -42,6 +78,7 @@ def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
                     "currency_symbol": currency_symbol,
                     "currency_code": currency_code,
                     "paystack_public_key": settings.PAYSTACK_PUBLIC_KEY,
+                    "country_names" : country_names,
                 },
             )
     shipping_methods = Shipping_Method.objects.filter(store=store)
@@ -128,6 +165,7 @@ def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
                     "paystack_public_key": settings.PAYSTACK_PUBLIC_KEY,
                     "currency_symbol": currency_symbol,
                     "currency_code": currency_code,
+                    "country_names" : country_names,
                 },
             )
     else:
@@ -144,6 +182,7 @@ def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
                 "order": order,
                 "currency_symbol": currency_symbol,
                 "currency_code": currency_code,
+                "country_names" : country_names,
             },
         )
 
@@ -216,9 +255,10 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
         store_wallet.amount = int(amount + store_wallet_amount)
         store_wallet.save()
         Wallet_Transanction.objects.create(
-            currency = currency,
+            wallet = store_wallet,
             store = store,
-            amount = amount
+            amount = amount,
+            order = order,
         )
         staffs = store_staff.objects.filter(store=store)
         message = "Your" + ' ' + store_wallet.currency.code + ' ' + "wallet just recieved some funds"
@@ -316,7 +356,7 @@ def withdraw_funds(request, currency_code):
                                     store_wallet.amount = store_wallet.amount - amount
                                     store_wallet.save()
                                     Withdrawal_Transanction.objects.create(
-                                        currency= currency,
+                                        wallet= store_wallet,
                                         store= store,
                                         amount= amount,
                                         account_number = store_bank.account_number,
@@ -334,3 +374,4 @@ def withdraw_funds(request, currency_code):
             messages.error(request, "Wallet does not exist")
     else:
         messages.error(request, "You are not authorized")
+

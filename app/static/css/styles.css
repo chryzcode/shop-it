@@ -1675,9 +1675,8 @@ body::-webkit-scrollbar,
 .subscription-grid-container > .a-related-container > div::-webkit-scrollbar,
 .illustration-grid-content::-webkit-scrollbar,
 .company-team-grid > div > div::-webkit-scrollbar {
-  width: 0;
+  width: 20px;
   background: transparent;
-  display: none !important;
 }
 
 .store-socials {
@@ -1772,10 +1771,30 @@ body::-webkit-scrollbar,
   border-radius: 12px;
   margin: 10px 0;
   padding: 20px;
+  position: relative;
+}
+
+.small-anlytics-card > div > span {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
 }
 
 .small-anlytics-card > div p {
   color: #3d5170;
+}
+
+.small-anlytics-card > div > p > a {
+  color: #3d5170;
+  display: block;
+  position: absolute;
+  bottom: 15px;
+  right: 0;
+  left: 0;
+  margin-left: auto;
+  margin-right: auto;
+  width: max-content;
 }
 
 .small-anlytics-card > div > div {

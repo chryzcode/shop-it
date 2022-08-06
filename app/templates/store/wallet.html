@@ -1,0 +1,154 @@
+{% extends 'navs/store-nav.html' %} {% load static %}{% load humanize %}{% block title %}<title>
+  Shop !t - Store Wallet
+</title>
+{% endblock %} {% block content %}
+<div class="store-page-container">
+  {% include 'navs/store-side-nav.html' %}
+  <div class="store-content-container">
+    <span class="store-products-container">
+      <p>Store Wallet</p>
+      {% if messages %} {% for message in messages %} {% if message %}
+      <small class="error">{{message}}</small>
+      {% endif %} {% endfor %} {% endif %}
+    
+    
+    <div class="small-anlytics-card" >
+        <div>
+            <p>Naira Wallet ₦</p>
+            {% if naira_wallet %}
+            <span>
+               <span>Balance:</span> 
+               <span>{{naira_wallet.currency.symbol}}{{naira_wallet.amount}}</span>
+            </span>
+            <p>
+                <a href="">Withdraw</a>
+            </p>
+            {% else %}
+            <p>
+                <a href="{% url 'payment:generate_wallet' naira_currency_code %}">Generate Wallet</a>
+            </p>
+            {% endif %}
+        </div>
+
+        <div>
+            <p>USD Wallet $</p>
+            {% if usd_wallet %}
+            <div>Balance: {{usd_wallet.currency.symbol}}{{usd_wallet.amount}} </div>
+            <p>
+                <a href="">Withdraw</a>
+            </p>
+            {% else %}
+            <p>
+                <a href="{% url 'payment:generate_wallet' usd_currency_code %}">Generate Wallet</a>
+            </p>
+            {% endif %}
+        </div>
+    </div>
+    <p><small>Wallet Transanction (Credit)</small></p>
+    <div class="table-container">
+        <table class="store-products-table">
+        
+        <tr class="table-rows">
+            <th>Order</th>
+            <th>Wallet</th>
+            <th>Amount</th>
+            <th>Time</th>
+        </tr>
+
+        {% for transanction in wallet_transanctions %} 
+        <tr class="table-rows">
+          <td><a href="{% url 'app:store_order_detail' order.pk %}">{{transanction.order.id|truncatechars:10}}</a></td>
+          <td>{% if transanction.wallet.currency.code == "NGN" %}
+            Naira wallet
+            {% elif transanction.wallet.currency.code == "USD"}
+            USD wallet
+            {% else %}
+            None
+            {% endif %}
+          </td>
+          <td>{{order.currency_symbol}}{{transanction.amount}}</td>
+          <td>{{transanction.created}}</td>
+        </tr>
+        {% endfor %}
+      </table>
+      </div>
+      {% if wallet_transanctions.has_other_pages %}
+      <span class="pagination">
+        <span>
+          {% for i in wallet_transanctions.paginator.page_range %} {% if wallet_transanctions.number == i %} Showing
+          {{wallet_transanctions.start_index }} of {{ wallet_transanctions.end_index }} of {{ wallet_transanctions.paginator.count }} 
+          entries {% endif %} {% endfor %}
+        </span>
+
+        <span>
+          {% if wallet_transanctions.has_previous %}
+          <a href="?page={{ wallet_transanctions.previous_page_number }}"><i class="fas fa-arrow-left"></i></a>
+          {% else %}
+          <span><i class="fas fa-arrow-left disable"></i></span>
+          {% endif %} {% if wallet_transanctions.has_next %}
+          <a href="?page={{ wallet_transanctions.next_page_number }}"><i class="fas fa-arrow-right"></i></a>
+          {% else %}
+          <span><i class="fas fa-arrow-right disable"></i></span>
+          {% endif %}
+      </span>
+      </span>
+      {% endif %}
+
+
+      <p><span>Withdrawal Transanction (Debit)</span></p>
+    <div class="table-container">
+        <table class="store-products-table">
+        
+        <tr class="table-rows">
+            <th>Account Details</th>
+            <th>Wallet</th>
+            <th>Amount</th>
+            <th>Time</th>
+        </tr>
+
+        {% for transanction in withdrawal_transanctions %} 
+        <tr class="table-rows">
+          <td>
+            <p>{{transanction.account_bank}}</p>
+            <p>{{transanction.account_number}}</p>
+            <p>{{transanction.account_name}}</p>
+          </td>
+          <td>{% if transanction.wallet.currency.code == "NGN" %}
+            Naira wallet
+            {% elif transanction.wallet.currency.code == "USD"}
+            USD wallet
+            {% else %}
+            None
+            {% endif %}
+          </td>
+          <td>{{transanction.currency.symbol}}{{transanction.amount}}</td>
+          <td>{{transanction.created}}</td>
+        </tr>
+        {% endfor %}
+      </table>
+      </div>
+      {% if withdrawal_transanctions.has_other_pages %}
+      <span class="pagination">
+        <span>
+          {% for i in withdrawal_transanctions.paginator.page_range %} {% if withdrawal_transanctions.number == i %} Showing
+          {{withdrawal_transanctions.start_index }} of {{ withdrawal_transanctions.end_index }} of {{ withdrawal_transanctions.paginator.count }} 
+          entries {% endif %} {% endfor %}
+        </span>
+
+        <span>
+          {% if withdrawal_transanctions.has_previous %}
+          <a href="?page={{ withdrawal_transanctions.previous_page_number }}"><i class="fas fa-arrow-left"></i></a>
+          {% else %}
+          <span><i class="fas fa-arrow-left disable"></i></span>
+          {% endif %} {% if withdrawal_transanctions.has_next %}
+          <a href="?page={{ withdrawal_transanctions.next_page_number }}"><i class="fas fa-arrow-right"></i></a>
+          {% else %}
+          <span><i class="fas fa-arrow-right disable"></i></span>
+          {% endif %}
+      </span>
+      </span>
+      {% endif %}
+    </span>
+  </div>
+</div>
+{% endblock %}

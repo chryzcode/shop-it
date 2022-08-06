@@ -8,6 +8,7 @@ from django.db import models
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 
+
 class Currency(models.Model):
     name = models.CharField(max_length=50)
     code = models.CharField(max_length=10)
@@ -87,35 +88,6 @@ class CustomAccountManager(BaseUserManager):
         return user
 
 
-class Wallet(models.Model):
-    currency = models.ForeignKey(Currency, on_delete=models.CASCADE, related_name="store_wallet_currency")
-    store = models.ForeignKey(Store, on_delete=models.CASCADE, related_name="store_wallet")
-    amount = models.PositiveIntegerField(default=0)
-
-    def __str__(self):
-        return str(self.store.store_name) + ' ' + str(self.currency.name) + ' ' + "Wallet"
-
-class Wallet_Transanction(models.Model):
-    currency = models.ForeignKey(Currency, on_delete=models.CASCADE)
-    store = models.ForeignKey(Store, on_delete=models.CASCADE)
-    amount = models.PositiveIntegerField(default=0)
-    created = models.DateTimeField(auto_now_add=True)
-    withdraw = models.BooleanField(default=False)
-
-    def __str__(self):
-        return str(self.store.store_name) + ' ' + str(self.currency.name) + ' ' + "Wallet Transanction"
-
-class Withdrawal_Transanction(models.Model):
-    currency = models.ForeignKey(Currency, on_delete=models.CASCADE)
-    store = models.ForeignKey(Store, on_delete=models.CASCADE)
-    amount = models.PositiveIntegerField(default=0)
-    created = models.DateTimeField(auto_now_add=True)
-    account_number = models.CharField(max_length=20)
-    account_name =  models.CharField(max_length=200)
-    account_bank = models.CharField(max_length=200)
-
-    def __str__(self):
-        return str(self.store.store_name) + ' ' + str(self.currency.name) + ' ' + "Withdrawal Transanction"
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_("email address"), unique=True)

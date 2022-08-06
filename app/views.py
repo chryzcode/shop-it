@@ -13,6 +13,8 @@ from payment.models import Payment
 from subscriptions.models import *
 from subscriptions.views import *
 from order.views import *
+from order.models import *
+from payment.models import *
 from customer.models import *
 
 from .forms import *
@@ -1588,22 +1590,49 @@ def product_review_list(request, slugified_store_name, slug):
         {  "reviews": reviews, "product": product, "store": store })
 
 
-def generate_wallet(request, currency_code):
+def store_wallet(request):
     if request.user.store_creator == True:
         store = Store.objects.get(owner=request.user)
-        currency = Currency.objects.get(code=currency_code)
-        if not Wallet.objects.filter(store=store, currency=currency).exists():  
-            wallet = Wallet.objects.create(
-                store= store,
-                currency= currency, 
-            )
-            return render(request, "store/wallet.html")
-        else:
-            messages.error(request, currency.code + ' ' + "wallet exists")
-            return render(request, "store/wallet.html")                                             
     else:
-        messages.error(request, "You are not authorized")
-        return render(request, "store/wallet.html")
+        store = Store.objects.get(
+            store_name=store_staff.objects.get(email=request.user.email).store
+        )
+    wallets = Wallet.objects.filter(store=store) 
+    naira_wallet = None
+    usd_wallet = None
+    usd_currency_code = "USD"
+    naira_currency_code ="NGN"
+    if wallets:
+        if Currency.objects.filter(code= "NGN").exists():
+            naira_currency = Currency.objects.get(code= "NGN")
+            if Wallet.objects.filter(store=store, currency=naira_currency).exists():
+                naira_wallet = Wallet.objects.get(store=store, currency=naira_currency) 
+        if Currency.objects.filter(code= "USD").exists():
+            usd_currency = Currency.objects.get(code= "USD")
+            if Wallet.objects.filter(store=store, currency=usd_currency).exists():
+                usd_wallet = Wallet.objects.get(store=store, currency=usd_currency) 
+
+    wallet_transanctions = Wallet_Transanction.objects.filter(store=store)
+    page = request.GET.get('page', 1)
+    paginator = Paginator(wallet_transanctions, 5)
+    try:
+        wallet_transanctions = paginator.page(page)
+    except PageNotAnInteger:
+        wallet_transanctions = paginator.page(1)
+    except EmptyPage:
+        wallet_transanctions = paginator.page(paginator.num_pages)
+
+    withdrawal_transanctions = Withdrawal_Transanction.objects.filter(store=store)
+    page = request.GET.get('page', 1)
+    paginator = Paginator(withdrawal_transanctions, 5)
+    try:
+        withdrawal_transanctions = paginator.page(page)
+    except PageNotAnInteger:
+        withdrawal_transanctions = paginator.page(1)
+    except EmptyPage:
+        withdrawal_transanctions = paginator.page(paginator.num_pages)
+
+    return render(request, "store/wallet.html", {"wallets": wallets, "store": store, 'naira_wallet':naira_wallet, 'usd_wallet':usd_wallet, 'usd_currency_code':usd_currency_code, 'naira_currency_code':naira_currency_code, 'wallet_transanctions':wallet_transanctions, 'withdrawal_transanctions':withdrawal_transanctions})
     
 
 def company_review(request):

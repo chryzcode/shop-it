@@ -63,15 +63,18 @@
       <div class="input-container">
         <label for="country">Country<span class="form-required">*</span></label>
         <p class="error">{{ country_error }}</p>
-        <select name="country" class="countries form-control" id="countryId">
+        <select name="country" class="form-control" id="country">
           <option value="">Select Country</option>
+          {% for country in country_names %}
+          <option value="{{ country }}">{{ country }}</option>
+          {% endfor %}
         </select>
       </div>
 
       <div class="input-container">
         <label for="state">State<span class="form-required">*</span></label>
         <p class="error">{{ state_error }}</p>
-        <select name="state" class="states form-control" id="stateId">
+        <select name="state" class="states form-control">
           <option value="">Select State</option>
         </select>
       </div>
@@ -120,7 +123,6 @@ $( document ).ready(function() {
         document.getElementById('total').innerHTML = total;
     });
 });
-
 
 </script>
 
