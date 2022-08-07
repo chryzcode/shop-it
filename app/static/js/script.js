@@ -40,6 +40,9 @@ if (profile_section) {
     if (profile_dropdown) {
       profile_dropdown.classList.toggle("active");
       profile_icon.classList.toggle("active");
+      if (profile_dropdown.classList.contains("active")) {
+        navbar.style.overflow = "visible";
+      }
     }
   };
 }
