@@ -104,7 +104,7 @@ body {
   padding: 50px;
   font-size: 20px;
   height: 200px;
-  overflow: scroll;
+  overflow-y: scroll;
 }
 
 .illustration-container > img:hover {
@@ -142,6 +142,8 @@ body {
 .payment-illustration-content {
   padding: 50px;
   font-size: 20px;
+  height: 200px;
+  overflow-y: scroll;
 }
 
 .outro {
@@ -1152,7 +1154,6 @@ button {
   padding: 10px 0;
 }
 
-
 .store-products-container p > a {
   color: #6b69f8;
   font-size: 19px;
@@ -1669,15 +1670,15 @@ small {
   display: block;
 }
 
-body::-webkit-scrollbar,
+/* body::-webkit-scrollbar,
 .store-sidenav::-webkit-scrollbar,
 #search-display::-webkit-scrollbar,
 .subscription-grid-container > .a-related-container > div::-webkit-scrollbar,
 .illustration-grid-content::-webkit-scrollbar,
 .company-team-grid > div > div::-webkit-scrollbar {
-  width: 20px;
+  width: 15px;
   background: transparent;
-}
+} */
 
 .store-socials {
   display: flex;
