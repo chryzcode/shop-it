@@ -15,6 +15,8 @@ from subscriptions.views import *
 from order.views import *
 from order.models import *
 from payment.models import *
+from payment.forms import *
+from payment.views import withdraw_funds
 from customer.models import *
 
 from .forms import *
@@ -1602,6 +1604,7 @@ def store_wallet(request):
     usd_wallet = None
     usd_currency_code = "USD"
     naira_currency_code ="NGN"
+    form = WalletForm
     if wallets:
         if Currency.objects.filter(code= "NGN").exists():
             naira_currency = Currency.objects.get(code= "NGN")
@@ -1632,7 +1635,7 @@ def store_wallet(request):
     except EmptyPage:
         withdrawal_transanctions = paginator.page(paginator.num_pages)
 
-    return render(request, "store/wallet.html", {"wallets": wallets, "store": store, 'naira_wallet':naira_wallet, 'usd_wallet':usd_wallet, 'usd_currency_code':usd_currency_code, 'naira_currency_code':naira_currency_code, 'wallet_transanctions':wallet_transanctions, 'withdrawal_transanctions':withdrawal_transanctions})
+    return render(request, "store/wallet.html", {"wallets": wallets, "store": store, 'naira_wallet':naira_wallet, 'usd_wallet':usd_wallet, 'usd_currency_code':usd_currency_code, 'naira_currency_code':naira_currency_code, 'wallet_transanctions':wallet_transanctions, 'withdrawal_transanctions':withdrawal_transanctions, 'form':form})
     
 
 def company_review(request):

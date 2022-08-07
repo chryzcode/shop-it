@@ -2,7 +2,26 @@
   Shop !t - Store Wallet
 </title>
 {% endblock %} {% block content %}
+
+         
+         
 <div class="store-page-container">
+       <form   id="withdrawal-naira-form"  action="{% url 'payment:withdraw_funds' naira_wallet.currency.code %}" method="post">
+            <div class="above-create-form">
+                <p>Withdraw - Naira Wallet</p>
+            </div>
+            {% csrf_token %}
+            <div class="input-container">
+                <label for="name">Amount<span class="form-required">*</span></label>
+                <input type="text" name="amount" id="amount" placeholder="Enter amount" class="form-control">
+            </div>
+            <div class="form-btn-container">
+            <button class="form-btn" type="submit">
+            Withdraw
+            </button>
+            </div> 
+            </form>
+    
   {% include 'navs/store-side-nav.html' %}
   <div class="store-content-container">
     <span class="store-products-container">
@@ -21,7 +40,8 @@
                <span>{{naira_wallet.currency.symbol}}{{naira_wallet.amount}}</span>
             </span>
             <p>
-                <a href="">Withdraw</a>
+            <div id="withdraw-naira-btn">Withdraw</div>
+            
             </p>
             {% else %}
             <p>
@@ -44,6 +64,8 @@
             {% endif %}
         </div>
     </div>
+
+    
     <p><small>Wallet Transanction (Credit)</small></p>
     <div class="table-container">
         <table class="store-products-table">
@@ -148,6 +170,8 @@
       </span>
       </span>
       {% endif %}
+
+      
     </span>
   </div>
 </div>

@@ -342,11 +342,21 @@ def withdraw_funds(request, currency_code):
                 form = WalletForm
                 if request.method == "POST":
                     form = WalletForm(request.POST)
+                    amount = request.POST.get("amount")
+                    if amount is None:
+                        messages.error(request, "Please enter an amount")
+                        return redirect("app:store_wallet")
+                    if len(str(amount)) <= 3:
+                        messages.error(request, "Amount for withdrawal should be more than 3 figures")
+                        return redirect("app:store_wallet")
+                    if str(amount).startswith(str(0)):
+                        messages.error(request, "Invalid amount")
+                        return redirect("app:store_wallet")
                     if form.is_valid():
                         amount = form.cleaned_data["amount"]
                         if amount > store_wallet.amount:
                             messages.error(request, "Insucfficient Funds") 
-                          
+                            return redirect("app:store_wallet") 
                         else:
                             narration = f"{store.store_name} just withdraw {currency.symbol}{amount} from {store_wallet.currency.code} wallet on Shop!t"
                             if Bank_Info.objects.filter(store=store).exists():
@@ -363,15 +373,21 @@ def withdraw_funds(request, currency_code):
                                         account_name = store_bank.account_name,
                                         account_bank = store_bank.bank_name,
                                     )
-                                    messages.error(request, "Withdrawal Successful")      
+                                    messages.error(request, "Withdrawal Successful") 
+                                    return redirect("app:store_wallet")     
                                 else:
                                     messages.error(request, "Withdrawal Failed")
+                                    return redirect("app:store_wallet")
                             else:
-                                messages.error(request, "Store bank info not found")  
+                                messages.error(request, "Store bank info not found") 
+                                return redirect("app:store_wallet") 
                     else:
-                        messages.error(request, "Form input is not valid")                  
+                        messages.error(request, "Form input is not valid")   
+                        return redirect("app:store_wallet")               
         else:
             messages.error(request, "Wallet does not exist")
+            return redirect("app:store_wallet")
     else:
         messages.error(request, "You are not authorized")
+        return redirect("app:store_wallet")
 
