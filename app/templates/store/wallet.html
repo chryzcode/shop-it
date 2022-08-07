@@ -6,21 +6,6 @@
          
          
 <div class="store-page-container">
-       <form   id="withdrawal-naira-form"  action="{% url 'payment:withdraw_funds' naira_wallet.currency.code %}" method="post">
-            <div class="above-create-form">
-                <p>Withdraw - Naira Wallet</p>
-            </div>
-            {% csrf_token %}
-            <div class="input-container">
-                <label for="name">Amount<span class="form-required">*</span></label>
-                <input type="text" name="amount" id="amount" placeholder="Enter amount" class="form-control">
-            </div>
-            <div class="form-btn-container">
-            <button class="form-btn" type="submit">
-            Withdraw
-            </button>
-            </div> 
-            </form>
     
   {% include 'navs/store-side-nav.html' %}
   <div class="store-content-container">
@@ -41,7 +26,21 @@
             </span>
             <p>
             <div id="withdraw-naira-btn">Withdraw</div>
-            
+             <form   id="withdrawal-naira-form"  action="{% url 'payment:withdraw_funds' naira_wallet.currency.code %}" method="post">
+            <div class="above-create-form">
+                <p>Withdraw - Naira Wallet</p>
+            </div>
+            {% csrf_token %}
+            <div class="input-container">
+                <label for="name">Amount<span class="form-required">*</span></label>
+                <input type="text" name="amount" id="amount" placeholder="Enter amount" class="form-control">
+            </div>
+            <div class="form-btn-container">
+            <button class="form-btn" type="submit">
+            Withdraw
+            </button>
+            </div> 
+            </form>
             </p>
             {% else %}
             <p>
