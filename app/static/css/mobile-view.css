@@ -460,6 +460,10 @@
   .top-selling-latest-customer-container > div:nth-child(2) {
     width: 100%;
   }
+
+  .wallet-withdrawal-form.active{
+    width: 400px
+  }
 }
 
 @media all and (max-width: 500px) {
@@ -598,5 +602,10 @@
 
   .footer-company-logo {
     width: 150px;
+  }
+
+  .wallet-withdrawal-form.active{
+    width: 90%;
+    margin: 0 auto;
   }
 }

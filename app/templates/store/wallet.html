@@ -5,7 +5,7 @@
 
 <div class="store-page-container">
     {% if naira_wallet %}
-       <form   id="withdrawal-naira-form" action="{% url 'payment:withdraw_funds' naira_wallet.currency.code %}" method="post">
+       <form class="wallet-withdrawal-form"   id="withdrawal-naira-form" action="{% url 'payment:withdraw_funds' naira_wallet.currency.code %}" method="post">
             <div class="above-create-form">
                 <p>Withdraw - Naira Wallet</p>
             </div>
@@ -37,11 +37,10 @@
             {% if naira_wallet %}
             <span>
                <span>Balance:</span> 
-               <span>{{naira_wallet.currency.symbol}}{{naira_wallet.amount}}</span>
+               <span>{{naira_wallet.currency.symbol}}{{naira_wallet.amount|intcomma}}</span>
             </span>
             <p>
-            <div id="withdraw-naira-btn">Withdraw</div>
-            
+            <a id="withdraw-naira-btn">Withdraw</a>
             </p>
             {% else %}
             <p>
@@ -53,7 +52,7 @@
         <div>
             <p>USD Wallet $</p>
             {% if usd_wallet %}
-            <div>Balance: {{usd_wallet.currency.symbol}}{{usd_wallet.amount}} </div>
+            <div>Balance: {{usd_wallet.currency.symbol}}{{usd_wallet.amount|intcomma}} </div>
             <p>
                 <a href="">Withdraw</a>
             </p>
@@ -80,15 +79,16 @@
         {% for transanction in wallet_transanctions %} 
         <tr class="table-rows">
           <td><a href="{% url 'app:store_order_detail' transanction.order.pk %}">{{transanction.order.id|truncatechars:10}}</a></td>
-          <td>{% if transanction.wallet.currency.code == "NGN" %}
+          <td>
+            {% if transanction.wallet.currency.code == "NGN" %}
             Naira wallet
-            {% elif transanction.wallet.currency.code == "USD"}
+            {% elif transanction.wallet.currency.code == "USD" %}
             USD wallet
             {% else %}
             None
             {% endif %}
           </td>
-          <td>{{order.currency_symbol}}{{transanction.amount}}</td>
+          <td>{{transanction.order.currency_symbol}}{{transanction.amount|intcomma}}</td>
           <td>{{transanction.created}}</td>
         </tr>
         {% endfor %}

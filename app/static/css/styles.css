@@ -1796,6 +1796,8 @@ small {
   margin-left: auto;
   margin-right: auto;
   width: max-content;
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 .small-anlytics-card > div > div {
@@ -1934,20 +1936,19 @@ small {
   position: relative;
 }
 
-#withdrawal-naira-form {
+.wallet-withdrawal-form {
   display: none;
 }
 
-#withdrawal-naira-form.active {
+.wallet-withdrawal-form.active {
   position: absolute;
   width: 500px;
-  z-index: 1057;
+  z-index: 10;
   display: block;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: #fff;
-  box-shadow: rgba(0, 0, 0, 0.35);
   padding: 40px;
   border-radius: 10px;
   outline: 1px solid #ccc;
