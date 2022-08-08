@@ -65,8 +65,8 @@
         <p class="error">{{ country_error }}</p>
         <select name="country" class="form-control" id="country">
           <option value="">Select Country</option>
-          {% for country in country_names %}
-          <option value="{{ country }}">{{ country }}</option>
+          {% for key, value in country_names %}
+          <option value="{{ value }}">{{ key }}</option>
           {% endfor %}
         </select>
       </div>
@@ -74,8 +74,9 @@
       <div class="input-container">
         <label for="state">State<span class="form-required">*</span></label>
         <p class="error">{{ state_error }}</p>
-        <select name="state" class="states form-control">
+        <select name="state"  id="state"  class="states form-control">
           <option value="">Select State</option>
+  
         </select>
       </div>
 
@@ -84,6 +85,7 @@
         <p class="error">{{ city_error }}</p>
         <select name="city" class="cities form-control" id="cityId">
           <option value="">Select City</option>
+
         </select>
       </div>
 
@@ -108,8 +110,6 @@
     </div>
   </form>
 </div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="https://geodata.solutions/includes/countrystatecity.js"></script>
 <script>
 
 $( document ).ready(function() {
@@ -123,6 +123,48 @@ $( document ).ready(function() {
         document.getElementById('total').innerHTML = total;
     });
 });
+
+
+$(document).ready(function(){
+    $("#country").change(function(){
+        var country = $(this).val();
+        console.log(country);
+        $.ajax({
+          type: "POST",
+          url : "{% url 'app:get_state' 'country' %}".replace('country', country),
+          
+          data: 
+          {
+            country: country,
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+          },
+          success: function(data){
+            console.log(data);
+          }
+      });
+    });
+});
+
+
+$(document).ready(function(){
+    $("#country").change(function(){
+        var country = $(this).val();
+        console.log(country);
+        $.ajax({
+          type: "POST",
+          url : "{% url 'app:get_city' 'country' %}".replace('country', country),    
+          data: 
+          {
+            country: country,
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+          },
+          success: function(data){
+            console.log(data);
+          }
+      });
+    });
+});
+
 
 </script>
 

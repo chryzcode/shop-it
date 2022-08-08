@@ -17,24 +17,16 @@ const mobile_search_display = document.getElementById("search-display-mobile");
 const searchMediaQuery = window.matchMedia("(min-width: 990px)");
 const customerNav = document.getElementById("side-nav-search-bar-customer");
 const withdrawNairaBtn = document.getElementById("withdraw-naira-btn");
-const nairaWalletPopOut = document.getElementById("withdrawal-naira-form")
+const nairaWalletPopOut = document.getElementById("withdrawal-naira-form");
 
-//add and remove active class to withdrawNairaBtn
-withdrawNairaBtn.onclick = function () {
-  if (nairaWalletPopOut.classList.contains("active")) {
-    nairaWalletPopOut.classList.remove("active");
-  } else {
-    nairaWalletPopOut.classList.add("active");
+
+
+document.onclick = function (e) {
+  if (e.target.id == "a-nav-link") {
+    nav_links.classList.remove("active");
+    toogle.classList.remove("active");
   }
-}
-
-
-  document.onclick = function (e) {
-    if (e.target.id == "a-nav-link") {
-      nav_links.classList.remove("active");
-      toogle.classList.remove("active");
-    }
-  };
+};
 
 toogle.onclick = function () {
   toogle.classList.toggle("active");

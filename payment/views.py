@@ -46,6 +46,9 @@ def generate_wallet(request, currency_code):
         return redirect("app:store_wallet")
 
 
+
+
+
 def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
     cart = Cart(request)
     addresses = ""
@@ -61,11 +64,10 @@ def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
 
     response = requests.request("GET", url, headers=headers)
     data = response.json()
-    #get all names from data
-    country_names = []
+    country_names = {}
     for country in data:
-        country_names.append(country['name'])
-    print(country_names)
+        country_names[country['name']] = country['iso2']
+    country_names = (sorted(country_names.items(), key=lambda x: x[0]))
   
     if Payment.objects.filter(order=order).exists():
         payment = Payment.objects.get(order=order)

@@ -16,8 +16,8 @@ from order.views import *
 from order.models import *
 from payment.models import *
 from payment.forms import *
-from payment.views import withdraw_funds
 from customer.models import *
+from django.http import JsonResponse
 
 from .forms import *
 from .models import *
@@ -1659,3 +1659,37 @@ def company_review(request):
 
 def company_team(request):
     return render(request, "company-team.html")
+
+
+def get_state(request, iso2):
+    url = f"https://api.countrystatecity.in/v1/countries/{iso2}/states"
+
+    headers = {
+    'X-CSCAPI-KEY': settings.COUNTRY_STATE_CITY_API_KEY
+    }
+    response = requests.request("GET", url, headers=headers)
+    data = response.json()
+    states = {}
+    for state in data:
+        states[state["name"]] = state["iso2"]
+    states = (sorted(states.items(), key=lambda x: x[0]))
+    response = JsonResponse({'states': states})
+    return response
+
+
+def get_city(request, iso2):
+    url = f"https://api.countrystatecity.in/v1/countries/{iso2}/cities"
+
+    headers = {
+    'X-CSCAPI-KEY': settings.COUNTRY_STATE_CITY_API_KEY
+    }
+    response = requests.request("GET", url, headers=headers)
+    data = response.json()
+    states = {}
+    for city in data:
+        states[city["name"]] = city["iso2"]
+    states = (sorted(states.items(), key=lambda x: x[0]))
+    response = JsonResponse({'states': states})
+    return response
+    
+        

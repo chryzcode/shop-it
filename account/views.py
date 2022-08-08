@@ -161,6 +161,18 @@ def store_account(
         account = request.user
         store = Store.objects.get(owner=account)
         storeform = StoreForm(instance=store)
+        url = "https://api.countrystatecity.in/v1/countries"
+
+        headers = {
+        'X-CSCAPI-KEY': settings.COUNTRY_STATE_CITY_API_KEY
+        }
+
+        response = requests.request("GET", url, headers=headers)
+        data = response.json()
+        country_names = {}
+        for country in data:
+            country_names[country['name']] = country['iso2']
+        country_names = (sorted(country_names.items(), key=lambda x: x[0]))
         if request.method == "POST":
             storeform = StoreForm(request.POST, request.FILES, instance=store)
             if storeform.is_valid():
@@ -188,6 +200,7 @@ def store_account(
                 "account": account,
                 "store": store,
                 "currencies": currencies,
+                "country_names": country_names,
             },
         )
     else:

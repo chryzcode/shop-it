@@ -46,8 +46,11 @@
 
         <div class="input-container">
         <label for="country">Country</label>
-        <select name="country" class="countries form-control" id="countryId">
+        <select name="country" class="countries form-control" id="country">
           <option value="">Select Country</option>
+           {% for key, value in country_names %}
+          <option value="{{ value }}">{{ key }}</option>
+          {% endfor %}
         </select>
       </div>
 
@@ -91,8 +94,27 @@
       </div>
     </form>
   </div>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="https://geodata.solutions/includes/countrystatecity.js"></script>
-</div>
 
+</div>
+<script>
+  $(document).ready(function(){
+    $("#country").change(function(){
+        var country = $(this).val();
+        console.log(country);
+        $.ajax({
+          type: "POST",
+          url : "{% url 'app:get_state' 'country' %}".replace('country', country),
+          
+          data: 
+          {
+            country: country,
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+          },
+          success: function(data){
+            console.log(data);
+          }
+      });
+    });
+});
+</script>
 {% endblock %}
