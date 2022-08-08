@@ -25,6 +25,7 @@ if (withdrawNairaBtn) {
     if (e.target.id == "withdraw-naira-btn") {
       nairaWalletPopOut.classList.add("active");
     }
+   
   }
 }
 

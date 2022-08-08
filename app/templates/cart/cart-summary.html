@@ -94,8 +94,15 @@
   
   <div class="empty-cart-stylings">
     <p>You don't have any product in this cart</p>
-    <p>but you have <span>{{item.qty}}</span> products in {{product.store}} cart</p>
-  <a class="get-started-btn" href="{% url 'cart:cart_summary' cart_store.slugified_store_name %}">{{cart_store.store_name}}</a>
+    <p>but you have <span>{{cart.get_cart_products.count}}</span> 
+      {% if cart.get_cart_products.count <= 1 %}
+      product
+      {% else %}
+      products
+      {% endif %}
+      in {{cart.get_store_name.store_name}} cart</p>
+   
+  <a class="get-started-btn" href="{% url 'cart:cart_summary' cart.get_store_name.slugified_store_name %}">{{cart.get_store_name.store_name}}</a>
   </div>
   
 {% endif %}

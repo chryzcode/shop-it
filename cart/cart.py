@@ -1,6 +1,7 @@
 from decimal import Decimal
 
 from app.models import *
+from account.models import *
 
 
 class Cart:
@@ -93,10 +94,10 @@ class Cart:
         product_ids = self.cart.keys()
         products = Product.objects.filter(id__in=product_ids)
         if products:
-            store_name = [product.store for product in products]
-            result = all(store == store_name[0] for store in store_name)
+            a_store_name = [product.store for product in products]
+            result = all(store == a_store_name[0] for store in a_store_name)
             if result:
-                return store_name[0]
+                return Store.objects.get(store_name=a_store_name[0])
 
     def get_cart_products(self):
         product_ids = self.cart.keys()
