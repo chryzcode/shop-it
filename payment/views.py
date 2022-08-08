@@ -346,53 +346,64 @@ def withdraw_funds(request, currency_code):
                         return redirect("app:store_wallet")
                     if form.is_valid():
                         amount = form.cleaned_data["amount"]
-                        if amount > store_wallet.amount:
-                            messages.error(request, "Insucfficient Funds") 
-                            return redirect("app:store_wallet") 
-                        else:
-                            withdrawable_amount = 0
-                            if Wallet_Transanction.objects.filter(wallet=store_wallet, withdraw=False).exists():
-                                if Wallet.objects.filter(store=store, currency=Currency.objects.get(code="NGN")).exists():
-                                    naira_wallet = Wallet.objects.get(store=store, currency=Currency.objects.get(code="NGN"))
-                                    naira_wallet_transanctions = Wallet_Transanction.objects.filter(wallet=naira_wallet, withdraw=False)
-                                
-                                    for transanction in naira_wallet_transanctions:
-                                        # if wallet_transanctions.created is more than 24 hours ago from now
-                                        if transanction.created < timezone.now() - timedelta(hours=24):
-                                            if transanction.created.weekday() > 4:
-                                                transanction.amount = 0
-                                            else:
-                                                transanction.amount = transanction.amount
-                                            withdrawable_amount += transanction.amount
-                                        # elif transanction.created 
-                                   
+                        withdrawable_amount = 0
+                        if Wallet_Transanction.objects.filter(wallet=store_wallet, withdraw=False).exists():
+                            if Wallet.objects.filter(store=store, currency=Currency.objects.get(code="NGN")).exists():
+                                naira_wallet = Wallet.objects.get(store=store, currency=Currency.objects.get(code="NGN"))
+                                naira_wallet_transanctions = Wallet_Transanction.objects.filter(wallet=naira_wallet, withdraw=False)
                             
-                            narration = f"{store.store_name} just withdraw {currency.symbol}{amount} from {store_wallet.currency.code} wallet on Shop!t"
-                            if Bank_Info.objects.filter(store=store).exists():
-                                store_bank = Bank_Info.objects.get(store=store)
-                                transfer = initiate_transfer(request, store_bank.account_name, store_bank.account_number, amount, store_wallet.currency.code, store_bank.account_name, narration)
-                                if transfer:
-                                    store_wallet.amount = store_wallet.amount - amount
-                                    store_wallet.save()
-                                    Withdrawal_Transanction.objects.create(
-                                        wallet= store_wallet,
-                                        store= store,
-                                        amount= amount,
-                                        account_number = store_bank.account_number,
-                                        account_name = store_bank.account_name,
-                                        account_bank = store_bank.bank_name,
-                                    )
-                                    messages.error(request, "Withdrawal Successful") 
-                                    return redirect("app:store_wallet")     
-                                else:
-                                    messages.error(request, "Withdrawal Failed")
-                                    return redirect("app:store_wallet")
-                            else:
-                                messages.error(request, "Store bank info not found") 
-                                return redirect("app:store_wallet") 
+                                for transanction in naira_wallet_transanctions:
+                                    if transanction.created.weekday() > 4:
+                                        payout_amount = 0
+                                        withdrawable_amount += payout_amount
+                                        if amount > withdrawable_amount:
+                                            messages.error(request, "You can not withdraw funds on weekends")
+                                            return redirect("app:store_wallet")
+                                    else:
+                                        if transanction.created < timezone.now() - timedelta(hours=24):
+                                            payout_amount = transanction.amount
+                                            withdrawable_amount += payout_amount
+                                            if amount > withdrawable_amount:
+                                                messages.error(request, "Insufficient funds")
+                                                return redirect("app:store_wallet")
+                                            else:
+                                                narration = f"{store.store_name} just withdraw {currency.symbol}{withdrawable_amount} from {store_wallet.currency.code} wallet on Shop!t"
+                                                if Bank_Info.objects.filter(store=store).exists():
+                                                    store_bank = Bank_Info.objects.get(store=store)
+                                                    transfer = initiate_transfer(request, store_bank.account_name, store_bank.account_number, withdrawable_amount, store_wallet.currency.code, store_bank.account_name, narration)
+                                                    if transfer:
+                                                        store_wallet.amount = store_wallet.amount - withdrawable_amount
+                                                        store_wallet.save()
+                                                        Withdrawal_Transanction.objects.create(
+                                                            wallet= store_wallet,
+                                                            store= store,
+                                                            amount= withdrawable_amount,
+                                                            account_number = store_bank.account_number,
+                                                            account_name = store_bank.account_name,
+                                                            account_bank = store_bank.bank_name,
+                                                        )
+                                                        messages.error(request, "Withdrawal Successful") 
+                                                        return redirect("app:store_wallet")     
+                                                    else:
+                                                        messages.error(request, "Withdrawal Failed")
+                                                        return redirect("app:store_wallet")
+                                                else:
+                                                    messages.error(request, "Store bank info not found") 
+                                                    return redirect("app:store_wallet") 
+
+                                        else:
+                                            payout_amount = 0
+                                            withdrawable_amount += payout_amount
+                                            if amount > withdrawable_amount:
+                                                messages.error(request, "You can not withdraw funds within 24 hours")
+                                                return redirect("app:store_wallet")                        
+                                        
                     else:
                         messages.error(request, "Form input is not valid")   
-                        return redirect("app:store_wallet")               
+                        return redirect("app:store_wallet")  
+            else:
+                messages.error(request, "Wallet does not exist")
+                return redirect("app:store_wallet")             
         else:
             messages.error(request, "Wallet does not exist")
             return redirect("app:store_wallet")
