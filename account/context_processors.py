@@ -6,6 +6,7 @@ from .models import *
 from app.models import *
 from order.models import *
 from customer.models import *
+from account.models import *
 from subscriptions.models import *
 
 
@@ -206,3 +207,58 @@ def get_store_category(request):
             return {"get_store_category": None}
     else:
         return {"get_store_category": None}
+
+def get_customer_orders(request):
+    url = request.path
+    if 'customer' and 'orders' in url:
+        store_slug = url.split('/')[2]      
+        if Store.objects.filter(slugified_store_name=store_slug).exists():
+            store = Store.objects.get(slugified_store_name=store_slug)
+            if store:
+                if Customer.objects.filter(store=store, email=request.user.email).exists():  
+                    customer = Customer.objects.get(store=store, email=request.user.email)
+                    user_customer = User.objects.get(email=customer.email)
+                    if customer:
+                        if Order.objects.filter(user=user_customer, store=store).exists():
+                            orders = Order.objects.filter(user=user_customer, store=store)
+                            return {"get_customer_orders": orders}
+                        else:
+                            return {"get_customer_orders": None}
+                    else:
+                        return {"get_customer_orders": None}
+                else:
+                    return {"get_customer_orders": None}
+            else:
+                return {"get_customer_orders": None}
+        else:
+            return {"get_customer_orders": None}
+    else:
+        return {"get_customer_orders": None}
+
+
+def get_customer_reviews(request):
+    url = request.path
+    if 'customer' and 'reviews' in url:
+        store_slug = url.split('/')[2]      
+        if Store.objects.filter(slugified_store_name=store_slug).exists():
+            store = Store.objects.get(slugified_store_name=store_slug)
+            if store:
+                if Customer.objects.filter(store=store, email=request.user.email).exists():  
+                    customer = Customer.objects.get(store=store, email=request.user.email)
+                    user_customer = User.objects.get(email=customer.email)
+                    if customer:
+                        if Review.objects.filter(email=user_customer.email, store=store).exists():
+                            reviews = Review.objects.filter(email=user_customer.email, store=store)
+                            return {"get_customer_reviews": reviews}
+                        else:
+                            return {"get_customer_reviews": None}
+                    else:
+                        return {"get_customer_reviews": None}
+                else:
+                    return {"get_customer_reviews": None}
+            else:
+                return {"get_customer_reviews": None}
+        else:
+            return {"get_customer_reviews": None}
+    else:
+        return {"get_customer_reviews": None}
