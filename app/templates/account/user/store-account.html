@@ -56,7 +56,7 @@
 
       <div class="input-container">
         <label for="state">State</label>
-        <select name="state" class="states form-control" id="stateId">
+        <select name="state" class="states form-control" id="state">
           <option value="">Select State</option>
         </select>
       </div>
@@ -111,9 +111,15 @@
             csrfmiddlewaretoken: '{{ csrf_token }}'
           },
           success: function(data){
-            console.log(data);
+            console.log(data);        
+            $('#state').empty();
+            $.each(data.states, function(key, value) {
+              $('#state').append($('<option>', {value: value[1], text: value[0] }));
+            });
+            
           }
       });
+     
     });
 });
 </script>

@@ -15,7 +15,6 @@ class NonCustomerPaymentForm(ModelForm):
             "address_line",
             "postcode",
             "address_line2",
-            "city",
             "state",
             "country",
             "shipping_method",
@@ -28,7 +27,6 @@ class NonCustomerPaymentForm(ModelForm):
             "postcode": forms.TextInput(attrs={"class": "form-control"}),
             "address_line": forms.TextInput(attrs={"class": "form-control"}),
             "address_line2": forms.TextInput(attrs={"class": "form-control"}),
-            "city": forms.Select(attrs={"class": "form-control"}),
             "state": forms.Select(attrs={"class": "form-control"}),
             "country": forms.Select(attrs={"class": "form-control"}),
         }
@@ -45,11 +43,6 @@ class NonCustomerPaymentForm(ModelForm):
                 raise forms.ValidationError("Please enter a valid address")
             return address_line
 
-        def clean_city(self):
-            city = self.cleaned_data.get("city")
-            if not city:
-                raise forms.ValidationError("Please enter a valid city")
-            return city
 
         def clean_state(self):
             state = self.cleaned_data.get("state")
@@ -75,7 +68,6 @@ class CustomerPaymentForm(ModelForm):
             "address_line",
             "postcode",
             "address_line2",
-            "city",
             "state",
             "country",
             "shipping_method",

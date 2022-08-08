@@ -34,8 +34,10 @@ document.onclick = function (e) {
     nav_links.classList.remove("active");
     toogle.classList.remove("active");
   }
-  if (e.target.id != "withdraw-naira-btn") {
-    nairaWalletPopOut.classList.remove("active");
+  if (nairaWalletPopOut) {
+    if (e.target.id != "withdraw-naira-btn") {
+      nairaWalletPopOut.classList.remove("active");
+    }
   }
   if (store_side_nav) {
     if (e.target.id == "nav") {

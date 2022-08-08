@@ -25,7 +25,6 @@ class Payment(models.Model):
     phone = models.CharField(max_length=50)
     country = models.CharField(max_length=200, blank=True, null=True)
     state = models.CharField(max_length=200, blank=True, null=True)
-    city = models.CharField(max_length=200, blank=True, null=True)
     postcode = models.CharField(max_length=50, blank=True, null=True)
     use_address = models.ForeignKey(Address, on_delete=models.CASCADE, null=True)
     default_address = models.BooleanField(default=False, null=True, blank=True)

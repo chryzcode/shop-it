@@ -80,14 +80,7 @@
         </select>
       </div>
 
-      <div class="input-container">
-        <label for="city">City<span class="form-required">*</span></label>
-        <p class="error">{{ city_error }}</p>
-        <select name="city" class="cities form-control" id="cityId">
-          <option value="">Select City</option>
 
-        </select>
-      </div>
 
       <div class="input-container">
         <label for="shipping_method">Shipping method</label>
@@ -139,40 +132,18 @@ $(document).ready(function(){
             csrfmiddlewaretoken: '{{ csrf_token }}'
           },
           success: function(data){
-            console.log(data);
-            // select id named state and loop through the data and append the options
+            console.log(data);        
             $('#state').empty();
             $.each(data.states, function(key, value) {
               $('#state').append($('<option>', {value: value[1], text: value[0] }));
             });
             
-            
-
-
           }
       });
+     
     });
 });
 
-
-{% comment %} $(document).ready(function(){
-    $("#country").change(function(){
-        var country = $(this).val();
-        console.log(country);
-        $.ajax({
-          type: "POST",
-          url : "{% url 'app:get_city' 'country' %}".replace('country', country),    
-          data: 
-          {
-            country: country,
-            csrfmiddlewaretoken: '{{ csrf_token }}'
-          },
-          success: function(data){
-            console.log(data);
-          }
-      });
-    });
-}); {% endcomment %}
 
 
 </script>

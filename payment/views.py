@@ -141,17 +141,6 @@ def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
                     },
                 )
 
-            if payment.city == None:
-                return render(
-                    request,
-                    "payment/initiate-payment.html",
-                    {
-                        "payment_form": payment_form,
-                        "order": order,
-                        "shipping_methods": shipping_methods,
-                        "city_error": "Field is required",
-                    },
-                )
             shipping_method = request.POST.get("shipping_method")
             shipping_method = Shipping_Method.objects.get(id=shipping_method)
             shipping_price = shipping_method.price
