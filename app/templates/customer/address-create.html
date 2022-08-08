@@ -50,8 +50,11 @@
           <div class="input-container">
             <label for="country">Country<span class="form-required">*</span></label>
             <p>{{ address_form.country.errors }}</p>
-            <select name="country" class="countries form-control" id="countryId">
+            <select name="country" class="countries form-control" id="country">
               <option value="">Select Country</option>
+               {% for key, value in country_names %}
+              <option value="{{ value }}">{{ key }}</option>
+              {% endfor %}
             </select>
           </div>
        
@@ -59,19 +62,11 @@
           <div class="input-container">
             <label for="state">State<span class="form-required">*</span></label>
             <p>{{ address_form.state.errors }}</p>
-            <select name="state" class="states form-control" id="stateId">
+            <select name="state" class="states form-control" id="state">
               <option value="">Select State</option>
             </select>
           </div>
       
-
-          <div class="input-container">
-            <label for="city">City<span class="form-required">*</span></label>
-            <p>{{ address_form.city.errors }}</p>
-            <select name="city" class="cities form-control" id="cityId">
-              <option value="">Select City</option>
-            </select>
-          </div>
 
         <div class="form-btn-container">
           <button class="form-btn" type="submit">
@@ -87,12 +82,36 @@
     </div>
   </span>
 </div>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> 
-<script src="https://geodata.solutions/includes/countrystatecity.js"></script>
-{% endblock %}
 </body>
 </html>
+<script>
+$(document).ready(function(){
+    $("#country").change(function(){
+        var country = $(this).val();
+        console.log(country);
+        $.ajax({
+          type: "POST",
+          url : "{% url 'app:get_state' 'country' %}".replace('country', country),
+          
+          data: 
+          {
+            country: country,
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+          },
+          success: function(data){
+            console.log(data);        
+            $('#state').empty();
+            $.each(data.states, function(key, value) {
+              $('#state').append($('<option>', {value: value[1], text: value[0] }));
+            });
+            
+          }
+      });
+     
+    });
+});
+</script>
+{% endblock %}
 
 
 

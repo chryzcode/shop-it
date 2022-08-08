@@ -82,5 +82,4 @@ class AddressForm(ModelForm):
             ),
             "country": forms.Select(attrs={"class": "form-control"}),
             "state": forms.Select(attrs={"class": "form-control"}),
-            "city": forms.Select(attrs={"class": "form-control"}),
         }

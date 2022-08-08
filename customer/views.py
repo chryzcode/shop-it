@@ -1,3 +1,4 @@
+import requests
 from datetime import datetime, timedelta
 
 from django.contrib import messages
@@ -187,6 +188,7 @@ def customer_logout(request, slugified_store_name):
 
 
 def customer_product_detail(request, slugified_store_name, slug):
+    page = "product_detail"
     store = Store.objects.get(slugified_store_name=slugified_store_name)
     product = get_object_or_404(Product, store=store, slug=slug)
     category_product = Product.objects.filter(
@@ -201,6 +203,7 @@ def customer_product_detail(request, slugified_store_name, slug):
             "category_product": category_product,
             "store": store,
             "reviews": reviews,
+            "page": page,
         },
     )
 
@@ -290,6 +293,18 @@ def create_address(request, slugified_store_name):
         customer = Customer.objects.get(email=request.user.email)
         default_address = Address.objects.filter(customer=customer, default=True)
         address_form = AddressForm()
+        url = "https://api.countrystatecity.in/v1/countries"
+
+        headers = {
+        'X-CSCAPI-KEY': settings.COUNTRY_STATE_CITY_API_KEY
+        }
+
+        response = requests.request("GET", url, headers=headers)
+        data = response.json()
+        country_names = {}
+        for country in data:
+            country_names[country['name']] = country['iso2']
+        country_names = (sorted(country_names.items(), key=lambda x: x[0]))
         if request.method == "POST":
             address_form = AddressForm(data=request.POST)
             if address_form.is_valid():
@@ -312,7 +327,7 @@ def create_address(request, slugified_store_name):
         return render(
             request,
             "customer/address-create.html",
-            {"address_form": address_form, "store": store},
+            {"address_form": address_form, "store": store, "country_names": country_names},
         )
     else:
         return redirect(
@@ -323,6 +338,18 @@ def create_address(request, slugified_store_name):
 def edit_address(request, slugified_store_name, id):
     store = Store.objects.get(slugified_store_name=slugified_store_name)
     if request.user in store.customers.all():
+        url = "https://api.countrystatecity.in/v1/countries"
+
+        headers = {
+        'X-CSCAPI-KEY': settings.COUNTRY_STATE_CITY_API_KEY
+        }
+
+        response = requests.request("GET", url, headers=headers)
+        data = response.json()
+        country_names = {}
+        for country in data:
+            country_names[country['name']] = country['iso2']
+        country_names = (sorted(country_names.items(), key=lambda x: x[0]))
         customer = Customer.objects.get(email=request.user.email)
         address = get_object_or_404(Address, id=id, customer=customer)
         address_form = AddressForm(instance=address)
@@ -336,7 +363,7 @@ def edit_address(request, slugified_store_name, id):
         return render(
             request,
             "customer/address-create.html",
-            {"address_form": address_form, "store": store},
+            {"address_form": address_form, "store": store , "country_names": country_names},
         )
     else:
         return redirect(

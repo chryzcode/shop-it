@@ -62,7 +62,7 @@
           </a>
         </span>
 
-       
+        {% if page != "product_detail"%}
           <input type="text" id="side-nav-search-bar-customer" class="side-nav-search-bar customer-search-bar"  
           {% if 'store' and 'category' in request.get_full_path %}
           placeholder="Search for {{get_store_category}} Category Products" 
@@ -90,6 +90,7 @@
             {% endif %}
             {% endif %}
           </ul>
+          {% endif %}
       
 
         <span class="cart-icon-container cart-desktop">

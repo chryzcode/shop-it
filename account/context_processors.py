@@ -206,7 +206,3 @@ def get_store_category(request):
             return {"get_store_category": None}
     else:
         return {"get_store_category": None}
-
-
-# def get_cart(request):
-    

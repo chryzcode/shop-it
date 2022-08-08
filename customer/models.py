@@ -37,7 +37,6 @@ class Address(models.Model):
     )
     country = models.CharField(_("Country"), max_length=200)
     state = models.CharField(_("State"), max_length=200)
-    city = models.CharField(_("City"), max_length=200)
     default = models.BooleanField(_("Default"), default=False)
 
     def __str__(self):
