@@ -3,6 +3,7 @@
 //declear variables
 const track = document.querySelector(".carousel__track");
 // an array of all the slides
+console.log(track);
 const slides = Array.from(track.children);
 const nextButton = document.querySelector(".carousel__button--right");
 const prevButton = document.querySelector(".carousel__button--left");

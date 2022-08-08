@@ -76,7 +76,7 @@
         <p class="error">{{ state_error }}</p>
         <select name="state"  id="state"  class="states form-control">
           <option value="">Select State</option>
-  
+          
         </select>
       </div>
 
@@ -140,13 +140,22 @@ $(document).ready(function(){
           },
           success: function(data){
             console.log(data);
+            // select id named state and loop through the data and append the options
+            $('#state').empty();
+            $.each(data.states, function(key, value) {
+              $('#state').append($('<option>', {value: value[1], text: value[0] }));
+            });
+            
+            
+
+
           }
       });
     });
 });
 
 
-$(document).ready(function(){
+{% comment %} $(document).ready(function(){
     $("#country").change(function(){
         var country = $(this).val();
         console.log(country);
@@ -163,7 +172,7 @@ $(document).ready(function(){
           }
       });
     });
-});
+}); {% endcomment %}
 
 
 </script>

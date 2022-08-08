@@ -1,4 +1,5 @@
-import email
+import datetime
+from django.utils import timezone
 import requests
 from django.conf import settings
 from django.contrib import messages
@@ -360,6 +361,23 @@ def withdraw_funds(request, currency_code):
                             messages.error(request, "Insucfficient Funds") 
                             return redirect("app:store_wallet") 
                         else:
+                            withdrawable_amount = 0
+                            if Wallet_Transanction.objects.filter(wallet=store_wallet, withdraw=False).exists():
+                                if Wallet.objects.filter(store=store, currency=Currency.objects.get(code="NGN")).exists():
+                                    naira_wallet = Wallet.objects.get(store=store, currency=Currency.objects.get(code="NGN"))
+                                    naira_wallet_transanctions = Wallet_Transanction.objects.filter(wallet=naira_wallet, withdraw=False)
+                                
+                                    for transanction in naira_wallet_transanctions:
+                                        # if wallet_transanctions.created is more than 24 hours ago from now
+                                        if transanction.created < timezone.now() - timedelta(hours=24):
+                                            if transanction.created.weekday() > 4:
+                                                transanction.amount = 0
+                                            else:
+                                                transanction.amount = transanction.amount
+                                            withdrawable_amount += transanction.amount
+                                        # elif transanction.created 
+                                   
+                            
                             narration = f"{store.store_name} just withdraw {currency.symbol}{amount} from {store_wallet.currency.code} wallet on Shop!t"
                             if Bank_Info.objects.filter(store=store).exists():
                                 store_bank = Bank_Info.objects.get(store=store)

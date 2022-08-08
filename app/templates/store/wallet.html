@@ -5,7 +5,7 @@
 
 <div class="store-page-container">
     {% if naira_wallet %}
-       <form   id="withdrawal-naira-form"  action="{% url 'payment:withdraw_funds' naira_wallet.currency.code %}" method="post">
+       <form   id="withdrawal-naira-form" action="{% url 'payment:withdraw_funds' naira_wallet.currency.code %}" method="post">
             <div class="above-create-form">
                 <p>Withdraw - Naira Wallet</p>
             </div>

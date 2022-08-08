@@ -60,7 +60,7 @@
    
       <span class="nav-not-acc-sec">
        
-      <span id="notification" class="notification"><span class="notification-count">{{ user.notifications.unread.count }}</span><i class="fas fa-bell notification-bell"></i>
+      <div id="notification" class="notification"><span class="notification-count">{{ user.notifications.unread.count }}</span><i class="fas fa-bell notification-bell"></i>
          
           <div id="notification-dropdown">
             {% if user.notifications.unread %}
@@ -75,7 +75,7 @@
             {% endif %}
           </div>  
        
-      </span>
+      </div>
 
         <span class="nav-user-profile" id="nav-user-profile">
           <span id="user-account">
@@ -99,7 +99,6 @@
     </nav>
     <div class="main-container-large">{% block content %} {% endblock %}</div>
     <script src="{% static 'js/script.js' %}"></script>
-    <script src="{% static 'js/carousel.js' %}"></script>
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
       AOS.init();
