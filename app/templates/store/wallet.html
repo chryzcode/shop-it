@@ -79,7 +79,7 @@
 
         {% for transanction in wallet_transanctions %} 
         <tr class="table-rows">
-          <td><a href="{% url 'app:store_order_detail' order.pk %}">{{transanction.order.id|truncatechars:10}}</a></td>
+          <td><a href="{% url 'app:store_order_detail' transanction.order.pk %}">{{transanction.order.id|truncatechars:10}}</a></td>
           <td>{% if transanction.wallet.currency.code == "NGN" %}
             Naira wallet
             {% elif transanction.wallet.currency.code == "USD"}
