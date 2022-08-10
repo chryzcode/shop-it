@@ -348,9 +348,7 @@ def withdraw_funds(request, currency_code):
                         amount = form.cleaned_data["amount"]
                         withdrawable_amount = 0
                         if Wallet_Transanction.objects.filter(wallet=store_wallet).exists():
-                            wallet_transanctions = Wallet_Transanction.objects.filter(wallet=store_wallet)
-
-                            
+                            wallet_transanctions = Wallet_Transanction.objects.filter(wallet=store_wallet)                
                             for transanction in wallet_transanctions:
                                 if transanction.created.weekday() > 4:                            
                                     messages.error(request, "You can not withdraw funds on weekends")
