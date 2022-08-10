@@ -1626,14 +1626,14 @@ def store_wallet(request):
         wallet_transanctions = paginator.page(paginator.num_pages)
 
     withdrawal_transanctions = Withdrawal_Transanction.objects.filter(store=store)
-    page = request.GET.get('page', 1)
-    paginator = Paginator(withdrawal_transanctions, 5)
+    withdrawal_page = request.GET.get('withdrawal_page', 1)
+    withdrawal_paginator = Paginator(withdrawal_transanctions, 5)
     try:
-        withdrawal_transanctions = paginator.page(page)
+        withdrawal_transanctions = withdrawal_paginator.page(withdrawal_page)
     except PageNotAnInteger:
-        withdrawal_transanctions = paginator.page(1)
+        withdrawal_transanctions = withdrawal_paginator.page(1)
     except EmptyPage:
-        withdrawal_transanctions = paginator.page(paginator.num_pages)
+        withdrawal_transanctions = withdrawal_paginator.page(withdrawal_paginator.num_pages)
 
     return render(request, "store/wallet.html", {"wallets": wallets, "store": store, 'naira_wallet':naira_wallet, 'usd_wallet':usd_wallet, 'usd_currency_code':usd_currency_code, 'naira_currency_code':naira_currency_code, 'wallet_transanctions':wallet_transanctions, 'withdrawal_transanctions':withdrawal_transanctions, 'form':form})
     

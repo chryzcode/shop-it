@@ -5,7 +5,7 @@
 
 <div class="store-page-container">
     {% if naira_wallet %}
-       <form class="wallet-withdrawal-form active"   id="withdrawal-naira-form" action="{% url 'payment:withdraw_funds' naira_wallet.currency.code %}" method="post">
+       <form class="wallet-withdrawal-form"   id="withdrawal-naira-form" action="{% url 'payment:withdraw_funds' naira_wallet.currency.code %}" method="post">
             <div class="above-create-form">
                 <p>Withdraw - Naira Wallet</p>
             </div>
@@ -137,13 +137,13 @@
           </td>
           <td>{% if transanction.wallet.currency.code == "NGN" %}
             Naira wallet
-            {% elif transanction.wallet.currency.code == "USD"}
+            {% elif transanction.wallet.currency.code == "USD" %}
             USD wallet
             {% else %}
             None
             {% endif %}
           </td>
-          <td>{{transanction.currency.symbol}}{{transanction.amount}}</td>
+          <td>{{transanction.wallet.currency.symbol}}{{transanction.amount|intcomma}}</td>
           <td>{{transanction.created}}</td>
         </tr>
         {% endfor %}
@@ -159,11 +159,11 @@
 
         <span>
           {% if withdrawal_transanctions.has_previous %}
-          <a href="?page={{ withdrawal_transanctions.previous_page_number }}"><i class="fas fa-arrow-left"></i></a>
+          <a href="?withdrawal_page={{ withdrawal_transanctions.previous_page_number }}"><i class="fas fa-arrow-left"></i></a>
           {% else %}
           <span><i class="fas fa-arrow-left disable"></i></span>
           {% endif %} {% if withdrawal_transanctions.has_next %}
-          <a href="?page={{ withdrawal_transanctions.next_page_number }}"><i class="fas fa-arrow-right"></i></a>
+          <a href="?withdrawal_page={{ withdrawal_transanctions.next_page_number }}"><i class="fas fa-arrow-right"></i></a>
           {% else %}
           <span><i class="fas fa-arrow-right disable"></i></span>
           {% endif %}

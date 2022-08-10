@@ -68,7 +68,7 @@ class Wallet_Transanction(models.Model):
     order = models.ForeignKey(Order,  on_delete=models.CASCADE)
 
     def __str__(self):
-        return str(self.store.store_name) + ' ' + str(self.currency.name) + ' ' + "Wallet Transanction"
+        return str(self.store.store_name) + ' ' + str(self.wallet.currency.code) + ' ' + "Wallet Transanction"
 
 class Withdrawal_Transanction(models.Model):
     store = models.ForeignKey(Store, on_delete=models.CASCADE)
@@ -80,5 +80,5 @@ class Withdrawal_Transanction(models.Model):
     wallet = models.ForeignKey(Wallet, on_delete=models.CASCADE)
 
     def __str__(self):
-        return str(self.store.store_name) + ' ' + str(self.currency.name) + ' ' + "Withdrawal Transanction"
+        return str(self.store.store_name) + ' ' + str(self.wallet.currency.code) + ' ' + "Withdrawal Transanction"
 
