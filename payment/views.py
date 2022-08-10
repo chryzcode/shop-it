@@ -346,73 +346,81 @@ def withdraw_funds(request, currency_code):
                         return redirect("app:store_wallet")
                     if form.is_valid():
                         amount = form.cleaned_data["amount"]
-                        withdrawable_amount = 0
-                        if Wallet_Transanction.objects.filter(wallet=store_wallet).exists():
-                            wallet_transanctions = Wallet_Transanction.objects.filter(wallet=store_wallet)                
-                            for transanction in wallet_transanctions:
-                                if transanction.created.weekday() > 4:                            
-                                    messages.error(request, "You can not withdraw funds on weekends")
-                                    return redirect("app:store_wallet")
-                                else:
-                                    if store_wallet.currency.code == "NGN":
-                                        days_timeline = 24
-                                        if transanction.created < timezone.now() - timedelta(hours=days_timeline):
-                                            payout_amount = transanction.amount
-                                            withdrawable_amount += payout_amount            
-                                            narration = f"{store.store_name} just withdraw {currency.symbol}{amount} from {store_wallet.currency.code} wallet on Shop!t"
-                                            if Bank_Info.objects.filter(store=store).exists():
-                                                store_bank = Bank_Info.objects.get(store=store)
-                                                transfer = initiate_transfer(request, store_bank.account_name, store_bank.account_number, amount, store_wallet.currency.code, store_bank.account_name, narration)
-                                                if not transfer:
-                                                    messages.error(request, "Withdrawal Failed")
-                                                    return redirect("app:store_wallet")
-                                                else:
-                                                    store_wallet.amount -= amount
-                                                    store_wallet.save()
-                                                    Withdrawal_Transanction.objects.create(
-                                                        wallet= store_wallet,
-                                                        store= store,
-                                                        amount= amount,
-                                                        account_number = store_bank.account_number,
-                                                        account_name = store_bank.account_name,
-                                                        account_bank = store_bank.bank_name,
-                                                    )
-                                                    messages.error(request, "Withdrawal Successful") 
-                                                        
-                                                    current_site = get_current_site(request)
-                                                    path = "wallet"
-                                                    subject = f"{store.store_name} just withdrew funds from the  {store_wallet.currency.code} wallet on Shop!t"
-                                                    message = render_to_string(
-                                                        "payment/wallet-debit-alert-email.html",
-                                                        {
-                                                            "store": store,
-                                                            "wallet": store_wallet,
-                                                            "amount":withdrawable_amount,
-                                                            "currency": currency.symbol,
-                                                            "bank_details": store_bank,
-                                                            "domain": current_site.domain+"/"+path,
-                                                        },
-                                                    )
-                                                    from_email = settings.EMAIL_HOST_USER
-                                                    to_email = [store.owner.email]
-                                                    send_mail(subject, message, from_email, to_email)
-
-                                                    if store_staff.objects.filter(store=store).exists():
-                                                        for staff in store_staff.filter(store=store):
-                                                            staff_email = staff.email
-                                                            send_mail(subject, message, from_email, [staff_email])
-                                                    return redirect("app:store_wallet")
-                                                    
-                                            else:
-                                                messages.error(request, "Store bank info not found") 
-                                                return redirect("app:store_wallet") 
-
-                                        else:
-                                            messages.error(request, "You can not withdraw funds within 24 hours")
-                                            return redirect("app:store_wallet") 
+                        if amount > store_wallet.amount:
+                            messages.error(request, "Insufficient funds")   
+                            return redirect("app:store_wallet")
                         else:
-                            messages.error(request, "No funds")   
-                            return redirect("app:store_wallet")                    
+                            withdrawable_amount = 0
+                            if Wallet_Transanction.objects.filter(wallet=store_wallet).exists():
+                                wallet_transanctions = Wallet_Transanction.objects.filter(wallet=store_wallet)                
+                                for transanction in wallet_transanctions:
+                                    if transanction.created.weekday() > 4:                            
+                                        messages.error(request, "You can not withdraw funds on weekends")
+                                        return redirect("app:store_wallet")
+                                    else:
+                                        if store_wallet.currency.code == "NGN":
+                                            days_timeline = 24
+                                            if transanction.created < timezone.now() - timedelta(hours=days_timeline):
+                                                payout_amount = transanction.amount
+                                                withdrawable_amount += payout_amount    
+                                                if amount > withdrawable_amount:
+                                                    messages.error(request, f"You can withdraw only {currency.symbol}{withdrawable_amount} for now")
+                                                    return redirect("app:store_wallet") 
+                                                else:
+                                                    narration = f"{store.store_name} just withdraw {currency.symbol}{amount} from {store_wallet.currency.code} wallet on Shop!t"
+                                                    if Bank_Info.objects.filter(store=store).exists():
+                                                        store_bank = Bank_Info.objects.get(store=store)
+                                                        transfer = initiate_transfer(request, store_bank.account_name, store_bank.account_number, amount, store_wallet.currency.code, store_bank.account_name, narration)
+                                                        if not transfer:
+                                                            messages.error(request, "Withdrawal Failed")
+                                                            return redirect("app:store_wallet")
+                                                        else:
+                                                            store_wallet.amount -= amount
+                                                            store_wallet.save()
+                                                            Withdrawal_Transanction.objects.create(
+                                                                wallet= store_wallet,
+                                                                store= store,
+                                                                amount= amount,
+                                                                account_number = store_bank.account_number,
+                                                                account_name = store_bank.account_name,
+                                                                account_bank = store_bank.bank_name,
+                                                            )
+                                                            messages.error(request, "Withdrawal Successful") 
+                                                                
+                                                            current_site = get_current_site(request)
+                                                            path = "wallet"
+                                                            subject = f"{store.store_name} just withdrew funds from the  {store_wallet.currency.code} wallet on Shop!t"
+                                                            message = render_to_string(
+                                                                "payment/wallet-debit-alert-email.html",
+                                                                {
+                                                                    "store": store,
+                                                                    "wallet": store_wallet,
+                                                                    "amount":withdrawable_amount,
+                                                                    "currency": currency.symbol,
+                                                                    "bank_details": store_bank,
+                                                                    "domain": current_site.domain+"/"+path,
+                                                                },
+                                                            )
+                                                            from_email = settings.EMAIL_HOST_USER
+                                                            to_email = [store.owner.email]
+                                                            send_mail(subject, message, from_email, to_email)
+
+                                                            if store_staff.objects.filter(store=store).exists():
+                                                                for staff in store_staff.filter(store=store):
+                                                                    staff_email = staff.email
+                                                                    send_mail(subject, message, from_email, [staff_email])
+                                                            return redirect("app:store_wallet")
+                                                        
+                                                    else:
+                                                        messages.error(request, "Store bank info not found") 
+                                                        return redirect("app:store_wallet") 
+
+                                            else:
+                                                messages.error(request, "You can not withdraw funds within 24 hours")
+                                                return redirect("app:store_wallet") 
+                            else:
+                                messages.error(request, "No funds")   
+                                return redirect("app:store_wallet")                         
                                         
                     else:
                         messages.error(request, "Form input is not valid")   
