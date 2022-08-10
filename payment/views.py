@@ -349,17 +349,15 @@ def withdraw_funds(request, currency_code):
                         withdrawable_amount = 0
                         if Wallet_Transanction.objects.filter(wallet=store_wallet, withdraw=False).exists():
                             wallet_transanctions = Wallet_Transanction.objects.filter(wallet=store_wallet, withdraw=False)
+
                             if amount > store_wallet.amount:
                                 messages.error(request, "Insufficient funds")
                                 return redirect("app:store_wallet")
                             else:
                                 for transanction in wallet_transanctions:
-                                    if transanction.created.weekday() > 4:
-                                        payout_amount = 0
-                                        withdrawable_amount += payout_amount
-                                        if amount > withdrawable_amount:
-                                            messages.error(request, "You can not withdraw funds on weekends")
-                                            return redirect("app:store_wallet")
+                                    if transanction.created.weekday() > 4:                            
+                                        messages.error(request, "You can not withdraw funds on weekends")
+                                        return redirect("app:store_wallet")
                                     else:
                                         if store_wallet.currency.code == "NGN":
                                             days_timeline = 24
@@ -370,17 +368,17 @@ def withdraw_funds(request, currency_code):
                                                     messages.error(request, f"You can withdraw only {currency.symbol}{withdrawable_amount} for now")
                                                     return redirect("app:store_wallet")
                                                 else:
-                                                    narration = f"{store.store_name} just withdraw {currency.symbol}{withdrawable_amount} from {store_wallet.currency.code} wallet on Shop!t"
+                                                    narration = f"{store.store_name} just withdraw {currency.symbol}{amount} from {store_wallet.currency.code} wallet on Shop!t"
                                                     if Bank_Info.objects.filter(store=store).exists():
                                                         store_bank = Bank_Info.objects.get(store=store)
-                                                        transfer = initiate_transfer(request, store_bank.account_name, store_bank.account_number, withdrawable_amount, store_wallet.currency.code, store_bank.account_name, narration)
+                                                        transfer = initiate_transfer(request, store_bank.account_name, store_bank.account_number, amount, store_wallet.currency.code, store_bank.account_name, narration)
                                                         if transfer:
-                                                            store_wallet.amount = store_wallet.amount - withdrawable_amount
+                                                            store_wallet.amount -= amount
                                                             store_wallet.save()
                                                             Withdrawal_Transanction.objects.create(
                                                                 wallet= store_wallet,
                                                                 store= store,
-                                                                amount= withdrawable_amount,
+                                                                amount= amount,
                                                                 account_number = store_bank.account_number,
                                                                 account_name = store_bank.account_name,
                                                                 account_bank = store_bank.bank_name,
