@@ -372,7 +372,10 @@ def withdraw_funds(request, currency_code):
                                                     if Bank_Info.objects.filter(store=store).exists():
                                                         store_bank = Bank_Info.objects.get(store=store)
                                                         transfer = initiate_transfer(request, store_bank.account_name, store_bank.account_number, amount, store_wallet.currency.code, store_bank.account_name, narration)
-                                                        if transfer:
+                                                        if not transfer:
+                                                            messages.error(request, "Withdrawal Failed")
+                                                            return redirect("app:store_wallet")
+                                                        else:
                                                             store_wallet.amount -= amount
                                                             store_wallet.save()
                                                             Withdrawal_Transanction.objects.create(
@@ -383,6 +386,8 @@ def withdraw_funds(request, currency_code):
                                                                 account_name = store_bank.account_name,
                                                                 account_bank = store_bank.bank_name,
                                                             )
+                                                            messages.error(request, "Withdrawal Successful") 
+                                                              
                                                             current_site = get_current_site(request)
                                                             path = "wallet"
                                                             subject = f"{store.store_name} just withdrew funds from the  {store_wallet.currency.code} wallet on Shop!t"
@@ -405,11 +410,8 @@ def withdraw_funds(request, currency_code):
                                                                 for staff in store_staff.filter(store=store):
                                                                     staff_email = staff.email
                                                                     send_mail(subject, message, from_email, [staff_email])
-                                                            messages.error(request, "Withdrawal Successful") 
-                                                            return redirect("app:store_wallet")     
-                                                        else:
-                                                            messages.error(request, "Withdrawal Failed")
                                                             return redirect("app:store_wallet")
+                                                            
                                                     else:
                                                         messages.error(request, "Store bank info not found") 
                                                         return redirect("app:store_wallet") 
