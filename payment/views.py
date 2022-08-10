@@ -348,21 +348,22 @@ def withdraw_funds(request, currency_code):
                         amount = form.cleaned_data["amount"]
                         withdrawable_amount = 0
                         if Wallet_Transanction.objects.filter(wallet=store_wallet, withdraw=False).exists():
-                            if Wallet.objects.filter(store=store, currency=Currency.objects.get(code="NGN")).exists():
-                                naira_wallet = Wallet.objects.get(store=store, currency=Currency.objects.get(code="NGN"))
-                                naira_wallet_transanctions = Wallet_Transanction.objects.filter(wallet=naira_wallet, withdraw=False)
-                            
-                                for transanction in naira_wallet_transanctions:
-                                    if transanction.created.weekday() > 4:
-                                        payout_amount = 0
-                                        withdrawable_amount += payout_amount
-                                        if amount > withdrawable_amount:
-                                            messages.error(request, "You can not withdraw funds on weekends")
-                                            return redirect("app:store_wallet")
-                                    else:
-                                        if transanction.created < timezone.now() - timedelta(hours=24):
+                            wallet_transanctions = Wallet_Transanction.objects.filter(wallet=store_wallet, withdraw=False)
+                            for transanction in wallet_transanctions:
+                                if transanction.created.weekday() > 4:
+                                    payout_amount = 0
+                                    withdrawable_amount += payout_amount
+                                    print(withdrawable_amount)
+                                    if amount > withdrawable_amount:
+                                        messages.error(request, "You can not withdraw funds on weekends")
+                                        return redirect("app:store_wallet")
+                                else:
+                                    if store_wallet.currency.code == "NGN":
+                                        days_timeline = 24
+                                        if transanction.created < timezone.now() - timedelta(hours=days_timeline):
                                             payout_amount = transanction.amount
                                             withdrawable_amount += payout_amount
+                                            print(withdrawable_amount)
                                             if amount > withdrawable_amount:
                                                 messages.error(request, "Insufficient funds")
                                                 return redirect("app:store_wallet")
@@ -382,6 +383,28 @@ def withdraw_funds(request, currency_code):
                                                             account_name = store_bank.account_name,
                                                             account_bank = store_bank.bank_name,
                                                         )
+                                                        current_site = get_current_site(request)
+                                                        path = "wallet"
+                                                        subject = f"{store.store_name} just withdrew funds from the  {store_wallet.currency.code} wallet on Shop!t"
+                                                        message = render_to_string(
+                                                            "payment/wallet-debit-alert-email.html",
+                                                            {
+                                                                "store": store,
+                                                                "wallet": store_wallet,
+                                                                "amount":withdrawable_amount,
+                                                                "currency": currency.symbol,
+                                                                "bank_details": store_bank,
+                                                                "domain": current_site.domain+"/"+path,
+                                                            },
+                                                        )
+                                                        from_email = settings.EMAIL_HOST_USER
+                                                        to_email = [store.owner.email]
+                                                        send_mail(subject, message, from_email, to_email)
+
+                                                        if store_staff.objects.filter(store=store).exists():
+                                                            for staff in store_staff.filter(store=store):
+                                                                staff_email = staff.email
+                                                                send_mail(subject, message, from_email, [staff_email])
                                                         messages.error(request, "Withdrawal Successful") 
                                                         return redirect("app:store_wallet")     
                                                     else:
@@ -396,7 +419,10 @@ def withdraw_funds(request, currency_code):
                                             withdrawable_amount += payout_amount
                                             if amount > withdrawable_amount:
                                                 messages.error(request, "You can not withdraw funds within 24 hours")
-                                                return redirect("app:store_wallet")                        
+                                                return redirect("app:store_wallet") 
+                        else:
+                            messages.error(request, "No funds")   
+                            return redirect("app:store_wallet")                    
                                         
                     else:
                         messages.error(request, "Form input is not valid")   

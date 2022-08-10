@@ -1,0 +1,14 @@
+{% autoescape off %} {% load humanize %}
+Hello {{ store.store_name|capfirst }},
+
+You just withdrew the total sum of {{currency}}{{amount|intcomma}} from the store {{store_wallet.currency.code}} wallet on the Shopit platform.
+
+Your {{payment.order.currency_code}} wallet should have been debited, and check out for a credit alert on your {{bank_details.bank_name}} account - {{bank_details.account_name}} {{bank_details.account_number}}
+
+For more information and details on the withdrawal, kindly click this link https://{{domain}}
+
+Thank you for your continued support.
+
+Regards,
+Shopit Team
+{% endautoescape %}
