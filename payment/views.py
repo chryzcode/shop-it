@@ -1,4 +1,5 @@
 import datetime
+import holidays
 from django.utils import timezone
 import requests
 from django.conf import settings
@@ -335,15 +336,15 @@ def withdraw_funds(request, currency_code):
                 if request.method == "POST":
                     form = WalletForm(request.POST)
                     amount = request.POST.get("amount")
-                    if amount is None:
-                        messages.error(request, "Please enter an amount")
-                        return redirect("app:store_wallet")
-                    if len(str(amount)) <= 3:
-                        messages.error(request, "Amount for withdrawal should be more than 3 figures")
-                        return redirect("app:store_wallet")
-                    if str(amount).startswith(str(0)):
-                        messages.error(request, "Invalid amount")
-                        return redirect("app:store_wallet")
+                    # if amount is None:
+                    #     messages.error(request, "Please enter an amount")
+                    #     return redirect("app:store_wallet")
+                    # if len(str(amount)) <= 3:
+                    #     messages.error(request, "Amount for withdrawal should be more than 3 figures")
+                    #     return redirect("app:store_wallet")
+                    # if str(amount).startswith(str(0)):
+                    #     messages.error(request, "Invalid amount")
+                    #     return redirect("app:store_wallet")
                     if form.is_valid():
                         amount = form.cleaned_data["amount"]
                         if amount > store_wallet.amount:
@@ -354,12 +355,20 @@ def withdraw_funds(request, currency_code):
                             if Wallet_Transanction.objects.filter(wallet=store_wallet).exists():
                                 wallet_transanctions = Wallet_Transanction.objects.filter(wallet=store_wallet)                
                                 for transanction in wallet_transanctions:
+                                    str_timeline = str(transanction.created).rsplit(' ')[0]
+                                    
                                     if transanction.created.weekday() > 4:                            
                                         messages.error(request, "You can not withdraw funds on weekends")
                                         return redirect("app:store_wallet")
                                     else:
                                         if store_wallet.currency.code == "NGN":
                                             days_timeline = 24
+                                            all_holidays = holidays.country_holidays('NG')
+                                        elif store_wallet.currency.code == "USD":
+                                            days_timeline = 168
+                                            all_holidays = holidays.country_holidays('US')
+                                        if str_timeline not in all_holidays:
+                                            print('no')
                                             if transanction.created < timezone.now() - timedelta(hours=days_timeline):
                                                 payout_amount = transanction.amount
                                                 withdrawable_amount += payout_amount    
@@ -417,7 +426,13 @@ def withdraw_funds(request, currency_code):
 
                                             else:
                                                 messages.error(request, "You can not withdraw funds within 24 hours")
-                                                return redirect("app:store_wallet") 
+                                                return redirect("app:store_wallet")
+                                        else:
+                                            print('yes')
+                                            messages.error(request, "You can't withdraw on public holidays")   
+                                            return redirect("app:store_wallet")
+                                        
+                                     
                             else:
                                 messages.error(request, "No funds")   
                                 return redirect("app:store_wallet")                         

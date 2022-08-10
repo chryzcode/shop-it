@@ -23,6 +23,7 @@ markdown = "*"
 django-notifications-hq = "*"
 celery = "*"
 redis = "*"
+holidays = "*"
 
 [dev-packages]
 
