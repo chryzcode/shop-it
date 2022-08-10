@@ -140,7 +140,7 @@
   #nav-links > .side-nav-search-bar {
     width: 90%;
     display: block;
-    margin: 60px auto 0 auto;
+    margin: 70px auto 0 auto;
   }
 
   .nav-user-profile {
@@ -386,7 +386,7 @@
   }
 
   .customer-search-display {
-    top: 180px !important;
+    top: 170px !important;
   }
 
   #search-display {
