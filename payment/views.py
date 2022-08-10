@@ -361,12 +361,13 @@ def withdraw_funds(request, currency_code):
                                         messages.error(request, "You can not withdraw funds on weekends")
                                         return redirect("app:store_wallet")
                                     else:
+                                        all_holidays = holidays.country_holidays('NG')
                                         if store_wallet.currency.code == "NGN":
                                             days_timeline = 24
-                                            all_holidays = holidays.country_holidays('NG')
+                                            
                                         elif store_wallet.currency.code == "USD":
                                             days_timeline = 168
-                                            all_holidays = holidays.country_holidays('US')
+                                            
                                         if str_timeline not in all_holidays:
                                             print('no')
                                             if transanction.created < timezone.now() - timedelta(hours=days_timeline):
