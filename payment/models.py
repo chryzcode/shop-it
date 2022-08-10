@@ -62,7 +62,7 @@ class Wallet(models.Model):
 class Wallet_Transanction(models.Model):
     store = models.ForeignKey(Store, on_delete=models.CASCADE)
     amount = models.PositiveIntegerField(default=0)
-    created = models.DateTimeField(auto_now_add=True))
+    created = models.DateTimeField(auto_now_add=True)
     wallet = models.ForeignKey(Wallet, on_delete=models.CASCADE)
     order = models.ForeignKey(Order,  on_delete=models.CASCADE)
 
