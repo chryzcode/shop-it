@@ -202,9 +202,11 @@
     const productOrderCount = ($("#product-order-count").val());
     const errorAlert = $("#withdrawal-naira-form");
     const minWidth = window.matchMedia("(min-width: 990px)");
+    const addToCartBtn = $("#add-to-cart-btn")
     const nav = $("#nav");
     if (productOrderCount > myavailability) {
       errorAlert.addClass("active");
+      addToCartBtn.addClass("disable");
       errorAlert.css("zindex", "1071");
       nav.css("zindex", "10");
       errorAlert.css("position", "fixed");
