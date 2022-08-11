@@ -15,6 +15,7 @@ from cart.cart import *
 from customer.models import Address, Customer
 from order.models import *
 from account.models import *
+from account.views import *
 
 from .forms import *
 from .models import *
@@ -114,7 +115,6 @@ def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
                     payment.address_line = address.address_line
                     payment.address_line2 = address.address_line2
                     payment.postcode = address.postcode
-                    payment.city = address.city
                     payment.state = address.state
                     payment.country = address.country
 
@@ -141,14 +141,20 @@ def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
                         "state_error": "Field is required",
                     },
                 )
-
             shipping_method = request.POST.get("shipping_method")
             shipping_method = Shipping_Method.objects.get(id=shipping_method)
             shipping_price = shipping_method.price
+            country_code = payment_form.cleaned_data["country"]
+            state_code = payment_form.cleaned_data["state"]
+            country = country_details(request, country_code)
+            state = state_details(request, country_code, state_code)
             payment.order = order
             payment.amount = order.amount + shipping_price
             payment.store = store
+            payment.country = country
+            payment.state = state
             payment.save()
+            
             return render(
                 request,
                 "payment/make-payment.html",
