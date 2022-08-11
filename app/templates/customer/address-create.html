@@ -53,7 +53,7 @@
             <select name="country" class="countries form-control" id="country">
               <option value="">Select Country</option>
                {% for key, value in country_names %}
-              <option id="{{value}}" value="{{ key }}">{{ key }}</option>
+              <option value="{{ value }}">{{ key }}</option>
               {% endfor %}
             </select>
           </div>
@@ -87,7 +87,7 @@
 <script>
 $(document).ready(function(){
     $("#country").change(function(){
-        var country = $(this).id();
+        var country = $(this).val();
         console.log(country);
         $.ajax({
           type: "POST",
