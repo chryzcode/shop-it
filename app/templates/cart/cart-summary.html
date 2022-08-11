@@ -85,7 +85,7 @@
       <form action="" method="post">
          <p class="coupon_feedback ">{{form_feedback}}</p>
         {% csrf_token %} {{form.as_p}}
-        <button class="apply-coupon-btn" type="submit">Apply</button>
+        <button class="apply-coupon-btn" type="submit" id="apply-coupon-btn">Apply</button>
       </form>
     </span>
 
@@ -103,9 +103,9 @@
         </span>
       </div>
       {% if store_currency_symbol %}
-      <a href="{% url 'order:create_order' coupon_code %}" class="checkout-btn">Checkout</a>
+      <a href="{% url 'order:create_order' coupon_code %}" class="checkout-btn"  id="checkout-btn">Checkout</a>
       {% else %}
-      <span  class="checkout-btn disable">Checkout</span>
+      <span  class="checkout-btn disable" id="checkout-btn">Checkout</span>
       {% endif %}
     </div>
   </div>
@@ -191,9 +191,22 @@
     const myAvailability = $(this).parent().parent().attr("id");
     const errorAlert = $("#withdrawal-naira-form");
     const theProductOrderCount = $("#product-order-count").val();
+    const minWidth = window.matchMedia("(min-width: 990px)");
+    const nav = $("#nav");
+    const checkoutBtn = $("#checkout-btn");
+    const applyCouponBtn = $("#apply-coupon-btn");
     if (theProductOrderCount > myAvailability) {
-      errorAlert.css("top", "15%");
       errorAlert.addClass("active");
+       errorAlert.css("zindex", "1071");
+       errorAlert.css("position", "fixed");
+       nav.css("zindex", "10");
+       checkoutBtn.addClass("disable");
+       applyCouponBtn.addClass("disable")
+      if (minWidth.matches) {
+        errorAlert.css("top", "15%");
+      } else {
+         errorAlert.css("top", "22%");
+      } 
     }
   });
 </script>

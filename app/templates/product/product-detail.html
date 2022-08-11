@@ -201,9 +201,18 @@
     const myavailability = $("#product-availability").text();
     const productOrderCount = ($("#product-order-count").val());
     const errorAlert = $("#withdrawal-naira-form");
+    const minWidth = window.matchMedia("(min-width: 990px)");
+    const nav = $("#nav");
     if (productOrderCount > myavailability) {
-      errorAlert.css("top", "15%");
       errorAlert.addClass("active");
+      errorAlert.css("zindex", "1071");
+      nav.css("zindex", "10");
+      errorAlert.css("position", "fixed");
+      if (minWidth.matches) {
+        errorAlert.css("top", "15%");
+      } else {
+         errorAlert.css("top", "22%");
+      }     
     }
   });
 
