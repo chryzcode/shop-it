@@ -184,8 +184,10 @@
 
     const myavailability = $("#product-availability").text();
     const productOrderCount = ($("#product-order-count").val());
+    console.log(productOrderCount);
+    console.log(myavailability);
     if (productOrderCount > myavailability) {
-      alert("You've selected more than the available quantity, all product will be added to your cart");
+      alert("You can not order more than available quantity");
     }
   });
 

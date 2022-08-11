@@ -8,7 +8,7 @@
   {% for item in cart %} {% with product=item.product %}
    
     
-  <div data-index="{{product.id}}" class="product-item">
+  <div data-index="{{product.id}}" class="product-item" id="{{product.availability}}">
     <img class="product-image" src="{{ product.image_1.url }}" alt="" />
     <span><a href="{{product.get_absolute_url}}">{{ product.name }}</a></span>
     <span>
@@ -20,7 +20,7 @@
     </span>
 
     <span>
-      <select id="select{{product.id}}">
+      <!-- <select id="select{{product.id}}">
         <option selected>{{item.qty}}</option>
         <div class="list">
           <option value="0">0</option>
@@ -30,7 +30,11 @@
           <option value="4">4</option>
           <option value="5">5</option>
         </div>
-      </select>
+      </select> -->
+
+      <span >
+      <input style="width: 100px;" type="number" name="product-order-count" id="product-order-count" class="form-control" placeholder="Enter quantity" value="{{item.qty}}">
+    </span>
 
       <button type="button" id="update-btn" data-index="{{product.id}}" class="update-cart-btn update-btn">
         <i class="far fa-edit"></i>Update
@@ -120,6 +124,7 @@
  
 </div>
 <script>
+ 
 
   $(document).on("click", ".delete-from-cart-btn", function (e) {
     e.preventDefault();
@@ -148,12 +153,13 @@
   $(document).on("click", ".update-cart-btn", function (e) {
     e.preventDefault();
     var prodid = $(this).data("index");
+    var availability = $(this).parent().parent().attr("id");
     $.ajax({
       type: "POST",
       url: "{% url 'cart:update_cart' store.slugified_store_name %}",
       data: {
         productid: $(this).data("index"),
-        productqty: $("#select" + prodid + " option:selected").text(),
+        productqty: (parseInt($("#product-order-count").val()) > parseInt(availability)) ? availability : $("#product-order-count").val(),
         csrfmiddlewaretoken: "{{ csrf_token }}",
         action: "post",
       },
@@ -162,11 +168,16 @@
         document.getElementById("item_total_price" + prodid).innerHTML = json.currency + json.cartproqty;
         document.getElementById("grand_total").innerHTML = json.currency + json.subtotal;
         document.getElementById("product-cart-qty").innerHTML = json.qty;
-
-         console.log(json.qty);
       },
       error: function (xhr, errmsg, err) {},
     });
+
+    const myAvailability = $(this).parent().parent().attr("id");
+    console.log(myavailability);
+    const theProductOrderCount = $("#product-order-count").val();
+    if (theProductOrderCount > myAvailability) {
+      alert("You can not order more than available quantity");
+    }
   });
 </script>
 {% endblock %}
