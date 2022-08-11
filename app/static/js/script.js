@@ -20,14 +20,14 @@ const withdrawNairaBtn = document.getElementById("withdraw-naira-btn");
 const nairaWalletPopOut = document.getElementById("withdrawal-naira-form");
 
 
-if (withdrawNairaBtn) {
-  withdrawNairaBtn.onclick = function (e) {
-    if (e.target.id == "withdraw-naira-btn") {
-      nairaWalletPopOut.classList.add("active");
-    }
+// if (withdrawNairaBtn) {
+//   withdrawNairaBtn.onclick = function (e) {
+//     if (e.target.id == "withdraw-naira-btn") {
+//       nairaWalletPopOut.classList.add("active");
+//     }
    
-  }
-}
+//   }
+// }
 
 
 document.onclick = function (e) {
@@ -35,11 +35,29 @@ document.onclick = function (e) {
     nav_links.classList.remove("active");
     toogle.classList.remove("active");
   }
-  // if (nairaWalletPopOut) {
-  //   if (e.target.id != "withdraw-naira-btn") {
-  //     nairaWalletPopOut.classList.remove("active");
-  //   }
-  // }
+
+
+  if (nairaWalletPopOut.classList.contains("active")) {
+    console.log(e.target.id)
+    if (
+      e.target.id == "withdrawal-naira-form" ||
+      e.target.id == "amount" ||
+      e.target.id == "form-btn-container" ||
+      e.target.id == "input-container" ||
+      e.target.id == "above-create-form"
+    ) {
+      nairaWalletPopOut.classList.add("active");
+    } else {
+      nairaWalletPopOut.classList.remove("active");
+    }
+  } else {
+     if (e.target.id == "withdraw-naira-btn") {
+       nairaWalletPopOut.classList.add("active");
+     } 
+  }
+
+ 
+
   if (store_side_nav) {
     if (e.target.id == "nav") {
       store_side_nav.classList.remove("active");

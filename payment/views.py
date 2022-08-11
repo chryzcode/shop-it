@@ -369,7 +369,6 @@ def withdraw_funds(request, currency_code):
                                             days_timeline = 168
                                             
                                         if str_timeline not in all_holidays:
-                                            print('no')
                                             if transanction.created < timezone.now() - timedelta(hours=days_timeline):
                                                 payout_amount = transanction.amount
                                                 withdrawable_amount += payout_amount    
@@ -429,7 +428,6 @@ def withdraw_funds(request, currency_code):
                                                 messages.error(request, "You can not withdraw funds within 24 hours")
                                                 return redirect("app:store_wallet")
                                         else:
-                                            print('yes')
                                             messages.error(request, "You can't withdraw on public holidays")   
                                             return redirect("app:store_wallet")
                                         

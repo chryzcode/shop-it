@@ -6,15 +6,15 @@
 <div class="store-page-container">
     {% if naira_wallet %}
        <form class="wallet-withdrawal-form"   id="withdrawal-naira-form" action="{% url 'payment:withdraw_funds' naira_wallet.currency.code %}" method="post">
-            <div class="above-create-form">
+            <div class="above-create-form" id="above-create-form">
                 <p>Withdraw - Naira Wallet</p>
             </div>
             {% csrf_token %}
-            <div class="input-container">
+            <div class="input-container" id="input-container">
                 <label for="name">Amount<span class="form-required">*</span></label>
                 <input type="text" name="amount" id="amount" placeholder="Enter amount" class="form-control">
             </div>
-            <div class="form-btn-container">
+            <div class="form-btn-container" id="form-btn-container">
             <button class="form-btn" type="submit">
             Withdraw
             </button>
