@@ -44,7 +44,7 @@ document.onclick = function (e) {
       e.target.id == "amount" ||
       e.target.id == "form-btn-container" ||
       e.target.id == "input-container" ||
-      e.target.id == "above-create-form"
+      e.target.id =="above-create-form"
     ) {
       nairaWalletPopOut.classList.add("active");
     } else {
