@@ -14,6 +14,7 @@ from django.utils.text import slugify
 
 from account.forms import *
 from account.models import *
+from account.views import *
 from account.tokens import account_activation_token
 from app.forms import *
 from app.models import *
@@ -308,22 +309,24 @@ def create_address(request, slugified_store_name):
         if request.method == "POST":
             address_form = AddressForm(data=request.POST)
             if address_form.is_valid():
+                country_code = address_form.cleaned_data["country"]
+                state_code = address_form.cleaned_data["state"]
+                country = country_details(request, country_code)
+                state = state_details(request, country_code, state_code)
                 address_form = address_form.save(commit=False)
+                address_form.country = country
+                address_form.state = state
                 address_form.customer = customer
                 if default_address:
                     address_form.default = False
-                    address_form.save()
-                    return redirect(
-                        "customer:address_list",
-                        slugified_store_name=slugified_store_name,
-                    )
+                    
                 else:
                     address_form.default = True
-                    address_form.save()
-                    return redirect(
-                        "customer:address_list",
-                        slugified_store_name=slugified_store_name,
-                    )
+                address_form.save()
+                return redirect(
+                    "customer:address_list",
+                    slugified_store_name=slugified_store_name,
+                )
         return render(
             request,
             "customer/address-create.html",
@@ -356,6 +359,13 @@ def edit_address(request, slugified_store_name, id):
         if request.method == "POST":
             address_form = AddressForm(request.POST, instance=address)
             if address_form.is_valid():
+                country_code = address_form.cleaned_data["country"]
+                state_code = address_form.cleaned_data["state"]
+                country = country_details(request, country_code)
+                state = state_details(request, country_code, state_code)
+                address_form = address_form.save(commit=False)
+                address_form.country = country
+                address_form.state = state
                 address_form.save()
                 return redirect(
                     "customer:address_list", slugified_store_name=slugified_store_name
