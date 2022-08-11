@@ -202,6 +202,7 @@
     const productOrderCount = ($("#product-order-count").val());
     const errorAlert = $("#withdrawal-naira-form");
     if (productOrderCount > myavailability) {
+      errorAlert.css("top", "15%");
       errorAlert.addClass("active");
     }
   });
