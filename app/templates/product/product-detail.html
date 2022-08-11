@@ -54,9 +54,9 @@
    
     <div>
       {% if product.availability > 1 %}
-    <span>Availability: {{product.availability}} {{product.product_unit}}s</span>
+    <span>Availability: <span id="product-availability">{{product.availability}}</span> {{product.product_unit}}s</span>
     {% else %}
-    <span>Availability: {{product.availability}} {{product.product_unit}}</span>
+    <span>Availability: <span id="product-availability">{{product.availability}}</span> {{product.product_unit}}</span>
     {% endif %}
     </div>
 
@@ -72,21 +72,9 @@
   
   
       {% if product.availability > 0 %}
-    <select id="select">
-      <div class="list">
-        <option value="0">0</option>
-        <option value="1">1</option>
-        {% if product.availability >= 2 %}
-        <option value="2">2</option>
-        {% endif %} {% if product.availability >= 3 %}
-        <option value="3">3</option>
-        {% endif %} {% if product.availability >= 4 %}
-        <option value="4">4</option>
-        {% endif %} {% if product.availability >= 5 %}
-        <option value="5">5</option>
-        {% endif %}
-      </div>
-    </select>
+    <div style="width: 150px;">
+      <input type="number" name="product-order-count" id="product-order-count" class="form-control" placeholder="Enter quantity">
+    </div>
 
     <button type="button" id="add-to-cart-btn" value="{{product.id}}" class="update-btn">Add to cart</button>
     {% else %}
@@ -173,13 +161,17 @@
 </div>
 {% endif %}
 <script>
+
+  const availability = document.getElementById('product-availability').innerText;
+ 
+
   $(document).on("click", "#add-to-cart-btn", function (e) {
     $.ajax({
       type: "POST",
       url: "{% url 'cart:add_to_cart' store.slugified_store_name %}",
       data: {
         productid: $("#add-to-cart-btn").val(),
-        productqty: $("#select option:selected").text(),
+        productqty: (parseInt($("#product-order-count").val()) > parseInt(availability)) ? availability : $("#product-order-count").val(),
         csrfmiddlewaretoken: "{{ csrf_token }}",
         action: "post",
       },
@@ -189,7 +181,15 @@
       },
       error: function (xhr, errmsg, err) {},
     });
+
+    const myavailability = $("#product-availability").text();
+    const productOrderCount = ($("#product-order-count").val());
+    if (productOrderCount > myavailability) {
+      alert("You've selected more than the available quantity, all product will be added to your cart");
+    }
   });
+
+
 </script>
 <script src="{% static 'js/carousel.js' %}"></script>
 {% endblock %}
