@@ -1,6 +1,22 @@
 {% extends 'navs/customer-nav.html' %} {% load static %} {% load humanize %}
 {% block title %}<title>Shop !t - Cart</title>{% endblock %} {% block content %}
 <div class="shopping-cart-container">
+  <form class="wallet-withdrawal-form"   id="withdrawal-naira-form" action="">
+            <div class="above-create-form" id="above-create-form">
+                <p>Shopit Warning</p>
+            </div>
+            <div class="input-container" id="input-container">
+              
+                <div id="amount">
+                  You can not order more than available quantity
+                </div>
+            </div>
+            <div class="form-btn-container" id="form-btn-container">
+            <button class="form-btn" type="submit">
+            ok
+            </button>
+            </div> 
+            </form>
  <h1 class="error">{{error}}</h1>
   {% if cart %}
 
@@ -173,10 +189,10 @@
     });
 
     const myAvailability = $(this).parent().parent().attr("id");
-    console.log(myavailability);
+    const errorAlert = $("#withdrawal-naira-form");
     const theProductOrderCount = $("#product-order-count").val();
     if (theProductOrderCount > myAvailability) {
-      alert("You can not order more than available quantity");
+      errorAlert.addClass("active");
     }
   });
 </script>
