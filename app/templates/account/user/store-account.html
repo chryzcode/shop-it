@@ -47,7 +47,11 @@
         <div class="input-container">
         <label for="country">Country</label>
         <select name="country" class="countries form-control" id="country">
+          {% if store.country %}
+          <option value="{{store.country}}">{{store.country}}</option>
+          {% else %}
           <option value="">Select Country</option>
+          {% endif %}
            {% for key, value in country_names %}
           <option value="{{ value }}">{{ key }}</option>
           {% endfor %}
@@ -57,7 +61,11 @@
       <div class="input-container">
         <label for="state">State</label>
         <select name="state" class="states form-control" id="state">
+          {% if store.state %}
+          <option value="{{store.state}}">{{store.state}}</option>
+          {% else %}
           <option value="">Select State</option>
+          {% endif %}
         </select>
       </div>
       </div>
