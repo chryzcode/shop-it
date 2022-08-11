@@ -19,6 +19,7 @@ from .forms import *
 from .models import *
 from app.models import *
 from app.forms import *
+from app.views import *
 from payment.models import *
 
 from .tokens import account_activation_token
@@ -151,6 +152,27 @@ def user_profile(request):
         {"userprofileform": userprofileform, "account": account, "user_profile":user_profile},
     )
 
+def country_details(request, country_code):
+    url = f"https://api.countrystatecity.in/v1/countries/{country_code}"
+    headers = {
+        'X-CSCAPI-KEY': settings.COUNTRY_STATE_CITY_API_KEY
+        }
+    response = requests.get(url, headers=headers)
+    data = response.json()
+    country_name = data["name"]
+    return country_name
+
+def state_details(request, country_code, state_code):
+    url = f"https://api.countrystatecity.in/v1/countries/{country_code}/states/{state_code}"
+    headers = {
+    'X-CSCAPI-KEY': settings.COUNTRY_STATE_CITY_API_KEY
+    }
+    response = requests.request("GET", url, headers=headers)
+    data = response.json()
+    state_name = data["name"]
+    return state_name
+
+
 
 @login_required(login_url="/account/login/")
 def store_account(
@@ -170,16 +192,24 @@ def store_account(
         response = requests.request("GET", url, headers=headers)
         data = response.json()
         country_names = {}
-        for country in data:
-            country_names[country['name']] = country['iso2']
+        for a_country in data:
+            country_names[a_country['name']] = a_country['iso2']
         country_names = (sorted(country_names.items(), key=lambda x: x[0]))
         if request.method == "POST":
             storeform = StoreForm(request.POST, request.FILES, instance=store)
             if storeform.is_valid():
                 store_name = storeform.cleaned_data["store_name"]
                 currency = storeform.cleaned_data["currency"]
+                country_code = storeform.cleaned_data["country"]
+                state_code = storeform.cleaned_data["state"]
+                country = country_details(request, country_code)
+                state = state_details(request, country_code, state_code)
+                
+                
                 form = storeform.save(commit=False)
                 form.owner = request.user
+                form.country = country
+                form.state = state
                 form.slugified_store_name = slugify(store_name)
                 form.save()
                 currency = Currency.objects.get(name=currency)

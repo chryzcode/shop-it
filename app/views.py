@@ -1677,13 +1677,5 @@ def get_state(request, iso2):
     return response
 
 
-def get_city(request, country, state):
-    url = f"https://api.countrystatecity.in/v1/countries/{country}/states/{state}/cities"
-    headers = {
-    'X-CSCAPI-KEY': settings.COUNTRY_STATE_CITY_API_KEY
-    }
-    response = requests.request("GET", url, headers=headers)
-    print(response.text)
-    return response
     
         
