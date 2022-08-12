@@ -1,4 +1,5 @@
 import datetime
+from os import times_result
 
 import holidays
 import requests
@@ -179,7 +180,14 @@ def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
 
 
 def initiate_transfer(
-    request, account_name, account_number, amount, currency, beneficiary_name, narration, account_bank
+    request,
+    account_name,
+    account_number,
+    amount,
+    currency,
+    beneficiary_name,
+    narration,
+    account_bank,
 ):
     url = "https://api.flutterwave.com/v3/transfers"
     headers = {
@@ -230,13 +238,13 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
                     notify.send(
                         store.owner,
                         recipient=staff_user,
-                        verb="Low stock for " + product.name,
+                        verb="Low stock availability for " + product.name,
                         product_detail_url=product.get_absolute_url(),
                     )
                 notify.send(
                     store.owner,
                     recipient=store.owner,
-                    verb="Low stock for " + product.name,
+                    verb="Low stock availability for " + product.name,
                     product_detail_url=product.get_absolute_url(),
                 )
         messages.success(request, "Verification Successful")
@@ -264,11 +272,9 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
         )
         staffs = store_staff.objects.filter(store=store)
         message = (
-            "Your"
+            store_wallet.currency.code
             + " "
-            + store_wallet.currency.code
-            + " "
-            + "wallet just recieved some funds"
+            + "wallet just recieved some funds of " + currency.symbol + str(amount)
         )
         for staff in staffs:
             staff_user = User.objects.get(email=staff.email)
@@ -352,6 +358,7 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
 def withdraw_funds(request, currency_code):
     if request.user.store_creator == True:
         store = Store.objects.get(owner=request.user)
+        store_staffs = store_staff.objects.filter(store=store)
         currency = Currency.objects.get(code=currency_code)
         if Wallet.objects.filter(store=store, currency=currency).exists():
             store_wallet = Wallet.objects.get(store=store, currency=currency)
@@ -431,21 +438,12 @@ def withdraw_funds(request, currency_code):
                                                             )
                                                         )
                                                         staff_email_list = []
-                                                        if store_staff.objects.filter(
-                                                                store=store
-                                                            ).exists():
-                                                                for (
-                                                                    staff
-                                                                ) in store_staff.filter(
-                                                                    store=store
-                                                                ):
-                                                                    staff_email = (
-                                                                        staff.email
-                                                                    )
-                                                                    staff_email_list.append(
-                                                                        staff_email
-                                                                    )
-                                                        print(staff_email_list)
+                                                        for staff in store_staffs:
+                                                            staff_email = staff.email
+                                                            staff_email_list.append(
+                                                                staff_email
+                                                            )
+
                                                         transfer = initiate_transfer(
                                                             request,
                                                             store_bank.account_name,
@@ -456,8 +454,11 @@ def withdraw_funds(request, currency_code):
                                                             narration,
                                                             store_bank.bank_code,
                                                         )
-                                         
-                                                        if transfer["status"] == "success":
+
+                                                        if (
+                                                            transfer["status"]
+                                                            == "success"
+                                                        ):
                                                             store_wallet.amount -= (
                                                                 amount
                                                             )
@@ -495,11 +496,37 @@ def withdraw_funds(request, currency_code):
                                                                     + path,
                                                                 },
                                                             )
-                                                            withdrawal_transanction.email_user(subject=subject, message=message, staff_email_list=staff_email_list)
+                                                            
+                                                            notify.send(
+                                                                store.owner,
+                                                                recipient=store.owner,
+                                                                verb=f"{store.store_name} just withdrew {store_wallet.currency.symbol}{amount} from the {store_wallet.currency.code} wallet on Shopit",
+                                                                withdrawal_detail_url=reverse(
+                                                                    "app:store_wallet"
+                                                                ),
+                                                            )
+                                                            staffs = store_staff.objects.filter(store=store)
+                                                            for a_staff in staffs:
+                                                                staff_user = User.objects.get(email=a_staff.email)
+                                                                notify.send(
+                                                                    staff_user,
+                                                                    recipient=staff_user,
+                                                                    verb=f"{store.store_name} just withdrew {store_wallet.currency.symbol}{amount} from the {store_wallet.currency.code} wallet on Shopit",
+                                                                    withdrawal_detail_url=reverse(
+                                                                        "app:store_wallet"
+                                                                    ),
+                                                                )
+
+                                                            withdrawal_transanction.email_user(
+                                                                subject=subject,
+                                                                message=message,
+                                                                staff_email_list=staff_email_list,
+                                                            )
+
                                                             return redirect(
                                                                 "app:store_wallet"
                                                             )
-                                                            
+
                                                         else:
                                                             messages.error(
                                                                 request,
@@ -507,7 +534,7 @@ def withdraw_funds(request, currency_code):
                                                             )
                                                             return redirect(
                                                                 "app:store_wallet"
-                                                            )          
+                                                            )
 
                                                     else:
                                                         messages.error(

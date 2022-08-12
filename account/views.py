@@ -116,19 +116,20 @@ def account_register(request):
             notify.send(
                 store.owner,
                 recipient=user,
-                verb="Set your store bank details",
+                verb="Set your store bank account details",
                 bank_details_url=reverse("account:bank_details"),
             )
             notify.send(
                 store.owner,
                 recipient=user,
-                verb=f"Set at least a shipping method",
+                verb=f"Set at least a shipping method for logistics funds",
                 shipping_method_url=reverse("app:add_shipping_method"),
+                
             )
             notify.send(
                 store.owner,
                 recipient=user,
-                verb=f"Set your store default currency",
+                verb=f"Set your store default currency ",
                 currency_url=reverse("account:store_account"),
             )
             return render(request, "account/registration/registration-success.html")
@@ -475,12 +476,12 @@ def delete_store_staff(request, pk):
                 notify.send(
                     store.owner,
                     recipient=staff_user,
-                    verb=f"{staff_user.full_name} has been removed from the store",
+                    verb=f"{staff_user.full_name} has been removed from the {store.store_name} store",
                 )
             notify.send(
                 store.owner,
                 recipient=store.owner,
-                verb=f"{staff_user.full_name} has been removed from the store",
+                verb=f"{staff_user.full_name} has been removed from the {store.store_name} store",
             )
             return redirect("app:store_staff_page")
         else:
@@ -536,13 +537,13 @@ def create_store(request):
                 notify.send(
                     store.owner,
                     recipient=user,
-                    verb="Set your store bank details",
+                    verb="Set your store bank account details",
                     bank_details_url=reverse("account:bank_details"),
                 )
                 notify.send(
                     store.owner,
                     recipient=user,
-                    verb=f"Set at least a shipping method",
+                    verb=f"Set at least a shipping method for logistics funds",
                     shipping_method_url=reverse("app:add_shipping_method"),
                 )
                 notify.send(

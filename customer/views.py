@@ -71,7 +71,7 @@ def customer_register(request, slugified_store_name):
                     notify.send(
                         store.owner,
                         recipient=staff_user,
-                        verb=f"{store.store_name} have newly registered customer",
+                        verb=f"{store.store_name} have a newly registered customer",
                         customer_detail_url=reverse(
                             "app:store_customers_details", kwargs={"pk": customer.id}
                         ),
@@ -79,7 +79,7 @@ def customer_register(request, slugified_store_name):
                 notify.send(
                     store.owner,
                     recipient=store.owner,
-                    verb=f"{store.store_name} have newly registered customer",
+                    verb=f"{store.store_name} have a newly registered customer",
                     customer_detail_url=reverse(
                         "app:store_customers_details", kwargs={"pk": customer.id}
                     ),
@@ -180,7 +180,7 @@ def existing_user_customer_register(request, slugified_store_name):
                         notify.send(
                             store.owner,
                             recipient=staff_user,
-                            verb=f"{store.store_name} have newly registered customer",
+                            verb=f"{store.store_name} have a newly registered customer",
                             customer_detail_url=reverse(
                                 "app:store_customers_details",
                                 kwargs={"pk": customer.id},
@@ -189,7 +189,7 @@ def existing_user_customer_register(request, slugified_store_name):
                     notify.send(
                         store.owner,
                         recipient=store.owner,
-                        verb=f"{store.store_name} have newly registered customer",
+                        verb=f"{store.store_name} have a newly registered customer",
                         customer_detail_url=reverse(
                             "app:store_customers_details", kwargs={"pk": customer.id}
                         ),

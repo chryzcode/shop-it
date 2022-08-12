@@ -66,6 +66,9 @@ def mark_notification_read(request, id):
             if "review_detail_url" in key:
                 notification.save()
                 return redirect(values)
+            if "withdrawal_detail_url" in key:
+                notification.save()
+                return redirect(values)
 
 
 @login_required(login_url="account:login")
@@ -245,13 +248,13 @@ def create_product(request):
                 notify.send(
                     store.owner,
                     recipient=staff_user,
-                    verb="Added a new product",
+                    verb=f"Added a new product {product.name}",
                     product_detail_url=product.get_absolute_url(),
                 )
             notify.send(
                 store.owner,
                 recipient=store.owner,
-                verb="Added a new product",
+                verb=f"Added a new product {product.name}",
                 product_detail_url=product.get_absolute_url(),
             )
             return redirect(
@@ -1824,6 +1827,7 @@ def get_state(request, iso2):
     states = sorted(states.items(), key=lambda x: x[0])
     response = JsonResponse({"states": states})
     return response
+
 
 @login_required(login_url="/account/login/")
 def notification_page(request):

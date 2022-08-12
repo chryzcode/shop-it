@@ -15,8 +15,11 @@
           {% for notification in user.notifications.unread %}
           <ul>
             <li class="notification-list-li">
-              <a href="{% url 'app:mark_notification_read' notification.id %}">{{ notification.verb }}</a>
+              <a href="{% url 'app:mark_notification_read' notification.id %}">{{ notification.verb }}
+               <p>{{notification.timestamp.date}} - {{notification.timestamp.time}}</p>
+               </a>
             </li>
+           
           </ul>
           {% endfor %}
         </div>

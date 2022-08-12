@@ -103,7 +103,6 @@ class Withdrawal_Transanction(models.Model):
             fail_silently=False,
         )
 
-
     def __str__(self):
         return (
             str(self.store.store_name)
