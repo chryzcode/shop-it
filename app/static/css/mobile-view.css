@@ -72,6 +72,7 @@
     background: #fff;
     width: 100%;
     padding: 20px;
+    list-style: none;
   }
 
   #nav-links > input {
@@ -387,9 +388,9 @@
     z-index: 1070;
   }
 
-  .customer-search-display {
+  /* .customer-search-display {
     top: 170px !important;
-  }
+  } */
 
   #search-display {
     display: none;

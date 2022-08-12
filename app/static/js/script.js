@@ -132,6 +132,7 @@ function customerSearchBar() {
           search_display.classList.remove("active");
         } else {
           search_display.classList.add("active");
+          search_display.style.top = "190px";
         }
       }
     };
@@ -166,7 +167,7 @@ function myFunction() {
       input = document.getElementById("side-nav-search-bar-customer");
     }
     ul = document.getElementById("search-display");
-    console.log(input);
+    ul.style.top = "190px";
   } else if (mobile_search_display) {
     if (mobile_search_bar) {
       input = document.getElementById("side-nav-search-bar-mobile");
