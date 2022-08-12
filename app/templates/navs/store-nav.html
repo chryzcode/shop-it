@@ -70,6 +70,7 @@
               </a>
             {% endfor %}
             <p><a href="{% url 'app:mark_all_notification_read' %}">Mark all as read</a></p>
+             <p><a href="{% url 'app:notification_page' %}">View all</a></p>
             {% else %}
             <p>There's nothing new here</p>
             {% endif %}

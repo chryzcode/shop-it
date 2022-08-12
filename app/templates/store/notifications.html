@@ -7,25 +7,49 @@
   <div class="store-content-container">
     <span class="store-products-container">
       <p>Notifications</p>
-      
-      <div>
-            {% if user.notifications.unread %}
-             {% for notification in  user.notifications.unread %}
-              <a  href="{% url 'app:mark_notification_read' notification.id %}">
-              <p>{{ notification.verb }}</p>
-              </a>
-            {% endfor %}
-            <p><a href="{% url 'app:mark_all_notification_read' %}">Mark all as read</a></p>
-            <p><a href="{% url 'app:notification_page' %}">View all</a></p>
-            {% else %}
-            <p>There's nothing new here</p>
-            {% endif %}
-          </div>  
-      
+
+      <div class="notification-list" id="notification-list">
+        {% if user.notifications.unread %}
+        <p><a href="{% url 'app:mark_all_notification_read' %}">Mark all as read</a></p>
+        <div class="notifications-container">
+        {% for notification in user.notifications.unread %}  
+          <ul>
+            <li class="notification-list-li"><a href="{% url 'app:mark_notification_read' notification.id %}">{{ notification.verb }}</a></li>
+          </ul>
+        {% endfor %}
+        </div>
+        <p id="view-more-notification">View more notification</p>
+         {% else %}
+        <p>There's nothing new here</p>
+        
+        {% endif %}
+      </div>
     </span>
   </div>
-  {% endblock %}
+  
 </div>
+<script>
+    //after 5 notifications list li objects are displayed, hide the rest
+    var notificationList = document.getElementsByClassName('notification-list-li');
+    var viewMoreNotification = document.getElementById('view-more-notification');
+    var notificationListLength = notificationList.length;
+    console.log(notificationListLength);
+    if (notificationListLength > 2) {
+        for (var i = 2; i < notificationListLength; i++) {
+            notificationList[i].style.display = 'none';
+        }
+    } else {
+        viewMoreNotification.style.display = 'none';
+    }
 
 
+    viewMoreNotification.addEventListener('click', function () {
+        for (var i = 0; i < notificationListLength; i++) {
+            notificationList[i].style.display = 'block';
+            viewMoreNotification.style.display = 'none';
+        }
+    }
+    );
 
+</script>
+{% endblock %}

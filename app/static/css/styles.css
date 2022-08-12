@@ -1958,3 +1958,34 @@ small {
   border-radius: 10px;
   outline: 1px solid #ccc;
 }
+
+.notifications-container {
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  margin: 30px 0;
+}
+
+.notification-list ul > li > a {
+  color: #6b69f8;
+  text-decoration: none;
+  display: block;
+  line-height: 1.5;
+  padding: 20px 0 2px 20px;
+  border-bottom: 1px solid #ccc;
+  text-align: center;
+  font-size: 20px;
+}
+
+.notification-list ul > li :hover {
+  transform: scale(1.05);
+  transition: all 0.3s ease-in-out;
+}
+
+#view-more-notification {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-size: 20px;
+  color: #3d5170;
+  margin: 50px 0;
+  cursor: pointer;
+}

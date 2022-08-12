@@ -18,6 +18,7 @@ const searchMediaQuery = window.matchMedia("(min-width: 990px)");
 const customerNav = document.getElementById("side-nav-search-bar-customer");
 const withdrawNairaBtn = document.getElementById("withdraw-naira-btn");
 const nairaWalletPopOut = document.getElementById("withdrawal-naira-form");
+const notification_list = document.getElementById("notification-list");
 
 
 // if (withdrawNairaBtn) {
@@ -198,4 +199,10 @@ function myFunction() {
     }
   }
   ul.style.height = "auto";
+}
+
+//if notification-list, hide notification-dropdown
+if (notification_list) { 
+  notification_dropdown.style.display = "none";
+  
 }
