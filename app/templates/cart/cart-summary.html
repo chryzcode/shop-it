@@ -12,9 +12,9 @@
                 </div>
             </div>
             <div class="form-btn-container" id="form-btn-container">
-            <div class="form-btn" id="form-btn">
+            <button class="form-btn" id="form-btn">
             ok
-            </div>
+            </button>
             </div> 
             </form>
  <h1 class="error">{{error}}</h1>
@@ -191,6 +191,8 @@
     
     if (parseInt(theProductOrderCount) > parseInt(myAvailability) ) {
        $("#product-order-count").val(myAvailability);
+       console.log(myAvailability);
+       console.log(theProductOrderCount);
       errorAlert.addClass("active");
       errorAlertBtn.css("width", "max-content");
        errorAlert.css("z-index", "1071");
