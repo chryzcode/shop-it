@@ -265,7 +265,7 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
             staff_user = User.objects.get(email=staff.email)
             notify.send(store.owner, recipient=staff_user, verb=message, payment = payment.order.id) 
         notify.send(store.owner, recipient=store.owner, verb=message, payment = payment.order.id)          
-        subject = f"{store.store_name} just sold some product on Shop!t"
+        subject = f"{store.store_name} just sold some product on Shopit"
         current_site = get_current_site(request)
         path = f"order/{order.id}"
         message = render_to_string(
@@ -288,7 +288,7 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
                 staff_email = staff.email
                 send_mail(subject, message, from_email, [staff_email])
 
-        subject = f"You just ordered some products on {store.store_name} on Shop!t platform"
+        subject = f"You just ordered some products on {store.store_name} on Shopit platform"
         path = f"{store.slugified_store_name}/order/{order.id}"
         if payment.user in store.customers.all():
             customer = True
@@ -342,15 +342,15 @@ def withdraw_funds(request, currency_code):
                 if request.method == "POST":
                     form = WalletForm(request.POST)
                     amount = request.POST.get("amount")
-                    # if amount is None:
-                    #     messages.error(request, "Please enter an amount")
-                    #     return redirect("app:store_wallet")
-                    # if len(str(amount)) <= 3:
-                    #     messages.error(request, "Amount for withdrawal should be more than 3 figures")
-                    #     return redirect("app:store_wallet")
-                    # if str(amount).startswith(str(0)):
-                    #     messages.error(request, "Invalid amount")
-                    #     return redirect("app:store_wallet")
+                    if amount is None:
+                        messages.error(request, "Please enter an amount")
+                        return redirect("app:store_wallet")
+                    if len(str(amount)) <= 3:
+                        messages.error(request, "Amount for withdrawal should be more than 3 figures")
+                        return redirect("app:store_wallet")
+                    if str(amount).startswith(str(0)):
+                        messages.error(request, "Invalid amount")
+                        return redirect("app:store_wallet")
                     if form.is_valid():
                         amount = form.cleaned_data["amount"]
                         if amount > store_wallet.amount:
@@ -382,7 +382,7 @@ def withdraw_funds(request, currency_code):
                                                     messages.error(request, f"You can withdraw only {currency.symbol}{withdrawable_amount} for now")
                                                     return redirect("app:store_wallet") 
                                                 else:
-                                                    narration = f"{store.store_name} just withdraw {currency.symbol}{amount} from {store_wallet.currency.code} wallet on Shop!t"
+                                                    narration = f"{store.store_name} just withdraw {currency.symbol}{amount} from {store_wallet.currency.code} wallet on Shopit"
                                                     if Bank_Info.objects.filter(store=store).exists():
                                                         store_bank = Bank_Info.objects.get(store=store)
                                                         transfer = initiate_transfer(request, store_bank.account_name, store_bank.account_number, amount, store_wallet.currency.code, store_bank.account_name, narration)
@@ -404,13 +404,13 @@ def withdraw_funds(request, currency_code):
                                                                 
                                                             current_site = get_current_site(request)
                                                             path = "wallet"
-                                                            subject = f"{store.store_name} just withdrew funds from the  {store_wallet.currency.code} wallet on Shop!t"
+                                                            subject = f"{store.store_name} just withdrew funds from the  {store_wallet.currency.code} wallet on Shopit"
                                                             message = render_to_string(
                                                                 "payment/wallet-debit-alert-email.html",
                                                                 {
                                                                     "store": store,
                                                                     "wallet": store_wallet,
-                                                                    "amount":withdrawable_amount,
+                                                                    "amount": amount,
                                                                     "currency": currency.symbol,
                                                                     "bank_details": store_bank,
                                                                     "domain": current_site.domain+"/"+path,

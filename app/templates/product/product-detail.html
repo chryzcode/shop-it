@@ -204,14 +204,20 @@
     const minWidth = window.matchMedia("(min-width: 990px)");
     const addToCartBtn = $("#add-to-cart-btn")
     const nav = $("#nav");
-    if (productOrderCount > myavailability) {
+    const cartIconContainer = $("#cart-icon-container")
+
+
+    if (parseInt(productOrderCount) > parseInt(myavailability)) {
       errorAlert.addClass("active");
       addToCartBtn.addClass("disable");
-      errorAlert.css("zindex", "1071");
-      nav.css("zindex", "10");
+      errorAlert.css("z-index", "1071");
+      nav.css("z-index", "10");
       errorAlert.css("position", "fixed");
+      if (cartIconContainer) {
+        cartIconContainer.addClass("disable");
+      }
       if (minWidth.matches) {
-        errorAlert.css("top", "15%");
+        errorAlert.css("top", "19%");
       } else {
          errorAlert.css("top", "22%");
       }     

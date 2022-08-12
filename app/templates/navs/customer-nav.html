@@ -111,7 +111,7 @@
 
       
 
-        <span class="cart-icon-container cart-desktop">
+        <span class="cart-icon-container cart-desktop" id="cart-icon-container">
           <a href="{% url 'cart:cart_summary' store.slugified_store_name %}" class="cart-btn">
             {% with total_qty=cart|length %}
             <span>

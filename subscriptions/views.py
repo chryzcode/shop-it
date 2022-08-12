@@ -105,7 +105,7 @@ def verify_subscription_payment(request: HttpRequest, ref: str) -> HttpResponse:
             staff_user = User.objects.get(email=staff.email)
             notify.send(store.owner, recipient=staff_user, verb=message, subscription = subscription.id)
         notify.send(store.owner, recipient=store.owner, verb=message, subscription = subscription.id)
-        subject = f"Your {subscription.name} {subscription.duration.name} Subscription on Shop!t has been Activated"
+        subject = f"Your {subscription.name} {subscription.duration.name} Subscription on Shopit has been Activated"
         message = render_to_string( "subscriptions/subscription-success-mail.html", {
             "store": store,
             "subscription": subscription,
@@ -170,7 +170,7 @@ def paystack_recurring_payment(request: HttpRequest, pk) -> HttpResponse:
                     staff_user = User.objects.get(email=staff.email)
                     notify.send(store.owner, recipient=staff_user, verb=message, subscription = subscription.id)
                 notify.send(store.owner, recipient=store.owner, verb=message, subscription = subscription.id)
-                subject = f"Your {subscription.name} {subscription.duration.name} Subscription on Shop!t has been Re-Activated"
+                subject = f"Your {subscription.name} {subscription.duration.name} Subscription on Shopit has been Re-Activated"
                 message = render_to_string( "subscriptions/recurring-subscription-success-mail.html", {
                     "store": Store.objects.get(store_name=request.user.store_name),
                     "subscription": subscription,
@@ -204,7 +204,7 @@ def subscription_check_mail_remainder(request):
             current_site = get_current_site(request)
             if subscription_timeline.subscription.duration ==  monthly_duration:
                 if subscription_timeline.created_at < timezone.now() - timedelta(days=25): 
-                    subject = "Your Shop!t Monthly Subscription is about to Expire"
+                    subject = "Your Shopit Monthly Subscription is about to Expire"
                     store_owner =  store.owner
                     message = render_to_string( "subscriptions/subscription-mail-remainder.html", {
                         "store": store,
@@ -223,7 +223,7 @@ def subscription_check_mail_remainder(request):
                     
             if subscription_timeline.subscription.duration ==  yearly_duration:
                 if subscription_timeline.created_at < timezone.now() - timedelta(days=355): 
-                    subject = "Your Shop!t Yearly Subscription is about to Expire"
+                    subject = "Your Shopit Yearly Subscription is about to Expire"
                     store_owner =  store.owner
                     message = message = render_to_string( "subscriptions/subscription-mail-remainder.html", {
                         "store": store,

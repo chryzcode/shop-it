@@ -70,7 +70,7 @@ def account_logout(request):
 @login_required(login_url="/account/login/")
 def account_delete(request):
     user = User.objects.get(email=request.user.email)
-    subject = "Your Shop!t Account has been Deleted"
+    subject = "Your Shopit Account has been Deleted"
     message = render_to_string(
         "account/registration/account_delete_email.html",
         {"user": user},
@@ -101,7 +101,7 @@ def account_register(request):
                 store_name=registerform.cleaned_data["store_name"],
             )
             current_site = get_current_site(request)
-            subject = "Activate your Shop!t Account"
+            subject = "Activate your Shopit Account"
             message = render_to_string(
                 "account/registration/account_activation_email.html",
                 {
@@ -292,7 +292,7 @@ def store_staff_register(request, slugified_store_name):
                     notify.send(store.owner, recipient=staff_user, verb="An additional staff has been added to the store")
                 notify.send(store.owner, recipient=store.owner, verb="You have been added as a staff member of your store")
                 current_site = get_current_site(request)
-                subject = "Activate your Shop!t Account"
+                subject = "Activate your Shopit Account"
                 message = render_to_string(
                     "account/registration/account_activation_email.html",
                     {

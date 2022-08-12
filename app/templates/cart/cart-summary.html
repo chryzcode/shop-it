@@ -195,15 +195,23 @@
     const nav = $("#nav");
     const checkoutBtn = $("#checkout-btn");
     const applyCouponBtn = $("#apply-coupon-btn");
-    if (theProductOrderCount > myAvailability) {
+    const updateCartBtn = $("#update-btn");
+    const cartIconContainer = $("#cart-icon-container")
+
+    
+    if (parseInt(theProductOrderCount) > parseInt(myAvailability) ) {
       errorAlert.addClass("active");
-       errorAlert.css("zindex", "1071");
+       errorAlert.css("z-index", "1071");
        errorAlert.css("position", "fixed");
-       nav.css("zindex", "10");
+       nav.css("z-index", "10");
        checkoutBtn.addClass("disable");
        applyCouponBtn.addClass("disable")
+       updateCartBtn.addClass("disable");
+      if (cartIconContainer) {
+        cartIconContainer.addClass("disable");
+      }
       if (minWidth.matches) {
-        errorAlert.css("top", "15%");
+        errorAlert.css("top", "19%");
       } else {
          errorAlert.css("top", "22%");
       } 
