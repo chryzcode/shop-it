@@ -1,0 +1,31 @@
+{% extends 'navs/store-nav.html' %}{% load humanize %} {% load static %}{% block title %}<title>
+  Shop !t - Store {% if 'unpaid' in request.get_full_path %} Unpaid {% endif %}Orders
+</title>
+{% endblock %} {% block content %}
+<div class="store-page-container">
+  {% include 'navs/store-side-nav.html' %}
+  <div class="store-content-container">
+    <span class="store-products-container">
+      <p>Notifications</p>
+      
+      <div>
+            {% if user.notifications.unread %}
+             {% for notification in  user.notifications.unread %}
+              <a  href="{% url 'app:mark_notification_read' notification.id %}">
+              <p>{{ notification.verb }}</p>
+              </a>
+            {% endfor %}
+            <p><a href="{% url 'app:mark_all_notification_read' %}">Mark all as read</a></p>
+            <p><a href="{% url 'app:notification_page' %}">View all</a></p>
+            {% else %}
+            <p>There's nothing new here</p>
+            {% endif %}
+          </div>  
+      
+    </span>
+  </div>
+  {% endblock %}
+</div>
+
+
+

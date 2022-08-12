@@ -1824,3 +1824,14 @@ def get_state(request, iso2):
     states = sorted(states.items(), key=lambda x: x[0])
     response = JsonResponse({"states": states})
     return response
+
+@login_required(login_url="/account/login/")
+def notification_page(request):
+    if request.user.store_creator == True:
+        store = Store.objects.get(owner=request.user)
+    else:
+        store = Store.objects.get(
+            store_name=store_staff.objects.get(email=request.user.email).store
+        )
+    user = User.objects.get(email=request.user.email)
+    return render(request, "store/notifications.html", {"store": store, "user": user})
