@@ -8,48 +8,46 @@
     <span class="store-products-container">
       <p>Notifications</p>
 
-      <div class="notification-list" id="notification-list">
+      <div class="notification-list">
         {% if user.notifications.unread %}
         <p><a href="{% url 'app:mark_all_notification_read' %}">Mark all as read</a></p>
         <div class="notifications-container">
-        {% for notification in user.notifications.unread %}  
+          {% for notification in user.notifications.unread %}
           <ul>
-            <li class="notification-list-li"><a href="{% url 'app:mark_notification_read' notification.id %}">{{ notification.verb }}</a></li>
+            <li class="notification-list-li">
+              <a href="{% url 'app:mark_notification_read' notification.id %}">{{ notification.verb }}</a>
+            </li>
           </ul>
-        {% endfor %}
+          {% endfor %}
         </div>
         <p id="view-more-notification">View more notification</p>
-         {% else %}
+        {% else %}
         <p>There's nothing new here</p>
-        
+
         {% endif %}
       </div>
     </span>
   </div>
-  
 </div>
 <script>
-    //after 5 notifications list li objects are displayed, hide the rest
-    var notificationList = document.getElementsByClassName('notification-list-li');
-    var viewMoreNotification = document.getElementById('view-more-notification');
-    var notificationListLength = notificationList.length;
-    console.log(notificationListLength);
-    if (notificationListLength > 2) {
-        for (var i = 2; i < notificationListLength; i++) {
-            notificationList[i].style.display = 'none';
-        }
-    } else {
-        viewMoreNotification.style.display = 'none';
-    }
+  var notificationList = document.getElementsByClassName("notification-list-li");
+  var viewMoreNotification = document.getElementById("view-more-notification");
+  var notificationListLength = notificationList.length;
 
-
-    viewMoreNotification.addEventListener('click', function () {
-        for (var i = 0; i < notificationListLength; i++) {
-            notificationList[i].style.display = 'block';
-            viewMoreNotification.style.display = 'none';
-        }
+  if (notificationListLength > 10) {
+    for (var i = 10; i < notificationListLength; i++) {
+      notificationList[i].style.display = "none";
     }
-    );
+  } else {
+    viewMoreNotification.style.display = "none";
+  }
+
+  $("#view-more-notification").click(function () {
+    $(".notification-list-li:hidden").slice(0, 10).slideDown(); 
+    if ($(".notification-list-li:hidden").length == 0) {
+      $("#view-more-notification").fadeOut('slow');
+    }
+  });
 
 </script>
 {% endblock %}
