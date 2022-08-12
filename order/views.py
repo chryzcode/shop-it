@@ -1,19 +1,18 @@
+from datetime import datetime, timedelta
+
+from django.conf import settings
+from django.contrib.sites.shortcuts import get_current_site
 from django.shortcuts import get_object_or_404, redirect, render
+from django.template.loader import render_to_string
+from django.utils import timezone
+from notifications.signals import notify
 
 from app.models import *
+from app.urls import *
 from cart.cart import *
 
 from .forms import *
 from .models import *
-from django.template.loader import render_to_string
-from django.contrib.sites.shortcuts import get_current_site
-from django.conf import settings
-from datetime import datetime, timedelta
-from django.utils import timezone
-
-from notifications.signals import notify
-
-from app.urls import *
 
 
 def order(request, coupon_code):

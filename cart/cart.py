@@ -1,7 +1,7 @@
 from decimal import Decimal
 
-from app.models import *
 from account.models import *
+from app.models import *
 
 
 class Cart:

@@ -1,29 +1,29 @@
 from xml import dom
+
 import requests
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
+from django.utils import timezone
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
-from django.core.mail import send_mail
-from django.utils import timezone
+from notifications.signals import notify
 
+from app.forms import *
+from app.models import *
+from app.views import *
 from customer.models import Customer
+from payment.models import *
 from subscriptions.models import Subscription_Timeline
 
 from .forms import *
 from .models import *
-from app.models import *
-from app.forms import *
-from app.views import *
-from payment.models import *
-
 from .tokens import account_activation_token
-from notifications.signals import notify
 
 
 def account_login(request):

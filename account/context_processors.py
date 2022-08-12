@@ -1,13 +1,15 @@
 from itertools import product
 from unicodedata import category, name
+
 from django.utils.text import slugify
 
-from .models import *
-from app.models import *
-from order.models import *
-from customer.models import *
 from account.models import *
+from app.models import *
+from customer.models import *
+from order.models import *
 from subscriptions.models import *
+
+from .models import *
 
 
 def a_staff_store_store(request):

@@ -1,32 +1,29 @@
 from datetime import datetime, timedelta
 
+from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.text import slugify
-from django.conf import settings
+from notifications.models import Notification
+from notifications.signals import notify
 
+from account.context_processors import *
 from account.models import *
 from cart.cart import *
+from customer.models import *
 from order.models import *
+from order.views import *
+from payment.forms import *
+from payment.models import *
 from payment.models import Payment
 from subscriptions.models import *
 from subscriptions.views import *
-from order.views import *
-from order.models import *
-from payment.models import *
-from payment.forms import *
-from customer.models import *
-from django.http import JsonResponse
 
 from .forms import *
 from .models import *
-from notifications.models import Notification
-from notifications.signals import notify
-from account.context_processors import *
-
-
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 @login_required(login_url="account:login")

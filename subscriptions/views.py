@@ -1,25 +1,22 @@
-from email import message
 import secrets
-import requests
+from datetime import datetime, timedelta
+from email import message
 
+import requests
 from django.conf import settings
 from django.contrib import messages
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import send_mail
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
-from datetime import datetime, timedelta
-from django.utils import timezone
-from django.core.mail import send_mail
-from django.conf import settings
 from django.template.loader import render_to_string
-from django.contrib import messages
+from django.utils import timezone
+from notifications.signals import notify
 
 from account.models import *
 
 from .models import *
 from .paystack import Paystack
-from django.contrib.sites.shortcuts import get_current_site
-from notifications.signals import notify
-
 
 # Create your views here.
 

@@ -1,13 +1,14 @@
-from ast import Or
 import secrets
+from ast import Or
 
 from django.conf import settings
 from django.db import models
 
 from account.models import *
+from app.models import *
 from customer.models import *
 from order.models import *
-from app.models import *
+
 
 # Create your models here.
 class Payment(models.Model):
