@@ -65,11 +65,11 @@
           <div id="notification-dropdown">
             {% if user.notifications.unread %}
              {% for notification in  user.notifications.unread %}
-              <a  href="{% url 'app:mark_notification_read' notification.id %}">
+              <a class="min-notification" href="{% url 'app:mark_notification_read' notification.id %}">
               <p>{{ notification.verb }}</p>
               </a>
             {% endfor %}
-            <p><a href="{% url 'app:mark_all_notification_read' %}">Mark all as read</a></p>
+
              <p><a href="{% url 'app:notification_page' %}">View all</a></p>
             {% else %}
             <p>There's nothing new here</p>
@@ -104,5 +104,14 @@
     <script>
       AOS.init();
     </script>
+  <script>
+    var minNotification = document.getElementsByClassName("min-notification");
+    //show only the first 5 notifications
+    for (var i = 0; i < minNotification.length; i++) {
+      if (i > 4) {
+        minNotification[i].style.display = "none";
+      }
+    }
+  </script>
   </body>
 </html>
