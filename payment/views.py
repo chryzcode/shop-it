@@ -498,14 +498,6 @@ def withdraw_funds(request, currency_code):
                                                                     + path,
                                                                 },
                                                             )
-                                                           
-                                                            
-                                                            # send_mail(
-                                                            #     subject,
-                                                            #     message,
-                                                            #     from_email,
-                                                            #     [staff_email],
-                                                            # )
                                                             withdrawal_transanction.email_user(subject=subject, message=message, staff_email_list=staff_email_list)
                                                             return redirect(
                                                                 "app:store_wallet"
