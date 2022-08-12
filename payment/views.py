@@ -179,7 +179,7 @@ def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
 
 
 def initiate_transfer(
-    request, account_name, account_number, amount, currency, beneficiary_name, narration
+    request, account_name, account_number, amount, currency, beneficiary_name, narration, account_bank
 ):
     url = "https://api.flutterwave.com/v3/transfers"
     headers = {
@@ -193,8 +193,9 @@ def initiate_transfer(
         "currency": currency,
         "beneficiary_name": beneficiary_name,
         "narration": narration,
+        "account_bank": account_bank,
     }
-    response = requests.post(url, headers=headers, json=data)
+    response = requests.request("POST", url, headers=headers, json=data)
     if response.status_code == 200:
         messages.success(request, "Transfer initiated successfully")
         return response.json()
@@ -353,6 +354,7 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
 def withdraw_funds(request, currency_code):
     if request.user.store_creator == True:
         store = Store.objects.get(owner=request.user)
+        #get all store staff emails through filter
         currency = Currency.objects.get(code=currency_code)
         if Wallet.objects.filter(store=store, currency=currency).exists():
             store_wallet = Wallet.objects.get(store=store, currency=currency)
@@ -364,12 +366,12 @@ def withdraw_funds(request, currency_code):
                     if amount is None:
                         messages.error(request, "Please enter an amount")
                         return redirect("app:store_wallet")
-                    if len(str(amount)) <= 3:
-                        messages.error(
-                            request,
-                            "Amount for withdrawal should be more than 3 figures",
-                        )
-                        return redirect("app:store_wallet")
+                    # if len(str(amount)) <= 3:
+                    #     messages.error(
+                    #         request,
+                    #         "Amount for withdrawal should be more than 3 figures",
+                    #     )
+                    #     return redirect("app:store_wallet")
                     if str(amount).startswith(str(0)):
                         messages.error(request, "Invalid amount")
                         return redirect("app:store_wallet")
@@ -431,6 +433,22 @@ def withdraw_funds(request, currency_code):
                                                                 store=store
                                                             )
                                                         )
+                                                        staff_email_list = []
+                                                        if store_staff.objects.filter(
+                                                                store=store
+                                                            ).exists():
+                                                                for (
+                                                                    staff
+                                                                ) in store_staff.filter(
+                                                                    store=store
+                                                                ):
+                                                                    staff_email = (
+                                                                        staff.email
+                                                                    )
+                                                                    staff_email_list.append(
+                                                                        staff_email
+                                                                    )
+                                                        print(staff_email_list)
                                                         transfer = initiate_transfer(
                                                             request,
                                                             store_bank.account_name,
@@ -439,21 +457,15 @@ def withdraw_funds(request, currency_code):
                                                             store_wallet.currency.code,
                                                             store_bank.account_name,
                                                             narration,
+                                                            store_bank.bank_code,
                                                         )
-                                                        if not transfer:
-                                                            messages.error(
-                                                                request,
-                                                                "Withdrawal Failed",
-                                                            )
-                                                            return redirect(
-                                                                "app:store_wallet"
-                                                            )
-                                                        else:
+                                         
+                                                        if transfer["status"] == "success":
                                                             store_wallet.amount -= (
                                                                 amount
                                                             )
                                                             store_wallet.save()
-                                                            Withdrawal_Transanction.objects.create(
+                                                            withdrawal_transanction = Withdrawal_Transanction.objects.create(
                                                                 wallet=store_wallet,
                                                                 store=store,
                                                                 amount=amount,
@@ -472,7 +484,7 @@ def withdraw_funds(request, currency_code):
                                                                 )
                                                             )
                                                             path = "wallet"
-                                                            subject = f"{store.store_name} just withdrew funds from the  {store_wallet.currency.code} wallet on Shopit"
+                                                            subject = f"{store.store_name} just withdrew funds from the {store_wallet.currency.code} wallet on Shopit"
                                                             message = render_to_string(
                                                                 "payment/wallet-debit-alert-email.html",
                                                                 {
@@ -486,39 +498,27 @@ def withdraw_funds(request, currency_code):
                                                                     + path,
                                                                 },
                                                             )
-                                                            from_email = (
-                                                                settings.EMAIL_HOST_USER
-                                                            )
-                                                            to_email = [
-                                                                store.owner.email
-                                                            ]
-                                                            send_mail(
-                                                                subject,
-                                                                message,
-                                                                from_email,
-                                                                to_email,
-                                                            )
-
-                                                            if store_staff.objects.filter(
-                                                                store=store
-                                                            ).exists():
-                                                                for (
-                                                                    staff
-                                                                ) in store_staff.filter(
-                                                                    store=store
-                                                                ):
-                                                                    staff_email = (
-                                                                        staff.email
-                                                                    )
-                                                                    send_mail(
-                                                                        subject,
-                                                                        message,
-                                                                        from_email,
-                                                                        [staff_email],
-                                                                    )
+                                                           
+                                                            
+                                                            # send_mail(
+                                                            #     subject,
+                                                            #     message,
+                                                            #     from_email,
+                                                            #     [staff_email],
+                                                            # )
+                                                            withdrawal_transanction.email_user(subject=subject, message=message, staff_email_list=staff_email_list)
                                                             return redirect(
                                                                 "app:store_wallet"
                                                             )
+                                                            
+                                                        else:
+                                                            messages.error(
+                                                                request,
+                                                                "Withdrawal Failed",
+                                                            )
+                                                            return redirect(
+                                                                "app:store_wallet"
+                                                            )          
 
                                                     else:
                                                         messages.error(

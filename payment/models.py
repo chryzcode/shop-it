@@ -8,6 +8,7 @@ from account.models import *
 from app.models import *
 from customer.models import *
 from order.models import *
+from django.core.mail import send_mail
 
 
 # Create your models here.
@@ -92,6 +93,16 @@ class Withdrawal_Transanction(models.Model):
     account_name = models.CharField(max_length=200)
     account_bank = models.CharField(max_length=200)
     wallet = models.ForeignKey(Wallet, on_delete=models.CASCADE)
+
+    def email_user(self, subject, message, staff_email_list):
+        send_mail(
+            subject,
+            message,
+            settings.EMAIL_HOST_USER,
+            [self.store.owner.email, staff_email_list],
+            fail_silently=False,
+        )
+
 
     def __str__(self):
         return (
