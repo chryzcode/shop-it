@@ -185,7 +185,7 @@
     const checkoutBtn = $("#checkout-btn");
     const applyCouponBtn = $("#apply-coupon-btn");
     const updateCartBtn = $("#update-btn");
-    const cartIconContainer = $("#cart-icon-container")
+    const cartIconContainer = $("#cart-icon-container");
     const errorAlertBtn = $("#form-btn")
 
     
@@ -215,12 +215,12 @@
 
   $(document).on("click", "#form-btn", function (e) {
     $("#withdrawal-naira-form").removeClass("active");
-    $("#form-btn").css("width", "auto");
-    $("#add-to-cart-btn").removeClass("disable");
-    $("#nav").css("z-index", "10");
-    $("#withdrawal-naira-form").css("position", "relative");
-    $("#withdrawal-naira-form").css("top", "0");
-    $("#cart-icon-container").removeClass("disable");
+    $("#update-btn").removeClass("disable");
+    $("#apply-coupon-btn").removeClass("disable");
+    $("#checkout-btn").removeClass("disable");
+    if ($("#cart-icon-container")) {
+      $("#cart-icon-container").removeClass("disable");
+    }
   });
 
 </script>
