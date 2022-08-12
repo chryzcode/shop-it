@@ -7,7 +7,6 @@ class Paystack:
     PAYSTACK_SECRET_KEY = settings.PAYSTACK_SECRET_KEY
     base_url = "https://api.paystack.co"
 
-
     def verify_payment(self, ref, *args, **kwargs):
         path = f"/transaction/verify/{ref}"
 
@@ -20,7 +19,7 @@ class Paystack:
 
         if response.status_code == 200:
             response_data = response.json()
-            channel = response_data["data"]["channel"]     
+            channel = response_data["data"]["channel"]
             return response_data["status"], response_data["data"]
         response_data = response.json()
         return response_data["status"], response_data["message"]

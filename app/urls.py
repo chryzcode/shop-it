@@ -29,7 +29,11 @@ urlpatterns = [
         views.store_category_products,
         name="store_category_products",
     ),
-    path("store/<slugified_store_name>/collections", views.all_store_products, name="all_store_products"),
+    path(
+        "store/<slugified_store_name>/collections",
+        views.all_store_products,
+        name="all_store_products",
+    ),
     path("store/", views.store_admin, name="store_admin"),
     path("store/<slugified_store_name>/", views.store, name="store"),
     path("categories/", views.all_category, name="all_category"),
@@ -62,7 +66,9 @@ urlpatterns = [
         views.monthly_subscription_plans,
         name="monthly_subscription_plans",
     ),
-    path("transanction-history/", views.transanction_history, name="transanction_history"),
+    path(
+        "transanction-history/", views.transanction_history, name="transanction_history"
+    ),
     path("store-staff/", views.store_staff_page, name="store_staff_page"),
     path("shipping-method/", views.shipping_method_list, name="shipping_method_list"),
     path(
@@ -78,10 +84,26 @@ urlpatterns = [
         views.delete_shipping_method,
         name="delete_shipping_method",
     ),
-    path("notification/mark-as-read/<str:id>/", views.mark_notification_read, name="mark_notification_read"),
-    path("notification/mark-all-as-read/", views.mark_all_notification_read, name="mark_all_notification_read"),
-    path("customer/detail/<str:pk>/", views.store_customers_details, name="store_customers_details"),
-    path("store/<slugified_store_name>/product/<slug:slug>/reviews/", views.product_review_list, name="product_review_list"),
+    path(
+        "notification/mark-as-read/<str:id>/",
+        views.mark_notification_read,
+        name="mark_notification_read",
+    ),
+    path(
+        "notification/mark-all-as-read/",
+        views.mark_all_notification_read,
+        name="mark_all_notification_read",
+    ),
+    path(
+        "customer/detail/<str:pk>/",
+        views.store_customers_details,
+        name="store_customers_details",
+    ),
+    path(
+        "store/<slugified_store_name>/product/<slug:slug>/reviews/",
+        views.product_review_list,
+        name="product_review_list",
+    ),
     path("comapny/reviews/", views.company_review, name="company_review"),
     path("company/team/", views.company_team, name="company_team"),
     path("get-state/<iso2>/", views.get_state, name="get_state"),

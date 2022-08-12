@@ -23,10 +23,13 @@ from notifications.signals import notify
 
 # Create your views here.
 
+
 def cancel_recurring_subscription(request: HttpRequest) -> HttpResponse:
     if request.user.is_authenticated:
         if request.user.store_creator == True:
-            recurring_subscription = RecurringSubscriptionData.objects.get(user=request.user)
+            recurring_subscription = RecurringSubscriptionData.objects.get(
+                user=request.user
+            )
             recurring_subscription.charge = False
             recurring_subscription.save()
             messages.success(request, "Recurring Subscription Cancelled")
@@ -39,7 +42,9 @@ def cancel_recurring_subscription(request: HttpRequest) -> HttpResponse:
 def activate_recurring_subscription(request: HttpRequest) -> HttpResponse:
     if request.user.is_authenticated:
         if request.user.store_creator == True:
-            recurring_subscription = RecurringSubscriptionData.objects.get(user=request.user)
+            recurring_subscription = RecurringSubscriptionData.objects.get(
+                user=request.user
+            )
             recurring_subscription.charge = True
             recurring_subscription.save()
             messages.success(request, "Recurring Subscription Activated")
@@ -47,8 +52,6 @@ def activate_recurring_subscription(request: HttpRequest) -> HttpResponse:
         else:
             return redirect("/")
     return redirect("/")
-   
-
 
 
 def initiate_subscription_payment(request: HttpRequest, pk) -> HttpResponse:
@@ -59,20 +62,22 @@ def initiate_subscription_payment(request: HttpRequest, pk) -> HttpResponse:
         subscription.user = request.user
         subscription.save()
         if Subscription_Timeline.objects.filter(store=store):
-            subscription_timeline = Subscription_Timeline.objects.filter(store=store).first()
+            subscription_timeline = Subscription_Timeline.objects.filter(
+                store=store
+            ).first()
             subscription_timeline.delete()
             return redirect("subscriptions:initiate_subscription_payment", pk=pk)
-                   
+
         return render(
-                    request,
-                    "subscriptions/make-subscription-payments.html",
-                    {
-                        "subscription": subscription,
-                        "store": store,
-                        "paystack_public_key": settings.PAYSTACK_PUBLIC_KEY,
-                        "email": email,
-                    },
-                )         
+            request,
+            "subscriptions/make-subscription-payments.html",
+            {
+                "subscription": subscription,
+                "store": store,
+                "paystack_public_key": settings.PAYSTACK_PUBLIC_KEY,
+                "email": email,
+            },
+        )
     else:
         return redirect("/")
 
@@ -95,21 +100,33 @@ def verify_subscription_payment(request: HttpRequest, ref: str) -> HttpResponse:
                 subscription.save()
         subscription.subscribers.add(store)
         Subscription_Timeline.objects.create(
-            store= store,
-            subscription = subscription,       
+            store=store,
+            subscription=subscription,
         )
         messages.success(request, "Verification Successful")
         message = f"{store.store_name} has succesfully subscribed to a plan"
         staffs = store_staff.objects.filter(store=store)
-        for staff in staffs:     
+        for staff in staffs:
             staff_user = User.objects.get(email=staff.email)
-            notify.send(store.owner, recipient=staff_user, verb=message, subscription = subscription.id)
-        notify.send(store.owner, recipient=store.owner, verb=message, subscription = subscription.id)
+            notify.send(
+                store.owner,
+                recipient=staff_user,
+                verb=message,
+                subscription=subscription.id,
+            )
+        notify.send(
+            store.owner,
+            recipient=store.owner,
+            verb=message,
+            subscription=subscription.id,
+        )
         subject = f"Your {subscription.name} {subscription.duration.name} Subscription on Shopit has been Activated"
-        message = render_to_string( "subscriptions/subscription-success-mail.html", {
-            "store": store,
-            "subscription": subscription,
-        }
+        message = render_to_string(
+            "subscriptions/subscription-success-mail.html",
+            {
+                "store": store,
+                "subscription": subscription,
+            },
         )
         from_email = settings.EMAIL_HOST_USER
         to_email = [request.user.email]
@@ -135,7 +152,9 @@ def paystack_recurring_payment(request: HttpRequest, pk) -> HttpResponse:
             "Content-Type": "application/json",
             "Authorization": f"Bearer {settings.PAYSTACK_SECRET_KEY}",
         }
-        recurring_subscription_data = RecurringSubscriptionData.objects.get(user=request.user)
+        recurring_subscription_data = RecurringSubscriptionData.objects.get(
+            user=request.user
+        )
         data = {
             "authorization_code": recurring_subscription_data.authorization_code,
             "email": recurring_subscription_data.email,
@@ -149,38 +168,64 @@ def paystack_recurring_payment(request: HttpRequest, pk) -> HttpResponse:
                 subscription = Subscription.objects.get(pk=pk)
                 subscription.verified = True
                 subscription.save()
-                subscription.subscribers.add(Store.objects.get(store_name=request.user.store_name))
-                if Subscription_Timeline.objects.filter(store=Store.objects.get(store_name=request.user.store_name)).exists():
-                    subscription_timeline = Subscription_Timeline.objects.get(store=Store.objects.get(store_name=request.user.store_name))
-                    subscription_timeline.store = Store.objects.get(store_name=request.user.store_name)
+                subscription.subscribers.add(
+                    Store.objects.get(store_name=request.user.store_name)
+                )
+                if Subscription_Timeline.objects.filter(
+                    store=Store.objects.get(store_name=request.user.store_name)
+                ).exists():
+                    subscription_timeline = Subscription_Timeline.objects.get(
+                        store=Store.objects.get(store_name=request.user.store_name)
+                    )
+                    subscription_timeline.store = Store.objects.get(
+                        store_name=request.user.store_name
+                    )
                     subscription_timeline.subscription = subscription
                     subscription_timeline.mail_remainder = False
                     subscription_timeline.save()
                 else:
                     Subscription_Timeline.objects.create(
-                        store= Store.objects.get(store_name=request.user.store_name),
-                        subscription = subscription,       
-                        mail_remainder = False
+                        store=Store.objects.get(store_name=request.user.store_name),
+                        subscription=subscription,
+                        mail_remainder=False,
                     )
                 messages.success(request, "Subscription Successful")
                 store = Store.objects.get(store_name=request.user.store_name)
-                message = f"{store.store_name} just resubscribed to a plan(recurring sub)"
+                message = (
+                    f"{store.store_name} just resubscribed to a plan(recurring sub)"
+                )
                 staffs = store_staff.objects.filter(store=store)
-                for staff in staffs:     
+                for staff in staffs:
                     staff_user = User.objects.get(email=staff.email)
-                    notify.send(store.owner, recipient=staff_user, verb=message, subscription = subscription.id)
-                notify.send(store.owner, recipient=store.owner, verb=message, subscription = subscription.id)
+                    notify.send(
+                        store.owner,
+                        recipient=staff_user,
+                        verb=message,
+                        subscription=subscription.id,
+                    )
+                notify.send(
+                    store.owner,
+                    recipient=store.owner,
+                    verb=message,
+                    subscription=subscription.id,
+                )
                 subject = f"Your {subscription.name} {subscription.duration.name} Subscription on Shopit has been Re-Activated"
-                message = render_to_string( "subscriptions/recurring-subscription-success-mail.html", {
-                    "store": Store.objects.get(store_name=request.user.store_name),
-                    "subscription": subscription,
-                }
+                message = render_to_string(
+                    "subscriptions/recurring-subscription-success-mail.html",
+                    {
+                        "store": Store.objects.get(store_name=request.user.store_name),
+                        "subscription": subscription,
+                    },
                 )
                 from_email = settings.EMAIL_HOST_USER
                 to_email = [request.user.email]
                 send_mail(subject, message, from_email, to_email)
-                if store_staff.objects.filter(store=Store.objects.get(store_name=request.user.store_name)).exists():
-                    for staff in store_staff.objects.filter(store=Store.objects.get(store_name=request.user.store_name)):
+                if store_staff.objects.filter(
+                    store=Store.objects.get(store_name=request.user.store_name)
+                ).exists():
+                    for staff in store_staff.objects.filter(
+                        store=Store.objects.get(store_name=request.user.store_name)
+                    ):
                         if staff.user.email:
                             to_email = [staff.user.email]
                             send_mail(subject, message, from_email, to_email)
@@ -195,21 +240,31 @@ def paystack_recurring_payment(request: HttpRequest, pk) -> HttpResponse:
         else:
             messages.error(request, "Subscription Failed")
 
+
 def subscription_check_mail_remainder(request):
     for store in Store.objects.all():
-        if Subscription_Timeline.objects.filter(store=store, mail_remainder=False).exists():
-            subscription_timeline = Subscription_Timeline.objects.filter(store=store).first()
+        if Subscription_Timeline.objects.filter(
+            store=store, mail_remainder=False
+        ).exists():
+            subscription_timeline = Subscription_Timeline.objects.filter(
+                store=store
+            ).first()
             yearly_duration = Duration.objects.get(name="yearly")
             monthly_duration = Duration.objects.get(name="monthly")
             current_site = get_current_site(request)
-            if subscription_timeline.subscription.duration ==  monthly_duration:
-                if subscription_timeline.created_at < timezone.now() - timedelta(days=25): 
+            if subscription_timeline.subscription.duration == monthly_duration:
+                if subscription_timeline.created_at < timezone.now() - timedelta(
+                    days=25
+                ):
                     subject = "Your Shopit Monthly Subscription is about to Expire"
-                    store_owner =  store.owner
-                    message = render_to_string( "subscriptions/subscription-mail-remainder.html", {
-                        "store": store,
-                        "duration": "monthly",
-                    })
+                    store_owner = store.owner
+                    message = render_to_string(
+                        "subscriptions/subscription-mail-remainder.html",
+                        {
+                            "store": store,
+                            "duration": "monthly",
+                        },
+                    )
                     from_email = settings.EMAIL_HOST_USER
                     to_email = [store_owner.email]
                     send_mail(subject, message, from_email, to_email)
@@ -220,15 +275,20 @@ def subscription_check_mail_remainder(request):
                                 send_mail(subject, message, from_email, to_email)
                     subscription_timeline.mail_remainder = True
                     subscription_timeline.save()
-                    
-            if subscription_timeline.subscription.duration ==  yearly_duration:
-                if subscription_timeline.created_at < timezone.now() - timedelta(days=355): 
+
+            if subscription_timeline.subscription.duration == yearly_duration:
+                if subscription_timeline.created_at < timezone.now() - timedelta(
+                    days=355
+                ):
                     subject = "Your Shopit Yearly Subscription is about to Expire"
-                    store_owner =  store.owner
-                    message = message = render_to_string( "subscriptions/subscription-mail-remainder.html", {
-                        "store": store,
-                        "duration": "yearly",
-                    })
+                    store_owner = store.owner
+                    message = message = render_to_string(
+                        "subscriptions/subscription-mail-remainder.html",
+                        {
+                            "store": store,
+                            "duration": "yearly",
+                        },
+                    )
                     from_email = settings.EMAIL_HOST_USER
                     to_email = [request.user.email]
                     send_mail(subject, message, from_email, to_email)
@@ -241,32 +301,46 @@ def subscription_check_mail_remainder(request):
                     subscription_timeline.save()
 
 
-
 def subscription_check(request):
     for store in Store.objects.all():
         if Subscription_Timeline.objects.filter(store=store).exists():
-            subscription_timeline = Subscription_Timeline.objects.filter(store=store).first()
+            subscription_timeline = Subscription_Timeline.objects.filter(
+                store=store
+            ).first()
             yearly_duration = Duration.objects.get(name="yearly")
             monthly_duration = Duration.objects.get(name="monthly")
-            recurring_subscription_data = RecurringSubscriptionData.objects.get(user=store.owner)
-            if subscription_timeline.subscription.duration ==  monthly_duration:
-                if subscription_timeline.created_at < timezone.now() - timedelta(days=30):
-                    subscription = Subscription.objects.get(name = subscription_timeline.subscription.name, duration = monthly_duration)
+            recurring_subscription_data = RecurringSubscriptionData.objects.get(
+                user=store.owner
+            )
+            if subscription_timeline.subscription.duration == monthly_duration:
+                if subscription_timeline.created_at < timezone.now() - timedelta(
+                    days=30
+                ):
+                    subscription = Subscription.objects.get(
+                        name=subscription_timeline.subscription.name,
+                        duration=monthly_duration,
+                    )
                     if recurring_subscription_data.charge == True:
                         paystack_recurring_payment(request, subscription.pk)
                     else:
                         subscription.subscribers.remove(store)
                         subscription_timeline.delete()
-                        messages.success(request, "Your monthly subscription has expired")
-            if subscription_timeline.subscription.duration ==  yearly_duration:
-                if subscription_timeline.created_at < timezone.now() - timedelta(days=365):
-                    subscription = Subscription.objects.get(name = subscription_timeline.subscription.name, duration = yearly_duration)
+                        messages.success(
+                            request, "Your monthly subscription has expired"
+                        )
+            if subscription_timeline.subscription.duration == yearly_duration:
+                if subscription_timeline.created_at < timezone.now() - timedelta(
+                    days=365
+                ):
+                    subscription = Subscription.objects.get(
+                        name=subscription_timeline.subscription.name,
+                        duration=yearly_duration,
+                    )
                     if recurring_subscription_data.charge == True:
                         paystack_recurring_payment(request, subscription.pk)
                     else:
                         subscription.subscribers.remove(store)
                         subscription_timeline.delete()
-                        messages.success(request, "Your yearly subscription has expired")
-
-
-
+                        messages.success(
+                            request, "Your yearly subscription has expired"
+                        )

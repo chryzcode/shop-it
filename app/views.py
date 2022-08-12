@@ -29,7 +29,6 @@ from account.context_processors import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
-
 @login_required(login_url="account:login")
 def mark_notification_read(request, id):
     if Notification.objects.filter(recipient=request.user, id=id).exists():
@@ -74,12 +73,12 @@ def mark_notification_read(request, id):
 
 @login_required(login_url="account:login")
 def mark_all_notification_read(request):
-    current_path = request.META.get('HTTP_REFERER')
+    current_path = request.META.get("HTTP_REFERER")
     notifications = Notification.objects.filter(recipient=request.user, unread=True)
     for notification in notifications:
         notification.unread = False
         notification.save()
-    return redirect (current_path)
+    return redirect(current_path)
 
 
 def custom_error_404(request, exception):
@@ -91,7 +90,7 @@ def custom_error_500(request):
 
 
 def home_page(request):
-    domain = request.META['HTTP_HOST']
+    domain = request.META["HTTP_HOST"]
     if domain == settings.DEFAULT_DOMAIN:
         if request.user.is_authenticated:
             subscription_check(request)
@@ -110,7 +109,7 @@ def a_store_all_products(request):
         )
     all_products = Product.objects.filter(store=store)
     all_products_count = all_products.count()
-    page = request.GET.get('page', 1)
+    page = request.GET.get("page", 1)
     paginator = Paginator(all_products, 10)
     try:
         all_products = paginator.page(page)
@@ -121,7 +120,11 @@ def a_store_all_products(request):
     return render(
         request,
         "store/products.html",
-        {"all_products": all_products, "store": store, "all_products_count": all_products_count},
+        {
+            "all_products": all_products,
+            "store": store,
+            "all_products_count": all_products_count,
+        },
     )
 
 
@@ -134,8 +137,8 @@ def product_detail(request, slug):
             store = Store.objects.get(store_name=request.user.store_name)
         else:
             store = Store.objects.get(
-            store_name=store_staff.objects.get(email=request.user.email).store
-        )
+                store_name=store_staff.objects.get(email=request.user.email).store
+            )
         category_product = Product.objects.filter(
             category=product.category, store=store
         ).exclude(id=product.id)[:6]
@@ -240,10 +243,20 @@ def create_product(request):
             product.currency = store.currency
             product.save()
             staffs = store_staff.objects.filter(store=store)
-            for staff in staffs:     
+            for staff in staffs:
                 staff_user = User.objects.get(email=staff.email)
-                notify.send(store.owner, recipient=staff_user, verb="Added a new product", product_detail_url=product.get_absolute_url())
-            notify.send(store.owner, recipient=store.owner, verb="Added a new product", product_detail_url=product.get_absolute_url())
+                notify.send(
+                    store.owner,
+                    recipient=staff_user,
+                    verb="Added a new product",
+                    product_detail_url=product.get_absolute_url(),
+                )
+            notify.send(
+                store.owner,
+                recipient=store.owner,
+                verb="Added a new product",
+                product_detail_url=product.get_absolute_url(),
+            )
             return redirect(
                 "app:product_detail",
                 slug=product.slug,
@@ -306,38 +319,47 @@ def store_admin(request):
         subscribed = True
         orders = Order.objects.filter(store=store, billing_status=True)
         last_24_orders = orders.filter(created__gt=timezone.now() - timedelta(hours=24))
-        last_7_days_orders = orders.filter(created__gt=timezone.now() - timedelta(days=7))
-   
+        last_7_days_orders = orders.filter(
+            created__gt=timezone.now() - timedelta(days=7)
+        )
+
         product_dict = {}
         customer_dict = {}
         customers = Customer.objects.filter(store=store)
-        last_24_customers = customers.filter(time__gt=timezone.now() - timedelta(hours=24))
-        the_last_7_days_customers = customers.filter(time__gt=timezone.now() - timedelta(days=7))
+        last_24_customers = customers.filter(
+            time__gt=timezone.now() - timedelta(hours=24)
+        )
+        the_last_7_days_customers = customers.filter(
+            time__gt=timezone.now() - timedelta(days=7)
+        )
 
         last_24_hours_total_customers = 0
         for last_24_customer in last_24_customers:
             last_24_hours_total_customers = last_24_hours_total_customers + 1
         if last_24_customers.count() > 0 and customers.count() > 0:
-            last_24_customers_percentage =  last_24_customers.count() / customers.count() * 100
+            last_24_customers_percentage = (
+                last_24_customers.count() / customers.count() * 100
+            )
         else:
             last_24_customers_percentage = 0
-        
+
         today_total_amount = 0
         for last_24_order in last_24_orders:
             amount = last_24_order.amount
-            today_total_amount = amount + today_total_amount  
-        if last_24_orders.count() > 0 and orders.count() > 0: 
-            last_24_orders_percentage = last_24_orders.count() / orders.count()  * 100
+            today_total_amount = amount + today_total_amount
+        if last_24_orders.count() > 0 and orders.count() > 0:
+            last_24_orders_percentage = last_24_orders.count() / orders.count() * 100
         else:
             last_24_orders_percentage = 0
 
-        
         last_7_days_total_amount = 0
         for order in last_7_days_orders:
             last_7_days_amount = order.amount
             last_7_days_total_amount = last_7_days_total_amount + last_7_days_amount
         if last_7_days_orders.count() > 0 and orders.count() > 0:
-            last_7_days_orders_percentage = last_7_days_orders.count() / orders.count() * 100
+            last_7_days_orders_percentage = (
+                last_7_days_orders.count() / orders.count() * 100
+            )
         else:
             last_7_days_orders_percentage = 0
 
@@ -345,48 +367,65 @@ def store_admin(request):
         for last_7_days_customer in the_last_7_days_customers:
             last_7_days_total_customer = last_7_days_total_customer + 1
         if the_last_7_days_customers.count() > 0 and customers.count() > 0:
-            last_7_days_customers_percentage = the_last_7_days_customers.count() / customers.count() * 100
+            last_7_days_customers_percentage = (
+                the_last_7_days_customers.count() / customers.count() * 100
+            )
         else:
             last_7_days_customers_percentage = 0
 
-        last_1_month_orders = orders.filter(created__gt=timezone.now() - timedelta(days=30))
+        last_1_month_orders = orders.filter(
+            created__gt=timezone.now() - timedelta(days=30)
+        )
         last_1_month_total_amount = 0
         for order in last_1_month_orders:
             last_1_month_amount = order.amount
             last_1_month_total_amount = last_1_month_total_amount + last_1_month_amount
         if last_1_month_orders.count() > 0 and orders.count() > 0:
-            last_1_month_orders_percentage = last_1_month_orders.count() / orders.count() * 100
+            last_1_month_orders_percentage = (
+                last_1_month_orders.count() / orders.count() * 100
+            )
         else:
             last_1_month_orders_percentage = 0
-        
-        last_1_year_orders = orders.filter(created__gt=timezone.now() - timedelta(days=365))
+
+        last_1_year_orders = orders.filter(
+            created__gt=timezone.now() - timedelta(days=365)
+        )
         last_1_year_total_amount = 0
         for order in last_1_year_orders:
             last_1_year_amount = order.amount
             last_1_year_total_amount = last_1_year_total_amount + last_1_year_amount
         if last_1_year_orders.count() > 0 and orders.count() > 0:
-            last_1_year_orders_percentage = last_1_year_orders.count() / orders.count() * 100
+            last_1_year_orders_percentage = (
+                last_1_year_orders.count() / orders.count() * 100
+            )
         else:
             last_1_year_orders_percentage = 0
 
-        last_1_year_customers = customers.filter(time__gt=timezone.now() - timedelta(days=365))
+        last_1_year_customers = customers.filter(
+            time__gt=timezone.now() - timedelta(days=365)
+        )
         last_1_year_total_customer = 0
         for customer in last_1_year_customers:
             last_1_year_total_customer = last_1_year_total_customer + 1
         if last_1_year_customers.count() > 0 and customers.count() > 0:
-            last_1_year_customers_percentage = last_1_year_customers.count() / customers.count() * 100
+            last_1_year_customers_percentage = (
+                last_1_year_customers.count() / customers.count() * 100
+            )
         else:
             last_1_year_customers_percentage = 0
 
-        last_1_month_customers = customers.filter(time__gt=timezone.now() - timedelta(days=30))
+        last_1_month_customers = customers.filter(
+            time__gt=timezone.now() - timedelta(days=30)
+        )
         last_1_month_total_customer = 0
         for customer in last_1_month_customers:
             last_1_month_total_customer = last_1_month_total_customer + 1
         if last_1_month_customers.count() > 0 and customers.count() > 0:
-            last_1_month_customers_percentage = last_1_month_customers.count() / customers.count() * 100
+            last_1_month_customers_percentage = (
+                last_1_month_customers.count() / customers.count() * 100
+            )
         else:
             last_1_month_customers_percentage = 0
-
 
         for order in orders:
             if order.user:
@@ -396,36 +435,48 @@ def store_admin(request):
                         customer = Customer.objects.get(email=user.email)
                         customer_count = customer_count + 1
                         if customer in customer_dict:
-                            customer_dict[customer] = customer_dict[customer] + customer_count
+                            customer_dict[customer] = (
+                                customer_dict[customer] + customer_count
+                            )
                         else:
                             customer_dict[customer] = customer_count
                     else:
                         customer = None
-        customer_dict = (sorted(customer_dict.items(), key=lambda x: x[1], reverse=True))[:5]
-
+        customer_dict = (
+            sorted(customer_dict.items(), key=lambda x: x[1], reverse=True)
+        )[:5]
 
         orders = Order.objects.filter(store=store, billing_status=True)
         for order in orders:
             order_items = OrderItem.objects.filter(order=order)
             for order_item in order_items:
-                product_name = Product.objects.get(id=order_item.product.id, store=store)
+                product_name = Product.objects.get(
+                    id=order_item.product.id, store=store
+                )
                 product_quantity = order_item.quantity
                 if product_name in product_dict:
-                    product_dict[product_name] = product_dict[product_name] + product_quantity
+                    product_dict[product_name] = (
+                        product_dict[product_name] + product_quantity
+                    )
                 else:
                     product_dict[product_name] = product_quantity
-        product_dict = (sorted(product_dict.items(), key=lambda item: item[1], reverse=True))[:5]  
+        product_dict = (
+            sorted(product_dict.items(), key=lambda item: item[1], reverse=True)
+        )[:5]
         latest_orders = Order.objects.filter(store=store).order_by("-created")[:5]
-        latest_paid_orders = Order.objects.filter(store=store, billing_status=True).order_by("-created")[:5]
+        latest_paid_orders = Order.objects.filter(
+            store=store, billing_status=True
+        ).order_by("-created")[:5]
         customers = store.customers.all()
-        
-        
+
         if Order.objects.filter(store=store).order_by("-created")[:1].exists():
-            last_order = Order.objects.filter(store=store).order_by("-created")[:1].first()
+            last_order = (
+                Order.objects.filter(store=store).order_by("-created")[:1].first()
+            )
             if store.currency.code != last_order.currency_code:
                 today_total_amount = 0
                 last_24_orders_percentage = 0
-                last_7_days_total_amount= 0
+                last_7_days_total_amount = 0
                 last_7_days_orders_percentage = 0
                 last_1_month_amount = 0
                 last_1_month_orders_percentage = 0
@@ -442,48 +493,45 @@ def store_admin(request):
                     second_data.percentage = last_24_orders_percentage
                     second_data.save()
                     if second_data.percentage > first_data.percentage:
-                        last_24_hours_sales_total_growth = 'growth'
+                        last_24_hours_sales_total_growth = "growth"
                     elif second_data.percentage == first_data.percentage:
-                        last_24_hours_sales_total_growth = 'stagnant'
+                        last_24_hours_sales_total_growth = "stagnant"
                     elif second_data.percentage < first_data.percentage:
-                        last_24_hours_sales_total_growth ='shrinking'
+                        last_24_hours_sales_total_growth = "shrinking"
                     else:
-                        last_24_hours_sales_total_growth = 'shrinking'
+                        last_24_hours_sales_total_growth = "shrinking"
                 else:
                     if last_24_orders_percentage > 0:
-                        last_24_hours_sales_total_growth = 'growth'
+                        last_24_hours_sales_total_growth = "growth"
                     else:
-                        last_24_hours_sales_total_growth = 'shrinking'
+                        last_24_hours_sales_total_growth = "shrinking"
             elif last_24_hours_sales.objects.filter(store=store).count() == 1:
                 first_data = last_24_hours_sales.objects.filter(store=store).first()
                 if first_data.percentage != last_24_orders_percentage:
                     second_data = last_24_hours_sales.objects.create(
-                        store = store,
-                        percentage = last_24_orders_percentage
+                        store=store, percentage=last_24_orders_percentage
                     )
                     if second_data.percentage > first_data.percentage:
-                        last_24_hours_sales_total_growth = 'growth'
+                        last_24_hours_sales_total_growth = "growth"
                     elif second_data.percentage == first_data.percentage:
-                        last_24_hours_sales_total_growth = 'stagnant'
+                        last_24_hours_sales_total_growth = "stagnant"
                     elif second_data.percentage < first_data.percentage:
-                        last_24_hours_sales_total_growth ='shrinking'
+                        last_24_hours_sales_total_growth = "shrinking"
                     else:
-                        last_24_hours_sales_total_growth = 'shrinking'
+                        last_24_hours_sales_total_growth = "shrinking"
                 else:
                     if last_24_orders_percentage > 0:
-                        last_24_hours_sales_total_growth = 'growth'
+                        last_24_hours_sales_total_growth = "growth"
                     else:
-                        last_24_hours_sales_total_growth = 'shrinking'
+                        last_24_hours_sales_total_growth = "shrinking"
         else:
             last_24_hours_sales.objects.create(
-                    store = store,
-                    percentage = last_24_orders_percentage
-                )
+                store=store, percentage=last_24_orders_percentage
+            )
             if last_24_orders_percentage > 0:
-                last_24_hours_sales_total_growth = 'growth'
+                last_24_hours_sales_total_growth = "growth"
             else:
-                last_24_hours_sales_total_growth = 'shrinking'
-
+                last_24_hours_sales_total_growth = "shrinking"
 
         if last_7_days_sales.objects.filter(store=store).exists():
             if last_7_days_sales.objects.filter(store=store).count() == 2:
@@ -495,46 +543,44 @@ def store_admin(request):
                     second_data.percentage = last_7_days_orders_percentage
                     second_data.save()
                     if second_data.percentage > first_data.percentage:
-                        last_7_days_sales_total_growth = 'growth'
+                        last_7_days_sales_total_growth = "growth"
                     elif second_data.percentage == first_data.percentage:
-                        last_7_days_sales_total_growth = 'stagnant'
+                        last_7_days_sales_total_growth = "stagnant"
                     elif second_data.percentage < first_data.percentage:
-                        last_7_days_sales_total_growth ='shrinking'
+                        last_7_days_sales_total_growth = "shrinking"
                     else:
-                        last_7_days_sales_total_growth = 'shrinking'
+                        last_7_days_sales_total_growth = "shrinking"
                 if last_7_days_orders_percentage > 0:
-                    last_7_days_sales_total_growth = 'growth'
+                    last_7_days_sales_total_growth = "growth"
                 else:
-                    last_7_days_sales_total_growth = 'shrinking'
+                    last_7_days_sales_total_growth = "shrinking"
             elif last_7_days_sales.objects.filter(store=store).count() == 1:
                 first_data = last_7_days_sales.objects.filter(store=store).first()
                 if first_data.percentage != last_7_days_orders_percentage:
                     second_data = last_7_days_sales.objects.create(
-                        store = store,
-                        percentage = last_7_days_orders_percentage
+                        store=store, percentage=last_7_days_orders_percentage
                     )
                     if second_data.percentage > first_data.percentage:
-                        last_7_days_sales_total_growth = 'growth'
+                        last_7_days_sales_total_growth = "growth"
                     elif second_data.percentage == first_data.percentage:
-                        last_7_days_sales_total_growth = 'stagnant'
+                        last_7_days_sales_total_growth = "stagnant"
                     elif second_data.percentage < first_data.percentage:
-                        last_7_days_sales_total_growth ='shrinking'
+                        last_7_days_sales_total_growth = "shrinking"
                     else:
-                        last_7_days_sales_total_growth = 'shrinking'
+                        last_7_days_sales_total_growth = "shrinking"
                 else:
                     if last_7_days_orders_percentage > 0:
-                        last_7_days_sales_total_growth = 'growth'
+                        last_7_days_sales_total_growth = "growth"
                     else:
-                        last_7_days_sales_total_growth = 'shrinking'
+                        last_7_days_sales_total_growth = "shrinking"
         else:
             last_7_days_sales.objects.create(
-                    store = store,
-                    percentage = last_7_days_orders_percentage
-                )
+                store=store, percentage=last_7_days_orders_percentage
+            )
             if last_7_days_orders_percentage > 0:
-                last_7_days_sales_total_growth = 'growth'
+                last_7_days_sales_total_growth = "growth"
             else:
-                last_7_days_sales_total_growth = 'shrinking'
+                last_7_days_sales_total_growth = "shrinking"
 
         if last_7_days_customers.objects.filter(store=store).exists():
             if last_7_days_customers.objects.filter(store=store).count() == 2:
@@ -546,48 +592,45 @@ def store_admin(request):
                     second_data.percentage = last_7_days_customers_percentage
                     second_data.save()
                     if second_data.percentage > first_data.percentage:
-                        last_7_days_customers_growth = 'growth'
+                        last_7_days_customers_growth = "growth"
                     elif second_data.percentage == first_data.percentage:
-                        last_7_days_customers_growth = 'stagnant'
+                        last_7_days_customers_growth = "stagnant"
                     elif second_data.percentage < first_data.percentage:
-                        last_7_days_customers_growth ='shrinking'
+                        last_7_days_customers_growth = "shrinking"
                     else:
-                        last_7_days_customers_growth = 'shrinking'
+                        last_7_days_customers_growth = "shrinking"
                 if last_7_days_orders_percentage > 0:
-                    last_7_days_customers_growth = 'growth'
+                    last_7_days_customers_growth = "growth"
                 else:
-                    last_7_days_customers_growth = 'shrinking'
+                    last_7_days_customers_growth = "shrinking"
             elif last_7_days_customers.objects.filter(store=store).count() == 1:
                 first_data = last_7_days_customers.objects.filter(store=store).first()
                 if first_data.percentage != last_7_days_orders_percentage:
                     second_data = last_7_days_customers.objects.create(
-                        store = store,
-                        percentage = last_7_days_customers_percentage
+                        store=store, percentage=last_7_days_customers_percentage
                     )
                     if second_data.percentage > first_data.percentage:
-                        last_7_days_customers_growth = 'growth'
+                        last_7_days_customers_growth = "growth"
                     elif second_data.percentage == first_data.percentage:
-                        last_7_days_customers_growth = 'stagnant'
+                        last_7_days_customers_growth = "stagnant"
                     elif second_data.percentage < first_data.percentage:
-                        last_7_days_customers_growth ='shrinking'
+                        last_7_days_customers_growth = "shrinking"
                     else:
-                        last_7_days_customers_growth = 'shrinking'
+                        last_7_days_customers_growth = "shrinking"
                 else:
                     if last_7_days_orders_percentage > 0:
-                        last_7_days_customers_growth = 'growth'
+                        last_7_days_customers_growth = "growth"
                     else:
-                        last_7_days_customers_growth = 'shrinking'
+                        last_7_days_customers_growth = "shrinking"
         else:
             last_7_days_customers.objects.create(
-                    store = store,
-                    percentage = last_7_days_customers_percentage
-                )
+                store=store, percentage=last_7_days_customers_percentage
+            )
             if last_7_days_orders_percentage > 0:
-                last_7_days_customers_growth = 'growth'
+                last_7_days_customers_growth = "growth"
             else:
-                last_7_days_customers_growth = 'shrinking'
+                last_7_days_customers_growth = "shrinking"
 
-        
         if last_24_hours_customers.objects.filter(store=store).exists():
             if last_24_hours_customers.objects.filter(store=store).count() == 2:
                 first_data = last_24_hours_customers.objects.filter(store=store).first()
@@ -598,48 +641,45 @@ def store_admin(request):
                     second_data.percentage = last_24_customers_percentage
                     second_data.save()
                     if second_data.percentage > first_data.percentage:
-                        last_24_customers_growth = 'growth'
+                        last_24_customers_growth = "growth"
                     elif second_data.percentage == first_data.percentage:
-                        last_24_customers_growth = 'stagnant'
+                        last_24_customers_growth = "stagnant"
                     elif second_data.percentage < first_data.percentage:
-                        last_24_customers_growth ='shrinking'
+                        last_24_customers_growth = "shrinking"
                     else:
-                        last_24_customers_growth = 'shrinking'
+                        last_24_customers_growth = "shrinking"
                 if last_24_customers_percentage > 0:
-                    last_24_customers_growth = 'growth'
+                    last_24_customers_growth = "growth"
                 else:
-                    last_24_customers_growth = 'shrinking'
+                    last_24_customers_growth = "shrinking"
             elif last_24_hours_customers.objects.filter(store=store).count() == 1:
                 first_data = last_24_hours_customers.objects.filter(store=store).first()
                 if first_data.percentage != last_24_customers_percentage:
                     second_data = last_24_hours_customers.objects.create(
-                        store = store,
-                        percentage = last_24_customers_percentage
+                        store=store, percentage=last_24_customers_percentage
                     )
                     if second_data.percentage > first_data.percentage:
-                        last_24_customers_growth = 'growth'
+                        last_24_customers_growth = "growth"
                     elif second_data.percentage == first_data.percentage:
-                        last_24_customers_growth = 'stagnant'
+                        last_24_customers_growth = "stagnant"
                     elif second_data.percentage < first_data.percentage:
-                        last_24_customers_growth ='shrinking'
+                        last_24_customers_growth = "shrinking"
                     else:
-                        last_24_customers_growth = 'shrinking'
+                        last_24_customers_growth = "shrinking"
                 else:
                     if last_24_customers_percentage > 0:
-                        last_24_customers_growth = 'growth'
+                        last_24_customers_growth = "growth"
                     else:
-                        last_24_customers_growth = 'shrinking'
+                        last_24_customers_growth = "shrinking"
         else:
             last_24_hours_customers.objects.create(
-                    store = store,
-                    percentage = last_24_customers_percentage
-                )
+                store=store, percentage=last_24_customers_percentage
+            )
             if last_24_customers_percentage > 0:
-                last_24_customers_growth = 'growth'
+                last_24_customers_growth = "growth"
             else:
-                last_24_customers_growth = 'shrinking'
+                last_24_customers_growth = "shrinking"
 
-        
         if yearly_sales.objects.filter(store=store).exists():
             if yearly_sales.objects.filter(store=store).count() == 2:
                 first_data = yearly_sales.objects.filter(store=store).first()
@@ -650,48 +690,45 @@ def store_admin(request):
                     second_data.percentage = last_1_year_orders_percentage
                     second_data.save()
                     if second_data.percentage > first_data.percentage:
-                        yearly_sales_total_growth = 'growth'
+                        yearly_sales_total_growth = "growth"
                     elif second_data.percentage == first_data.percentage:
-                        yearly_sales_total_growth = 'stagnant'
+                        yearly_sales_total_growth = "stagnant"
                     elif second_data.percentage < first_data.percentage:
-                        yearly_sales_total_growth ='shrinking'
+                        yearly_sales_total_growth = "shrinking"
                     else:
-                        yearly_sales_total_growth = 'shrinking'
+                        yearly_sales_total_growth = "shrinking"
                 if last_1_year_orders_percentage > 0:
-                    yearly_sales_total_growth = 'growth'
+                    yearly_sales_total_growth = "growth"
                 else:
-                    yearly_sales_total_growth = 'shrinking'
+                    yearly_sales_total_growth = "shrinking"
             elif yearly_sales.objects.filter(store=store).count() == 1:
                 first_data = yearly_sales.objects.filter(store=store).first()
                 if first_data.percentage != last_24_customers_percentage:
                     second_data = yearly_sales.objects.create(
-                        store = store,
-                        percentage = last_1_year_orders_percentage
+                        store=store, percentage=last_1_year_orders_percentage
                     )
                     if second_data.percentage > first_data.percentage:
-                        yearly_sales_total_growth = 'growth'
+                        yearly_sales_total_growth = "growth"
                     elif second_data.percentage == first_data.percentage:
-                        yearly_sales_total_growth = 'stagnant'
+                        yearly_sales_total_growth = "stagnant"
                     elif second_data.percentage < first_data.percentage:
-                        yearly_sales_total_growth ='shrinking'
+                        yearly_sales_total_growth = "shrinking"
                     else:
-                        yearly_sales_total_growth = 'shrinking'
+                        yearly_sales_total_growth = "shrinking"
                 else:
                     if last_1_year_orders_percentage > 0:
-                        yearly_sales_total_growth = 'growth'
+                        yearly_sales_total_growth = "growth"
                     else:
-                        yearly_sales_total_growth = 'shrinking'
+                        yearly_sales_total_growth = "shrinking"
         else:
             yearly_sales.objects.create(
-                    store = store,
-                    percentage = last_1_year_orders_percentage
-                )
+                store=store, percentage=last_1_year_orders_percentage
+            )
             if last_1_year_orders_percentage > 0:
-                yearly_sales_total_growth = 'growth'
+                yearly_sales_total_growth = "growth"
             else:
-                yearly_sales_total_growth = 'shrinking'
+                yearly_sales_total_growth = "shrinking"
 
-        
         if last_30_days_sales.objects.filter(store=store).exists():
             if last_30_days_sales.objects.filter(store=store).count() == 2:
                 first_data = last_30_days_sales.objects.filter(store=store).first()
@@ -702,47 +739,44 @@ def store_admin(request):
                     second_data.percentage = last_1_month_orders_percentage
                     second_data.save()
                     if second_data.percentage > first_data.percentage:
-                        last_1_month_sales_growth = 'growth'
+                        last_1_month_sales_growth = "growth"
                     elif second_data.percentage == first_data.percentage:
-                        last_1_month_sales_growth = 'stagnant'
+                        last_1_month_sales_growth = "stagnant"
                     elif second_data.percentage < first_data.percentage:
-                        last_1_month_sales_growth ='shrinking'
+                        last_1_month_sales_growth = "shrinking"
                     else:
-                        last_1_month_sales_growth = 'shrinking'
+                        last_1_month_sales_growth = "shrinking"
                 if last_1_month_orders_percentage > 0:
-                    last_1_month_sales_growth = 'growth'
+                    last_1_month_sales_growth = "growth"
                 else:
-                    last_1_month_sales_growth = 'shrinking'
+                    last_1_month_sales_growth = "shrinking"
             elif last_30_days_sales.objects.filter(store=store).count() == 1:
                 first_data = last_30_days_sales.objects.filter(store=store).first()
                 if first_data.percentage != last_1_month_orders_percentage:
                     second_data = last_30_days_sales.objects.create(
-                        store = store,
-                        percentage = last_1_month_orders_percentage
+                        store=store, percentage=last_1_month_orders_percentage
                     )
                     if second_data.percentage > first_data.percentage:
-                        last_1_month_sales_growth = 'growth'
+                        last_1_month_sales_growth = "growth"
                     elif second_data.percentage == first_data.percentage:
-                        last_1_month_sales_growth = 'stagnant'
+                        last_1_month_sales_growth = "stagnant"
                     elif second_data.percentage < first_data.percentage:
-                        last_1_month_sales_growth ='shrinking'
+                        last_1_month_sales_growth = "shrinking"
                     else:
-                        last_1_month_sales_growth = 'shrinking'
+                        last_1_month_sales_growth = "shrinking"
                 else:
                     if last_1_month_orders_percentage > 0:
-                        last_1_month_sales_growth = 'growth'
+                        last_1_month_sales_growth = "growth"
                     else:
-                        last_1_month_sales_growth = 'shrinking'
+                        last_1_month_sales_growth = "shrinking"
         else:
             last_30_days_sales.objects.create(
-                    store = store,
-                    percentage = last_1_month_orders_percentage
-                )
+                store=store, percentage=last_1_month_orders_percentage
+            )
             if last_1_month_orders_percentage > 0:
-                last_1_month_sales_growth = 'growth'
+                last_1_month_sales_growth = "growth"
             else:
-                last_1_month_sales_growth = 'shrinking'
-
+                last_1_month_sales_growth = "shrinking"
 
         if customers_yearly.objects.filter(store=store).exists():
             if customers_yearly.objects.filter(store=store).count() == 2:
@@ -754,48 +788,45 @@ def store_admin(request):
                     second_data.percentage = last_1_year_customers_percentage
                     second_data.save()
                     if second_data.percentage > first_data.percentage:
-                        customers_growth = 'growth'
+                        customers_growth = "growth"
                     elif second_data.percentage == first_data.percentage:
-                        customers_growth = 'stagnant'
+                        customers_growth = "stagnant"
                     elif second_data.percentage < first_data.percentage:
-                        customers_growth ='shrinking'
+                        customers_growth = "shrinking"
                     else:
-                        customers_growth = 'shrinking'
+                        customers_growth = "shrinking"
                 if last_1_year_customers_percentage > 0:
-                    customers_growth = 'growth'
+                    customers_growth = "growth"
                 else:
-                    customers_growth = 'shrinking'
+                    customers_growth = "shrinking"
             elif customers_yearly.objects.filter(store=store).count() == 1:
                 first_data = customers_yearly.objects.filter(store=store).first()
                 if first_data.percentage != last_1_year_customers_percentage:
                     second_data = customers_yearly.objects.create(
-                        store = store,
-                        percentage = last_1_year_customers_percentage
+                        store=store, percentage=last_1_year_customers_percentage
                     )
                     if second_data.percentage > first_data.percentage:
-                        customers_growth = 'growth'
+                        customers_growth = "growth"
                     elif second_data.percentage == first_data.percentage:
-                        customers_growth = 'stagnant'
+                        customers_growth = "stagnant"
                     elif second_data.percentage < first_data.percentage:
-                        customers_growth ='shrinking'
+                        customers_growth = "shrinking"
                     else:
-                        customers_growth = 'shrinking'
+                        customers_growth = "shrinking"
                 else:
                     if last_1_year_customers_percentage > 0:
-                        customers_growth = 'growth'
+                        customers_growth = "growth"
                     else:
-                        customers_growth = 'shrinking'
+                        customers_growth = "shrinking"
         else:
             customers_yearly.objects.create(
-                    store = store,
-                    percentage = last_1_year_customers_percentage
-                )
+                store=store, percentage=last_1_year_customers_percentage
+            )
             if last_1_year_customers_percentage > 0:
-                customers_growth = 'growth'
+                customers_growth = "growth"
             else:
-                customers_growth = 'shrinking'
+                customers_growth = "shrinking"
 
-        
         if customers_monthly.objects.filter(store=store).exists():
             if customers_monthly.objects.filter(store=store).count() == 2:
                 first_data = customers_monthly.objects.filter(store=store).first()
@@ -806,70 +837,113 @@ def store_admin(request):
                     second_data.percentage = last_1_month_customers_percentage
                     second_data.save()
                     if second_data.percentage > first_data.percentage:
-                        last_30_customers_growth = 'growth'
+                        last_30_customers_growth = "growth"
                     elif second_data.percentage == first_data.percentage:
-                        last_30_customers_growth = 'stagnant'
+                        last_30_customers_growth = "stagnant"
                     elif second_data.percentage < first_data.percentage:
-                        last_30_customers_growth ='shrinking'
+                        last_30_customers_growth = "shrinking"
                     else:
-                        last_30_customers_growth = 'shrinking'
+                        last_30_customers_growth = "shrinking"
                 if last_1_month_customers_percentage > 0:
-                    last_30_customers_growth = 'growth'
+                    last_30_customers_growth = "growth"
                 else:
-                    last_30_customers_growth = 'shrinking'
+                    last_30_customers_growth = "shrinking"
             elif customers_monthly.objects.filter(store=store).count() == 1:
                 first_data = customers_monthly.objects.filter(store=store).first()
                 if first_data.percentage != last_1_month_customers_percentage:
                     second_data = customers_monthly.objects.create(
-                        store = store,
-                        percentage = last_1_month_customers_percentage
+                        store=store, percentage=last_1_month_customers_percentage
                     )
                     if second_data.percentage > first_data.percentage:
-                        last_30_customers_growth = 'growth'
+                        last_30_customers_growth = "growth"
                     elif second_data.percentage == first_data.percentage:
-                        last_30_customers_growth = 'stagnant'
+                        last_30_customers_growth = "stagnant"
                     elif second_data.percentage < first_data.percentage:
-                        last_30_customers_growth ='shrinking'
+                        last_30_customers_growth = "shrinking"
                     else:
-                        last_30_customers_growth = 'shrinking'
+                        last_30_customers_growth = "shrinking"
                 else:
                     if last_1_month_customers_percentage > 0:
-                        last_30_customers_growth = 'growth'
+                        last_30_customers_growth = "growth"
                     else:
-                        last_30_customers_growth = 'shrinking'
+                        last_30_customers_growth = "shrinking"
         else:
             customers_monthly.objects.create(
-                    store = store,
-                    percentage = last_1_month_customers_percentage
-                )
+                store=store, percentage=last_1_month_customers_percentage
+            )
             if last_1_month_customers_percentage > 0:
-                last_30_customers_growth = 'growth'
+                last_30_customers_growth = "growth"
             else:
-                last_30_customers_growth = 'shrinking'
+                last_30_customers_growth = "shrinking"
 
-    
-        return render(request, "store/store-admin.html", {"customer_dict": customer_dict, "product_dict": product_dict, "today_total_amount": today_total_amount, "latest_paid_orders":latest_paid_orders, "latest_orders": latest_orders, "last_24_hours_total_customers": last_24_hours_total_customers, 'customers': customers, 'store':store, 'subscribed':subscribed, 'last_24_orders_percentage':int(last_24_orders_percentage), 'last_24_customers_percentage':int(last_24_customers_percentage), 'last_7_days_orders_percentage':int(last_7_days_orders_percentage), 'last_7_days_total_amount':last_7_days_total_amount, 'last_7_days_total_customer':last_7_days_total_customer,
-        'last_7_days_customers_percentage':int(last_7_days_customers_percentage), 'last_1_month_orders_percentage':int(last_1_month_orders_percentage), 'last_1_month_total_amount':last_1_month_total_amount, 'last_1_year_orders_percentage':int(last_1_year_orders_percentage), 'last_1_year_total_amount':last_1_year_total_amount
-        , 'last_1_year_customers_percentage':int(last_1_year_customers_percentage), 'last_1_year_total_customer':last_1_year_total_customer, 'last_1_month_customers_percentage':int(last_1_month_customers_percentage), 'last_1_month_total_customer':last_1_month_total_customer, 'last_7_days_sales_total_growth':last_7_days_sales_total_growth, 'last_24_hours_sales_total_growth':last_24_hours_sales_total_growth, 'last_7_days_customers_growth':last_7_days_customers_growth, 'last_24_customers_growth':last_24_customers_growth, 'yearly_sales_total_growth':yearly_sales_total_growth, 'last_1_month_sales_growth':last_1_month_sales_growth, 'customers_growth':customers_growth, 'last_30_customers_growth':last_30_customers_growth})
+        return render(
+            request,
+            "store/store-admin.html",
+            {
+                "customer_dict": customer_dict,
+                "product_dict": product_dict,
+                "today_total_amount": today_total_amount,
+                "latest_paid_orders": latest_paid_orders,
+                "latest_orders": latest_orders,
+                "last_24_hours_total_customers": last_24_hours_total_customers,
+                "customers": customers,
+                "store": store,
+                "subscribed": subscribed,
+                "last_24_orders_percentage": int(last_24_orders_percentage),
+                "last_24_customers_percentage": int(last_24_customers_percentage),
+                "last_7_days_orders_percentage": int(last_7_days_orders_percentage),
+                "last_7_days_total_amount": last_7_days_total_amount,
+                "last_7_days_total_customer": last_7_days_total_customer,
+                "last_7_days_customers_percentage": int(
+                    last_7_days_customers_percentage
+                ),
+                "last_1_month_orders_percentage": int(last_1_month_orders_percentage),
+                "last_1_month_total_amount": last_1_month_total_amount,
+                "last_1_year_orders_percentage": int(last_1_year_orders_percentage),
+                "last_1_year_total_amount": last_1_year_total_amount,
+                "last_1_year_customers_percentage": int(
+                    last_1_year_customers_percentage
+                ),
+                "last_1_year_total_customer": last_1_year_total_customer,
+                "last_1_month_customers_percentage": int(
+                    last_1_month_customers_percentage
+                ),
+                "last_1_month_total_customer": last_1_month_total_customer,
+                "last_7_days_sales_total_growth": last_7_days_sales_total_growth,
+                "last_24_hours_sales_total_growth": last_24_hours_sales_total_growth,
+                "last_7_days_customers_growth": last_7_days_customers_growth,
+                "last_24_customers_growth": last_24_customers_growth,
+                "yearly_sales_total_growth": yearly_sales_total_growth,
+                "last_1_month_sales_growth": last_1_month_sales_growth,
+                "customers_growth": customers_growth,
+                "last_30_customers_growth": last_30_customers_growth,
+            },
+        )
     else:
         subscribed = False
         messages.error(request, "You need to subscribe view this page.")
-        return render(request, 'store/store-admin.html', {'subscribed':subscribed})
-   
-    
+        return render(request, "store/store-admin.html", {"subscribed": subscribed})
 
 
 def store(request, slugified_store_name):
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
     products = Product.objects.filter(store=store).order_by("-created")[:12]
-    return render(request, "store/store.html", {"store": store, "products": products, "slugified_store_name": slugified_store_name})
+    return render(
+        request,
+        "store/store.html",
+        {
+            "store": store,
+            "products": products,
+            "slugified_store_name": slugified_store_name,
+        },
+    )
 
 
 @login_required(login_url="/account/login/")
 def store_customers(request, slugified_store_name):
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
     customers = Customer.objects.filter(store=store)
-    page = request.GET.get('page', 1)
+    page = request.GET.get("page", 1)
     paginator = Paginator(customers, 10)
     try:
         customers = paginator.page(page)
@@ -905,7 +979,7 @@ def wishlist(request):
     wishlist = Product.objects.filter(wishlist=user)
     for product in wishlist:
         product_store = Store.objects.get(store_name=product.store.store_name)
-    page = request.GET.get('page', 1)
+    page = request.GET.get("page", 1)
     paginator = Paginator(wishlist, 10)
     try:
         wishlist = paginator.page(page)
@@ -1000,7 +1074,7 @@ def all_category(request):
             store_name=store_staff.objects.get(email=request.user.email).store
         )
     categories = Category.objects.filter(created_by=store)
-    page = request.GET.get('page', 1)
+    page = request.GET.get("page", 1)
     paginator = Paginator(categories, 10)
     try:
         categories = paginator.page(page)
@@ -1019,9 +1093,8 @@ def store_category_products(request, slugified_store_name, slug):
         SEO = False
     category = get_object_or_404(Category, slug=slug, created_by=store)
     get_store_category_products(request)
-    products = Product.objects.filter(
-        category=category, store=store)
-    page = request.GET.get('page', 1)
+    products = Product.objects.filter(category=category, store=store)
+    page = request.GET.get("page", 1)
     paginator = Paginator(products, 20)
     try:
         products = paginator.page(page)
@@ -1032,8 +1105,9 @@ def store_category_products(request, slugified_store_name, slug):
     return render(
         request,
         "store/view-more.html",
-        {"products":products, "category": category, "store": store, "SEO": SEO},
+        {"products": products, "category": category, "store": store, "SEO": SEO},
     )
+
 
 def all_store_products(request, slugified_store_name):
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
@@ -1042,7 +1116,7 @@ def all_store_products(request, slugified_store_name):
     else:
         SEO = False
     products = Product.objects.filter(store=store)
-    page = request.GET.get('page', 1)
+    page = request.GET.get("page", 1)
     paginator = Paginator(products, 20)
     try:
         products = paginator.page(page)
@@ -1050,7 +1124,11 @@ def all_store_products(request, slugified_store_name):
         products = paginator.page(1)
     except EmptyPage:
         products = paginator.page(paginator.num_pages)
-    return render(request, "store/view-more.html", {"products": products, "store": store, "SEO": SEO})
+    return render(
+        request,
+        "store/view-more.html",
+        {"products": products, "store": store, "SEO": SEO},
+    )
 
 
 @login_required(login_url="/account/login/")
@@ -1062,7 +1140,7 @@ def discount_products(request):
             store_name=store_staff.objects.get(email=request.user.email).store
         )
     products = Product.objects.filter(store=store, discount_percentage__gt=0)
-    page = request.GET.get('page', 1)
+    page = request.GET.get("page", 1)
     paginator = Paginator(products, 10)
     try:
         products = paginator.page(page)
@@ -1087,11 +1165,11 @@ def create_coupon(request):
             store_subscription = Subscription_Timeline.objects.get(store=store)
             if store_subscription.subscription.name == "Professional":
                 store_coupon_limit = 10
-            elif store_subscription.subscription.name == "Standard":  
+            elif store_subscription.subscription.name == "Standard":
                 store_coupon_limit = 3
             else:
                 store_coupon_limit = 0
-            if store_coupons.count() <= store_coupon_limit:  
+            if store_coupons.count() <= store_coupon_limit:
                 if request.method == "POST":
                     form = CouponForm(request.POST, request.FILES)
                     if form.is_valid():
@@ -1106,12 +1184,14 @@ def create_coupon(request):
                             )
                         else:
                             coupon = form.save(commit=False)
-                            store = Store.objects.get(store_name=request.user.store_name)
+                            store = Store.objects.get(
+                                store_name=request.user.store_name
+                            )
                             coupon.created_by = store
                             coupon.save()
                             return redirect("app:all_coupons")
             else:
-                messages.error(request, "You have reached the coupon limit")     
+                messages.error(request, "You have reached the coupon limit")
     else:
         messages.error(request, "You are not authorized to create coupon")
     context = {"form": form}
@@ -1134,7 +1214,7 @@ def all_coupons(request):
         minutes = expiry_date_seconds / 60
         if int(minutes) > coupon.expiry_date:
             coupon.delete()
-    page = request.GET.get('page', 1)
+    page = request.GET.get("page", 1)
     paginator = Paginator(coupons, 10)
     try:
         coupons = paginator.page(page)
@@ -1169,7 +1249,7 @@ def all_customers(request):
             store_name=store_staff.objects.get(email=request.user.email).store
         )
 
-    customers =  Customer.objects.filter(store=store)
+    customers = Customer.objects.filter(store=store)
     return render(request, "store/customers.html", {"customers": customers})
 
 
@@ -1190,7 +1270,7 @@ def store_orders(request):
                 payment = Payment.objects.get(order=order)
             else:
                 payment = None
-    page = request.GET.get('page', 1)
+    page = request.GET.get("page", 1)
     paginator = Paginator(orders, 10)
     try:
         orders = paginator.page(page)
@@ -1199,7 +1279,9 @@ def store_orders(request):
     except EmptyPage:
         orders = paginator.page(paginator.num_pages)
     return render(
-        request, "store/store-order.html", {"orders": orders, "payment": payment, "orders_count": orders_count}
+        request,
+        "store/store-order.html",
+        {"orders": orders, "payment": payment, "orders_count": orders_count},
     )
 
 
@@ -1221,8 +1303,8 @@ def unpaid_store_orders(request):
             if Payment.objects.filter(order=order).exists():
                 payment = Payment.objects.get(order=order)
             else:
-                payment = None   
-    page = request.GET.get('page', 1)
+                payment = None
+    page = request.GET.get("page", 1)
     paginator = Paginator(orders, 10)
     try:
         orders = paginator.page(page)
@@ -1231,7 +1313,9 @@ def unpaid_store_orders(request):
     except EmptyPage:
         orders = paginator.page(paginator.num_pages)
     return render(
-        request, "store/store-order.html", {"orders": orders, "payment": payment, 'orders_count':orders_count}
+        request,
+        "store/store-order.html",
+        {"orders": orders, "payment": payment, "orders_count": orders_count},
     )
 
 
@@ -1272,10 +1356,24 @@ def store_review(request, slugified_store_name):
                 review.full_name = request.user.full_name
             review.save()
             staffs = store_staff.objects.filter(store=store)
-            for staff in staffs:     
+            for staff in staffs:
                 staff_user = User.objects.get(email=staff.email)
-                notify.send(store.owner, recipient=staff_user, verb=f"{store.store_name} just got a new store review", review_detail_url=reverse("app:store_review_detail", kwargs={"pk": review.pk}))
-            notify.send(store.owner, recipient=store.owner, verb=f"{store.store_name} just got a new store review", review_detail_url=reverse("app:store_review_detail", kwargs={"pk": review.pk}))
+                notify.send(
+                    store.owner,
+                    recipient=staff_user,
+                    verb=f"{store.store_name} just got a new store review",
+                    review_detail_url=reverse(
+                        "app:store_review_detail", kwargs={"pk": review.pk}
+                    ),
+                )
+            notify.send(
+                store.owner,
+                recipient=store.owner,
+                verb=f"{store.store_name} just got a new store review",
+                review_detail_url=reverse(
+                    "app:store_review_detail", kwargs={"pk": review.pk}
+                ),
+            )
             return redirect("app:store", slugified_store_name=slugified_store_name)
     context = {"form": form, "store": store}
     return render(request, "store/store-review.html", context)
@@ -1290,14 +1388,14 @@ def store_review_list(request):
             store_name=store_staff.objects.get(email=request.user.email).store
         )
     reviews = Review.objects.filter(store=store)
-    page = request.GET.get('page', 1)
+    page = request.GET.get("page", 1)
     paginator = Paginator(reviews, 10)
     try:
         reviews = paginator.page(page)
     except PageNotAnInteger:
         reviews = paginator.page(1)
     except EmptyPage:
-            reviews = paginator.page(paginator.num_pages)
+        reviews = paginator.page(paginator.num_pages)
     return render(request, "store/store-review-list.html", {"reviews": reviews})
 
 
@@ -1319,10 +1417,24 @@ def product_store_review(request, slugified_store_name, slug):
             review.store = store
             review.save()
             staffs = store_staff.objects.filter(store=store)
-            for staff in staffs:     
+            for staff in staffs:
                 staff_user = User.objects.get(email=staff.email)
-                notify.send(store.owner, recipient=staff_user, verb=f"{store.store_name} just got a new product review", review_detail_url=reverse("app:store_review_detail", kwargs={"pk": review.pk}))
-            notify.send(store.owner, recipient=store.owner, verb=f"{store.store_name} just got a new product review", review_detail_url=reverse("app:store_review_detail", kwargs={"pk": review.pk}))
+                notify.send(
+                    store.owner,
+                    recipient=staff_user,
+                    verb=f"{store.store_name} just got a new product review",
+                    review_detail_url=reverse(
+                        "app:store_review_detail", kwargs={"pk": review.pk}
+                    ),
+                )
+            notify.send(
+                store.owner,
+                recipient=store.owner,
+                verb=f"{store.store_name} just got a new product review",
+                review_detail_url=reverse(
+                    "app:store_review_detail", kwargs={"pk": review.pk}
+                ),
+            )
             return redirect(
                 "customer:customer_product_detail",
                 slugified_store_name=slugified_store_name,
@@ -1349,7 +1461,11 @@ def store_review_detail(request, pk):
             customer = None
     else:
         customer = None
-    return render(request, "store/store-review-detail.html", {"review": review, "customer": customer})
+    return render(
+        request,
+        "store/store-review-detail.html",
+        {"review": review, "customer": customer},
+    )
 
 
 @login_required(login_url="/account/login/")
@@ -1372,7 +1488,7 @@ def yearly_subscription_plans(request):
     return render(
         request,
         "store/subscription-plans.html",
-        {"plans": plans, "store":store, "reccuring_sub": reccuring_sub},
+        {"plans": plans, "store": store, "reccuring_sub": reccuring_sub},
     )
 
 
@@ -1396,21 +1512,21 @@ def monthly_subscription_plans(request):
     return render(
         request,
         "store/subscription-plans.html",
-        {"plans": plans, "store":store, "reccuring_sub": reccuring_sub},
+        {"plans": plans, "store": store, "reccuring_sub": reccuring_sub},
     )
 
 
 @login_required(login_url="/account/login/")
 def transanction_history(request):
     if request.user.store_creator == True:
-        store = Store.objects.get(owner= request.user)
+        store = Store.objects.get(owner=request.user)
     else:
         store = Store.objects.get(
             store_name=store_staff.objects.get(email=request.user.email).store
         )
     payments = Payment.objects.filter(store=store)
     customers = store.customers.all()
-    page = request.GET.get('page', 1)
+    page = request.GET.get("page", 1)
     paginator = Paginator(payments, 10)
     try:
         payments = paginator.page(page)
@@ -1418,7 +1534,11 @@ def transanction_history(request):
         payments = paginator.page(1)
     except EmptyPage:
         payments = paginator.page(paginator.num_pages)
-    return render(request, "store/transanction-history.html", {"payments":payments, "store":store, "customers":customers})
+    return render(
+        request,
+        "store/transanction-history.html",
+        {"payments": payments, "store": store, "customers": customers},
+    )
 
 
 @login_required(login_url="/account/login/")
@@ -1430,7 +1550,7 @@ def store_staff_page(request):
             store_name=store_staff.objects.get(email=request.user.email).store
         )
     store_staffs = store_staff.objects.filter(store=store)
-    page = request.GET.get('page', 1)
+    page = request.GET.get("page", 1)
     paginator = Paginator(store_staffs, 10)
     try:
         store_staffs = paginator.page(page)
@@ -1439,7 +1559,9 @@ def store_staff_page(request):
     except EmptyPage:
         store_staffs = paginator.page(paginator.num_pages)
     return render(
-        request, "store/store-staff-page.html", {"store_staffs": store_staffs, "store":store}
+        request,
+        "store/store-staff-page.html",
+        {"store_staffs": store_staffs, "store": store},
     )
 
 
@@ -1452,7 +1574,7 @@ def shipping_method_list(request):
             store_name=store_staff.objects.get(email=request.user.email).store
         )
     shipping_methods = Shipping_Method.objects.filter(store=store)
-    page = request.GET.get('page', 1)
+    page = request.GET.get("page", 1)
     paginator = Paginator(shipping_methods, 10)
     try:
         shipping_methods = paginator.page(page)
@@ -1546,6 +1668,7 @@ def delete_shipping_method(request, pk):
         error = "You are not authorized"
         return render(request, "store/shipping-method.html", {"error": error})
 
+
 @login_required(login_url="/account/login/")
 def store_customers_details(request, pk):
     if request.user.store_creator == True:
@@ -1556,8 +1679,8 @@ def store_customers_details(request, pk):
         )
     customer = get_object_or_404(Customer, pk=pk)
     customer_user = User.objects.get(email=customer.email)
-    reviews = Review.objects.filter(email= customer_user.email, store=store)
-    page = request.GET.get('page', 1)
+    reviews = Review.objects.filter(email=customer_user.email, store=store)
+    page = request.GET.get("page", 1)
     paginator = Paginator(reviews, 5)
     try:
         reviews = paginator.page(page)
@@ -1566,7 +1689,7 @@ def store_customers_details(request, pk):
     except EmptyPage:
         reviews = paginator.page(paginator.num_pages)
     orders = Order.objects.filter(user=customer_user, store=store)
-    page = request.GET.get('page', 1)
+    page = request.GET.get("page", 1)
     paginator = Paginator(orders, 5)
     try:
         orders = paginator.page(page)
@@ -1574,13 +1697,24 @@ def store_customers_details(request, pk):
         orders = paginator.page(1)
     except EmptyPage:
         orders = paginator.page(paginator.num_pages)
-    return render(request, "store/customer-details.html", {"customer": customer, "store": store, "reviews": reviews, "orders": orders, "customer_user": customer_user})
+    return render(
+        request,
+        "store/customer-details.html",
+        {
+            "customer": customer,
+            "store": store,
+            "reviews": reviews,
+            "orders": orders,
+            "customer_user": customer_user,
+        },
+    )
+
 
 def product_review_list(request, slugified_store_name, slug):
     store = Store.objects.get(slugified_store_name=slugified_store_name)
     product = Product.objects.get(slug=slug, store=store)
     reviews = Review.objects.filter(product=product)
-    page = request.GET.get('page', 1)
+    page = request.GET.get("page", 1)
     paginator = Paginator(reviews, 10)
     try:
         reviews = paginator.page(page)
@@ -1588,8 +1722,11 @@ def product_review_list(request, slugified_store_name, slug):
         reviews = paginator.page(1)
     except EmptyPage:
         reviews = paginator.page(paginator.num_pages)
-    return render( request, "customer/product-review-list.html",
-        {  "reviews": reviews, "product": product, "store": store })
+    return render(
+        request,
+        "customer/product-review-list.html",
+        {"reviews": reviews, "product": product, "store": store},
+    )
 
 
 def store_wallet(request):
@@ -1599,24 +1736,24 @@ def store_wallet(request):
         store = Store.objects.get(
             store_name=store_staff.objects.get(email=request.user.email).store
         )
-    wallets = Wallet.objects.filter(store=store) 
+    wallets = Wallet.objects.filter(store=store)
     naira_wallet = None
     usd_wallet = None
     usd_currency_code = "USD"
-    naira_currency_code ="NGN"
+    naira_currency_code = "NGN"
     form = WalletForm
     if wallets:
-        if Currency.objects.filter(code= "NGN").exists():
-            naira_currency = Currency.objects.get(code= "NGN")
+        if Currency.objects.filter(code="NGN").exists():
+            naira_currency = Currency.objects.get(code="NGN")
             if Wallet.objects.filter(store=store, currency=naira_currency).exists():
-                naira_wallet = Wallet.objects.get(store=store, currency=naira_currency) 
-        if Currency.objects.filter(code= "USD").exists():
-            usd_currency = Currency.objects.get(code= "USD")
+                naira_wallet = Wallet.objects.get(store=store, currency=naira_currency)
+        if Currency.objects.filter(code="USD").exists():
+            usd_currency = Currency.objects.get(code="USD")
             if Wallet.objects.filter(store=store, currency=usd_currency).exists():
-                usd_wallet = Wallet.objects.get(store=store, currency=usd_currency) 
+                usd_wallet = Wallet.objects.get(store=store, currency=usd_currency)
 
     wallet_transanctions = Wallet_Transanction.objects.filter(store=store)
-    page = request.GET.get('page', 1)
+    page = request.GET.get("page", 1)
     paginator = Paginator(wallet_transanctions, 5)
     try:
         wallet_transanctions = paginator.page(page)
@@ -1626,17 +1763,33 @@ def store_wallet(request):
         wallet_transanctions = paginator.page(paginator.num_pages)
 
     withdrawal_transanctions = Withdrawal_Transanction.objects.filter(store=store)
-    withdrawal_page = request.GET.get('withdrawal_page', 1)
+    withdrawal_page = request.GET.get("withdrawal_page", 1)
     withdrawal_paginator = Paginator(withdrawal_transanctions, 5)
     try:
         withdrawal_transanctions = withdrawal_paginator.page(withdrawal_page)
     except PageNotAnInteger:
         withdrawal_transanctions = withdrawal_paginator.page(1)
     except EmptyPage:
-        withdrawal_transanctions = withdrawal_paginator.page(withdrawal_paginator.num_pages)
+        withdrawal_transanctions = withdrawal_paginator.page(
+            withdrawal_paginator.num_pages
+        )
 
-    return render(request, "store/wallet.html", {"wallets": wallets, "store": store, 'naira_wallet':naira_wallet, 'usd_wallet':usd_wallet, 'usd_currency_code':usd_currency_code, 'naira_currency_code':naira_currency_code, 'wallet_transanctions':wallet_transanctions, 'withdrawal_transanctions':withdrawal_transanctions, 'form':form})
-    
+    return render(
+        request,
+        "store/wallet.html",
+        {
+            "wallets": wallets,
+            "store": store,
+            "naira_wallet": naira_wallet,
+            "usd_wallet": usd_wallet,
+            "usd_currency_code": usd_currency_code,
+            "naira_currency_code": naira_currency_code,
+            "wallet_transanctions": wallet_transanctions,
+            "withdrawal_transanctions": withdrawal_transanctions,
+            "form": form,
+        },
+    )
+
 
 def company_review(request):
     if request.user.is_authenticated:
@@ -1657,6 +1810,7 @@ def company_review(request):
             return redirect("/")
     return render(request, "company-review.html", {"form": form})
 
+
 def company_team(request):
     return render(request, "company-team.html")
 
@@ -1664,18 +1818,12 @@ def company_team(request):
 def get_state(request, iso2):
     url = f"https://api.countrystatecity.in/v1/countries/{iso2}/states"
 
-    headers = {
-    'X-CSCAPI-KEY': settings.COUNTRY_STATE_CITY_API_KEY
-    }
+    headers = {"X-CSCAPI-KEY": settings.COUNTRY_STATE_CITY_API_KEY}
     response = requests.request("GET", url, headers=headers)
     data = response.json()
     states = {}
     for state in data:
         states[state["name"]] = state["iso2"]
-    states = (sorted(states.items(), key=lambda x: x[0]))
-    response = JsonResponse({'states': states})
+    states = sorted(states.items(), key=lambda x: x[0])
+    response = JsonResponse({"states": states})
     return response
-
-
-    
-        

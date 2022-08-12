@@ -4,8 +4,6 @@ from django.conf import settings
 from .models import *
 
 
-
-
 class Paystack:
     PAYSTACK_SECRET_KEY = settings.PAYSTACK_SECRET_KEY
     base_url = "https://api.paystack.co"
@@ -23,7 +21,9 @@ class Paystack:
             response_data = response.json()
             email = response_data["data"]["customer"]["email"]
             amount = response_data["data"]["amount"]
-            authorization_code = response_data["data"]["authorization"]["authorization_code"] 
+            authorization_code = response_data["data"]["authorization"][
+                "authorization_code"
+            ]
             currency = response_data["data"]["currency"]
             subscription = Subscription.objects.get(ref=ref)
             user = subscription.user
@@ -43,9 +43,9 @@ class Paystack:
                             email=email,
                             amount=amount,
                             authorization_code=authorization_code,
-                            user = user,
-                            currency = currency,
-                        )     
+                            user=user,
+                            currency=currency,
+                        )
             return response_data["status"], response_data["data"]
         response_data = response.json()
         return response_data["status"], response_data["message"]

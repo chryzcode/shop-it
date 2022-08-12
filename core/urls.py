@@ -28,7 +28,9 @@ urlpatterns = [
     path("order/", include("order.urls")),
     path("payment/", include("payment.urls")),
     path("subscriptions/", include("subscriptions.urls")),
-    re_path('^inbox/notifications/', include(notifications.urls, namespace='notifications')),
+    re_path(
+        "^inbox/notifications/", include(notifications.urls, namespace="notifications")
+    ),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 handler404 = "app.views.custom_error_404"

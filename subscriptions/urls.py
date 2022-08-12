@@ -16,13 +16,13 @@ urlpatterns = [
         name="verify_subscription_payment",
     ),
     path(
-        "cancel-recurring-subscription/", 
+        "cancel-recurring-subscription/",
         views.cancel_recurring_subscription,
         name="cancel_recurring_subscription",
     ),
     path(
-        "activate-recurring-subscription/", 
+        "activate-recurring-subscription/",
         views.activate_recurring_subscription,
         name="activate_recurring_subscription",
-    )
+    ),
 ]

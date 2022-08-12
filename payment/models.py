@@ -52,32 +52,51 @@ class Payment(models.Model):
 
 
 class Wallet(models.Model):
-    currency = models.ForeignKey(Currency, on_delete=models.CASCADE, related_name="store_wallet_currency")
-    store = models.ForeignKey(Store, on_delete=models.CASCADE, related_name="store_wallet")
+    currency = models.ForeignKey(
+        Currency, on_delete=models.CASCADE, related_name="store_wallet_currency"
+    )
+    store = models.ForeignKey(
+        Store, on_delete=models.CASCADE, related_name="store_wallet"
+    )
     amount = models.PositiveIntegerField(default=0)
 
     def __str__(self):
-        return str(self.store.store_name) + ' ' + str(self.currency.name) + ' ' + "Wallet"
+        return (
+            str(self.store.store_name) + " " + str(self.currency.name) + " " + "Wallet"
+        )
+
 
 class Wallet_Transanction(models.Model):
     store = models.ForeignKey(Store, on_delete=models.CASCADE)
     amount = models.PositiveIntegerField(default=0)
     created = models.DateTimeField(auto_now_add=True)
     wallet = models.ForeignKey(Wallet, on_delete=models.CASCADE)
-    order = models.ForeignKey(Order,  on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
 
     def __str__(self):
-        return str(self.store.store_name) + ' ' + str(self.wallet.currency.code) + ' ' + "Wallet Transanction"
+        return (
+            str(self.store.store_name)
+            + " "
+            + str(self.wallet.currency.code)
+            + " "
+            + "Wallet Transanction"
+        )
+
 
 class Withdrawal_Transanction(models.Model):
     store = models.ForeignKey(Store, on_delete=models.CASCADE)
     amount = models.PositiveIntegerField(default=0)
     created = models.DateTimeField(auto_now_add=True)
     account_number = models.CharField(max_length=20)
-    account_name =  models.CharField(max_length=200)
+    account_name = models.CharField(max_length=200)
     account_bank = models.CharField(max_length=200)
     wallet = models.ForeignKey(Wallet, on_delete=models.CASCADE)
 
     def __str__(self):
-        return str(self.store.store_name) + ' ' + str(self.wallet.currency.code) + ' ' + "Withdrawal Transanction"
-
+        return (
+            str(self.store.store_name)
+            + " "
+            + str(self.wallet.currency.code)
+            + " "
+            + "Withdrawal Transanction"
+        )

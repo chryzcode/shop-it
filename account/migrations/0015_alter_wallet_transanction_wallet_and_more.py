@@ -7,18 +7,26 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('account', '0014_remove_wallet_transanction_currency_and_more'),
+        ("account", "0014_remove_wallet_transanction_currency_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='wallet_transanction',
-            name='wallet',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='account.wallet'),
+            model_name="wallet_transanction",
+            name="wallet",
+            field=models.ForeignKey(
+                default=1,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="account.wallet",
+            ),
         ),
         migrations.AlterField(
-            model_name='withdrawal_transanction',
-            name='wallet',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='account.wallet'),
+            model_name="withdrawal_transanction",
+            name="wallet",
+            field=models.ForeignKey(
+                default=1,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="account.wallet",
+            ),
         ),
     ]

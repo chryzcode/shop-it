@@ -1,8 +1,11 @@
 from locale import currency
 from pyexpat import model
 from django.conf import settings
-from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
-                                        PermissionsMixin)
+from django.contrib.auth.models import (
+    AbstractBaseUser,
+    BaseUserManager,
+    PermissionsMixin,
+)
 from django.core.mail import send_mail
 from django.db import models
 from django.utils.text import slugify
@@ -88,7 +91,6 @@ class CustomAccountManager(BaseUserManager):
         return user
 
 
-
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_("email address"), unique=True)
     full_name = models.CharField(max_length=300)
@@ -160,5 +162,3 @@ class store_staff(models.Model):
 
     def __str__(self):
         return self.full_name
-
-

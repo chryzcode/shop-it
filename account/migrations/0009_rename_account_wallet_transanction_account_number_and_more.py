@@ -6,18 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('account', '0008_alter_wallet_transanction_account'),
+        ("account", "0008_alter_wallet_transanction_account"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='wallet_transanction',
-            old_name='account',
-            new_name='account_number',
+            model_name="wallet_transanction",
+            old_name="account",
+            new_name="account_number",
         ),
         migrations.AddField(
-            model_name='wallet_transanction',
-            name='account_name',
+            model_name="wallet_transanction",
+            name="account_name",
             field=models.CharField(blank=True, max_length=200, null=True),
         ),
     ]

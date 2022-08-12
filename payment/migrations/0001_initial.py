@@ -10,41 +10,95 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('order', '0001_initial'),
-        ('account', '0001_initial'),
+        ("order", "0001_initial"),
+        ("account", "0001_initial"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('customer', '0001_initial'),
-        ('app', '0001_initial'),
+        ("customer", "0001_initial"),
+        ("app", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Payment',
+            name="Payment",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('full_name', models.CharField(max_length=150)),
-                ('amount', models.PositiveIntegerField()),
-                ('ref', models.CharField(max_length=200)),
-                ('email', models.EmailField(max_length=254)),
-                ('verified', models.BooleanField(default=False)),
-                ('date_created', models.DateTimeField(auto_now_add=True)),
-                ('address_line', models.CharField(blank=True, max_length=255, null=True)),
-                ('address_line2', models.CharField(blank=True, max_length=255, null=True)),
-                ('phone', models.CharField(max_length=50)),
-                ('country', models.CharField(blank=True, max_length=200, null=True)),
-                ('state', models.CharField(blank=True, max_length=200, null=True)),
-                ('city', models.CharField(blank=True, max_length=200, null=True)),
-                ('postcode', models.CharField(blank=True, max_length=50, null=True)),
-                ('default_address', models.BooleanField(blank=True, default=False, null=True)),
-                ('payment_method', models.CharField(blank=True, max_length=20, null=True)),
-                ('order', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='order.order')),
-                ('shipping_method', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='app.shipping_method')),
-                ('store', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='account.store')),
-                ('use_address', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='customer.address')),
-                ('user', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("full_name", models.CharField(max_length=150)),
+                ("amount", models.PositiveIntegerField()),
+                ("ref", models.CharField(max_length=200)),
+                ("email", models.EmailField(max_length=254)),
+                ("verified", models.BooleanField(default=False)),
+                ("date_created", models.DateTimeField(auto_now_add=True)),
+                (
+                    "address_line",
+                    models.CharField(blank=True, max_length=255, null=True),
+                ),
+                (
+                    "address_line2",
+                    models.CharField(blank=True, max_length=255, null=True),
+                ),
+                ("phone", models.CharField(max_length=50)),
+                ("country", models.CharField(blank=True, max_length=200, null=True)),
+                ("state", models.CharField(blank=True, max_length=200, null=True)),
+                ("city", models.CharField(blank=True, max_length=200, null=True)),
+                ("postcode", models.CharField(blank=True, max_length=50, null=True)),
+                (
+                    "default_address",
+                    models.BooleanField(blank=True, default=False, null=True),
+                ),
+                (
+                    "payment_method",
+                    models.CharField(blank=True, max_length=20, null=True),
+                ),
+                (
+                    "order",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        to="order.order",
+                    ),
+                ),
+                (
+                    "shipping_method",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="app.shipping_method",
+                    ),
+                ),
+                (
+                    "store",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="account.store"
+                    ),
+                ),
+                (
+                    "use_address",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="customer.address",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'ordering': ['-date_created'],
+                "ordering": ["-date_created"],
             },
         ),
     ]

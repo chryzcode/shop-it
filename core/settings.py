@@ -30,7 +30,7 @@ SECRET_KEY = str(os.getenv("SECRET_KEY"))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['shopitapps.herokuapp.com', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ["shopitapps.herokuapp.com", "127.0.0.1", "localhost"]
 
 
 # Application definition
@@ -201,20 +201,18 @@ FLUTTERWAVE_SECRET_KEY = config("FLUTTERWAVE_SECRET_KEY")
 FLUTTERWAVE_PUBLIC_KEY = config("FLUTTERWAVE_PUBLIC_KEY")
 
 
-DJANGO_NOTIFICATIONS_CONFIG = { 'USE_JSONFIELD': True}
+DJANGO_NOTIFICATIONS_CONFIG = {"USE_JSONFIELD": True}
 
-DEFAULT_DOMAIN=config("DEFAULT_DOMAIN")
+DEFAULT_DOMAIN = config("DEFAULT_DOMAIN")
 LOGISTICS_EMAIL = config("LOGISTICS_EMAIL")
 
 COUNTRY_STATE_CITY_API_KEY = config("COUNTRY_STATE_CITY_API_KEY")
 
 
-
-
 # CELERY STUFF
-BROKER_URL = 'redis://localhost:6379'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379'
-CELERY_ACCEPT_CONTENT = ['application/json']
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_RESULT_SERIALIZER = 'json'
-CELERY_TIMEZONE = 'Africa/Lagos'
+BROKER_URL = "redis://localhost:6379"
+CELERY_RESULT_BACKEND = "redis://localhost:6379"
+CELERY_ACCEPT_CONTENT = ["application/json"]
+CELERY_TASK_SERIALIZER = "json"
+CELERY_RESULT_SERIALIZER = "json"
+CELERY_TIMEZONE = "Africa/Lagos"

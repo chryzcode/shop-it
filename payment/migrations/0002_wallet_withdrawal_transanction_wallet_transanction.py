@@ -7,44 +7,107 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('account', '0017_remove_wallet_transanction_store_and_more'),
-        ('order', '0001_initial'),
-        ('payment', '0001_initial'),
+        ("account", "0017_remove_wallet_transanction_store_and_more"),
+        ("order", "0001_initial"),
+        ("payment", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Wallet',
+            name="Wallet",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('amount', models.PositiveIntegerField(default=0)),
-                ('currency', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='store_wallet_currency', to='account.currency')),
-                ('store', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='store_wallet', to='account.store')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("amount", models.PositiveIntegerField(default=0)),
+                (
+                    "currency",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="store_wallet_currency",
+                        to="account.currency",
+                    ),
+                ),
+                (
+                    "store",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="store_wallet",
+                        to="account.store",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Withdrawal_Transanction',
+            name="Withdrawal_Transanction",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('amount', models.PositiveIntegerField(default=0)),
-                ('created', models.DateTimeField(auto_now_add=True)),
-                ('account_number', models.CharField(max_length=20)),
-                ('account_name', models.CharField(max_length=200)),
-                ('account_bank', models.CharField(max_length=200)),
-                ('store', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='account.store')),
-                ('wallet', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='payment.wallet')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("amount", models.PositiveIntegerField(default=0)),
+                ("created", models.DateTimeField(auto_now_add=True)),
+                ("account_number", models.CharField(max_length=20)),
+                ("account_name", models.CharField(max_length=200)),
+                ("account_bank", models.CharField(max_length=200)),
+                (
+                    "store",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="account.store"
+                    ),
+                ),
+                (
+                    "wallet",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="payment.wallet"
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Wallet_Transanction',
+            name="Wallet_Transanction",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('amount', models.PositiveIntegerField(default=0)),
-                ('created', models.DateTimeField(auto_now_add=True)),
-                ('withdraw', models.BooleanField(default=False)),
-                ('order', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='order.order')),
-                ('store', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='account.store')),
-                ('wallet', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='payment.wallet')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("amount", models.PositiveIntegerField(default=0)),
+                ("created", models.DateTimeField(auto_now_add=True)),
+                ("withdraw", models.BooleanField(default=False)),
+                (
+                    "order",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="order.order"
+                    ),
+                ),
+                (
+                    "store",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="account.store"
+                    ),
+                ),
+                (
+                    "wallet",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="payment.wallet"
+                    ),
+                ),
             ],
         ),
     ]

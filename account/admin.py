@@ -9,4 +9,3 @@ admin.site.register(store_staff)
 admin.site.register(Store)
 admin.site.register(Currency)
 admin.site.register(Bank_Info)
-

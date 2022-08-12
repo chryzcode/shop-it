@@ -18,8 +18,8 @@ def a_staff_store_store(request):
         if request.user.store_staff == True:
             store = store_staff.objects.get(email=request.user.email).store
             return {"a_staff_store_store": store}
-        
-    else:    
+
+    else:
         return {"a_staff_store_store": None}
 
 
@@ -66,6 +66,7 @@ def owner_store(request):
             return {"owner_store": None}
     return {"owner_store": None}
 
+
 def user_profile(request):
     if request.user.is_authenticated:
         if User.objects.filter(email=request.user.email):
@@ -76,7 +77,8 @@ def user_profile(request):
     else:
         return {"user_profile": None}
 
-def store_products(request): 
+
+def store_products(request):
     if request.user.is_authenticated:
         if request.user.store_creator == True:
             store = Store.objects.get(owner=request.user)
@@ -89,7 +91,8 @@ def store_products(request):
     else:
         return {"store_products": None}
 
-def store_orders(request): 
+
+def store_orders(request):
     if request.user.is_authenticated:
         if request.user.store_creator == True:
             store = Store.objects.get(owner=request.user)
@@ -101,6 +104,7 @@ def store_orders(request):
         return {"store_orders": orders}
     else:
         return {"store_orders": None}
+
 
 def store_customers(request):
     if request.user.is_authenticated:
@@ -118,9 +122,9 @@ def store_customers(request):
 
 def get_store(request):
     url = request.path
-    if 'store' in url:
-        if url.split('/')[2]:
-            store_slug = url.split('/')[2]
+    if "store" in url:
+        if url.split("/")[2]:
+            store_slug = url.split("/")[2]
             if Store.objects.filter(slugified_store_name=store_slug).exists():
                 store = Store.objects.get(slugified_store_name=store_slug)
                 if store:
@@ -137,9 +141,9 @@ def get_store(request):
 
 def get_store_products(request):
     url = request.path
-    if 'store' in url:
-        if url.split('/')[2]:
-            store_slug = url.split('/')[2]
+    if "store" in url:
+        if url.split("/")[2]:
+            store_slug = url.split("/")[2]
             if Store.objects.filter(slugified_store_name=store_slug).exists():
                 store = Store.objects.get(slugified_store_name=store_slug)
                 if store:
@@ -157,19 +161,28 @@ def get_store_products(request):
     else:
         return {"get_store_products": None}
 
+
 def get_store_category_products(request):
     url = request.path
-    if 'store' and 'category' in url:
-        if url.split('/')[2] and url.split('/')[4]:
-            store_slug = url.split('/')[2]
-            product_category = url.split('/')[4]
+    if "store" and "category" in url:
+        if url.split("/")[2] and url.split("/")[4]:
+            store_slug = url.split("/")[2]
+            product_category = url.split("/")[4]
             if Store.objects.filter(slugified_store_name=store_slug).exists():
                 store = Store.objects.get(slugified_store_name=store_slug)
                 if store:
-                    if Category.objects.filter(created_by=store, slug=product_category).exists():   
-                        category = Category.objects.get(created_by=store, slug=product_category)
-                        if Product.objects.filter(store=store, category=category.id).exists():
-                            products = Product.objects.filter(store=store, category=category.id)
+                    if Category.objects.filter(
+                        created_by=store, slug=product_category
+                    ).exists():
+                        category = Category.objects.get(
+                            created_by=store, slug=product_category
+                        )
+                        if Product.objects.filter(
+                            store=store, category=category.id
+                        ).exists():
+                            products = Product.objects.filter(
+                                store=store, category=category.id
+                            )
                             return {"get_store_category_products": products}
                         else:
                             return {"get_store_category_products": None}
@@ -187,15 +200,19 @@ def get_store_category_products(request):
 
 def get_store_category(request):
     url = request.path
-    if 'store' and 'category' in url:
-        if url.split('/')[2] and url.split('/')[4]:
-            store_slug = url.split('/')[2]
-            product_category = url.split('/')[4]
+    if "store" and "category" in url:
+        if url.split("/")[2] and url.split("/")[4]:
+            store_slug = url.split("/")[2]
+            product_category = url.split("/")[4]
             if Store.objects.filter(slugified_store_name=store_slug).exists():
                 store = Store.objects.get(slugified_store_name=store_slug)
                 if store:
-                    if Category.objects.filter(created_by=store, slug=product_category).exists():   
-                        category = Category.objects.get(created_by=store, slug=product_category)
+                    if Category.objects.filter(
+                        created_by=store, slug=product_category
+                    ).exists():
+                        category = Category.objects.get(
+                            created_by=store, slug=product_category
+                        )
                         return {"get_store_category": category}
                     else:
                         return {"get_store_category": None}
@@ -208,19 +225,28 @@ def get_store_category(request):
     else:
         return {"get_store_category": None}
 
+
 def get_customer_orders(request):
     url = request.path
-    if 'customer' and 'orders' in url:
-        store_slug = url.split('/')[2]      
+    if "customer" and "orders" in url:
+        store_slug = url.split("/")[2]
         if Store.objects.filter(slugified_store_name=store_slug).exists():
             store = Store.objects.get(slugified_store_name=store_slug)
             if store:
-                if Customer.objects.filter(store=store, email=request.user.email).exists():  
-                    customer = Customer.objects.get(store=store, email=request.user.email)
+                if Customer.objects.filter(
+                    store=store, email=request.user.email
+                ).exists():
+                    customer = Customer.objects.get(
+                        store=store, email=request.user.email
+                    )
                     user_customer = User.objects.get(email=customer.email)
                     if customer:
-                        if Order.objects.filter(user=user_customer, store=store).exists():
-                            orders = Order.objects.filter(user=user_customer, store=store)
+                        if Order.objects.filter(
+                            user=user_customer, store=store
+                        ).exists():
+                            orders = Order.objects.filter(
+                                user=user_customer, store=store
+                            )
                             return {"get_customer_orders": orders}
                         else:
                             return {"get_customer_orders": None}
@@ -238,17 +264,25 @@ def get_customer_orders(request):
 
 def get_customer_reviews(request):
     url = request.path
-    if 'customer' and 'reviews' in url:
-        store_slug = url.split('/')[2]      
+    if "customer" and "reviews" in url:
+        store_slug = url.split("/")[2]
         if Store.objects.filter(slugified_store_name=store_slug).exists():
             store = Store.objects.get(slugified_store_name=store_slug)
             if store:
-                if Customer.objects.filter(store=store, email=request.user.email).exists():  
-                    customer = Customer.objects.get(store=store, email=request.user.email)
+                if Customer.objects.filter(
+                    store=store, email=request.user.email
+                ).exists():
+                    customer = Customer.objects.get(
+                        store=store, email=request.user.email
+                    )
                     user_customer = User.objects.get(email=customer.email)
                     if customer:
-                        if Review.objects.filter(email=user_customer.email, store=store).exists():
-                            reviews = Review.objects.filter(email=user_customer.email, store=store)
+                        if Review.objects.filter(
+                            email=user_customer.email, store=store
+                        ).exists():
+                            reviews = Review.objects.filter(
+                                email=user_customer.email, store=store
+                            )
                             return {"get_customer_reviews": reviews}
                         else:
                             return {"get_customer_reviews": None}

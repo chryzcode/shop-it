@@ -6,12 +6,12 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('account', '0002_store_whatsapp'),
+        ("account", "0002_store_whatsapp"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='store_staff',
-            name='user',
+            model_name="store_staff",
+            name="user",
         ),
     ]

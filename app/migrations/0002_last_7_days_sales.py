@@ -7,17 +7,30 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('account', '0003_remove_store_staff_user'),
-        ('app', '0001_initial'),
+        ("account", "0003_remove_store_staff_user"),
+        ("app", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='last_7_days_sales',
+            name="last_7_days_sales",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('percentage', models.IntegerField(default=0)),
-                ('store', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='account.store')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("percentage", models.IntegerField(default=0)),
+                (
+                    "store",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="account.store"
+                    ),
+                ),
             ],
         ),
     ]

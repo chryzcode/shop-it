@@ -71,10 +71,10 @@ def order(request, coupon_code):
         if request.user.is_authenticated:
             message = "An order has been made on your store"
             staffs = store_staff.objects.filter(store=store)
-            for staff in staffs:     
+            for staff in staffs:
                 staff_user = User.objects.get(email=staff.email)
-                notify.send(user, recipient=staff_user, verb=message, order= order.id)
-            notify.send(user, recipient=store.owner, verb=message, order= order.id)
+                notify.send(user, recipient=staff_user, verb=message, order=order.id)
+            notify.send(user, recipient=store.owner, verb=message, order=order.id)
         return redirect("payment:initiate_payment", order.id)
 
 
@@ -90,13 +90,9 @@ def unpaid_order_mail_remainder(request):
                 {
                     "store": store,
                     "order": order,
-                    "domain": current_site.domain+"/"+path,
+                    "domain": current_site.domain + "/" + path,
                 },
             )
             from_email = settings.EMAIL_HOST_USER
             to_email = [order.user.email]
             send_mail(subject, message, from_email, to_email)
-
-
-
-

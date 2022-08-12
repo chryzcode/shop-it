@@ -12,40 +12,80 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('app', '0001_initial'),
-        ('account', '0001_initial'),
+        ("app", "0001_initial"),
+        ("account", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Order',
+            name="Order",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False, unique=True)),
-                ('created', models.DateTimeField(auto_now_add=True)),
-                ('updated', models.DateTimeField(auto_now=True)),
-                ('amount', models.IntegerField(default=0)),
-                ('billing_status', models.BooleanField(default=False)),
-                ('quantity', models.PositiveIntegerField(default=0)),
-                ('date_created', models.DateTimeField(auto_now_add=True)),
-                ('coupon', models.BooleanField(default=False)),
-                ('currency_symbol', models.CharField(max_length=10)),
-                ('currency_code', models.CharField(max_length=50)),
-                ('mail_remainder', models.BooleanField(default=False)),
-                ('store', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='account.store')),
-                ('user', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                        unique=True,
+                    ),
+                ),
+                ("created", models.DateTimeField(auto_now_add=True)),
+                ("updated", models.DateTimeField(auto_now=True)),
+                ("amount", models.IntegerField(default=0)),
+                ("billing_status", models.BooleanField(default=False)),
+                ("quantity", models.PositiveIntegerField(default=0)),
+                ("date_created", models.DateTimeField(auto_now_add=True)),
+                ("coupon", models.BooleanField(default=False)),
+                ("currency_symbol", models.CharField(max_length=10)),
+                ("currency_code", models.CharField(max_length=50)),
+                ("mail_remainder", models.BooleanField(default=False)),
+                (
+                    "store",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="account.store"
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'ordering': ('-created',),
+                "ordering": ("-created",),
             },
         ),
         migrations.CreateModel(
-            name='OrderItem',
+            name="OrderItem",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('quantity', models.PositiveIntegerField()),
-                ('price', models.PositiveIntegerField()),
-                ('order', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='order.order')),
-                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='app.product')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("quantity", models.PositiveIntegerField()),
+                ("price", models.PositiveIntegerField()),
+                (
+                    "order",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="order.order"
+                    ),
+                ),
+                (
+                    "product",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="app.product"
+                    ),
+                ),
             ],
         ),
     ]

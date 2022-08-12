@@ -7,28 +7,47 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('account', '0009_rename_account_wallet_transanction_account_number_and_more'),
+        ("account", "0009_rename_account_wallet_transanction_account_number_and_more"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='wallet_transanction',
-            name='account_name',
+            model_name="wallet_transanction",
+            name="account_name",
         ),
         migrations.RemoveField(
-            model_name='wallet_transanction',
-            name='account_number',
+            model_name="wallet_transanction",
+            name="account_number",
         ),
         migrations.CreateModel(
-            name='Withdrawal_Transanction',
+            name="Withdrawal_Transanction",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('amount', models.PositiveIntegerField(default=0)),
-                ('created', models.DateTimeField(auto_now_add=True)),
-                ('account_number', models.CharField(max_length=20)),
-                ('account_name', models.CharField(max_length=200)),
-                ('currency', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='account.currency')),
-                ('store', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='account.store')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("amount", models.PositiveIntegerField(default=0)),
+                ("created", models.DateTimeField(auto_now_add=True)),
+                ("account_number", models.CharField(max_length=20)),
+                ("account_name", models.CharField(max_length=200)),
+                (
+                    "currency",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="account.currency",
+                    ),
+                ),
+                (
+                    "store",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="account.store"
+                    ),
+                ),
             ],
         ),
     ]

@@ -155,12 +155,13 @@ class Shipping_Method(models.Model):
     def __str__(self):
         return self.location + " " + self.store.store_name
 
+
 class last_7_days_sales(models.Model):
     store = models.ForeignKey(Store, on_delete=models.CASCADE)
     percentage = models.IntegerField(default=0)
 
-    def __str__ (self):
-        return str(self.store.store_name) + ' ' + str(self.percentage)+'%'
+    def __str__(self):
+        return str(self.store.store_name) + " " + str(self.percentage) + "%"
 
     class Meta:
         verbose_name_plural = "last_7_days_sales"
@@ -170,8 +171,8 @@ class last_24_hours_sales(models.Model):
     store = models.ForeignKey(Store, on_delete=models.CASCADE)
     percentage = models.IntegerField(default=0)
 
-    def __str__ (self):
-        return str(self.store.store_name) + ' ' + str(self.percentage)+'%'
+    def __str__(self):
+        return str(self.store.store_name) + " " + str(self.percentage) + "%"
 
     class Meta:
         verbose_name_plural = "last_24_hours_sales"
@@ -181,18 +182,19 @@ class last_7_days_customers(models.Model):
     store = models.ForeignKey(Store, on_delete=models.CASCADE)
     percentage = models.IntegerField(default=0)
 
-    def __str__ (self):
-        return str(self.store.store_name) + ' ' + str(self.percentage)+'%'
+    def __str__(self):
+        return str(self.store.store_name) + " " + str(self.percentage) + "%"
 
     class Meta:
         verbose_name_plural = "last_7_days_customers"
+
 
 class last_24_hours_customers(models.Model):
     store = models.ForeignKey(Store, on_delete=models.CASCADE)
     percentage = models.IntegerField(default=0)
 
-    def __str__ (self):
-        return str(self.store.store_name) + ' ' + str(self.percentage)+'%'
+    def __str__(self):
+        return str(self.store.store_name) + " " + str(self.percentage) + "%"
 
     class Meta:
         verbose_name_plural = "last_24_hours_customers"
@@ -202,38 +204,41 @@ class yearly_sales(models.Model):
     store = models.ForeignKey(Store, on_delete=models.CASCADE)
     percentage = models.IntegerField(default=0)
 
-    def __str__ (self):
-        return str(self.store.store_name) + ' ' + str(self.percentage)+'%'
+    def __str__(self):
+        return str(self.store.store_name) + " " + str(self.percentage) + "%"
 
     class Meta:
         verbose_name_plural = "yearly_sales"
+
 
 class last_30_days_sales(models.Model):
     store = models.ForeignKey(Store, on_delete=models.CASCADE)
     percentage = models.IntegerField(default=0)
 
-    def __str__ (self):
-        return str(self.store.store_name) + ' ' + str(self.percentage)+'%'
+    def __str__(self):
+        return str(self.store.store_name) + " " + str(self.percentage) + "%"
 
     class Meta:
         verbose_name_plural = "last_30_days_sales"
+
 
 class customers_yearly(models.Model):
     store = models.ForeignKey(Store, on_delete=models.CASCADE)
     percentage = models.IntegerField(default=0)
 
-    def __str__ (self):
-        return str(self.store.store_name) + ' ' + str(self.percentage)+'%'
+    def __str__(self):
+        return str(self.store.store_name) + " " + str(self.percentage) + "%"
 
     class Meta:
         verbose_name_plural = "customers_yearly"
+
 
 class customers_monthly(models.Model):
     store = models.ForeignKey(Store, on_delete=models.CASCADE)
     percentage = models.IntegerField(default=0)
 
-    def __str__ (self):
-        return str(self.store.store_name) + ' ' + str(self.percentage)+'%'
+    def __str__(self):
+        return str(self.store.store_name) + " " + str(self.percentage) + "%"
 
     class Meta:
         verbose_name_plural = "customers_monthly"

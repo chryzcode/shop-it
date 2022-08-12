@@ -7,22 +7,22 @@ from account.models import *
 
 # Create your models here.
 
+
 def current_store_creator(request):
-        if request.user.is_authenticated:
-            if request.user.store_creator == True:
-                return request.user
-            else:
-                return None
+    if request.user.is_authenticated:
+        if request.user.store_creator == True:
+            return request.user
         else:
             return None
+    else:
+        return None
+
 
 class Duration(models.Model):
     name = models.CharField(max_length=100)
 
     def __str__(self):
         return self.name
-
-
 
 
 class Subscription(models.Model):
@@ -37,7 +37,11 @@ class Subscription(models.Model):
     duration = models.ForeignKey(Duration, on_delete=models.CASCADE)
     currency = models.ForeignKey(Currency, on_delete=models.CASCADE)
     user = models.ForeignKey(
-        User, related_name="subscriptions", on_delete=models.CASCADE, null=True, blank=True
+        User,
+        related_name="subscriptions",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
     )
 
     def __str__(self):
@@ -63,7 +67,9 @@ class Subscription_Timeline(models.Model):
     mail_remainder = models.BooleanField(default=False)
 
     def __str__(self):
-        return str(self.subscription ) + ' ' + str(self.store.store_name) + ' ' + 'timeline'
+        return (
+            str(self.subscription) + " " + str(self.store.store_name) + " " + "timeline"
+        )
 
 
 class RecurringSubscriptionData(models.Model):
@@ -75,6 +81,10 @@ class RecurringSubscriptionData(models.Model):
     currency = models.CharField(max_length=6)
 
     def __str__(self):
-        return str(self.user.store_name) + " " + str(self.user.full_name) + " " + str(self.amount)
-
-
+        return (
+            str(self.user.store_name)
+            + " "
+            + str(self.user.full_name)
+            + " "
+            + str(self.amount)
+        )

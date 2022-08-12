@@ -7,18 +7,22 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('account', '0001_initial'),
-        ('subscriptions', '0001_initial'),
+        ("account", "0001_initial"),
+        ("subscriptions", "0001_initial"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='recurringsubscriptiondata',
-            name='user',
+            model_name="recurringsubscriptiondata",
+            name="user",
         ),
         migrations.AddField(
-            model_name='recurringsubscriptiondata',
-            name='store',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='account.store'),
+            model_name="recurringsubscriptiondata",
+            name="store",
+            field=models.ForeignKey(
+                default=1,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="account.store",
+            ),
         ),
     ]

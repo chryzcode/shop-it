@@ -253,6 +253,7 @@ class authProductReviewForm(ModelForm):
         self.label_suffix = ""
         self.fields["comment"].label = "Comment"
 
+
 class ShippingMethodForm(ModelForm):
     class Meta:
         model = Shipping_Method
@@ -273,14 +274,10 @@ class ShippingMethodForm(ModelForm):
 
 class CompanyAuthReviewForm(forms.Form):
     title = forms.CharField(
-        widget=forms.TextInput(
-            attrs={"class": "form-control", "placeholder": "Title"}
-        )
+        widget=forms.TextInput(attrs={"class": "form-control", "placeholder": "Title"})
     )
     review = forms.CharField(
-        widget=forms.Textarea(
-            attrs={"class": "form-control", "placeholder": "Comment"}
-        )
+        widget=forms.Textarea(attrs={"class": "form-control", "placeholder": "Comment"})
     )
 
     def clean_review(self):
@@ -300,19 +297,13 @@ class CompanyAuthReviewForm(forms.Form):
 
 class CompanyNonAuthReviewForm(forms.Form):
     title = forms.CharField(
-        widget=forms.TextInput(
-            attrs={"class": "form-control", "placeholder": "Title"}
-        )
+        widget=forms.TextInput(attrs={"class": "form-control", "placeholder": "Title"})
     )
     email = forms.EmailField(
-        widget=forms.EmailInput(
-            attrs={"class": "form-control", "placeholder": "Email"}
-        )
+        widget=forms.EmailInput(attrs={"class": "form-control", "placeholder": "Email"})
     )
     review = forms.CharField(
-        widget=forms.Textarea(
-            attrs={"class": "form-control", "placeholder": "Comment"}
-        )
+        widget=forms.Textarea(attrs={"class": "form-control", "placeholder": "Comment"})
     )
 
     def clean_review(self):
@@ -333,7 +324,6 @@ class CompanyNonAuthReviewForm(forms.Form):
         email = self.cleaned_data.get("email")
         if email is None:
             raise forms.ValidationError("Field is required")
-        if '@' not in email:
+        if "@" not in email:
             raise forms.ValidationError("Invalid email")
         return email
-

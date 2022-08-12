@@ -6,12 +6,12 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('app', '0003_alter_last_7_days_sales_options_last_24_hours_sales'),
+        ("app", "0003_alter_last_7_days_sales_options_last_24_hours_sales"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='last_24_hours_sales',
-            options={'verbose_name_plural': 'last_72_hours_sales'},
+            name="last_24_hours_sales",
+            options={"verbose_name_plural": "last_72_hours_sales"},
         ),
     ]

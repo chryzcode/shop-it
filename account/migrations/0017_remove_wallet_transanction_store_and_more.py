@@ -6,33 +6,33 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('account', '0016_alter_wallet_transanction_wallet_and_more'),
+        ("account", "0016_alter_wallet_transanction_wallet_and_more"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='wallet_transanction',
-            name='store',
+            model_name="wallet_transanction",
+            name="store",
         ),
         migrations.RemoveField(
-            model_name='wallet_transanction',
-            name='wallet',
+            model_name="wallet_transanction",
+            name="wallet",
         ),
         migrations.RemoveField(
-            model_name='withdrawal_transanction',
-            name='store',
+            model_name="withdrawal_transanction",
+            name="store",
         ),
         migrations.RemoveField(
-            model_name='withdrawal_transanction',
-            name='wallet',
+            model_name="withdrawal_transanction",
+            name="wallet",
         ),
         migrations.DeleteModel(
-            name='Wallet',
+            name="Wallet",
         ),
         migrations.DeleteModel(
-            name='Wallet_Transanction',
+            name="Wallet_Transanction",
         ),
         migrations.DeleteModel(
-            name='Withdrawal_Transanction',
+            name="Withdrawal_Transanction",
         ),
     ]

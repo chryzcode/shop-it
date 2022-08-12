@@ -61,7 +61,7 @@ class StoreForm(ModelForm):
             "instagram",
             "twitter",
             "facebook",
-            'whatsapp',
+            "whatsapp",
         ]
 
         widgets = {
@@ -241,7 +241,7 @@ class AddStoreForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(AddStoreForm, self).__init__(*args, **kwargs)
-        
+
 
 class BankForm(ModelForm):
     class Meta:

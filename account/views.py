@@ -26,7 +26,6 @@ from .tokens import account_activation_token
 from notifications.signals import notify
 
 
-
 def account_login(request):
     context = {}
     if request.user.is_authenticated:
@@ -66,7 +65,8 @@ def account_logout(request):
     logout(request)
     return redirect("/")
 
-#delete user after 50 days using real time 
+
+# delete user after 50 days using real time
 @login_required(login_url="/account/login/")
 def account_delete(request):
     user = User.objects.get(email=request.user.email)
@@ -76,10 +76,11 @@ def account_delete(request):
         {"user": user},
     )
     user.email_user(subject, message)
-    #delete user after 50 days from when this function is called
+    # delete user after 50 days from when this function is called
     user.delete()
     logout(request)
     return redirect("/")
+
 
 def account_register(request):
     if request.user.is_authenticated:
@@ -112,9 +113,24 @@ def account_register(request):
                 },
             )
             user.email_user(subject=subject, message=message)
-            notify.send(store.owner, recipient=user, verb="Set your store bank details", bank_details_url=reverse("account:bank_details"))
-            notify.send(store.owner, recipient=user, verb=f"Set at least a shipping method", shipping_method_url=reverse("app:add_shipping_method"))
-            notify.send(store.owner, recipient=user, verb=f"Set your store default currency", currency_url= reverse("account:store_account"))
+            notify.send(
+                store.owner,
+                recipient=user,
+                verb="Set your store bank details",
+                bank_details_url=reverse("account:bank_details"),
+            )
+            notify.send(
+                store.owner,
+                recipient=user,
+                verb=f"Set at least a shipping method",
+                shipping_method_url=reverse("app:add_shipping_method"),
+            )
+            notify.send(
+                store.owner,
+                recipient=user,
+                verb=f"Set your store default currency",
+                currency_url=reverse("account:store_account"),
+            )
             return render(request, "account/registration/registration-success.html")
     return render(request, "account/registration/register.html", {"form": registerform})
 
@@ -149,29 +165,30 @@ def user_profile(request):
     return render(
         request,
         "account/user/user-profile.html",
-        {"userprofileform": userprofileform, "account": account, "user_profile":user_profile},
+        {
+            "userprofileform": userprofileform,
+            "account": account,
+            "user_profile": user_profile,
+        },
     )
+
 
 def country_details(request, country_code):
     url = f"https://api.countrystatecity.in/v1/countries/{country_code}"
-    headers = {
-        'X-CSCAPI-KEY': settings.COUNTRY_STATE_CITY_API_KEY
-        }
+    headers = {"X-CSCAPI-KEY": settings.COUNTRY_STATE_CITY_API_KEY}
     response = requests.get(url, headers=headers)
     data = response.json()
     country_name = data["name"]
     return country_name
 
+
 def state_details(request, country_code, state_code):
     url = f"https://api.countrystatecity.in/v1/countries/{country_code}/states/{state_code}"
-    headers = {
-    'X-CSCAPI-KEY': settings.COUNTRY_STATE_CITY_API_KEY
-    }
+    headers = {"X-CSCAPI-KEY": settings.COUNTRY_STATE_CITY_API_KEY}
     response = requests.request("GET", url, headers=headers)
     data = response.json()
     state_name = data["name"]
     return state_name
-
 
 
 @login_required(login_url="/account/login/")
@@ -185,16 +202,14 @@ def store_account(
         storeform = StoreForm(instance=store)
         url = "https://api.countrystatecity.in/v1/countries"
 
-        headers = {
-        'X-CSCAPI-KEY': settings.COUNTRY_STATE_CITY_API_KEY
-        }
+        headers = {"X-CSCAPI-KEY": settings.COUNTRY_STATE_CITY_API_KEY}
 
         response = requests.request("GET", url, headers=headers)
         data = response.json()
         country_names = {}
         for a_country in data:
-            country_names[a_country['name']] = a_country['iso2']
-        country_names = (sorted(country_names.items(), key=lambda x: x[0]))
+            country_names[a_country["name"]] = a_country["iso2"]
+        country_names = sorted(country_names.items(), key=lambda x: x[0])
         if request.method == "POST":
             storeform = StoreForm(request.POST, request.FILES, instance=store)
             if storeform.is_valid():
@@ -204,8 +219,7 @@ def store_account(
                 state_code = storeform.cleaned_data["state"]
                 country = country_details(request, country_code)
                 state = state_details(request, country_code, state_code)
-                
-                
+
                 form = storeform.save(commit=False)
                 form.owner = request.user
                 form.country = country
@@ -215,8 +229,8 @@ def store_account(
                 currency = Currency.objects.get(name=currency)
                 if not Wallet.objects.filter(store=store, currency=currency).exists():
                     Wallet.objects.create(
-                        currency = currency,
-                        store = store,
+                        currency=currency,
+                        store=store,
                     )
                 request.user.store_name = store_name
                 request.user.save()
@@ -236,6 +250,7 @@ def store_account(
     else:
         return redirect("account:user_profile")
 
+
 def accept_staff_invitation(request, slugified_store_name, email, uidb64, token):
     store = Store.objects.get(slugified_store_name=slugified_store_name)
     if store_staff.objects.filter(store=store, email=email).exists():
@@ -250,18 +265,25 @@ def accept_staff_invitation(request, slugified_store_name, email, uidb64, token)
                 phone_number=user.phone_number,
                 avatar=user.avatar,
                 password=user.password,
-                is_active = True,
+                is_active=True,
             )
             staff.save()
             store.staffs.add(user)
             store.save()
             staffs = store_staff.objects.filter(store=store)
-            for staff in staffs:     
+            for staff in staffs:
                 staff_user = User.objects.get(email=staff.email)
-                notify.send(store.owner, recipient=staff_user, verb="An additional staff has been added to the store")
-            notify.send(store.owner, recipient=store.owner, verb="You have been added as a staff member of your store")
+                notify.send(
+                    store.owner,
+                    recipient=staff_user,
+                    verb="An additional staff has been added to the store",
+                )
+            notify.send(
+                store.owner,
+                recipient=store.owner,
+                verb="You have been added as a staff member of your store",
+            )
             return redirect("/")
-
 
 
 def store_staff_register(request, slugified_store_name):
@@ -287,10 +309,18 @@ def store_staff_register(request, slugified_store_name):
                 staff_user.save()
                 store.staffs.add(user)
                 staffs = store_staff.objects.filter(store=store)
-                for staff in staffs:     
+                for staff in staffs:
                     staff_user = User.objects.get(email=staff.email)
-                    notify.send(store.owner, recipient=staff_user, verb="An additional staff has been added to the store")
-                notify.send(store.owner, recipient=store.owner, verb="You have been added as a staff member of your store")
+                    notify.send(
+                        store.owner,
+                        recipient=staff_user,
+                        verb="An additional staff has been added to the store",
+                    )
+                notify.send(
+                    store.owner,
+                    recipient=store.owner,
+                    verb="You have been added as a staff member of your store",
+                )
                 current_site = get_current_site(request)
                 subject = "Activate your Shopit Account"
                 message = render_to_string(
@@ -318,7 +348,7 @@ def add_store_staff(request):
     form = ExistingStoreStaffForm
     store = Store.objects.get(owner=request.user)
     if Subscription_Timeline.objects.filter(store=store).exists():
-        if request.user.store_creator == True: 
+        if request.user.store_creator == True:
             store_staffs = store_staff.objects.filter(store=store)
             store_subscription = Subscription_Timeline.objects.get(store=store)
             if store_subscription.subscription.name == "Professional":
@@ -334,55 +364,91 @@ def add_store_staff(request):
                         user = User.objects.get(email=email)
                         if user.store_creator == False:
                             if user not in store.staffs.all():
-                                user = User.objects.get(email=email)                         
+                                user = User.objects.get(email=email)
                                 domain = settings.DEFAULT_DOMAIN
-                                path = reverse("account:accept_staff_invitation", kwargs={"email": user.email, "slugified_store_name": store.slugified_store_name, "uidb64": urlsafe_base64_encode(force_bytes(user.pk)), "token": account_activation_token.make_token(user)})
-                                subject = f"{store.store_name} - Staff Permission Activation"
+                                path = reverse(
+                                    "account:accept_staff_invitation",
+                                    kwargs={
+                                        "email": user.email,
+                                        "slugified_store_name": store.slugified_store_name,
+                                        "uidb64": urlsafe_base64_encode(
+                                            force_bytes(user.pk)
+                                        ),
+                                        "token": account_activation_token.make_token(
+                                            user
+                                        ),
+                                    },
+                                )
+                                subject = (
+                                    f"{store.store_name} - Staff Permission Activation"
+                                )
                                 message = render_to_string(
-                                    "account/registration/store_staff_email.html", 
+                                    "account/registration/store_staff_email.html",
                                     {
                                         "user": user,
                                         "store": store,
                                         "domain": domain + path,
                                         "existing_user": True,
-                                    }
+                                    },
                                 )
                                 user.email_user(subject=subject, message=message)
                                 staffs = store_staff.objects.filter(store=store)
-                                for staff in staffs:     
+                                for staff in staffs:
                                     staff_user = User.objects.get(email=staff.email)
-                                    notify.send(store.owner, recipient=staff_user, verb="Permission to add a staff member sent")
-                                notify.send(store.owner, recipient=store.owner, verb="Permission to add a staff member sent")
+                                    notify.send(
+                                        store.owner,
+                                        recipient=staff_user,
+                                        verb="Permission to add a staff member sent",
+                                    )
+                                notify.send(
+                                    store.owner,
+                                    recipient=store.owner,
+                                    verb="Permission to add a staff member sent",
+                                )
                                 return redirect("app:store_staff_page")
-                            else:            
+                            else:
                                 messages.error(request, "User is already a staff")
                         else:
                             messages.error(request, "Store creator can't be a staff")
-                        
+
                     else:
                         subject = f"{store.store_name} - Staff Permission Activation"
                         domain = settings.DEFAULT_DOMAIN
-                        path = reverse("account:store_staff_register", kwargs={"slugified_store_name": store.slugified_store_name})
+                        path = reverse(
+                            "account:store_staff_register",
+                            kwargs={"slugified_store_name": store.slugified_store_name},
+                        )
                         message = render_to_string(
-                            "account/registration/store_staff_email.html", 
+                            "account/registration/store_staff_email.html",
                             {
                                 "store": store,
                                 "domain": domain + path,
-                                "existing_user": False
-
-                            }
+                                "existing_user": False,
+                            },
                         )
                         email = request.POST.get("email")
                         if "@" in email and "." in email:
-                            send_mail(subject, message, settings.EMAIL_HOST_USER, [email])
+                            send_mail(
+                                subject, message, settings.EMAIL_HOST_USER, [email]
+                            )
                             staffs = store_staff.objects.filter(store=store)
-                            for staff in staffs:     
+                            for staff in staffs:
                                 staff_user = User.objects.get(email=staff.email)
-                                notify.send(store.owner, recipient=staff_user, verb="Permission to add a staff member sent")
-                            notify.send(store.owner, recipient=store.owner, verb="Permission to add a staff member sent")
+                                notify.send(
+                                    store.owner,
+                                    recipient=staff_user,
+                                    verb="Permission to add a staff member sent",
+                                )
+                            notify.send(
+                                store.owner,
+                                recipient=store.owner,
+                                verb="Permission to add a staff member sent",
+                            )
                             return redirect("app:store_staff_page")
                         else:
-                            messages.error(request, "Please enter a valid email address")
+                            messages.error(
+                                request, "Please enter a valid email address"
+                            )
             else:
                 messages.error(request, "You have reached the limit of staff members")
         else:
@@ -404,10 +470,18 @@ def delete_store_staff(request, pk):
             store.staffs.remove(staff_user)
             staff.delete()
             staffs = store_staff.objects.filter(store=store)
-            for staff in staffs:     
+            for staff in staffs:
                 staff_user = User.objects.get(email=staff.email)
-                notify.send(store.owner, recipient=staff_user, verb=f"{staff_user.full_name} has been removed from the store")
-            notify.send(store.owner, recipient=store.owner, verb=f"{staff_user.full_name} has been removed from the store")
+                notify.send(
+                    store.owner,
+                    recipient=staff_user,
+                    verb=f"{staff_user.full_name} has been removed from the store",
+                )
+            notify.send(
+                store.owner,
+                recipient=store.owner,
+                verb=f"{staff_user.full_name} has been removed from the store",
+            )
             return redirect("app:store_staff_page")
         else:
             messages.error(request, "staff not found")
@@ -459,9 +533,24 @@ def create_store(request):
                     owner=user,
                     slugified_store_name=slugify(store_name),
                 )
-                notify.send(store.owner, recipient=user, verb="Set your store bank details", bank_details_url=reverse("account:bank_details"))
-                notify.send(store.owner, recipient=user, verb=f"Set at least a shipping method", shipping_method_url=reverse("app:add_shipping_method"))
-                notify.send(store.owner, recipient=user, verb=f"Set your store default currency", currency_url= reverse("account:store_account"))
+                notify.send(
+                    store.owner,
+                    recipient=user,
+                    verb="Set your store bank details",
+                    bank_details_url=reverse("account:bank_details"),
+                )
+                notify.send(
+                    store.owner,
+                    recipient=user,
+                    verb=f"Set at least a shipping method",
+                    shipping_method_url=reverse("app:add_shipping_method"),
+                )
+                notify.send(
+                    store.owner,
+                    recipient=user,
+                    verb=f"Set your store default currency",
+                    currency_url=reverse("account:store_account"),
+                )
                 return redirect("/")
     return render(request, "account/registration/add-store.html", {"form": form})
 
@@ -615,12 +704,18 @@ def bank_details(request):
                 bank_info.bank_code = all_banks[bank_name]
                 bank_info.account_number = form.cleaned_data["account_number"]
                 if flutterwave_currency_code == "NG":
-                    if resolve_account_details(request, bank_info.account_number, bank_info.bank_code): 
-                        response = resolve_account_details(request, bank_info.account_number, bank_info.bank_code)
+                    if resolve_account_details(
+                        request, bank_info.account_number, bank_info.bank_code
+                    ):
+                        response = resolve_account_details(
+                            request, bank_info.account_number, bank_info.bank_code
+                        )
                         account_name = response.get("data").get("account_name")
                         bank_info.account_name = account_name
                         bank_info.save()
-                        Bank_Info.objects.exclude(pk=bank_info.pk).filter(store=store).delete()
+                        Bank_Info.objects.exclude(pk=bank_info.pk).filter(
+                            store=store
+                        ).delete()
                         return redirect("account:bank_details")
                     else:
                         error = "Account details are invalid"
@@ -631,7 +726,9 @@ def bank_details(request):
                         )
                 else:
                     bank_info.save()
-                    Bank_Info.objects.exclude(pk=bank_info.pk).filter(store=store).delete()
+                    Bank_Info.objects.exclude(pk=bank_info.pk).filter(
+                        store=store
+                    ).delete()
                     return redirect("account:bank_details")
         return render(
             request,

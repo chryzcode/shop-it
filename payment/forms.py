@@ -4,7 +4,6 @@ from django.forms import ModelForm
 from .models import *
 
 
-
 class NonCustomerPaymentForm(ModelForm):
     class Meta:
         model = Payment
@@ -42,7 +41,6 @@ class NonCustomerPaymentForm(ModelForm):
             if not address_line:
                 raise forms.ValidationError("Please enter a valid address")
             return address_line
-
 
         def clean_state(self):
             state = self.cleaned_data.get("state")
@@ -93,9 +91,7 @@ class CustomerPaymentForm(ModelForm):
 class WalletForm(ModelForm):
     class Meta:
         model = Wallet
-        fields = (
-            "amount",
-        )
+        fields = ("amount",)
         widgets = {
             "amount": forms.TextInput(attrs={"class": "form-control"}),
         }
@@ -105,7 +101,9 @@ class WalletForm(ModelForm):
         if amount is None:
             raise forms.ValidationError("Kindly put in amount for withdrawal")
         if len(str(amount)) <= 3:
-            raise forms.ValidationError("Amount for withdrawal should be more than 3 figures")
+            raise forms.ValidationError(
+                "Amount for withdrawal should be more than 3 figures"
+            )
         if str(amount).startswith(str(0)):
             raise forms.ValidationError("Invalid amount")
         return amount

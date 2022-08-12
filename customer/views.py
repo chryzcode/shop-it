@@ -27,6 +27,7 @@ from .models import *
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from notifications.signals import notify
+
 # Create your views here.
 
 
@@ -46,8 +47,8 @@ def customer_register(request, slugified_store_name):
                 check_email = User.objects.get(email=email)
                 if check_email.store_name == store.store_name:
                     messages.error(request, "You can't be a customer of your store.")
-                else: 
-                    if check_email:   
+                else:
+                    if check_email:
                         error = "You have an existing account"
                         return redirect(
                             "customer:existing_user_customer_register",
@@ -66,10 +67,24 @@ def customer_register(request, slugified_store_name):
                 store.customers.add(user)
                 customer.save()
                 staffs = store_staff.objects.filter(store=store)
-                for staff in staffs:     
+                for staff in staffs:
                     staff_user = User.objects.get(email=staff.email)
-                    notify.send(store.owner, recipient=staff_user, verb=f"{store.store_name} have newly registered customer", customer_detail_url=reverse("app:store_customers_details", kwargs={"pk": customer.id}))
-                notify.send(store.owner, recipient=store.owner, verb=f"{store.store_name} have newly registered customer", customer_detail_url=reverse("app:store_customers_details", kwargs={"pk": customer.id}))
+                    notify.send(
+                        store.owner,
+                        recipient=staff_user,
+                        verb=f"{store.store_name} have newly registered customer",
+                        customer_detail_url=reverse(
+                            "app:store_customers_details", kwargs={"pk": customer.id}
+                        ),
+                    )
+                notify.send(
+                    store.owner,
+                    recipient=store.owner,
+                    verb=f"{store.store_name} have newly registered customer",
+                    customer_detail_url=reverse(
+                        "app:store_customers_details", kwargs={"pk": customer.id}
+                    ),
+                )
                 current_site = get_current_site(request)
                 subject = "Activate your Shop!t Account"
                 message = render_to_string(
@@ -82,9 +97,7 @@ def customer_register(request, slugified_store_name):
                     },
                 )
                 user.email_user(subject=subject, message=message)
-                return render(
-                    request, "account/registration/registration-success.html"
-                )
+                return render(request, "account/registration/registration-success.html")
     return render(
         request,
         "customer/register.html",
@@ -163,10 +176,25 @@ def existing_user_customer_register(request, slugified_store_name):
                     customer.save()
                     store.customers.add(user)
                     staffs = store_staff.objects.filter(store=store)
-                    for staff in staffs:     
+                    for staff in staffs:
                         staff_user = User.objects.get(email=staff.email)
-                        notify.send(store.owner, recipient=staff_user, verb=f"{store.store_name} have newly registered customer", customer_detail_url=reverse("app:store_customers_details", kwargs={"pk": customer.id}))
-                    notify.send(store.owner, recipient=store.owner, verb=f"{store.store_name} have newly registered customer", customer_detail_url=reverse("app:store_customers_details", kwargs={"pk": customer.id}))
+                        notify.send(
+                            store.owner,
+                            recipient=staff_user,
+                            verb=f"{store.store_name} have newly registered customer",
+                            customer_detail_url=reverse(
+                                "app:store_customers_details",
+                                kwargs={"pk": customer.id},
+                            ),
+                        )
+                    notify.send(
+                        store.owner,
+                        recipient=store.owner,
+                        verb=f"{store.store_name} have newly registered customer",
+                        customer_detail_url=reverse(
+                            "app:store_customers_details", kwargs={"pk": customer.id}
+                        ),
+                    )
                     return redirect(
                         "customer:customer_login",
                         slugified_store_name=slugified_store_name,
@@ -253,7 +281,7 @@ def customer_wishlist(request, slugified_store_name):
     if request.user in store.customers.all():
         user = request.user
         wishlist = Product.objects.filter(wishlist=user)
-        page = request.GET.get('page', 1)
+        page = request.GET.get("page", 1)
         paginator = Paginator(wishlist, 10)
         try:
             wishlist = paginator.page(page)
@@ -296,16 +324,14 @@ def create_address(request, slugified_store_name):
         address_form = AddressForm()
         url = "https://api.countrystatecity.in/v1/countries"
 
-        headers = {
-        'X-CSCAPI-KEY': settings.COUNTRY_STATE_CITY_API_KEY
-        }
+        headers = {"X-CSCAPI-KEY": settings.COUNTRY_STATE_CITY_API_KEY}
 
         response = requests.request("GET", url, headers=headers)
         data = response.json()
         country_names = {}
         for country in data:
-            country_names[country['name']] = country['iso2']
-        country_names = (sorted(country_names.items(), key=lambda x: x[0]))
+            country_names[country["name"]] = country["iso2"]
+        country_names = sorted(country_names.items(), key=lambda x: x[0])
         if request.method == "POST":
             address_form = AddressForm(data=request.POST)
             if address_form.is_valid():
@@ -319,7 +345,7 @@ def create_address(request, slugified_store_name):
                 address_form.customer = customer
                 if default_address:
                     address_form.default = False
-                    
+
                 else:
                     address_form.default = True
                 address_form.save()
@@ -330,7 +356,11 @@ def create_address(request, slugified_store_name):
         return render(
             request,
             "customer/address-create.html",
-            {"address_form": address_form, "store": store, "country_names": country_names},
+            {
+                "address_form": address_form,
+                "store": store,
+                "country_names": country_names,
+            },
         )
     else:
         return redirect(
@@ -343,16 +373,14 @@ def edit_address(request, slugified_store_name, id):
     if request.user in store.customers.all():
         url = "https://api.countrystatecity.in/v1/countries"
 
-        headers = {
-        'X-CSCAPI-KEY': settings.COUNTRY_STATE_CITY_API_KEY
-        }
+        headers = {"X-CSCAPI-KEY": settings.COUNTRY_STATE_CITY_API_KEY}
 
         response = requests.request("GET", url, headers=headers)
         data = response.json()
         country_names = {}
         for country in data:
-            country_names[country['name']] = country['iso2']
-        country_names = (sorted(country_names.items(), key=lambda x: x[0]))
+            country_names[country["name"]] = country["iso2"]
+        country_names = sorted(country_names.items(), key=lambda x: x[0])
         customer = Customer.objects.get(email=request.user.email)
         address = get_object_or_404(Address, id=id, customer=customer)
         address_form = AddressForm(instance=address)
@@ -373,7 +401,11 @@ def edit_address(request, slugified_store_name, id):
         return render(
             request,
             "customer/address-create.html",
-            {"address_form": address_form, "store": store , "country_names": country_names},
+            {
+                "address_form": address_form,
+                "store": store,
+                "country_names": country_names,
+            },
         )
     else:
         return redirect(
@@ -431,7 +463,7 @@ def customer_remove_wishlist(request, slug):
     product = get_object_or_404(Product, slug=slug)
     store = get_object_or_404(Store, store_name=product.store.store_name)
     if request.user in store.customers.all():
-        user = request.user  
+        user = request.user
         product.wishlist.remove(user)
         return redirect(
             "app:product_detail", slug=product.slug, slugified_store_name=slugify(store)
@@ -477,7 +509,9 @@ def customer_orders(request, slugified_store_name):
     store = Store.objects.get(slugified_store_name=slugified_store_name)
     if request.user in store.customers.all():
         customer = Customer.objects.get(email=request.user.email, store=store)
-        orders = Order.objects.filter(user=request.user, store=store, billing_status=True)
+        orders = Order.objects.filter(
+            user=request.user, store=store, billing_status=True
+        )
         if orders:
             for order in orders:
                 if Payment.objects.filter(user=request.user, store=store, order=order):
@@ -486,7 +520,7 @@ def customer_orders(request, slugified_store_name):
                     )
                 else:
                     payment = None
-        page = request.GET.get('page', 1)
+        page = request.GET.get("page", 1)
         paginator = Paginator(orders, 10)
         try:
             orders = paginator.page(page)
@@ -528,7 +562,7 @@ def unpaid_customer_orders(request, slugified_store_name):
                     )
                 else:
                     payment = None
-        page = request.GET.get('page', 1)
+        page = request.GET.get("page", 1)
         paginator = Paginator(orders, 10)
         try:
             orders = paginator.page(page)
@@ -584,7 +618,7 @@ def customer_reviews(request, slugified_store_name):
     if request.user in store.customers.all():
         customer = Customer.objects.get(email=request.user.email, store=store)
         reviews = Review.objects.filter(email=request.user.email, store=store)
-        page = request.GET.get('page', 1)
+        page = request.GET.get("page", 1)
         paginator = Paginator(reviews, 10)
         try:
             reviews = paginator.page(page)

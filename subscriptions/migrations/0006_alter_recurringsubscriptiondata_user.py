@@ -9,13 +9,15 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('subscriptions', '0005_remove_recurringsubscriptiondata_store_and_more'),
+        ("subscriptions", "0005_remove_recurringsubscriptiondata_store_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='recurringsubscriptiondata',
-            name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
+            model_name="recurringsubscriptiondata",
+            name="user",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL
+            ),
         ),
     ]
