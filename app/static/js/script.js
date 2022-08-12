@@ -201,7 +201,6 @@ function myFunction() {
   ul.style.height = "auto";
 }
 
-//if notification-list, hide notification-dropdown
 if (notification_list) { 
   notification_dropdown.style.display = "none";
   

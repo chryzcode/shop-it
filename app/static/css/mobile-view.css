@@ -460,8 +460,8 @@
     width: 100%;
   }
 
-  .wallet-withdrawal-form.active{
-    width: 400px
+  .wallet-withdrawal-form.active {
+    width: 400px;
   }
 }
 
@@ -603,8 +603,18 @@
     width: 150px;
   }
 
-  .wallet-withdrawal-form.active{
+  .wallet-withdrawal-form.active {
     width: 90%;
     margin: 0 auto;
+  }
+
+  .notification-list ul > li > a {
+    line-height: 1.5;
+    padding: 20px 20px 2px 20px;
+    font-size: 18px;
+  }
+
+  #view-more-notification {
+    font-size: 19px;
   }
 }
