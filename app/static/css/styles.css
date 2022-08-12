@@ -1974,10 +1974,18 @@ small {
   font-size: 20px;
 }
 
+.notification-list ul > li > a p{
+  color: #3d5170;
+  font-size: 13px;
+  text-align: right;
+  padding-right: 10px;
+}
+
 .notification-list ul > li :hover {
-  transform: scale(1.05);
+  transform: scale(1.02);
   transition: all 0.3s ease-in-out;
 }
+
 
 #view-more-notification {
   display: block;
@@ -1987,5 +1995,6 @@ small {
   color: #3d5170;
   margin: 50px 0;
   cursor: pointer;
+  padding-bottom: 20px;
 }
 
