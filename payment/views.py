@@ -197,10 +197,8 @@ def initiate_transfer(
     }
     response = requests.request("POST", url, headers=headers, json=data)
     if response.status_code == 200:
-        messages.success(request, "Transfer initiated successfully")
         return response.json()
     else:
-        messages.error(request, "Transfer failed")
         return response.json()
 
 
@@ -354,7 +352,6 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
 def withdraw_funds(request, currency_code):
     if request.user.store_creator == True:
         store = Store.objects.get(owner=request.user)
-        #get all store staff emails through filter
         currency = Currency.objects.get(code=currency_code)
         if Wallet.objects.filter(store=store, currency=currency).exists():
             store_wallet = Wallet.objects.get(store=store, currency=currency)
@@ -366,12 +363,12 @@ def withdraw_funds(request, currency_code):
                     if amount is None:
                         messages.error(request, "Please enter an amount")
                         return redirect("app:store_wallet")
-                    # if len(str(amount)) <= 3:
-                    #     messages.error(
-                    #         request,
-                    #         "Amount for withdrawal should be more than 3 figures",
-                    #     )
-                    #     return redirect("app:store_wallet")
+                    if len(str(amount)) <= 3:
+                        messages.error(
+                            request,
+                            "Amount for withdrawal should be more than 3 figures",
+                        )
+                        return redirect("app:store_wallet")
                     if str(amount).startswith(str(0)):
                         messages.error(request, "Invalid amount")
                         return redirect("app:store_wallet")
