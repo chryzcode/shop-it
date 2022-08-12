@@ -207,6 +207,7 @@ def initiate_transfer(
     if response.status_code == 200:
         return response.json()
     else:
+        messages.error(request, "verify you bank account details")
         return response.json()
 
 
@@ -470,10 +471,6 @@ def withdraw_funds(request, currency_code):
                                                                 account_number=store_bank.account_number,
                                                                 account_name=store_bank.account_name,
                                                                 account_bank=store_bank.bank_name,
-                                                            )
-                                                            messages.error(
-                                                                request,
-                                                                "Withdrawal Successful",
                                                             )
 
                                                             current_site = (
