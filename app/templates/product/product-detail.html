@@ -12,7 +12,7 @@
             <div class="input-container" id="input-container">
               
                 <div id="amount">
-                  You can not order more than available quantity
+                  You can not order more than the available quantity
                 </div>
             </div>
             <div class="form-btn-container" id="form-btn-container">
@@ -205,10 +205,10 @@
     const productOrderCount = ($("#product-order-count").val());
     const errorAlert = $("#withdrawal-naira-form");
     const minWidth = window.matchMedia("(min-width: 990px)");
-    const addToCartBtn = $("#add-to-cart-btn")
-    const errorAlertBtn = $("#form-btn")
+    const addToCartBtn = $("#add-to-cart-btn");
+    const errorAlertBtn = $("#form-btn");
     const nav = $("#nav");
-    const cartIconContainer = $("#cart-icon-container")
+    const cartIconContainer = $("#cart-icon-container");
 
 
     if (parseInt(productOrderCount) > parseInt(myavailability)) {
@@ -234,9 +234,9 @@
 
   $(document).on("click", "#form-btn", function (e) {
     $("#withdrawal-naira-form").removeClass("active");
-    addToCartBtn.removeClass("disable");
-    if (cartIconContainer) {
-        cartIconContainer.removeClass("disable");
+    $("#add-to-cart-btn").removeClass("disable");
+    if ($("#cart-icon-container")) {
+        $("#cart-icon-container").removeClass("disable");
       }
   });
 
