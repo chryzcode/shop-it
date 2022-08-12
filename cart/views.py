@@ -159,7 +159,6 @@ def update_cart(request, slugified_store_name):
         else:
             cartproductqty = item_qty * Decimal(a_product_price)
         currency = cart.get_currency_symbol()
-        print(currency)
         response = JsonResponse(
             {
                 "qty": cartqty,
