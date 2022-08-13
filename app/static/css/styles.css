@@ -1978,14 +1978,17 @@ small {
   color: #3d5170;
   font-size: 13px;
   text-align: right;
-  padding-right: 10px;
+  padding-right: 5px;
 }
 
 .notification-list ul > li :hover {
-  transform: scale(1.02);
+  transform: scale(1.05);
   transition: all 0.3s ease-in-out;
 }
 
+.notification-list ul > li > a p:hover{
+  transform: none;
+}
 
 #view-more-notification {
   display: block;
@@ -1998,3 +2001,10 @@ small {
   padding-bottom: 20px;
 }
 
+.unread-notification {
+  background-color: #e2f0fe;
+}
+ 
+ .unread-notification :hover{
+  background-color: #d4e9fd;
+ }

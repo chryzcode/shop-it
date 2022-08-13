@@ -14,8 +14,18 @@
         <div class="notifications-container">
           {% for notification in user.notifications.unread %}
           <ul>
+            <li class="notification-list-li unread-notification">
+              <a href="{% url 'app:mark_notification_read' notification.id %}"><span>{{ notification.verb }}</span>
+               <p>{{notification.timestamp.date}} - {{notification.timestamp.time}}</p>
+               </a>
+            </li>
+           
+          </ul>
+          {% endfor %}
+          {% for notification in user.notifications.read %}
+          <ul>
             <li class="notification-list-li">
-              <a href="{% url 'app:mark_notification_read' notification.id %}">{{ notification.verb }}
+              <a href="{% url 'app:mark_notification_read' notification.id %}"><span>{{ notification.verb }}</span>
                <p>{{notification.timestamp.date}} - {{notification.timestamp.time}}</p>
                </a>
             </li>
