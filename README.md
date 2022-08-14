@@ -1,3 +1,3 @@
 # shop-it
 
-In the making 
+Beta Test
