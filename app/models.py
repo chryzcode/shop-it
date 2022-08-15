@@ -11,6 +11,7 @@ from pyexpat import model
 from requests import request
 
 from account.models import *
+from customer.models import Customer
 
 
 class Category(models.Model):
@@ -242,3 +243,24 @@ class customers_monthly(models.Model):
 
     class Meta:
         verbose_name_plural = "customers_monthly"
+
+class Store_Newsletter(models.Model):
+    store = models.ForeignKey(Store, on_delete=models.CASCADE)
+    customer = models.ManyToManyField(Customer, blank=True)
+
+    def __str__(self):
+        return str(self.store) + ' ' + 'Newsletter'
+
+    class Meta:
+        verbose_name_plural = "Store Newsletter"
+
+class Newsletter(models.Model):
+    store_newsletter = models.ForeignKey(Store_Newsletter, on_delete=models.CASCADE)
+    title = models.CharField(max_length=250)
+    body = RichTextField()
+
+    def __str__(self):
+        return 'A ' + str(self.store) + ' Newsletter'
+
+    class Meta:
+        verbose_name_plural = "A Store newsletters"
