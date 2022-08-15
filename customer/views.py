@@ -84,6 +84,9 @@ def customer_register(request, slugified_store_name):
                         "app:store_customers_details", kwargs={"pk": customer.id}
                     ),
                 )
+                if Store_Newsletter.objects.filter(store=store).exists():
+                    newsletter = Store_Newsletter.objects.get(store=store)
+                    newsletter.customers.add(customer)
                 current_site = get_current_site(request)
                 subject = "Activate your Shop!t Account"
                 message = render_to_string(
@@ -194,6 +197,9 @@ def existing_user_customer_register(request, slugified_store_name):
                             "app:store_customers_details", kwargs={"pk": customer.id}
                         ),
                     )
+                    if Store_Newsletter.objects.filter(store=store).exists():
+                        newsletter = Store_Newsletter.objects.get(store=store)
+                        newsletter.customers.add(customer)
                     return redirect(
                         "customer:customer_login",
                         slugified_store_name=slugified_store_name,

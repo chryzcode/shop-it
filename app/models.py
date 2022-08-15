@@ -246,7 +246,7 @@ class customers_monthly(models.Model):
 
 class Store_Newsletter(models.Model):
     store = models.ForeignKey(Store, on_delete=models.CASCADE)
-    customer = models.ManyToManyField(Customer, blank=True)
+    customers = models.ManyToManyField(Customer, blank=True)
 
     def __str__(self):
         return str(self.store) + ' ' + 'Newsletter'
@@ -258,6 +258,8 @@ class Newsletter(models.Model):
     store_newsletter = models.ForeignKey(Store_Newsletter, on_delete=models.CASCADE)
     title = models.CharField(max_length=250)
     body = RichTextField()
+    created = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated = models.DateTimeField(auto_now_add=True,  null=True, blank=True)
 
     def __str__(self):
         return 'A ' + str(self.store) + ' Newsletter'

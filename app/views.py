@@ -1839,3 +1839,22 @@ def notification_page(request):
         )
     user = User.objects.get(email=request.user.email)
     return render(request, "store/notifications.html", {"store": store, "user": user})
+
+
+def newsletter_page(request):
+    if request.user.store_creator == True:
+        store = Store.objects.get(owner=request.user)
+    else:
+        store = Store.objects.get(
+            store_name=store_staff.objects.get(email=request.user.email).store
+        )
+    newsletters = Newsletter.objects.filter(store=store)
+    
+
+
+
+@login_required(login_url="/account/login/")
+def generate_store_newsletter(request):
+    if request.user.store_creator == True:
+        store = Store.objects.get(owner=request.user)
+    e
