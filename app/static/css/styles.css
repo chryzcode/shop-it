@@ -1107,7 +1107,7 @@ button {
   cursor: pointer;
 }
 
-#notification.active {
+#notification a {
   color: #6b69f8;
   transition: all 1.01s ease-in-out;
 }
@@ -1626,26 +1626,6 @@ small {
   margin: 0 auto;
 }
 
-#notification-dropdown {
-  display: none;
-}
-
-#notification-dropdown.active {
-  display: block;
-  width: max-content;
-  max-width: 400px;
-  overflow: hidden;
-  position: absolute;
-  height: max-content;
-  background-color: #fff;
-  z-index: 1070;
-  top: 80px;
-  box-shadow: rgb(0 0 0 / 35%) 0px 5px 15px;
-  border-radius: 8px;
-  margin-right: 20px;
-  padding: 10px;
-  right: 0;
-}
 
 .notification-count {
   position: absolute;
@@ -1655,25 +1635,9 @@ small {
   text-align: center;
   width: 20px;
   margin-left: 1px;
+  top: 4px;
 }
 
-#notification-dropdown > a,
-#notification-dropdown > a > p {
-  color: #3d5170;
-  display: block;
-  margin: 5px 0;
-  width: 100%;
-  font-size: 16px;
-  height: 30px;
-  overflow: hidden;
-}
-
-#notification-dropdown > p > a {
-  color: #6b69f8;
-  font-size: 14px;
-  text-align: center;
-  display: block;
-}
 
 /* body::-webkit-scrollbar,
 .store-sidenav::-webkit-scrollbar,

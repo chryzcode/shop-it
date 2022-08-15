@@ -70,14 +70,46 @@ def account_logout(request):
 @login_required(login_url="/account/login/")
 def account_delete(request):
     user = User.objects.get(email=request.user.email)
-    subject = "Your Shopit Account has been Deleted"
+    if request.user.store_creator == True:
+        account_type = 'Store Creator'
+        store = Store.objects.get(store_name=request.user.store_name)
+        subject = f"Request for Your Shopit Account to be Deleted - {store.store_name}"
+        store_staffs = store_staff.objects.filter(store=store)
+        staff_email_list = []
+        for staff in store_staffs:
+            staff_email = staff.email
+            staff_email_list.append(
+                staff_email
+            )
+        to_email = [settings.EMAIL_HOST_USER, staff_email_list]
+    elif request.user.store_staff == True:
+        account_type = 'Store Staff'
+        staff_stores = Store.objects.filter(staffs=request.user)
+        subject = f"Request for Your Shopit Account to be Deleted - Store Staff"
+        staff_stores_list = []
+        for store in staff_stores:
+            store_owner_email = store.owner.email
+            staff_stores_list.append(
+                store_owner_email
+            )
+        to_email = [settings.EMAIL_HOST_USER, staff_stores_list]
+    else:
+        account_type = 'Customer'
+        subject = f"Request for Your Shopit Account to be Deleted - Customer"
+        to_email = [settings.EMAIL_HOST_USER]
+
     message = render_to_string(
-        "account/registration/account_delete_email.html",
-        {"user": user},
+        "account/user/account-delete-email.html",
+        {"user": user,
+        "account_type":account_type,
+        "staff_stores":staff_stores,
+        }
     )
-    user.email_user(subject, message)
-    # delete user after 50 days from when this function is called
-    user.delete()
+    user.is_active = False
+    user.save()
+    from_email = user.email 
+    
+    send_mail(subject, message, from_email, to_email)
     logout(request)
     return redirect("/")
 

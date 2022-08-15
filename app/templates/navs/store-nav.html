@@ -60,22 +60,7 @@
    
       <span class="nav-not-acc-sec">
        
-      <div id="notification" class="notification"><span class="notification-count">{{ user.notifications.unread.count }}</span><i class="fas fa-bell notification-bell"></i>
-         
-          <div id="notification-dropdown">
-            {% if user.notifications.unread %}
-             {% for notification in  user.notifications.unread %}
-              <a class="min-notification" href="{% url 'app:mark_notification_read' notification.id %}">
-              <p>{{ notification.verb }}</p>
-              </a>
-            {% endfor %}
-
-             <p><a href="{% url 'app:notification_page' %}">View all</a></p>
-            {% else %}
-            <p>There's nothing new here</p>
-            {% endif %}
-          </div>  
-       
+      <div id="notification" class="notification"><a href="{% url 'app:notification_page' %}"><span class="notification-count" id="notification-count">{{ user.notifications.unread.count }}</span><i class="fas fa-bell notification-bell"></i></a>
       </div>
 
         <span class="nav-user-profile" id="nav-user-profile">
