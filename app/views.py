@@ -1849,7 +1849,7 @@ def newsletter_page(request):
             store_name=store_staff.objects.get(email=request.user.email).store
         )
     newsletters = Newsletter.objects.filter(store=store)
-    
+    return render(request, "store/all-newsletter-page.html", {"store": store, "newsletters": newsletters})
 
 
 
@@ -1857,4 +1857,88 @@ def newsletter_page(request):
 def generate_store_newsletter(request):
     if request.user.store_creator == True:
         store = Store.objects.get(owner=request.user)
-    e
+        if Store_Newsletter.objects.filter(store=store).exists():
+            messages.error(request, "You have already generated a newsletter")
+            return redirect("app:newsletter_page")
+        else:
+            Store_Newsletter.objects.create(
+            store=store,
+        )
+        return redirect("app:newsletter_page")
+    else:
+        messages.error(request, "You are not authorized")
+        return redirect("app:newsletter_page")
+
+@login_required(login_url="/account/login/")
+def delete_store_newsletter(request):
+    if request.user.store_creator == True:
+        store = Store.objects.get(owner=request.user)
+        if Store_Newsletter.objects.filter(store=store).exists():
+            newsletter = Store_Newsletter.objects.get(store=store)
+            newsletter.delete()
+            return redirect("app:newsletter_page")
+        else:
+            messages.error(request, "You have not generated a newsletter")
+            return redirect("app:newsletter_page")
+    else:
+        messages.error(request, "You are not authorized")
+        return redirect("app:newsletter_page")
+
+@login_required(login_url="/account/login/")
+def create_newsletter(request):
+    if request.user.store_creator == True:
+        store = Store.objects.get(owner=request.user)
+    else:
+        store = Store.objects.get(
+            store_name=store_staff.objects.get(email=request.user.email).store
+        )
+    form = NewsletterForm(request.POST or None)
+    if request.method == "POST":
+        if form.is_valid():
+            newsletter = form.save(commit=False)
+            newsletter.store = store
+            newsletter.save()
+            return redirect("app:newsletter_page")
+    return render(request, "store/newsletter.html", {"form": form})
+
+@login_required(login_url="/account/login/")
+def edit_newsletter(request, pk):
+    if request.user.store_creator == True:
+        store = Store.objects.get(owner=request.user)
+    else:
+        store = Store.objects.get(
+            store_name=store_staff.objects.get(email=request.user.email).store
+        )
+    newsletter = get_object_or_404(Newsletter, pk=pk)
+    form = NewsletterForm(request.POST or None, instance=newsletter)
+    if request.method == "POST":
+        if form.is_valid():
+            newsletter = form.save(commit=False)
+            newsletter.store = store
+            newsletter.save()
+            return redirect("app:newsletter_page")
+    return render(request, "store/newsletter.html", {"form": form})
+
+@login_required(login_url="/account/login/")
+def publish_newsletter(request):
+    if request.user.store_creator == True:
+        store = Store.objects.get(owner=request.user)
+    else:
+        store = Store.objects.get(
+            store_name=store_staff.objects.get(email=request.user.email).store
+        )
+    form = NewsletterForm(request.POST or None)
+    if Store_Newsletter.objects.filter(store=store).exists():
+        store_newsletter = Store_Newsletter.objects.get(store=store)
+        subscribers_list = []
+        if request.method == "POST":
+            if form.is_valid():
+                subject = form.cleaned_data["title"]
+                message = form.cleaned_data["body"]
+                subscribers =  store_newsletter.subscribers.all()
+                for subscriber in subscribers:
+                    subscribers_list.append(subscriber.email)
+                send_mail(subject, message, settings.EMAIL_HOST_USER, subscribers_list)
+                return redirect("app:newsletter_page")
+                
+            

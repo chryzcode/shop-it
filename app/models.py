@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 from decimal import Decimal
+from selectors import SelectorKey
 
 from ckeditor.fields import RichTextField
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -255,11 +256,11 @@ class Store_Newsletter(models.Model):
         verbose_name_plural = "Store Newsletter"
 
 class Newsletter(models.Model):
-    store_newsletter = models.ForeignKey(Store_Newsletter, on_delete=models.CASCADE)
+    SelectorKey = models.ForeignKey(Store_Newsletter, on_delete=models.CASCADE)
     title = models.CharField(max_length=250)
     body = RichTextField()
-    created = models.DateTimeField(auto_now_add=True, null=True, blank=True)
-    updated = models.DateTimeField(auto_now_add=True,  null=True, blank=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return 'A ' + str(self.store) + ' Newsletter'

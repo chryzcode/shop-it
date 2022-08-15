@@ -109,4 +109,5 @@ urlpatterns = [
     path("get-state/<iso2>/", views.get_state, name="get_state"),
     path("get-city/<iso2>/", views.get_state, name="get_city"),
     path("notifications/", views.notification_page, name="notification_page"),
+    path("newsletter/", views.newsletter_page, name="newsletter_page"),
 ]
