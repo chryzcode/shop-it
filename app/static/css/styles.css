@@ -1969,6 +1969,7 @@ small {
 
 .unread-notification {
   background-color: #e2f0fe;
+  overflow: hidden;
 }
 
 .unread-notification :hover {
