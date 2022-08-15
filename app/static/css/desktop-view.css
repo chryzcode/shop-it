@@ -120,6 +120,10 @@
     left: calc(50% - 22.5%) !important;
     margin: 0 !important;
   }
+  
+  .notification-count {
+    margin-left: 5px;
+  }
 }
 
 @media all and (min-width: 850px) {
