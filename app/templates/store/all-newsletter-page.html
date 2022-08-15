@@ -1,0 +1,49 @@
+{% extends 'navs/store-nav.html' %} {% load static %} {% block title %}
+<title>Shopit - {{store.store_name}} Newsletter</title>
+{% endblock %} {% block content %}
+<div class="store-page-container">
+  {% include 'navs/store-side-nav.html' %}
+
+  <div class="store-content-container">
+    <p>{{store.store_name|title }} Newsletter</p>
+    {% if messages %} {% for message in messages %} {% if message %}
+    <small class="error">{{message}}</small>
+    {% endif %} {% endfor %} {% endif %}
+    <form action="" method="post" enctype="multipart/form-data" class="create-product-form">
+      <div class="above-create-form">
+        {% if 'edit' in request.get_full_path %}
+        <p>Edit Newsletter Draft</p>
+        {% else %}
+        <p>Create Newsletter</p>
+        {% endif %}
+      </div>
+      {% csrf_token %}
+      <div class="pricing-quantity-seg">
+        <div class="input-container">
+          <label for="title">Title<span class="form-required">*</span></label>
+          <p>{{ form.title.errors }}</p>
+          {{form.title}}
+        </div>
+
+        <div class="input-container">
+          {{ form.media }}
+          <label for="">Body<span class="form-required">*</span></label>
+          <p>{{ form.body.errors }}</p>
+          <div class="product-detail-input">{{ form.body }}</div>
+        </div>
+      </div>
+
+      <div class="form-btn-container">
+        <div>
+            <a href=""> Save as Draft </a>
+            <a href=""> Publish Newsletter </a>
+        </div>
+      </div>
+    </form>
+
+      <p>Newsletter Drafts</p>
+   
+  </div>
+</div>
+
+{% endblock %}

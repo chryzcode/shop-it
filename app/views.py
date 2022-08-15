@@ -1848,8 +1848,14 @@ def newsletter_page(request):
         store = Store.objects.get(
             store_name=store_staff.objects.get(email=request.user.email).store
         )
-    newsletters = Newsletter.objects.filter(store=store)
-    return render(request, "store/all-newsletter-page.html", {"store": store, "newsletters": newsletters})
+   
+    if Store_Newsletter.objects.filter(store=store).exists():
+        store_newsletter = Store_Newsletter.objects.get(store=store)
+        newsletters = Newsletter.objects.filter(store=store_newsletter)
+    else:
+        newsletters = None
+    form = NewsletterForm()
+    return render(request, "store/all-newsletter-page.html", {"store": store,  'form': form, "newsletters": newsletters,})
 
 
 
@@ -1885,7 +1891,7 @@ def delete_store_newsletter(request):
         return redirect("app:newsletter_page")
 
 @login_required(login_url="/account/login/")
-def create_newsletter(request):
+def darft_newsletter(request):
     if request.user.store_creator == True:
         store = Store.objects.get(owner=request.user)
     else:
@@ -1902,7 +1908,7 @@ def create_newsletter(request):
     return render(request, "store/newsletter.html", {"form": form})
 
 @login_required(login_url="/account/login/")
-def edit_newsletter(request, pk):
+def edit_draft_newsletter(request, pk):
     if request.user.store_creator == True:
         store = Store.objects.get(owner=request.user)
     else:
@@ -1940,5 +1946,25 @@ def publish_newsletter(request):
                     subscribers_list.append(subscriber.email)
                 send_mail(subject, message, settings.EMAIL_HOST_USER, subscribers_list)
                 return redirect("app:newsletter_page")
+    else:
+        messages.error(request, "You have not generated a newsletter")
+        return redirect("app:newsletter_page")
+
+
+@login_required(login_url="/account/login/")
+def delete_draft_newsletter(request, pk):
+    if request.user.store_creator == True:
+        store = Store.objects.get(owner=request.user)
+    else:
+        store = Store.objects.get(
+            store_name=store_staff.objects.get(email=request.user.email).store
+        )
+    newsletter = get_object_or_404(Newsletter, pk=pk)
+    if newsletter.store == store:
+        newsletter.delete()
+        return redirect("app:newsletter_page")
+    else:
+        messages.error(request, "You are not authorized")
+        return redirect("app:newsletter_page")
                 
             

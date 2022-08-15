@@ -855,6 +855,29 @@ input[type="file" i] {
   padding: 20px;
 }
 
+.form-btn-container > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.form-btn-container > div > a{
+  display: block;
+  width: max-content;
+  text-decoration: none;
+  background-color: #6b69f8;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin: 10px;
+}
+
+.form-btn-container > div > a:hover {
+  background-color: #3d5170;
+  transition: all 1.5s ease-in-out;
+}
+
 .form-btn {
   color: #ccc;
   outline: none;

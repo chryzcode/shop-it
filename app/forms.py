@@ -329,7 +329,7 @@ class CompanyNonAuthReviewForm(forms.Form):
             raise forms.ValidationError("Invalid email")
         return email
 
-class NewsletterForm(forms.Form):
+class NewsletterForm(ModelForm):
     class Meta:
         model = Newsletter
         fields = ["title", "body"]
@@ -343,18 +343,22 @@ class NewsletterForm(forms.Form):
             ),
         }
 
-    def clean_body(self):
-        body = self.cleaned_data.get("body")
-        if body is None:
-            raise forms.ValidationError("Field is required")
-        if body >= 5:
-            raise forms.ValidationError("Field is requires more than 5 characters")
-        return body
+        def clean_body(self):
+            body = self.cleaned_data.get("body")
+            if body is None:
+                raise forms.ValidationError("Field is required")
+            if body >= 5:
+                raise forms.ValidationError("Field is requires more than 5 characters")
+            return body
 
-    def clean_title(self):
-        title = self.cleaned_data.get("title")
-        if title is None:
-            raise forms.ValidationError("Field is required")
-        if title >= 5:
-            raise forms.ValidationError("Field is requires more than 5 characters")
-        return title
+        def clean_title(self):
+            title = self.cleaned_data.get("title")
+            if title is None:
+                raise forms.ValidationError("Field is required")
+            if title >= 5:
+                raise forms.ValidationError("Field is requires more than 5 characters")
+            return title
+    
+    def __init__(self, *args, **kwargs):
+        super(NewsletterForm, self).__init__(*args, **kwargs)
+    

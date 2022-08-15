@@ -256,7 +256,7 @@ class Store_Newsletter(models.Model):
         verbose_name_plural = "Store Newsletter"
 
 class Newsletter(models.Model):
-    SelectorKey = models.ForeignKey(Store_Newsletter, on_delete=models.CASCADE)
+    store = models.ForeignKey(Store_Newsletter, on_delete=models.CASCADE)
     title = models.CharField(max_length=250)
     body = RichTextField()
     created = models.DateTimeField(auto_now_add=True)
