@@ -38,10 +38,14 @@
           <div class="product-detail-input">{{ form.body }}</div>
         </div>
       </div>
-
+      
       <div class="form-btn-container">
         <div>
+            {% if 'edit' in request.get_full_path %}
+            <a href="{% url 'app:edit_draft_newsletter' get_newsletter %}" id="save-edit-as-draft"> Save as Draft </a>
+            {% else %}
             <a href="{% url 'app:draft_newsletter' %}" id="save-as-draft"> Save as Draft </a>
+            {% endif %}
             <a href="{% url 'app:publish_newsletter' %}" id="publish-newsletter"> Publish Newsletter </a>
         </div>
       </div>
@@ -49,6 +53,51 @@
     {% endif %}
     {% if newsletters %}
       <p>Newsletter Drafts</p>
+
+      <div class="table-container">
+        <table class="store-products-table">
+        
+        <tr class="table-rows">
+          <th>Title</th>
+          <th>Updated</th>
+          <th>Created</th>
+          <th>Delete</th>
+        </tr>
+
+        {% for newsletter in newsletters %} 
+        <tr class="table-rows">
+          <td><a href="{% url 'app:edit_draft_newsletter' newsletter.pk %}">{{newsletter.title|truncatechars:20}}</a></td>
+            <td>{{newsletter.updated|timesince}}</td>
+          <td>{{newsletter.created|timesince}}</td>
+          <td><button type="button" class="delete-btn">
+              <a href="{% url 'app:delete_draft_newsletter' newsletter.pk %}"><i class="fas fa-trash-alt"></i>Delete</a>
+            </button>
+        </td>
+        </tr>
+        {% endfor %}
+      </table>
+      </div>
+      {% if newsletters.has_other_pages %}
+      <span class="pagination">
+        <span>
+          {% for i in newsletters.paginator.page_range %} {% if newsletters.number == i %} Showing
+          {{newsletters.start_index }} of {{ newsletters.end_index }} of {{ newsletters.paginator.count }} 
+          entries {% endif %} {% endfor %}
+        </span>
+
+        <span>
+          {% if newsletters.has_previous %}
+          <a href="?page={{ newsletters.previous_page_number }}"><i class="fas fa-arrow-left"></i></a>
+          {% else %}
+          <span><i class="fas fa-arrow-left disable"></i></span>
+          {% endif %} {% if newsletters.has_next %}
+          <a href="?page={{ newsletters.next_page_number }}"><i class="fas fa-arrow-right"></i></a>
+          {% else %}
+          <span><i class="fas fa-arrow-right disable"></i></span>
+          {% endif %}
+      </span>
+      </span>
+      {% endif %}
    {% endif %}
   </div>
 </div>
@@ -56,21 +105,21 @@
     const form = document.querySelector('.create-product-form');
     const saveDraftBtn =  document.getElementById('save-as-draft');
     const publishBtn = document.getElementById('publish-newsletter');
+    const saveEditBtn = document.getElementById('save-edit-as-draft');
 
-    //if save as draft is clicked set the form  action to save draft
+
     saveDraftBtn.addEventListener('click', (e) => {
         e.preventDefault();
         form.action = "{% url 'app:draft_newsletter' %}";
         form.submit();
     } );
 
-    //if publish is clicked set the form action to publish
     publishBtn.addEventListener('click', (e) => {
         e.preventDefault();
         form.action = "{% url 'app:publish_newsletter' %}";
         form.submit();
     } );
 
-    
+
 </script>
 {% endblock %}

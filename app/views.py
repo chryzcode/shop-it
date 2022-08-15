@@ -1853,6 +1853,14 @@ def newsletter_page(request):
         store_newsletter = Store_Newsletter.objects.get(store=store)
         subscribers = store_newsletter.customers.all()
         newsletters = Newsletter.objects.filter(store=store_newsletter)
+        page = request.GET.get("page", 1)
+        paginator = Paginator(newsletters, 5)
+        try:
+            newsletters = paginator.page(page)
+        except PageNotAnInteger:
+            newsletters = paginator.page(1)
+        except EmptyPage:
+            newsletters = paginator.page(paginator.num_pages)
         form = NewsletterForm()
         if request.method == "POST":
             form = NewsletterForm(request.POST)
@@ -1885,20 +1893,6 @@ def generate_store_newsletter(request):
         messages.error(request, "You are not authorized")
         return redirect("app:newsletter_page")
 
-@login_required(login_url="/account/login/")
-def delete_store_newsletter(request):
-    if request.user.store_creator == True:
-        store = Store.objects.get(owner=request.user)
-        if Store_Newsletter.objects.filter(store=store).exists():
-            newsletter = Store_Newsletter.objects.get(store=store)
-            newsletter.delete()
-            return redirect("app:newsletter_page")
-        else:
-            messages.error(request, "You have not generated a newsletter")
-            return redirect("app:newsletter_page")
-    else:
-        messages.error(request, "You are not authorized")
-        return redirect("app:newsletter_page")
 
 @login_required(login_url="/account/login/")
 def draft_newsletter(request):
@@ -1937,15 +1931,25 @@ def edit_draft_newsletter(request, pk):
         store = Store.objects.get(
             store_name=store_staff.objects.get(email=request.user.email).store
         )
-    newsletter = get_object_or_404(Newsletter, pk=pk)
-    form = NewsletterForm(request.POST or None, instance=newsletter)
-    if request.method == "POST":
-        if form.is_valid():
-            newsletter = form.save(commit=False)
-            newsletter.store = store
-            newsletter.save()
-            return redirect("app:newsletter_page")
-    return render(request, "store/newsletter.html", {"form": form})
+    if Store_Newsletter.objects.filter(store=store).exists():
+        store_newsletter = Store_Newsletter.objects.get(store=store)
+        newsletter = get_object_or_404(Newsletter, pk=pk, store=store_newsletter)
+        subscribers = store_newsletter.customers.all()
+        form = NewsletterForm(request.POST or None, instance=newsletter)
+        if request.method == "POST":
+            if form.is_valid():
+                
+                newsletter.save()
+                return redirect("app:newsletter_page")
+            else:
+                if form.errors:
+                    messages.error(request, form.errors)
+                    return redirect("app:newsletter_page")
+    else:
+        messages.error(request, "You have not generated a newsletter")
+        return redirect("app:newsletter_page")
+    return render(request, "store/all-newsletter-page.html", {"store": store,  'form': form, "subscribers": subscribers})
+
 
 @login_required(login_url="/account/login/")
 def publish_newsletter(request):
@@ -1990,12 +1994,13 @@ def delete_draft_newsletter(request, pk):
         store = Store.objects.get(
             store_name=store_staff.objects.get(email=request.user.email).store
         )
-    newsletter = get_object_or_404(Newsletter, pk=pk)
-    if newsletter.store == store:
+    if Store_Newsletter.objects.filter(store=store).exists():
+        store_newsletter = Store_Newsletter.objects.get(store=store)
+        newsletter = get_object_or_404(Newsletter, pk=pk, store=store_newsletter)
         newsletter.delete()
         return redirect("app:newsletter_page")
     else:
-        messages.error(request, "You are not authorized")
+        messages.error(request, "You have not generated a newsletter")
         return redirect("app:newsletter_page")
                 
             

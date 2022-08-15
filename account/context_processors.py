@@ -298,3 +298,16 @@ def get_customer_reviews(request):
             return {"get_customer_reviews": None}
     else:
         return {"get_customer_reviews": None}
+
+
+def get_newsletter(request):
+    url = request.path
+    if "edit" and "newsletter" in url:
+        if url.split("/")[3]:
+            newsletter_id = url.split("/")[3]
+            return {"get_newsletter": newsletter_id}
+        else:
+            return {"get_newsletter": None}
+    else:
+        return {"get_newsletter": None}
+
