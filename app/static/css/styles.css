@@ -1108,6 +1108,9 @@ button {
 }
 
 #notification a {
+  color: #3d5170;
+}
+#notification a:hover {
   color: #6b69f8;
   transition: all 1.01s ease-in-out;
 }
@@ -1626,7 +1629,6 @@ small {
   margin: 0 auto;
 }
 
-
 .notification-count {
   position: absolute;
   z-index: 1022;
@@ -1635,9 +1637,7 @@ small {
   text-align: center;
   width: 20px;
   margin-left: 1px;
-  top: 4px;
 }
-
 
 /* body::-webkit-scrollbar,
 .store-sidenav::-webkit-scrollbar,
@@ -1938,7 +1938,7 @@ small {
   font-size: 20px;
 }
 
-.notification-list ul > li > a p{
+.notification-list ul > li > a p {
   color: #3d5170;
   font-size: 13px;
   text-align: right;
@@ -1950,7 +1950,7 @@ small {
   transition: all 0.3s ease-in-out;
 }
 
-.notification-list ul > li > a p:hover{
+.notification-list ul > li > a p:hover {
   transform: none;
 }
 
@@ -1968,7 +1968,7 @@ small {
 .unread-notification {
   background-color: #e2f0fe;
 }
- 
- .unread-notification :hover{
+
+.unread-notification :hover {
   background-color: #d4e9fd;
- }
+}

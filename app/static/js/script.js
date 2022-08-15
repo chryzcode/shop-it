@@ -32,9 +32,9 @@ const notificationCount = document.getElementById("notification-count");
 
 
 
-if (notificationCount.innerHTML == 9) {
-    notificationCount.innerHTML = "9+"
-}
+// if (notificationCount.innerHTML == 9) {
+//     notificationCount.innerHTML = "9+"
+// }
 
 console.log(notificationCount.innerHTML);
 
