@@ -1192,7 +1192,7 @@ button {
   text-align: center;
 }
 
-.store-products-container > span > a {
+.store-products-container > span > a, .store-content-container > span > a {
   color: #ffffff;
   background-color: #3d5170;
   padding: 7px;

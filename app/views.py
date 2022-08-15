@@ -1854,8 +1854,9 @@ def newsletter_page(request):
         newsletters = Newsletter.objects.filter(store=store_newsletter)
     else:
         newsletters = None
+        store_newsletter = None
     form = NewsletterForm()
-    return render(request, "store/all-newsletter-page.html", {"store": store,  'form': form, "newsletters": newsletters,})
+    return render(request, "store/all-newsletter-page.html", {"store": store,  'form': form, "newsletters": newsletters, "store_newsletter": store_newsletter})
 
 
 
@@ -1891,7 +1892,7 @@ def delete_store_newsletter(request):
         return redirect("app:newsletter_page")
 
 @login_required(login_url="/account/login/")
-def darft_newsletter(request):
+def draft_newsletter(request):
     if request.user.store_creator == True:
         store = Store.objects.get(owner=request.user)
     else:

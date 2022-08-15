@@ -5,10 +5,15 @@
   {% include 'navs/store-side-nav.html' %}
 
   <div class="store-content-container">
-    <p>{{store.store_name|title }} Newsletter</p>
+    <p> {% if store_newsletter %}{{store.store_name|title }} {% endif %} Newsletter</p>
     {% if messages %} {% for message in messages %} {% if message %}
     <small class="error">{{message}}</small>
     {% endif %} {% endfor %} {% endif %}
+    {% if not store_newsletter%}
+    <span>
+        <a href="">Generate Newsletter</a>
+    </span>
+    {% endif %}
     <form action="" method="post" enctype="multipart/form-data" class="create-product-form">
       <div class="above-create-form">
         {% if 'edit' in request.get_full_path %}
@@ -35,14 +40,14 @@
 
       <div class="form-btn-container">
         <div>
-            <a href=""> Save as Draft </a>
-            <a href=""> Publish Newsletter </a>
+            <a href="{% url 'app:draft_newsletter' %}"> Save as Draft </a>
+            <a href="{% url 'app:publish_newsletter' %}"> Publish Newsletter </a>
         </div>
       </div>
     </form>
-
+    {% if newsletters %}
       <p>Newsletter Drafts</p>
-   
+   {% endif %}
   </div>
 </div>
 

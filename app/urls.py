@@ -110,4 +110,7 @@ urlpatterns = [
     path("get-city/<iso2>/", views.get_state, name="get_city"),
     path("notifications/", views.notification_page, name="notification_page"),
     path("newsletter/", views.newsletter_page, name="newsletter_page"),
+    path("generate/newsletter/", views.generate_store_newsletter, name="generate_store_newsletter"),
+    path("draft/newsletter/", views.draft_newsletter, name="draft_newsletter"),
+    path("publish/newsletter/", views.publish_newsletter, name="publish_newsletter"),
 ]
