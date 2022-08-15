@@ -1031,8 +1031,9 @@ button {
 
 .notification-bell {
   margin: 0 !important;
-  font-size: 25px !important;
+  font-size: 30px !important;
   padding: 0 0px 0 0 !important;
+
 }
 
 .side-nav-search-bar {
@@ -1635,8 +1636,10 @@ small {
   color: #fff;
   display: block;
   text-align: center;
-  width: 20px;
+  width: 10%;
   margin-left: 1px;
+  font-size: 13px;
+  margin-top: 4px;
 }
 
 /* body::-webkit-scrollbar,
