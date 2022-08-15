@@ -1851,12 +1851,21 @@ def newsletter_page(request):
    
     if Store_Newsletter.objects.filter(store=store).exists():
         store_newsletter = Store_Newsletter.objects.get(store=store)
+        subscribers = store_newsletter.customers.all()
         newsletters = Newsletter.objects.filter(store=store_newsletter)
+        form = NewsletterForm()
+        if request.method == "POST":
+            form = NewsletterForm(request.POST)
+            if form.is_valid():
+                newsletter = form.save(commit=False)
+                newsletter.store = store_newsletter
+                newsletter.save()
+                return redirect("app:newsletter_page")
     else:
         newsletters = None
         store_newsletter = None
-    form = NewsletterForm()
-    return render(request, "store/all-newsletter-page.html", {"store": store,  'form': form, "newsletters": newsletters, "store_newsletter": store_newsletter})
+        form = None
+    return render(request, "store/all-newsletter-page.html", {"store": store,  'form': form, "newsletters": newsletters, "store_newsletter": store_newsletter, "subscribers": subscribers})
 
 
 
@@ -1899,14 +1908,26 @@ def draft_newsletter(request):
         store = Store.objects.get(
             store_name=store_staff.objects.get(email=request.user.email).store
         )
-    form = NewsletterForm(request.POST or None)
-    if request.method == "POST":
-        if form.is_valid():
-            newsletter = form.save(commit=False)
-            newsletter.store = store
-            newsletter.save()
-            return redirect("app:newsletter_page")
-    return render(request, "store/newsletter.html", {"form": form})
+    if Store_Newsletter.objects.filter(store=store).exists():
+        store_newsletter = Store_Newsletter.objects.get(store=store)
+        newsletters = Newsletter.objects.filter(store=store_newsletter)
+        form = NewsletterForm(request.POST or None)
+        if request.method == "POST":
+            title = request.POST.get("title")
+            body = request.POST.get("body")
+            if form.is_valid():
+                newsletter = form.save(commit=False)
+                newsletter.store = store_newsletter
+                newsletter.save()
+                return redirect("app:newsletter_page")
+            else:
+                if form.errors:
+                    messages.error(request, form.errors)
+                    return redirect("app:newsletter_page")
+    else:
+        messages.error(request, "You have not generated a newsletter")
+        return redirect("app:newsletter_page")
+    return redirect("app:newsletter_page")
 
 @login_required(login_url="/account/login/")
 def edit_draft_newsletter(request, pk):
@@ -1937,16 +1958,25 @@ def publish_newsletter(request):
     form = NewsletterForm(request.POST or None)
     if Store_Newsletter.objects.filter(store=store).exists():
         store_newsletter = Store_Newsletter.objects.get(store=store)
-        subscribers_list = []
+        customer_list = []
         if request.method == "POST":
             if form.is_valid():
                 subject = form.cleaned_data["title"]
                 message = form.cleaned_data["body"]
-                subscribers =  store_newsletter.subscribers.all()
-                for subscriber in subscribers:
-                    subscribers_list.append(subscriber.email)
-                send_mail(subject, message, settings.EMAIL_HOST_USER, subscribers_list)
-                return redirect("app:newsletter_page")
+                customers =  store_newsletter.customers.all()
+                if customers:
+                    for customer in customers:
+                        customer_list.append(customer.email)
+                    send_mail(subject, message, settings.EMAIL_HOST_USER, [customer_list])
+                    return redirect("app:newsletter_page")
+                else:
+                    messages.error(request, "You have not added any subscribed customers")
+                    return redirect("app:newsletter_page")
+                
+            else:
+                if form.errors:
+                    messages.error(request, form.errors)
+                    return redirect("app:newsletter_page")
     else:
         messages.error(request, "You have not generated a newsletter")
         return redirect("app:newsletter_page")

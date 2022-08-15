@@ -1998,3 +1998,10 @@ small {
 .unread-notification :hover {
   background-color: #d4e9fd;
 }
+
+.store-content-container {
+  padding-bottom: 30px;
+}
+.errorlist {
+  text-transform: capitalize !important; 
+}

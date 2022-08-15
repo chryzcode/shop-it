@@ -5,15 +5,16 @@
   {% include 'navs/store-side-nav.html' %}
 
   <div class="store-content-container">
-    <p> {% if store_newsletter %}{{store.store_name|title }} {% endif %} Newsletter</p>
+    <p> {% if store_newsletter %}{{store.store_name|title }} Newsletter - {{subscribers.count}} subscribed  {% else %}Newsletter{% endif %}</p>
     {% if messages %} {% for message in messages %} {% if message %}
     <small class="error">{{message}}</small>
     {% endif %} {% endfor %} {% endif %}
     {% if not store_newsletter%}
     <span>
-        <a href="">Generate Newsletter</a>
+        <a href="{% url 'app:generate_store_newsletter' %}">Generate Newsletter</a>
     </span>
     {% endif %}
+    {% if form %}
     <form action="" method="post" enctype="multipart/form-data" class="create-product-form">
       <div class="above-create-form">
         {% if 'edit' in request.get_full_path %}
@@ -26,29 +27,50 @@
       <div class="pricing-quantity-seg">
         <div class="input-container">
           <label for="title">Title<span class="form-required">*</span></label>
-          <p>{{ form.title.errors }}</p>
+          <p id="form-error"></p>
           {{form.title}}
         </div>
 
         <div class="input-container">
           {{ form.media }}
           <label for="">Body<span class="form-required">*</span></label>
-          <p>{{ form.body.errors }}</p>
+          <p id="form-error"></p>
           <div class="product-detail-input">{{ form.body }}</div>
         </div>
       </div>
 
       <div class="form-btn-container">
         <div>
-            <a href="{% url 'app:draft_newsletter' %}"> Save as Draft </a>
-            <a href="{% url 'app:publish_newsletter' %}"> Publish Newsletter </a>
+            <a href="{% url 'app:draft_newsletter' %}" id="save-as-draft"> Save as Draft </a>
+            <a href="{% url 'app:publish_newsletter' %}" id="publish-newsletter"> Publish Newsletter </a>
         </div>
       </div>
     </form>
+    {% endif %}
     {% if newsletters %}
       <p>Newsletter Drafts</p>
    {% endif %}
   </div>
 </div>
+<script>
+    const form = document.querySelector('.create-product-form');
+    const saveDraftBtn =  document.getElementById('save-as-draft');
+    const publishBtn = document.getElementById('publish-newsletter');
 
+    //if save as draft is clicked set the form  action to save draft
+    saveDraftBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        form.action = "{% url 'app:draft_newsletter' %}";
+        form.submit();
+    } );
+
+    //if publish is clicked set the form action to publish
+    publishBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        form.action = "{% url 'app:publish_newsletter' %}";
+        form.submit();
+    } );
+
+    
+</script>
 {% endblock %}
