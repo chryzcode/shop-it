@@ -39,9 +39,9 @@ def a_staff_store_store_slugified(request):
         else:
             customer = Customer.objects.get(email=request.user.email)
             store = customer.store
-            return {"a_staff_store_store": slugify(store)}
+            return {"a_staff_store_store_slugified": slugify(store)}
     else:
-        return {"a_staff_store_store": None}
+        return {"a_staff_store_store_slugified": None}
   
 
 
