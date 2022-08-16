@@ -1873,6 +1873,7 @@ def newsletter_page(request):
         newsletters = None
         store_newsletter = None
         form = None
+        subscribers = None
     return render(request, "store/all-newsletter-page.html", {"store": store,  'form': form, "newsletters": newsletters, "store_newsletter": store_newsletter, "subscribers": subscribers})
 
 
@@ -1938,18 +1939,18 @@ def edit_draft_newsletter(request, pk):
         form = NewsletterForm(instance=newsletter)
         if request.method == "POST":
             form = NewsletterForm(request.POST, request.FILES, instance=newsletter)
-            # if form.is_valid():
-            newsletter = form.save(commit=False)
-            newsletter.store = store_newsletter
-            newsletter.save()
-            return redirect("app:newsletter_page")
-    #         else:
-    #             if form.errors:
-    #                 messages.error(request, form.errors)
-    #                 return redirect("app:newsletter_page")
-    # else:
-    #     messages.error(request, "You have not generated a newsletter")
-    #     return redirect("app:newsletter_page")
+            if form.is_valid():
+                newsletter = form.save(commit=False)
+                newsletter.store = store_newsletter
+                newsletter.save()
+                return redirect("app:newsletter_page")
+            else:
+                if form.errors:
+                    messages.error(request, form.errors)
+                    return redirect("app:newsletter_page")
+    else:
+        messages.error(request, "You have not generated a newsletter")
+        return redirect("app:newsletter_page")
     return render(request, "store/all-newsletter-page.html", {"store": store,  'form': form, "subscribers": subscribers})
 
 
