@@ -35,9 +35,7 @@ const notificationCount = document.getElementById("notification-count");
 if (notificationCount.innerHTML >= 9) {
     notificationCount.innerHTML = "9+"
 } else {
- //if media query is less than 990px
   if (searchMediaQuery.matches) {
-   //add margin left to notification count
     notificationCount.style.marginLeft = "9px";
   } 
 }
