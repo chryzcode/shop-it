@@ -83,8 +83,8 @@
 
 
       <div class="input-container">
-        <label for="shipping_method">Shipping method</label>
-        <p>{{ payment_form.shipping_method.errors }}</p>
+        <label for="shipping_method">Shipping method<span class="form-required">*</span></label>
+        <p id="shipping-method-error" class="error">{{ payment_form.shipping_method.errors }}</p>
         {% for shipping_method in shipping_methods %}
         <div class="radio-form">
           <input type="radio" name="shipping_method" id="{{shipping_method.id}}" value="{{shipping_method.id}}" class="{{shipping_method.price}}"  />
@@ -105,7 +105,19 @@
 </div>
 <script>
 
+
+const formButton = document.querySelector('.form-btn');
+
 $( document ).ready(function() {
+  if($('input[name=shipping_method]:checked').length == 0){
+    $('button.form-btn').addClass('disable');
+  }
+  
+  $('input[name=shipping_method]').change(function(){
+    if($('input[name=shipping_method]:checked').length > 0){
+      $('button.form-btn').removeClass('disable');  
+    }
+
     $("input[name='shipping_method']").on('change', function(event) {
        var shipping_method_price = $(this).attr('class');
         var order_amount = "{{order.amount}}";
@@ -143,8 +155,8 @@ $(document).ready(function(){
      
     });
 });
-
-
+  
+  });
 
 </script>
 
