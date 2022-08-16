@@ -1914,8 +1914,6 @@ def draft_newsletter(request):
             newsletters = Newsletter.objects.filter(store=store_newsletter)
             form = NewsletterForm(request.POST or None)
             if request.method == "POST":
-                title = request.POST.get("title")
-                body = request.POST.get("body")
                 if form.is_valid():
                     newsletter = form.save(commit=False)
                     newsletter.store = store_newsletter
@@ -1989,7 +1987,7 @@ def publish_newsletter(request):
                     if customers:
                         for customer in customers:
                             customer_list.append(customer.email)
-                        send_mail(subject, message, settings.EMAIL_HOST_USER, [customer_list])
+                        send_mail(subject, message, settings.EMAIL_HOST_USER, customer_list)
                         return redirect("app:newsletter_page")
                     else:
                         messages.error(request, "You have not added any subscribed customers")
