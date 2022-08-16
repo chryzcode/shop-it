@@ -83,7 +83,7 @@ TEMPLATES = [
                 "cart.context_processors.cart",
                 # "account.context_processors.a_staff_store_store",
                 "account.context_processors.multiple_store_staff",
-                "account.context_processors.a_staff_store_store_slugified",
+                # "account.context_processors.a_staff_store_store_slugified",
                 "account.context_processors.owner_store",
                 "account.context_processors.user_profile",
                 "account.context_processors.store_products",
