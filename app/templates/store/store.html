@@ -49,6 +49,17 @@
   <a href="{{store.whatsapp}}" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i></a>
   {% endif %}
   </div>
+  {% if store_newsletter %}
+  {% if request.user.is_authenticated %}
+  {% if request.user in store.customers.all %}
+  {% if request.user in store_newsletter.customers.all %}
+  <p><a href="{% url 'app:unsubscribe_newsletter' store.slugified_store_name %}">Unsubscribe</a> from store newsletter</p>
+  {% else %}
+  <p><a href="{% url 'app:resubscribe_newsletter' store.slugified_store_name%}">Resubscribe</a> to store newsletter</p>
+  {% endif %}
+  {% endif %}
+  {% endif %}
+  {% endif %}
   </div>
   
 </div>

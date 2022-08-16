@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from distutils.log import error
 
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
@@ -9,6 +10,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.text import slugify
 from notifications.models import Notification
 from notifications.signals import notify
+from django.contrib.sites.shortcuts import get_current_site
 
 from account.context_processors import *
 from account.models import *
@@ -927,6 +929,10 @@ def store_admin(request):
 
 def store(request, slugified_store_name):
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
+    if Store_Newsletter.objects.filter(store=store).exists():
+        store_newletter = Store_Newsletter.objects.get(store=store)
+    else:
+        store_newsletter = None
     products = Product.objects.filter(store=store).order_by("-created")[:12]
     return render(
         request,
@@ -935,6 +941,7 @@ def store(request, slugified_store_name):
             "store": store,
             "products": products,
             "slugified_store_name": slugified_store_name,
+            "store_newsletter": store_newsletter,
         },
     )
 
@@ -1983,11 +1990,14 @@ def publish_newsletter(request):
                 if form.is_valid():
                     subject = form.cleaned_data["title"]
                     message = form.cleaned_data["body"]
+                    current_site = (get_current_site(request))
                     customers =  store_newsletter.customers.all()
                     if customers:
                         for customer in customers:
                             customer_list.append(customer.email)
-                        send_mail(subject, message, settings.EMAIL_HOST_USER, customer_list)
+                        subject = subject + f' - {store.store_name} Newsletter from Shopit'
+                        message = render_to_string("store/newsletter-template.html", {"message": message, "store":store, "domain":current_site.domain})
+                        send_mail(subject, message, store.owner.email, customer_list)
                         return redirect("app:newsletter_page")
                     else:
                         messages.error(request, "You have not added any subscribed customers")
@@ -2021,5 +2031,35 @@ def delete_draft_newsletter(request, pk):
     else:
         messages.error(request, "You have not generated a newsletter")
         return redirect("app:newsletter_page")
+
+@login_required(login_url="/account/login/")
+def resubscribe_newsletter(request, slugified_store_name):
+    if Store.objects.filter(slugified_store_name=slugified_store_name).exists():
+        store = Store.objects.get(slugified_store_name=slugified_store_name)
+        if Store_Newsletter.objects.filter(store=store).exists():
+            store_newsletter = Store_Newsletter.objects.get(store=store)
+            if request.user not in store_newsletter.customers.all():
+                store_newsletter.customers.add(request.user)
+                messages.success(request, "You have been subscribed to this newsletter")
+                return redirect("/")
+            else:
+                messages.error(request, "You are already a subscriber")
+
+
+@login_required(login_url="/account/login/")
+def unsubscribe_newsletter(request, slugified_store_name):
+    if Store.objects.filter(slugified_store_name=slugified_store_name).exists():
+        store = Store.objects.get(slugified_store_name=slugified_store_name)
+        if Store_Newsletter.objects.filter(store=store).exists():
+            store_newsletter = Store_Newsletter.objects.get(store=store)
+            if request.user in store_newsletter.customers.all():
+                store_newsletter.customers.remove(request.user)
+                messages.success(request, "You have been unsubscribed from this newsletter")
+                return redirect("/")
+            else:
+                messages.error(request, "You are not a subscriber of this newsletter")
+                return redirect("/")
+
+
                 
             

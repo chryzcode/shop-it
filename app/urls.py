@@ -115,4 +115,6 @@ urlpatterns = [
     path("publish/newsletter/", views.publish_newsletter, name="publish_newsletter"),
     path("delete/newsletter/<str:pk>/", views.delete_draft_newsletter, name="delete_draft_newsletter"),
     path("edit/draft/newsletter/<str:pk>/", views.edit_draft_newsletter, name="edit_draft_newsletter"),
+    path("unsubscribe-newsletter/<slugified_store_name>/", views.unsubscribe_newsletter, name="unsubscribe_newsletter"),
+    path("resubscribe-newsletter/<slugified_store_name>/", views.resubscribe_newsletter, name="resubscribe_newsletter"),
 ]
