@@ -862,7 +862,7 @@ input[type="file" i] {
   flex-wrap: wrap;
 }
 
-.form-btn-container > div > a{
+.form-btn-container > div > a {
   display: block;
   width: max-content;
   text-decoration: none;
@@ -879,13 +879,14 @@ input[type="file" i] {
 }
 
 .form-btn {
-  color: #ccc;
-  outline: none;
-  border-radius: 8px;
-  padding: 10px 15px;
-  cursor: pointer;
+  width: max-content;
   text-decoration: none;
   background-color: #6b69f8;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin: 10px;
+  cursor: pointer;
 }
 
 button {
@@ -894,9 +895,8 @@ button {
 }
 
 .form-btn:hover {
-  color: #6b69f8;
-  transition: all 1.01s ease-in-out;
   background-color: #3d5170;
+  transition: all 1.5s ease-in-out;
 }
 
 .form-bottom {
@@ -1056,7 +1056,6 @@ button {
   margin: 0 !important;
   font-size: 30px !important;
   padding: 0 0px 0 0 !important;
-
 }
 
 .side-nav-search-bar {
@@ -1192,7 +1191,8 @@ button {
   text-align: center;
 }
 
-.store-products-container > span > a, .store-content-container > span > a {
+.store-products-container > span > a,
+.store-content-container > span > a {
   color: #ffffff;
   background-color: #3d5170;
   padding: 7px;
@@ -2003,5 +2003,5 @@ small {
   padding-bottom: 30px;
 }
 .errorlist {
-  text-transform: capitalize !important; 
+  text-transform: capitalize !important;
 }
