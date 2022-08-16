@@ -31,16 +31,17 @@ const notificationCount = document.getElementById("notification-count");
 // }
 
 
-
-if (notificationCount.innerHTML >= 9) {
-    notificationCount.innerHTML = "9+"
-} else {
-  if (searchMediaQuery.matches) {
-    notificationCount.style.marginLeft = "9px";
-  } 
+if (notificationCount) {
+  if (notificationCount.innerHTML >= 9) {
+    notificationCount.innerHTML = "9+";
+  } else {
+    if (searchMediaQuery.matches) {
+      notificationCount.style.marginLeft = "9px";
+    }
+  }
 }
 
-console.log(notificationCount.innerHTML);
+
 
   document.onclick = function (e) {
     if (e.target.id == "a-nav-link") {
