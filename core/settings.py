@@ -95,7 +95,7 @@ TEMPLATES = [
                 "account.context_processors.get_store_category",
                 "account.context_processors.get_customer_orders",
                 "account.context_processors.get_customer_reviews",
-                "account.context_processors.get_newsletter",
+                "account.context_processors.get_newsletter_id",
             ],
         },
     },

@@ -1935,19 +1935,21 @@ def edit_draft_newsletter(request, pk):
         store_newsletter = Store_Newsletter.objects.get(store=store)
         newsletter = get_object_or_404(Newsletter, pk=pk, store=store_newsletter)
         subscribers = store_newsletter.customers.all()
-        form = NewsletterForm(request.POST or None, instance=newsletter)
+        form = NewsletterForm(instance=newsletter)
         if request.method == "POST":
-            if form.is_valid():
-                
-                newsletter.save()
-                return redirect("app:newsletter_page")
-            else:
-                if form.errors:
-                    messages.error(request, form.errors)
-                    return redirect("app:newsletter_page")
-    else:
-        messages.error(request, "You have not generated a newsletter")
-        return redirect("app:newsletter_page")
+            form = NewsletterForm(request.POST, request.FILES, instance=newsletter)
+            # if form.is_valid():
+            newsletter = form.save(commit=False)
+            newsletter.store = store_newsletter
+            newsletter.save()
+            return redirect("app:newsletter_page")
+    #         else:
+    #             if form.errors:
+    #                 messages.error(request, form.errors)
+    #                 return redirect("app:newsletter_page")
+    # else:
+    #     messages.error(request, "You have not generated a newsletter")
+    #     return redirect("app:newsletter_page")
     return render(request, "store/all-newsletter-page.html", {"store": store,  'form': form, "subscribers": subscribers})
 
 

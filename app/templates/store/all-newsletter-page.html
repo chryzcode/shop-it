@@ -42,7 +42,7 @@
       <div class="form-btn-container">
         <div>
             {% if 'edit' in request.get_full_path %}
-            <a href="{% url 'app:edit_draft_newsletter' get_newsletter %}" id="save-edit-as-draft"> Save as Draft </a>
+            <a href="{% url 'app:edit_draft_newsletter' get_newsletter_id %}" id="save-edit-as-draft"> Save as Draft </a>
             {% else %}
             <a href="{% url 'app:draft_newsletter' %}" id="save-as-draft"> Save as Draft </a>
             {% endif %}
@@ -117,6 +117,12 @@
     publishBtn.addEventListener('click', (e) => {
         e.preventDefault();
         form.action = "{% url 'app:publish_newsletter' %}";
+        form.submit();
+    } );
+
+    saveEditBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        form.action = "{% url 'app:edit_draft_newsletter' get_newsletter_id %}";
         form.submit();
     } );
 
