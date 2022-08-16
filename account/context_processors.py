@@ -13,16 +13,14 @@ from .models import *
 
 
 def a_staff_store_store(request):
-    if request.user.is_authenticated:
-        if request.user.store_creator == True:
-            store = Store.objects.get(owner=request.user)
-            return {"a_staff_store_store": store}
-        if request.user.store_staff == True:
-            store = store_staff.objects.get(email=request.user.email).store
-            return {"a_staff_store_store": store}
+    if request.user.store_creator == True:
+        store = Store.objects.get(owner=request.user)
+        return {"a_staff_store_store": store}
+    if request.user.store_staff == True:
+        store = store_staff.objects.get(email=request.user.email).store
+        return {"a_staff_store_store": store}
 
-    else:
-        return {"a_staff_store_store": None}
+  
 
 
 def a_staff_store_store_slugified(request):
