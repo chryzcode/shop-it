@@ -16,7 +16,9 @@
       <div class="staff-stores-container">
         {% for store in stores %}
         <a href="{% url 'app:store' store.slugified_store_name %}">
+          {% if store.store_image %}
           <img src="{{store.store_image.url}}" alt="" />
+          {% endif %}
           <p>{{store.store_name}}</p>
         </a>
         {% endfor %}
