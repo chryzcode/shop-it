@@ -51,7 +51,6 @@ if (notificationCount) {
 
     if (withdrawNairaBtn) {
       if (nairaWalletPopOut.classList.contains("active")) {
-        console.log(e.target.id);
         if (
           e.target.id == "withdrawal-naira-form" ||
           e.target.id == "amount" ||
@@ -176,7 +175,6 @@ function myFunction() {
     }
 
     ul = document.getElementById("search-display-mobile");
-    console.log(input);
   } else {
     if (search_bar) {
       input = document.getElementById("side-nav-search-bar");
