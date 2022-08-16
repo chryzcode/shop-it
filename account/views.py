@@ -722,65 +722,65 @@ def bank_details(request):
         bank_info = ""
         if store.currency:
             flutterwave_currency_code = store.currency.flutterwave_code
-        else:
-            form = BankForm()
-            error = "Please select a currency in your store settings"
-            return render(
-                request, "store/bank-details.html", {"error": error, "form": form}
-            )
-        url = f"https://api.flutterwave.com/v3/banks/{flutterwave_currency_code}"
-        headers = {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + settings.FLUTTERWAVE_SECRET_KEY,
-        }
-        response = requests.get(url, headers=headers)
-        result = response.json().get("data")
-        all_banks = {}
-        for bank in result:
-            all_banks[bank.get("name")] = bank.get("code")
-        if Bank_Info.objects.filter(store=store).exists():
-            bank_info = Bank_Info.objects.get(store=store)
-            form = BankForm(instance=bank_info)
-        else:
-            form = BankForm()
-        if request.method == "POST":
-            form = BankForm(request.POST)
-            bank_name = request.POST.get("bank_name")
-            if form.is_valid():
-                bank_info = form.save(commit=False)
-                bank_name = form.cleaned_data["bank_name"]
-                bank_info.store = store
-                bank_info.bank_code = all_banks[bank_name]
-                bank_info.account_number = form.cleaned_data["account_number"]
-                if flutterwave_currency_code == "NG":
-                    if resolve_account_details(
-                        request, bank_info.account_number, bank_info.bank_code
-                    ):
-                        response = resolve_account_details(
+            url = f"https://api.flutterwave.com/v3/banks/{flutterwave_currency_code}"
+            headers = {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + settings.FLUTTERWAVE_SECRET_KEY,
+            }
+            response = requests.get(url, headers=headers)
+            result = response.json().get("data")
+            all_banks = {}
+            for bank in result:
+                all_banks[bank.get("name")] = bank.get("code")
+            if Bank_Info.objects.filter(store=store).exists():
+                bank_info = Bank_Info.objects.get(store=store)
+                form = BankForm(instance=bank_info)
+            else:
+                form = BankForm()
+            if request.method == "POST":
+                form = BankForm(request.POST)
+                bank_name = request.POST.get("bank_name")
+                if form.is_valid():
+                    bank_info = form.save(commit=False)
+                    bank_name = form.cleaned_data["bank_name"]
+                    bank_info.store = store
+                    bank_info.bank_code = all_banks[bank_name]
+                    bank_info.account_number = form.cleaned_data["account_number"]
+                    if flutterwave_currency_code == "NG":
+                        if resolve_account_details(
                             request, bank_info.account_number, bank_info.bank_code
-                        )
-                        account_name = response.get("data").get("account_name")
-                        bank_info.account_name = account_name
+                        ):
+                            response = resolve_account_details(
+                                request, bank_info.account_number, bank_info.bank_code
+                            )
+                            account_name = response.get("data").get("account_name")
+                            bank_info.account_name = account_name
+                            bank_info.save()
+                            Bank_Info.objects.exclude(pk=bank_info.pk).filter(
+                                store=store
+                            ).delete()
+                            return redirect("account:bank_details")
+                        else:
+                            error = "Account details are invalid"
+                            return render(
+                                request,
+                                "store/bank-details.html",
+                                {"error": error, "form": form, "all_banks": all_banks},
+                            )
+                    else:
                         bank_info.save()
                         Bank_Info.objects.exclude(pk=bank_info.pk).filter(
                             store=store
                         ).delete()
                         return redirect("account:bank_details")
-                    else:
-                        error = "Account details are invalid"
-                        return render(
-                            request,
-                            "store/bank-details.html",
-                            {"error": error, "form": form, "all_banks": all_banks},
-                        )
-                else:
-                    bank_info.save()
-                    Bank_Info.objects.exclude(pk=bank_info.pk).filter(
-                        store=store
-                    ).delete()
-                    return redirect("account:bank_details")
+        else:
+            messages.error(request, "Please select a currency in your store settings")
+            return redirect("account:store_account")
         return render(
             request,
             "store/bank-details.html",
             {"form": form, "all_banks": all_banks, "bank_info": bank_info},
         )
+    else:
+        messages.error(request, "You are not authorized")
+        return redirect("account:store_account")
