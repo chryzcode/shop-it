@@ -14,7 +14,9 @@
           <span><a href="{% url 'account:bank_details' %}">Bank Details</a></span>
         </span>
       </div>
-
+      {% if messages %} {% for message in messages %}
+    <p class="error">{{message}}</p>
+    {% endfor %} {% endif %}
       <div class="acc-form-seg">
         <p>Store Info</p>
         <div class="input-container">
