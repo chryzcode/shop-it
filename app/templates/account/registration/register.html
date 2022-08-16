@@ -5,7 +5,9 @@
     <div class="above-create-form">
       <p>Sign Up</p>
     </div>
-
+    {% if messages %} {% for message in messages %}
+    <p class="login-errors">{{message}}</p>
+    {% endfor %} {% endif %}
     <div class="input-container">
       <label for="store_name">Store Name<span class="form-required">*</span></label>
       <p>{{ form.store_name.errors }}</p>

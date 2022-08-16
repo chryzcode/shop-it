@@ -26,6 +26,13 @@ from .models import *
 from .tokens import account_activation_token
 
 
+def beta_tester_verification(request, email):
+    if email in settings.BETA_TESTERS:
+        return True
+    else:
+        return False
+
+
 def account_login(request):
     context = {}
     if request.user.is_authenticated:
@@ -34,28 +41,32 @@ def account_login(request):
     if request.method == "POST":
         email = request.POST.get("email")
         password = request.POST.get("password")
-        try:
-            user = get_object_or_404(User, email=email)
-            if user:
-                user = authenticate(request, email=email, password=password)
+        if beta_tester_verification(request, email) == True:
+            try:
+                user = get_object_or_404(User, email=email)
                 if user:
-                    if user.store_creator == True:
-                        login(request, user)
-                        return redirect("/")
+                    user = authenticate(request, email=email, password=password)
+                    if user:
+                        if user.store_creator == True:
+                            login(request, user)
+                            return redirect("/")
 
-                    if user.store_staff == True:
-                        login(request, user)
-                        return redirect("account:staff_stores")
+                        if user.store_staff == True:
+                            login(request, user)
+                            return redirect("account:staff_stores")
 
-                    if user.store_creator == False and user.store_staff == False:
-                        login(request, user)
-                        return redirect("/")
+                        if user.store_creator == False and user.store_staff == False:
+                            login(request, user)
+                            return redirect("/")
+                    else:
+                        messages.error(request, "Password is incorrect")
                 else:
-                    messages.error(request, "Password is incorrect")
-            else:
+                    messages.error(request, "Email is incorrect")
+            except:
                 messages.error(request, "Email is incorrect")
-        except:
-            messages.error(request, "Email is incorrect")
+        else:
+            messages.error(request, "You are not a beta tester")
+            return redirect("account:login")
 
     return render(request, "account/registration/login.html", context)
 
@@ -119,52 +130,57 @@ def account_register(request):
         return redirect("/")
     registerform = RegistrationForm
     if request.method == "POST":
-        registerform = RegistrationForm(request.POST)
-        if registerform.is_valid():
-            user = registerform.save(commit=False)
-            user.email = registerform.cleaned_data["email"]
-            user.full_name = registerform.cleaned_data["full_name"]
-            user.store_name = registerform.cleaned_data["store_name"]
-            user.set_password(registerform.cleaned_data["password"])
-            user.is_active = False
-            user.store_staff = False
-            user.save()
-            store = Store.objects.create(
-                owner=user,
-                store_name=registerform.cleaned_data["store_name"],
-            )
-            current_site = get_current_site(request)
-            subject = "Activate your Shopit Account"
-            message = render_to_string(
-                "account/registration/account_activation_email.html",
-                {
-                    "user": user,
-                    "domain": current_site.domain,
-                    "uid": urlsafe_base64_encode(force_bytes(user.pk)),
-                    "token": account_activation_token.make_token(user),
-                },
-            )
-            user.email_user(subject=subject, message=message)
-            notify.send(
-                store.owner,
-                recipient=user,
-                verb="Set your store bank account details",
-                bank_details_url=reverse("account:bank_details"),
-            )
-            notify.send(
-                store.owner,
-                recipient=user,
-                verb=f"Set at least a shipping method for logistics funds",
-                shipping_method_url=reverse("app:add_shipping_method"),
-                
-            )
-            notify.send(
-                store.owner,
-                recipient=user,
-                verb=f"Set your store default currency ",
-                currency_url=reverse("account:store_account"),
-            )
-            return render(request, "account/registration/registration-success.html")
+        email = request.POST.get("email")
+        if beta_tester_verification(request, email) == True:
+            registerform = RegistrationForm(request.POST)
+            if registerform.is_valid():
+                user = registerform.save(commit=False)
+                user.email = registerform.cleaned_data["email"]
+                user.full_name = registerform.cleaned_data["full_name"]
+                user.store_name = registerform.cleaned_data["store_name"]
+                user.set_password(registerform.cleaned_data["password"])
+                user.is_active = False
+                user.store_staff = False
+                user.save()
+                store = Store.objects.create(
+                    owner=user,
+                    store_name=registerform.cleaned_data["store_name"],
+                )
+                current_site = get_current_site(request)
+                subject = "Activate your Shopit Account"
+                message = render_to_string(
+                    "account/registration/account_activation_email.html",
+                    {
+                        "user": user,
+                        "domain": current_site.domain,
+                        "uid": urlsafe_base64_encode(force_bytes(user.pk)),
+                        "token": account_activation_token.make_token(user),
+                    },
+                )
+                user.email_user(subject=subject, message=message)
+                notify.send(
+                    store.owner,
+                    recipient=user,
+                    verb="Set your store bank account details",
+                    bank_details_url=reverse("account:bank_details"),
+                )
+                notify.send(
+                    store.owner,
+                    recipient=user,
+                    verb=f"Set at least a shipping method for logistics funds",
+                    shipping_method_url=reverse("app:add_shipping_method"),
+                    
+                )
+                notify.send(
+                    store.owner,
+                    recipient=user,
+                    verb=f"Set your store default currency ",
+                    currency_url=reverse("account:store_account"),
+                )
+                return render(request, "account/registration/registration-success.html")
+        else:
+            messages.error(request, "You are not a beta tester")
+            return redirect("account:register")
     return render(request, "account/registration/register.html", {"form": registerform})
 
 
