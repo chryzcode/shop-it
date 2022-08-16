@@ -13,30 +13,35 @@ from .models import *
 
 
 def a_staff_store_store(request):
-    if request.user.store_creator == True:
-        store = Store.objects.get(owner=request.user)
-        return {"a_staff_store_store": store}
-    elif request.user.store_staff == True:
-        store = store_staff.objects.get(email=request.user.email).store
-        return {"a_staff_store_store": store}
+    if request.user.is_authenticated:
+        if request.user.store_creator == True:
+            store = Store.objects.get(owner=request.user)
+            return {"a_staff_store_store": store}
+        elif request.user.store_staff == True:
+            store = store_staff.objects.get(email=request.user.email).store
+            return {"a_staff_store_store": store}
+        else:
+            customer = Customer.objects.get(email=request.user.email)
+            store = customer.store
+            return {"a_staff_store_store": store}
     else:
-        customer = Customer.objects.get(email=request.user.email)
-        store = customer.store
-        return {"a_staff_store_store": store}
-
+        return {"a_staff_store_store": None}
   
 
 
 def a_staff_store_store_slugified(request):
-    if request.user.store_creator == True:
-        return {"a_staff_store_store_slugified": slugify(request.user.store_name)}
-    elif request.user.store_staff == True:
-        store = store_staff.objects.get(email=request.user.email).store
-        return {"a_staff_store_store_slugified": slugify(store)}
+    if request.user.is_authenticated:
+        if request.user.store_creator == True:
+            return {"a_staff_store_store_slugified": slugify(request.user.store_name)}
+        elif request.user.store_staff == True:
+            store = store_staff.objects.get(email=request.user.email).store
+            return {"a_staff_store_store_slugified": slugify(store)}
+        else:
+            customer = Customer.objects.get(email=request.user.email)
+            store = customer.store
+            return {"a_staff_store_store": slugify(store)}
     else:
-        customer = Customer.objects.get(email=request.user.email)
-        store = customer.store
-        return {"a_staff_store_store": slugify(store)}
+        return {"a_staff_store_store": None}
   
 
 
