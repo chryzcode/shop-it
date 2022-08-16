@@ -77,7 +77,7 @@ class Product(models.Model):
     price = models.PositiveIntegerField(default=1)
     in_stock = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
     category = models.ForeignKey(
         Category, on_delete=models.CASCADE, related_name="products_category"
     )
@@ -260,7 +260,7 @@ class Newsletter(models.Model):
     title = models.CharField(max_length=250)
     body = RichTextField()
     created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return 'A ' + str(self.store) + ' Newsletter'
