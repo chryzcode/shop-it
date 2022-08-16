@@ -930,7 +930,7 @@ def store_admin(request):
 def store(request, slugified_store_name):
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
     if Store_Newsletter.objects.filter(store=store).exists():
-        store_newletter = Store_Newsletter.objects.get(store=store)
+        store_newsletter = Store_Newsletter.objects.get(store=store)
     else:
         store_newsletter = None
     products = Product.objects.filter(store=store).order_by("-created")[:12]
