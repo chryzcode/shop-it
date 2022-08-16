@@ -1,4 +1,4 @@
-{% autoescape off %}
+
 Hello,
 
 This is a newsletter from the {{store.store_name|title}} newsletter from Shopit Platform.
@@ -11,4 +11,3 @@ The {{store.store_name|title}} Newsletter
 <small>
     Unsubscribe https://{{domain}}/{% url 'app:unsubscribe_newsletter' store.slugified_store_name%}
 </small>
-{% endautoescape %}
