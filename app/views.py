@@ -2046,6 +2046,7 @@ def publish_newsletter(request):
                     if form.errors:
                         messages.error(request, form.errors)
                         return redirect("app:newsletter_page")
+            
 
         else:
             messages.error(request, "You have not generated a newsletter")
