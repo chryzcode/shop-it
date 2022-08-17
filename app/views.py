@@ -11,7 +11,6 @@ from django.utils.text import slugify
 from notifications.models import Notification
 from notifications.signals import notify
 from django.contrib.sites.shortcuts import get_current_site
-from django.core.mail import EmailMultiAlternatives
 
 from account.context_processors import *
 from account.models import *
@@ -1998,10 +1997,7 @@ def publish_newsletter(request):
                             customer_list.append(customer.email)
                         subject = subject + f' - {store.store_name} Newsletter from Shopit'
                         message = render_to_string("store/newsletter-template.html", {"message": message, "store":store, "domain":current_site.domain})
-                        message  = EmailMultiAlternatives(subject, message, store.owner.email, customer_list)
-                        message.attach_alternative(message, "text/html")
-                        message.send()
-                        # send_mail(subject, message, store.owner.email, customer_list)
+                        send_mail(subject, message, store.owner.email, customer_list, html_message=message)
                         return redirect("app:newsletter_page")
                     else:
                         messages.error(request, "You have not added any subscribed customers")
