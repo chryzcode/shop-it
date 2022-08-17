@@ -42,11 +42,11 @@
       <div class="form-btn-container">
         <div>
             {% if 'edit' in request.get_full_path %}
-           <button type="submit" class="form-btn">Save as Draft</button>
+           <button type="submit" class="form-btn" id="save-edit-as-draft">Save as Draft</button>
             {% else %}
             <a href="{% url 'app:draft_newsletter' %}" id="save-as-draft">Save as Draft</a>
+            <a href="{% url 'app:publish_newsletter' %}"> Publish Newsletter </a>
             {% endif %}
-            <a href="{% url 'app:publish_newsletter' %}" id="publish-newsletter"> Publish Newsletter </a>
         </div>
       </div>
     </form>
@@ -62,6 +62,7 @@
           <th>Updated</th>
           <th>Created</th>
           <th>Delete</th>
+          <th>Publish</th>
         </tr>
 
         {% for newsletter in newsletters %} 
@@ -72,6 +73,11 @@
           <td><button type="button" class="delete-btn">
               <a href="{% url 'app:delete_draft_newsletter' newsletter.pk %}"><i class="fas fa-trash-alt"></i>Delete</a>
             </button>
+        </td>
+        <td>
+          <button type="button" class="update-btn">
+           <a href="{% url 'app:publish_draft_newsletter' newsletter.pk %}">Publish</a>
+          </button>
         </td>
         </tr>
         {% endfor %}

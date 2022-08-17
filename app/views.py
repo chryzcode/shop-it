@@ -1974,6 +1974,34 @@ def edit_draft_newsletter(request, pk):
 
 
 @login_required(login_url="/account/login/")
+def publish_draft_newsletter(request, pk):
+    if request.user.store_creator == True:
+        store = Store.objects.get(owner=request.user)
+    else:
+        store = Store.objects.get(
+            store_name=store_staff.objects.get(email=request.user.email).store
+        )
+    if Subscription_Timeline.objects.filter(store=store).exists():
+        if Store_Newsletter.objects.filter(store=store).exists():
+            store_newsletter = Store_Newsletter.objects.get(store=store)
+            newsletter = Newsletter.objects.get(pk=pk, store=store_newsletter)
+            customer_list = []
+            current_site = (get_current_site(request))
+            customers =  store_newsletter.customers.all()
+            for customer in customers:
+                customer_list.append(customer.email)
+            subject = newsletter.title + f' - {store.store_name} Newsletter from Shopit'
+            message = render_to_string("store/newsletter-template.html", {"message": newsletter.body, "store":store, "domain":current_site.domain})
+            send_mail(subject, message, store.owner.email, customer_list, html_message=message)
+            return redirect("app:newsletter_page")
+        else:
+            messages.error(request, "You have not generated a newsletter")
+            return redirect("app:newsletter_page")
+    else:
+        messages.error(request, "You have subscribe to a plan")
+        return redirect("app:newsletter_page")
+
+@login_required(login_url="/account/login/")
 def publish_newsletter(request):
     if request.user.store_creator == True:
         store = Store.objects.get(owner=request.user)
@@ -1986,6 +2014,7 @@ def publish_newsletter(request):
         if Store_Newsletter.objects.filter(store=store).exists():
             store_newsletter = Store_Newsletter.objects.get(store=store)
             customer_list = []
+            
             if request.method == "POST":
                 if form.is_valid():
                     subject = form.cleaned_data["title"]
@@ -2007,6 +2036,7 @@ def publish_newsletter(request):
                     if form.errors:
                         messages.error(request, form.errors)
                         return redirect("app:newsletter_page")
+
         else:
             messages.error(request, "You have not generated a newsletter")
             return redirect("app:newsletter_page")
