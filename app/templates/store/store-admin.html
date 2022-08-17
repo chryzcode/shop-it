@@ -12,7 +12,7 @@
           <small class="error">{{message}}</small>
           {% endif %}
           {% endfor %} {% endif %}
-          {% if subscribed == True %}
+       
                        
           <div id="analtics-timeline-toogle">Change Timeline</div>
 
@@ -21,6 +21,7 @@
               <p>Sales last 7 days</p>
               <div>
                 {% if store.currency.symbol %}
+                {% if subscribed == True %}
                 <span>{{store.currency.symbol}}{{last_7_days_total_amount|intcomma}}</span>
                 <span>
                   {% if last_7_days_sales_total_growth == 'growth' %}
@@ -33,14 +34,18 @@
                   {{last_7_days_orders_percentage}}%
                 </span>
                 {% else %}
-                <span>Set your store currency</span>
+                <span class="error">Subscribe to check it out</span>
                  {% endif %}
+                 {% else %}
+                 <span class="error">Set your store currency</span>
+                {% endif %}
               </div>
             </div>
             <div>
               <p>Sales last 24 hours</p>
               <div>
                 {% if store.currency.symbol %}
+                {% if subscribed == True %}
                 <span>{{store.currency.symbol}}{{today_total_amount|intcomma}}</span>
                 <span>
                   {% if last_24_hours_sales_total_growth == 'growth' %}
@@ -51,9 +56,12 @@
                   <i class="fas fa-caret-down growth-shrink"></i>
                   {% endif %}
                   {{last_24_orders_percentage}}
-                  %</span>
+                  %</span>       
                 {% else %}
-                <span>Set your store currency</span>
+                <span class="error">Subscribe to check it out</span>
+                {% endif %}
+                {% else %}
+                <span class="error">Set your store currency</span>
                 {% endif %}
               </div>
             </div>
@@ -69,7 +77,12 @@
                   {% elif last_7_days_customers_growth == 'shrinking' %}
                   <i class="fas fa-caret-down growth-shrink"></i>
                   {% endif %}
-                {{last_7_days_customers_percentage}}%</span>
+                {% if subscribed == True %}
+                {{last_7_days_customers_percentage}}%
+                {% else %}
+                <small class="error">Subscribe to check it out</small>
+                {% endif %}
+              </span>
             </div>
           </div>
             <div>
@@ -84,7 +97,11 @@
                   {% elif last_24_customers_growth == 'shrinking' %}
                   <i class="fas fa-caret-down growth-shrink"></i>
                   {% endif %}
+                {% if subscribed == True %}
                 {{last_24_customers_percentage}}%
+                {% else %}
+                <small class="error">Subscribe to check it out</small>
+                {% endif %}
               </span>
              </div>
             </div>
@@ -95,6 +112,7 @@
               <p>Sales this year</p>
               <div>
                 {% if store.currency.symbol %}
+                {% if subscribed == True %}
                 <span>{{store.currency.symbol}}{{last_1_year_total_amount|intcomma}}</span>
                 <span>
                   {% if yearly_sales_total_growth == 'growth' %}
@@ -107,14 +125,18 @@
                   {{last_1_year_orders_percentage}}%
                 </span>
                 {% else %}
-                <span>Set your store currency</span>
+                <span class="error">Subscribe to check it out</span>
                  {% endif %}
+                 {% else %}
+                 <span class="error">Set your store currency</span>
+                {% endif %}
               </div>
             </div>
             <div>
               <p>Sales Last 30 days</p>
               <div>
                 {% if store.currency.symbol %}
+                {% if subscribed == True %}               
                 <span>{{store.currency.symbol}}{{last_1_month_total_amount|intcomma}}</span>
                 <span>
                   {% if last_1_month_sales_growth == 'growth' %}
@@ -127,8 +149,11 @@
                   {{last_1_month_orders_percentage}}%
                 </span>
                 {% else %}
-                <span>Set your store currency</span>
+                <span class="error">Subscribe to check it out</span>
                  {% endif %}
+                 {% else %}
+                 <span class="error">Set your store currency</span>
+                {% endif %}
               </div>
             </div>
             <div>
@@ -143,7 +168,12 @@
                   {% elif customers_growth == 'shrinking' %}
                   <i class="fas fa-caret-down growth-shrink"></i>
                   {% endif %}
-                {{last_1_year_customers_percentage}}%</span>
+                  {% if subscribed == True %}
+                {{last_1_year_customers_percentage}}%
+                {% else %}
+                <small class="error">Subscribe to check it out</small>
+                {% endif %}
+              </span>
             </div>
           </div>
             <div>
@@ -158,7 +188,11 @@
                   {% elif last_30_customers_growth == 'shrinking' %}
                   <i class="fas fa-caret-down growth-shrink"></i>
                   {% endif %}
+                  {% if subscribed == True %}
                 {{last_1_month_customers_percentage}}%
+                {% else %}
+                <small class="error">Subscribe to check it out</small>
+                {% endif %}
               </span>
              </div>
             </div>
@@ -174,6 +208,7 @@
               <th>Date</th>
               <th>Amount</th>
             </tr>
+            {% if subscribed == True %}
             {% for order in latest_paid_orders %}
           <tr class="table-rows">
             <td><a href="{% url 'app:store_order_detail' order.pk %}">{{order.id|truncatechars:12}}</a></td>
@@ -181,6 +216,9 @@
             <td>{{order.currency_symbol}}{{order.amount|intcomma}}</td>
           </tr>
             {% endfor %}
+            {% else %}
+            <small class="error">Subscribe to check it out</small>
+            {% endif %}
             </table>
           </div>
               </div>
@@ -195,12 +233,16 @@
               <th>Product</th>
               <th>Total Sold</th>
             </tr>
+          {% if subscribed == True %}
           {% for key, value in product_dict %}
           <tr class="table-rows">
             <td><a href="{{key.get_absolute_url}}">{{key}}</a></td>
             <td>{{value}}</td>
           </tr>
           {% endfor %}
+          {% else %}
+            <small class="error">Subscribe to check it out</small>
+            {% endif %}
           </table>
         </div>
           </div>
@@ -214,6 +256,7 @@
               <th>Email</th>
               <th>Orders Count</th>
             </tr>
+          {% if subscribed == True %}
           {% for key, value in customer_dict %}
           <tr class="table-rows">
             <td><a href="{% url 'app:store_customers_details' key.pk %}">{{key.full_name}}</a></td>
@@ -221,11 +264,14 @@
             <td>{{value}}</td>
           </tr>
           {% endfor %}
+          {% else %}
+            <small class="error">Subscribe to check it out</small>
+            {% endif %}
           </table>
         </div>
         </div>
         </div>
-        {% endif %}
+
       </span>
   </div>
 </div>

@@ -120,7 +120,7 @@ def account_delete(request):
     user.save()
     from_email = user.email 
     
-    send_mail(subject, message, from_email, to_email)
+    send_mail(subject, message, from_email, to_email, html_message=message)
     logout(request)
     return redirect("/")
 
@@ -157,7 +157,7 @@ def account_register(request):
                         "token": account_activation_token.make_token(user),
                     },
                 )
-                user.email_user(subject=subject, message=message)
+                user.email_user(subject=subject, message=message, html_message=message)
                 notify.send(
                     store.owner,
                     recipient=user,
@@ -383,7 +383,7 @@ def store_staff_register(request, slugified_store_name):
                         "store": store,
                     },
                 )
-                user.email_user(subject=subject, message=message)
+                user.email_user(subject=subject, message=message, html_message=message)
                 return render(request, "account/registration/registration-success.html")
     else:
         messages.error(request, "Store not found")
@@ -440,7 +440,7 @@ def add_store_staff(request):
                                         "existing_user": True,
                                     },
                                 )
-                                user.email_user(subject=subject, message=message)
+                                user.email_user(subject=subject, message=message, html_message=message)
                                 staffs = store_staff.objects.filter(store=store)
                                 for staff in staffs:
                                     staff_user = User.objects.get(email=staff.email)
@@ -478,7 +478,7 @@ def add_store_staff(request):
                         email = request.POST.get("email")
                         if "@" in email and "." in email:
                             send_mail(
-                                subject, message, settings.EMAIL_HOST_USER, [email]
+                                subject, message, settings.EMAIL_HOST_USER, [email], html_message=message
                             )
                             staffs = store_staff.objects.filter(store=store)
                             for staff in staffs:

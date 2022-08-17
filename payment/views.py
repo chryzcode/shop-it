@@ -304,12 +304,12 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
         )
         from_email = settings.EMAIL_HOST_USER
         to_email = [store.owner.email]
-        send_mail(subject, message, from_email, to_email)
+        send_mail(subject, message, from_email, to_email, html_message=message)
 
         if store_staff.objects.filter(store=store).exists():
             for staff in store_staff.filter(store=store):
                 staff_email = staff.email
-                send_mail(subject, message, from_email, [staff_email])
+                send_mail(subject, message, from_email, [staff_email], html_message=message)
 
         subject = (
             f"You just ordered some products on {store.store_name} on Shopit platform"
@@ -331,7 +331,7 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
             },
         )
         to_email = [payment.email]
-        send_mail(subject, message, from_email, to_email)
+        send_mail(subject, message, from_email, to_email, html_message=message)
 
         if Subscription_Timeline.objects.filter(store=store).exists():
             store_timeline = Subscription_Timeline.objects.get(store=store)
@@ -348,7 +348,7 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
                             },
                         )
                         to_email = [settings.LOGISTICS_EMAIL, store.owner.email]
-                        send_mail(subject, message, from_email, to_email)
+                        send_mail(subject, message, from_email, to_email, html_message=message)
 
         if Customer.objects.filter(email=request.user.email, store=store).exists():
             return redirect("customer:customer_orders", store.slugified_store_name)
@@ -518,6 +518,7 @@ def withdraw_funds(request, currency_code):
                                                                 subject=subject,
                                                                 message=message,
                                                                 staff_email_list=staff_email_list,
+                                                                html_message=message
                                                             )
 
                                                             return redirect(

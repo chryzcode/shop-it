@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 from distutils.log import error
-
+from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -318,612 +318,617 @@ def store_admin(request):
             store_name=store_staff.objects.get(email=request.user.email).store
         )
     if Subscription_Timeline.objects.filter(store=store).exists():
-        subscribed = True
-        orders = Order.objects.filter(store=store, billing_status=True)
-        last_24_orders = orders.filter(created__gt=timezone.now() - timedelta(hours=24))
-        last_7_days_orders = orders.filter(
-            created__gt=timezone.now() - timedelta(days=7)
-        )
-
-        product_dict = {}
-        customer_dict = {}
-        customers = Customer.objects.filter(store=store)
-        last_24_customers = customers.filter(
-            time__gt=timezone.now() - timedelta(hours=24)
-        )
-        the_last_7_days_customers = customers.filter(
-            time__gt=timezone.now() - timedelta(days=7)
-        )
-
-        last_24_hours_total_customers = 0
-        for last_24_customer in last_24_customers:
-            last_24_hours_total_customers = last_24_hours_total_customers + 1
-        if last_24_customers.count() > 0 and customers.count() > 0:
-            last_24_customers_percentage = (
-                last_24_customers.count() / customers.count() * 100
+        if store.currency:
+            subscribed = True
+            orders = Order.objects.filter(store=store, billing_status=True)
+            last_24_orders = orders.filter(created__gt=timezone.now() - timedelta(hours=24))
+            last_7_days_orders = orders.filter(
+                created__gt=timezone.now() - timedelta(days=7)
             )
-        else:
-            last_24_customers_percentage = 0
 
-        today_total_amount = 0
-        for last_24_order in last_24_orders:
-            amount = last_24_order.amount
-            today_total_amount = amount + today_total_amount
-        if last_24_orders.count() > 0 and orders.count() > 0:
-            last_24_orders_percentage = last_24_orders.count() / orders.count() * 100
-        else:
-            last_24_orders_percentage = 0
-
-        last_7_days_total_amount = 0
-        for order in last_7_days_orders:
-            last_7_days_amount = order.amount
-            last_7_days_total_amount = last_7_days_total_amount + last_7_days_amount
-        if last_7_days_orders.count() > 0 and orders.count() > 0:
-            last_7_days_orders_percentage = (
-                last_7_days_orders.count() / orders.count() * 100
+            product_dict = {}
+            customer_dict = {}
+            customers = Customer.objects.filter(store=store)
+            last_24_customers = customers.filter(
+                time__gt=timezone.now() - timedelta(hours=24)
             )
-        else:
-            last_7_days_orders_percentage = 0
-
-        last_7_days_total_customer = 0
-        for last_7_days_customer in the_last_7_days_customers:
-            last_7_days_total_customer = last_7_days_total_customer + 1
-        if the_last_7_days_customers.count() > 0 and customers.count() > 0:
-            last_7_days_customers_percentage = (
-                the_last_7_days_customers.count() / customers.count() * 100
+            the_last_7_days_customers = customers.filter(
+                time__gt=timezone.now() - timedelta(days=7)
             )
-        else:
-            last_7_days_customers_percentage = 0
 
-        last_1_month_orders = orders.filter(
-            created__gt=timezone.now() - timedelta(days=30)
-        )
-        last_1_month_total_amount = 0
-        for order in last_1_month_orders:
-            last_1_month_amount = order.amount
-            last_1_month_total_amount = last_1_month_total_amount + last_1_month_amount
-        if last_1_month_orders.count() > 0 and orders.count() > 0:
-            last_1_month_orders_percentage = (
-                last_1_month_orders.count() / orders.count() * 100
-            )
-        else:
-            last_1_month_orders_percentage = 0
-
-        last_1_year_orders = orders.filter(
-            created__gt=timezone.now() - timedelta(days=365)
-        )
-        last_1_year_total_amount = 0
-        for order in last_1_year_orders:
-            last_1_year_amount = order.amount
-            last_1_year_total_amount = last_1_year_total_amount + last_1_year_amount
-        if last_1_year_orders.count() > 0 and orders.count() > 0:
-            last_1_year_orders_percentage = (
-                last_1_year_orders.count() / orders.count() * 100
-            )
-        else:
-            last_1_year_orders_percentage = 0
-
-        last_1_year_customers = customers.filter(
-            time__gt=timezone.now() - timedelta(days=365)
-        )
-        last_1_year_total_customer = 0
-        for customer in last_1_year_customers:
-            last_1_year_total_customer = last_1_year_total_customer + 1
-        if last_1_year_customers.count() > 0 and customers.count() > 0:
-            last_1_year_customers_percentage = (
-                last_1_year_customers.count() / customers.count() * 100
-            )
-        else:
-            last_1_year_customers_percentage = 0
-
-        last_1_month_customers = customers.filter(
-            time__gt=timezone.now() - timedelta(days=30)
-        )
-        last_1_month_total_customer = 0
-        for customer in last_1_month_customers:
-            last_1_month_total_customer = last_1_month_total_customer + 1
-        if last_1_month_customers.count() > 0 and customers.count() > 0:
-            last_1_month_customers_percentage = (
-                last_1_month_customers.count() / customers.count() * 100
-            )
-        else:
-            last_1_month_customers_percentage = 0
-
-        for order in orders:
-            if order.user:
-                if User.objects.filter(email=order.user.email).exists():
-                    user = User.objects.get(email=order.user.email)
-                    if user in store.customers.all():
-                        customer = Customer.objects.get(email=user.email)
-                        customer_count = customer_count + 1
-                        if customer in customer_dict:
-                            customer_dict[customer] = (
-                                customer_dict[customer] + customer_count
-                            )
-                        else:
-                            customer_dict[customer] = customer_count
-                    else:
-                        customer = None
-        customer_dict = (
-            sorted(customer_dict.items(), key=lambda x: x[1], reverse=True)
-        )[:5]
-
-        orders = Order.objects.filter(store=store, billing_status=True)
-        for order in orders:
-            order_items = OrderItem.objects.filter(order=order)
-            for order_item in order_items:
-                product_name = Product.objects.get(
-                    id=order_item.product.id, store=store
+            last_24_hours_total_customers = 0
+            for last_24_customer in last_24_customers:
+                last_24_hours_total_customers = last_24_hours_total_customers + 1
+            if last_24_customers.count() > 0 and customers.count() > 0:
+                last_24_customers_percentage = (
+                    last_24_customers.count() / customers.count() * 100
                 )
-                product_quantity = order_item.quantity
-                if product_name in product_dict:
-                    product_dict[product_name] = (
-                        product_dict[product_name] + product_quantity
-                    )
-                else:
-                    product_dict[product_name] = product_quantity
-        product_dict = (
-            sorted(product_dict.items(), key=lambda item: item[1], reverse=True)
-        )[:5]
-        latest_orders = Order.objects.filter(store=store).order_by("-created")[:5]
-        latest_paid_orders = Order.objects.filter(
-            store=store, billing_status=True
-        ).order_by("-created")[:5]
-        customers = store.customers.all()
+            else:
+                last_24_customers_percentage = 0
 
-        if Order.objects.filter(store=store).order_by("-created")[:1].exists():
-            last_order = (
-                Order.objects.filter(store=store).order_by("-created")[:1].first()
-            )
-            if store.currency.code != last_order.currency_code:
-                today_total_amount = 0
+            today_total_amount = 0
+            for last_24_order in last_24_orders:
+                amount = last_24_order.amount
+                today_total_amount = amount + today_total_amount
+            if last_24_orders.count() > 0 and orders.count() > 0:
+                last_24_orders_percentage = last_24_orders.count() / orders.count() * 100
+            else:
                 last_24_orders_percentage = 0
-                last_7_days_total_amount = 0
+
+            last_7_days_total_amount = 0
+            for order in last_7_days_orders:
+                last_7_days_amount = order.amount
+                last_7_days_total_amount = last_7_days_total_amount + last_7_days_amount
+            if last_7_days_orders.count() > 0 and orders.count() > 0:
+                last_7_days_orders_percentage = (
+                    last_7_days_orders.count() / orders.count() * 100
+                )
+            else:
                 last_7_days_orders_percentage = 0
-                last_1_month_amount = 0
+
+            last_7_days_total_customer = 0
+            for last_7_days_customer in the_last_7_days_customers:
+                last_7_days_total_customer = last_7_days_total_customer + 1
+            if the_last_7_days_customers.count() > 0 and customers.count() > 0:
+                last_7_days_customers_percentage = (
+                    the_last_7_days_customers.count() / customers.count() * 100
+                )
+            else:
+                last_7_days_customers_percentage = 0
+
+            last_1_month_orders = orders.filter(
+                created__gt=timezone.now() - timedelta(days=30)
+            )
+            last_1_month_total_amount = 0
+            for order in last_1_month_orders:
+                last_1_month_amount = order.amount
+                last_1_month_total_amount = last_1_month_total_amount + last_1_month_amount
+            if last_1_month_orders.count() > 0 and orders.count() > 0:
+                last_1_month_orders_percentage = (
+                    last_1_month_orders.count() / orders.count() * 100
+                )
+            else:
                 last_1_month_orders_percentage = 0
-                last_1_year_total_amount = 0
+
+            last_1_year_orders = orders.filter(
+                created__gt=timezone.now() - timedelta(days=365)
+            )
+            last_1_year_total_amount = 0
+            for order in last_1_year_orders:
+                last_1_year_amount = order.amount
+                last_1_year_total_amount = last_1_year_total_amount + last_1_year_amount
+            if last_1_year_orders.count() > 0 and orders.count() > 0:
+                last_1_year_orders_percentage = (
+                    last_1_year_orders.count() / orders.count() * 100
+                )
+            else:
                 last_1_year_orders_percentage = 0
 
-        if last_24_hours_sales.objects.filter(store=store).exists():
-            if last_24_hours_sales.objects.filter(store=store).count() == 2:
-                first_data = last_24_hours_sales.objects.filter(store=store).first()
-                second_data = last_24_hours_sales.objects.filter(store=store).last()
-                if second_data.percentage != last_24_orders_percentage:
-                    first_data.percentage = second_data.percentage
-                    first_data.save()
-                    second_data.percentage = last_24_orders_percentage
-                    second_data.save()
-                    if second_data.percentage > first_data.percentage:
-                        last_24_hours_sales_total_growth = "growth"
-                    elif second_data.percentage == first_data.percentage:
-                        last_24_hours_sales_total_growth = "stagnant"
-                    elif second_data.percentage < first_data.percentage:
-                        last_24_hours_sales_total_growth = "shrinking"
-                    else:
-                        last_24_hours_sales_total_growth = "shrinking"
-                else:
-                    if last_24_orders_percentage > 0:
-                        last_24_hours_sales_total_growth = "growth"
-                    else:
-                        last_24_hours_sales_total_growth = "shrinking"
-            elif last_24_hours_sales.objects.filter(store=store).count() == 1:
-                first_data = last_24_hours_sales.objects.filter(store=store).first()
-                if first_data.percentage != last_24_orders_percentage:
-                    second_data = last_24_hours_sales.objects.create(
-                        store=store, percentage=last_24_orders_percentage
-                    )
-                    if second_data.percentage > first_data.percentage:
-                        last_24_hours_sales_total_growth = "growth"
-                    elif second_data.percentage == first_data.percentage:
-                        last_24_hours_sales_total_growth = "stagnant"
-                    elif second_data.percentage < first_data.percentage:
-                        last_24_hours_sales_total_growth = "shrinking"
-                    else:
-                        last_24_hours_sales_total_growth = "shrinking"
-                else:
-                    if last_24_orders_percentage > 0:
-                        last_24_hours_sales_total_growth = "growth"
-                    else:
-                        last_24_hours_sales_total_growth = "shrinking"
-        else:
-            last_24_hours_sales.objects.create(
-                store=store, percentage=last_24_orders_percentage
+            last_1_year_customers = customers.filter(
+                time__gt=timezone.now() - timedelta(days=365)
             )
-            if last_24_orders_percentage > 0:
-                last_24_hours_sales_total_growth = "growth"
+            last_1_year_total_customer = 0
+            for customer in last_1_year_customers:
+                last_1_year_total_customer = last_1_year_total_customer + 1
+            if last_1_year_customers.count() > 0 and customers.count() > 0:
+                last_1_year_customers_percentage = (
+                    last_1_year_customers.count() / customers.count() * 100
+                )
             else:
-                last_24_hours_sales_total_growth = "shrinking"
+                last_1_year_customers_percentage = 0
 
-        if last_7_days_sales.objects.filter(store=store).exists():
-            if last_7_days_sales.objects.filter(store=store).count() == 2:
-                first_data = last_7_days_sales.objects.filter(store=store).first()
-                second_data = last_7_days_sales.objects.filter(store=store).last()
-                if second_data.percentage != last_7_days_orders_percentage:
-                    first_data.percentage = second_data.percentage
-                    first_data.save()
-                    second_data.percentage = last_7_days_orders_percentage
-                    second_data.save()
-                    if second_data.percentage > first_data.percentage:
+            last_1_month_customers = customers.filter(
+                time__gt=timezone.now() - timedelta(days=30)
+            )
+            last_1_month_total_customer = 0
+            for customer in last_1_month_customers:
+                last_1_month_total_customer = last_1_month_total_customer + 1
+            if last_1_month_customers.count() > 0 and customers.count() > 0:
+                last_1_month_customers_percentage = (
+                    last_1_month_customers.count() / customers.count() * 100
+                )
+            else:
+                last_1_month_customers_percentage = 0
+
+            for order in orders:
+                if order.user:
+                    if User.objects.filter(email=order.user.email).exists():
+                        user = User.objects.get(email=order.user.email)
+                        if user in store.customers.all():
+                            customer = Customer.objects.get(email=user.email)
+                            customer_count = customer_count + 1
+                            if customer in customer_dict:
+                                customer_dict[customer] = (
+                                    customer_dict[customer] + customer_count
+                                )
+                            else:
+                                customer_dict[customer] = customer_count
+                        else:
+                            customer = None
+            customer_dict = (
+                sorted(customer_dict.items(), key=lambda x: x[1], reverse=True)
+            )[:5]
+
+            orders = Order.objects.filter(store=store, billing_status=True)
+            for order in orders:
+                order_items = OrderItem.objects.filter(order=order)
+                for order_item in order_items:
+                    product_name = Product.objects.get(
+                        id=order_item.product.id, store=store
+                    )
+                    product_quantity = order_item.quantity
+                    if product_name in product_dict:
+                        product_dict[product_name] = (
+                            product_dict[product_name] + product_quantity
+                        )
+                    else:
+                        product_dict[product_name] = product_quantity
+            product_dict = (
+                sorted(product_dict.items(), key=lambda item: item[1], reverse=True)
+            )[:5]
+            latest_orders = Order.objects.filter(store=store).order_by("-created")[:5]
+            latest_paid_orders = Order.objects.filter(
+                store=store, billing_status=True
+            ).order_by("-created")[:5]
+            customers = store.customers.all()
+
+            if Order.objects.filter(store=store).order_by("-created")[:1].exists():
+                last_order = (
+                    Order.objects.filter(store=store).order_by("-created")[:1].first()
+                )
+                if store.currency.code != last_order.currency_code:
+                    today_total_amount = 0
+                    last_24_orders_percentage = 0
+                    last_7_days_total_amount = 0
+                    last_7_days_orders_percentage = 0
+                    last_1_month_amount = 0
+                    last_1_month_orders_percentage = 0
+                    last_1_year_total_amount = 0
+                    last_1_year_orders_percentage = 0
+                
+
+            if last_24_hours_sales.objects.filter(store=store).exists():
+                if last_24_hours_sales.objects.filter(store=store).count() == 2:
+                    first_data = last_24_hours_sales.objects.filter(store=store).first()
+                    second_data = last_24_hours_sales.objects.filter(store=store).last()
+                    if second_data.percentage != last_24_orders_percentage:
+                        first_data.percentage = second_data.percentage
+                        first_data.save()
+                        second_data.percentage = last_24_orders_percentage
+                        second_data.save()
+                        if second_data.percentage > first_data.percentage:
+                            last_24_hours_sales_total_growth = "growth"
+                        elif second_data.percentage == first_data.percentage:
+                            last_24_hours_sales_total_growth = "stagnant"
+                        elif second_data.percentage < first_data.percentage:
+                            last_24_hours_sales_total_growth = "shrinking"
+                        else:
+                            last_24_hours_sales_total_growth = "shrinking"
+                    else:
+                        if last_24_orders_percentage > 0:
+                            last_24_hours_sales_total_growth = "growth"
+                        else:
+                            last_24_hours_sales_total_growth = "shrinking"
+                elif last_24_hours_sales.objects.filter(store=store).count() == 1:
+                    first_data = last_24_hours_sales.objects.filter(store=store).first()
+                    if first_data.percentage != last_24_orders_percentage:
+                        second_data = last_24_hours_sales.objects.create(
+                            store=store, percentage=last_24_orders_percentage
+                        )
+                        if second_data.percentage > first_data.percentage:
+                            last_24_hours_sales_total_growth = "growth"
+                        elif second_data.percentage == first_data.percentage:
+                            last_24_hours_sales_total_growth = "stagnant"
+                        elif second_data.percentage < first_data.percentage:
+                            last_24_hours_sales_total_growth = "shrinking"
+                        else:
+                            last_24_hours_sales_total_growth = "shrinking"
+                    else:
+                        if last_24_orders_percentage > 0:
+                            last_24_hours_sales_total_growth = "growth"
+                        else:
+                            last_24_hours_sales_total_growth = "shrinking"
+            else:
+                last_24_hours_sales.objects.create(
+                    store=store, percentage=last_24_orders_percentage
+                )
+                if last_24_orders_percentage > 0:
+                    last_24_hours_sales_total_growth = "growth"
+                else:
+                    last_24_hours_sales_total_growth = "shrinking"
+
+            if last_7_days_sales.objects.filter(store=store).exists():
+                if last_7_days_sales.objects.filter(store=store).count() == 2:
+                    first_data = last_7_days_sales.objects.filter(store=store).first()
+                    second_data = last_7_days_sales.objects.filter(store=store).last()
+                    if second_data.percentage != last_7_days_orders_percentage:
+                        first_data.percentage = second_data.percentage
+                        first_data.save()
+                        second_data.percentage = last_7_days_orders_percentage
+                        second_data.save()
+                        if second_data.percentage > first_data.percentage:
+                            last_7_days_sales_total_growth = "growth"
+                        elif second_data.percentage == first_data.percentage:
+                            last_7_days_sales_total_growth = "stagnant"
+                        elif second_data.percentage < first_data.percentage:
+                            last_7_days_sales_total_growth = "shrinking"
+                        else:
+                            last_7_days_sales_total_growth = "shrinking"
+                    if last_7_days_orders_percentage > 0:
                         last_7_days_sales_total_growth = "growth"
-                    elif second_data.percentage == first_data.percentage:
-                        last_7_days_sales_total_growth = "stagnant"
-                    elif second_data.percentage < first_data.percentage:
-                        last_7_days_sales_total_growth = "shrinking"
                     else:
                         last_7_days_sales_total_growth = "shrinking"
+                elif last_7_days_sales.objects.filter(store=store).count() == 1:
+                    first_data = last_7_days_sales.objects.filter(store=store).first()
+                    if first_data.percentage != last_7_days_orders_percentage:
+                        second_data = last_7_days_sales.objects.create(
+                            store=store, percentage=last_7_days_orders_percentage
+                        )
+                        if second_data.percentage > first_data.percentage:
+                            last_7_days_sales_total_growth = "growth"
+                        elif second_data.percentage == first_data.percentage:
+                            last_7_days_sales_total_growth = "stagnant"
+                        elif second_data.percentage < first_data.percentage:
+                            last_7_days_sales_total_growth = "shrinking"
+                        else:
+                            last_7_days_sales_total_growth = "shrinking"
+                    else:
+                        if last_7_days_orders_percentage > 0:
+                            last_7_days_sales_total_growth = "growth"
+                        else:
+                            last_7_days_sales_total_growth = "shrinking"
+            else:
+                last_7_days_sales.objects.create(
+                    store=store, percentage=last_7_days_orders_percentage
+                )
                 if last_7_days_orders_percentage > 0:
                     last_7_days_sales_total_growth = "growth"
                 else:
                     last_7_days_sales_total_growth = "shrinking"
-            elif last_7_days_sales.objects.filter(store=store).count() == 1:
-                first_data = last_7_days_sales.objects.filter(store=store).first()
-                if first_data.percentage != last_7_days_orders_percentage:
-                    second_data = last_7_days_sales.objects.create(
-                        store=store, percentage=last_7_days_orders_percentage
-                    )
-                    if second_data.percentage > first_data.percentage:
-                        last_7_days_sales_total_growth = "growth"
-                    elif second_data.percentage == first_data.percentage:
-                        last_7_days_sales_total_growth = "stagnant"
-                    elif second_data.percentage < first_data.percentage:
-                        last_7_days_sales_total_growth = "shrinking"
-                    else:
-                        last_7_days_sales_total_growth = "shrinking"
-                else:
-                    if last_7_days_orders_percentage > 0:
-                        last_7_days_sales_total_growth = "growth"
-                    else:
-                        last_7_days_sales_total_growth = "shrinking"
-        else:
-            last_7_days_sales.objects.create(
-                store=store, percentage=last_7_days_orders_percentage
-            )
-            if last_7_days_orders_percentage > 0:
-                last_7_days_sales_total_growth = "growth"
-            else:
-                last_7_days_sales_total_growth = "shrinking"
 
-        if last_7_days_customers.objects.filter(store=store).exists():
-            if last_7_days_customers.objects.filter(store=store).count() == 2:
-                first_data = last_7_days_customers.objects.filter(store=store).first()
-                second_data = last_7_days_customers.objects.filter(store=store).last()
-                if second_data.percentage != last_7_days_customers_percentage:
-                    first_data.percentage = second_data.percentage
-                    first_data.save()
-                    second_data.percentage = last_7_days_customers_percentage
-                    second_data.save()
-                    if second_data.percentage > first_data.percentage:
+            if last_7_days_customers.objects.filter(store=store).exists():
+                if last_7_days_customers.objects.filter(store=store).count() == 2:
+                    first_data = last_7_days_customers.objects.filter(store=store).first()
+                    second_data = last_7_days_customers.objects.filter(store=store).last()
+                    if second_data.percentage != last_7_days_customers_percentage:
+                        first_data.percentage = second_data.percentage
+                        first_data.save()
+                        second_data.percentage = last_7_days_customers_percentage
+                        second_data.save()
+                        if second_data.percentage > first_data.percentage:
+                            last_7_days_customers_growth = "growth"
+                        elif second_data.percentage == first_data.percentage:
+                            last_7_days_customers_growth = "stagnant"
+                        elif second_data.percentage < first_data.percentage:
+                            last_7_days_customers_growth = "shrinking"
+                        else:
+                            last_7_days_customers_growth = "shrinking"
+                    if last_7_days_orders_percentage > 0:
                         last_7_days_customers_growth = "growth"
-                    elif second_data.percentage == first_data.percentage:
-                        last_7_days_customers_growth = "stagnant"
-                    elif second_data.percentage < first_data.percentage:
-                        last_7_days_customers_growth = "shrinking"
                     else:
                         last_7_days_customers_growth = "shrinking"
+                elif last_7_days_customers.objects.filter(store=store).count() == 1:
+                    first_data = last_7_days_customers.objects.filter(store=store).first()
+                    if first_data.percentage != last_7_days_orders_percentage:
+                        second_data = last_7_days_customers.objects.create(
+                            store=store, percentage=last_7_days_customers_percentage
+                        )
+                        if second_data.percentage > first_data.percentage:
+                            last_7_days_customers_growth = "growth"
+                        elif second_data.percentage == first_data.percentage:
+                            last_7_days_customers_growth = "stagnant"
+                        elif second_data.percentage < first_data.percentage:
+                            last_7_days_customers_growth = "shrinking"
+                        else:
+                            last_7_days_customers_growth = "shrinking"
+                    else:
+                        if last_7_days_orders_percentage > 0:
+                            last_7_days_customers_growth = "growth"
+                        else:
+                            last_7_days_customers_growth = "shrinking"
+            else:
+                last_7_days_customers.objects.create(
+                    store=store, percentage=last_7_days_customers_percentage
+                )
                 if last_7_days_orders_percentage > 0:
                     last_7_days_customers_growth = "growth"
                 else:
                     last_7_days_customers_growth = "shrinking"
-            elif last_7_days_customers.objects.filter(store=store).count() == 1:
-                first_data = last_7_days_customers.objects.filter(store=store).first()
-                if first_data.percentage != last_7_days_orders_percentage:
-                    second_data = last_7_days_customers.objects.create(
-                        store=store, percentage=last_7_days_customers_percentage
-                    )
-                    if second_data.percentage > first_data.percentage:
-                        last_7_days_customers_growth = "growth"
-                    elif second_data.percentage == first_data.percentage:
-                        last_7_days_customers_growth = "stagnant"
-                    elif second_data.percentage < first_data.percentage:
-                        last_7_days_customers_growth = "shrinking"
-                    else:
-                        last_7_days_customers_growth = "shrinking"
-                else:
-                    if last_7_days_orders_percentage > 0:
-                        last_7_days_customers_growth = "growth"
-                    else:
-                        last_7_days_customers_growth = "shrinking"
-        else:
-            last_7_days_customers.objects.create(
-                store=store, percentage=last_7_days_customers_percentage
-            )
-            if last_7_days_orders_percentage > 0:
-                last_7_days_customers_growth = "growth"
-            else:
-                last_7_days_customers_growth = "shrinking"
 
-        if last_24_hours_customers.objects.filter(store=store).exists():
-            if last_24_hours_customers.objects.filter(store=store).count() == 2:
-                first_data = last_24_hours_customers.objects.filter(store=store).first()
-                second_data = last_24_hours_customers.objects.filter(store=store).last()
-                if second_data.percentage != last_24_customers_percentage:
-                    first_data.percentage = second_data.percentage
-                    first_data.save()
-                    second_data.percentage = last_24_customers_percentage
-                    second_data.save()
-                    if second_data.percentage > first_data.percentage:
-                        last_24_customers_growth = "growth"
-                    elif second_data.percentage == first_data.percentage:
-                        last_24_customers_growth = "stagnant"
-                    elif second_data.percentage < first_data.percentage:
-                        last_24_customers_growth = "shrinking"
-                    else:
-                        last_24_customers_growth = "shrinking"
-                if last_24_customers_percentage > 0:
-                    last_24_customers_growth = "growth"
-                else:
-                    last_24_customers_growth = "shrinking"
-            elif last_24_hours_customers.objects.filter(store=store).count() == 1:
-                first_data = last_24_hours_customers.objects.filter(store=store).first()
-                if first_data.percentage != last_24_customers_percentage:
-                    second_data = last_24_hours_customers.objects.create(
-                        store=store, percentage=last_24_customers_percentage
-                    )
-                    if second_data.percentage > first_data.percentage:
-                        last_24_customers_growth = "growth"
-                    elif second_data.percentage == first_data.percentage:
-                        last_24_customers_growth = "stagnant"
-                    elif second_data.percentage < first_data.percentage:
-                        last_24_customers_growth = "shrinking"
-                    else:
-                        last_24_customers_growth = "shrinking"
-                else:
+            if last_24_hours_customers.objects.filter(store=store).exists():
+                if last_24_hours_customers.objects.filter(store=store).count() == 2:
+                    first_data = last_24_hours_customers.objects.filter(store=store).first()
+                    second_data = last_24_hours_customers.objects.filter(store=store).last()
+                    if second_data.percentage != last_24_customers_percentage:
+                        first_data.percentage = second_data.percentage
+                        first_data.save()
+                        second_data.percentage = last_24_customers_percentage
+                        second_data.save()
+                        if second_data.percentage > first_data.percentage:
+                            last_24_customers_growth = "growth"
+                        elif second_data.percentage == first_data.percentage:
+                            last_24_customers_growth = "stagnant"
+                        elif second_data.percentage < first_data.percentage:
+                            last_24_customers_growth = "shrinking"
+                        else:
+                            last_24_customers_growth = "shrinking"
                     if last_24_customers_percentage > 0:
                         last_24_customers_growth = "growth"
                     else:
                         last_24_customers_growth = "shrinking"
-        else:
-            last_24_hours_customers.objects.create(
-                store=store, percentage=last_24_customers_percentage
-            )
-            if last_24_customers_percentage > 0:
-                last_24_customers_growth = "growth"
+                elif last_24_hours_customers.objects.filter(store=store).count() == 1:
+                    first_data = last_24_hours_customers.objects.filter(store=store).first()
+                    if first_data.percentage != last_24_customers_percentage:
+                        second_data = last_24_hours_customers.objects.create(
+                            store=store, percentage=last_24_customers_percentage
+                        )
+                        if second_data.percentage > first_data.percentage:
+                            last_24_customers_growth = "growth"
+                        elif second_data.percentage == first_data.percentage:
+                            last_24_customers_growth = "stagnant"
+                        elif second_data.percentage < first_data.percentage:
+                            last_24_customers_growth = "shrinking"
+                        else:
+                            last_24_customers_growth = "shrinking"
+                    else:
+                        if last_24_customers_percentage > 0:
+                            last_24_customers_growth = "growth"
+                        else:
+                            last_24_customers_growth = "shrinking"
             else:
-                last_24_customers_growth = "shrinking"
+                last_24_hours_customers.objects.create(
+                    store=store, percentage=last_24_customers_percentage
+                )
+                if last_24_customers_percentage > 0:
+                    last_24_customers_growth = "growth"
+                else:
+                    last_24_customers_growth = "shrinking"
 
-        if yearly_sales.objects.filter(store=store).exists():
-            if yearly_sales.objects.filter(store=store).count() == 2:
-                first_data = yearly_sales.objects.filter(store=store).first()
-                second_data = yearly_sales.objects.filter(store=store).last()
-                if second_data.percentage != last_1_year_orders_percentage:
-                    first_data.percentage = second_data.percentage
-                    first_data.save()
-                    second_data.percentage = last_1_year_orders_percentage
-                    second_data.save()
-                    if second_data.percentage > first_data.percentage:
-                        yearly_sales_total_growth = "growth"
-                    elif second_data.percentage == first_data.percentage:
-                        yearly_sales_total_growth = "stagnant"
-                    elif second_data.percentage < first_data.percentage:
-                        yearly_sales_total_growth = "shrinking"
-                    else:
-                        yearly_sales_total_growth = "shrinking"
-                if last_1_year_orders_percentage > 0:
-                    yearly_sales_total_growth = "growth"
-                else:
-                    yearly_sales_total_growth = "shrinking"
-            elif yearly_sales.objects.filter(store=store).count() == 1:
-                first_data = yearly_sales.objects.filter(store=store).first()
-                if first_data.percentage != last_24_customers_percentage:
-                    second_data = yearly_sales.objects.create(
-                        store=store, percentage=last_1_year_orders_percentage
-                    )
-                    if second_data.percentage > first_data.percentage:
-                        yearly_sales_total_growth = "growth"
-                    elif second_data.percentage == first_data.percentage:
-                        yearly_sales_total_growth = "stagnant"
-                    elif second_data.percentage < first_data.percentage:
-                        yearly_sales_total_growth = "shrinking"
-                    else:
-                        yearly_sales_total_growth = "shrinking"
-                else:
+            if yearly_sales.objects.filter(store=store).exists():
+                if yearly_sales.objects.filter(store=store).count() == 2:
+                    first_data = yearly_sales.objects.filter(store=store).first()
+                    second_data = yearly_sales.objects.filter(store=store).last()
+                    if second_data.percentage != last_1_year_orders_percentage:
+                        first_data.percentage = second_data.percentage
+                        first_data.save()
+                        second_data.percentage = last_1_year_orders_percentage
+                        second_data.save()
+                        if second_data.percentage > first_data.percentage:
+                            yearly_sales_total_growth = "growth"
+                        elif second_data.percentage == first_data.percentage:
+                            yearly_sales_total_growth = "stagnant"
+                        elif second_data.percentage < first_data.percentage:
+                            yearly_sales_total_growth = "shrinking"
+                        else:
+                            yearly_sales_total_growth = "shrinking"
                     if last_1_year_orders_percentage > 0:
                         yearly_sales_total_growth = "growth"
                     else:
                         yearly_sales_total_growth = "shrinking"
-        else:
-            yearly_sales.objects.create(
-                store=store, percentage=last_1_year_orders_percentage
-            )
-            if last_1_year_orders_percentage > 0:
-                yearly_sales_total_growth = "growth"
+                elif yearly_sales.objects.filter(store=store).count() == 1:
+                    first_data = yearly_sales.objects.filter(store=store).first()
+                    if first_data.percentage != last_24_customers_percentage:
+                        second_data = yearly_sales.objects.create(
+                            store=store, percentage=last_1_year_orders_percentage
+                        )
+                        if second_data.percentage > first_data.percentage:
+                            yearly_sales_total_growth = "growth"
+                        elif second_data.percentage == first_data.percentage:
+                            yearly_sales_total_growth = "stagnant"
+                        elif second_data.percentage < first_data.percentage:
+                            yearly_sales_total_growth = "shrinking"
+                        else:
+                            yearly_sales_total_growth = "shrinking"
+                    else:
+                        if last_1_year_orders_percentage > 0:
+                            yearly_sales_total_growth = "growth"
+                        else:
+                            yearly_sales_total_growth = "shrinking"
             else:
-                yearly_sales_total_growth = "shrinking"
+                yearly_sales.objects.create(
+                    store=store, percentage=last_1_year_orders_percentage
+                )
+                if last_1_year_orders_percentage > 0:
+                    yearly_sales_total_growth = "growth"
+                else:
+                    yearly_sales_total_growth = "shrinking"
 
-        if last_30_days_sales.objects.filter(store=store).exists():
-            if last_30_days_sales.objects.filter(store=store).count() == 2:
-                first_data = last_30_days_sales.objects.filter(store=store).first()
-                second_data = last_30_days_sales.objects.filter(store=store).last()
-                if second_data.percentage != last_1_month_orders_percentage:
-                    first_data.percentage = second_data.percentage
-                    first_data.save()
-                    second_data.percentage = last_1_month_orders_percentage
-                    second_data.save()
-                    if second_data.percentage > first_data.percentage:
-                        last_1_month_sales_growth = "growth"
-                    elif second_data.percentage == first_data.percentage:
-                        last_1_month_sales_growth = "stagnant"
-                    elif second_data.percentage < first_data.percentage:
-                        last_1_month_sales_growth = "shrinking"
-                    else:
-                        last_1_month_sales_growth = "shrinking"
-                if last_1_month_orders_percentage > 0:
-                    last_1_month_sales_growth = "growth"
-                else:
-                    last_1_month_sales_growth = "shrinking"
-            elif last_30_days_sales.objects.filter(store=store).count() == 1:
-                first_data = last_30_days_sales.objects.filter(store=store).first()
-                if first_data.percentage != last_1_month_orders_percentage:
-                    second_data = last_30_days_sales.objects.create(
-                        store=store, percentage=last_1_month_orders_percentage
-                    )
-                    if second_data.percentage > first_data.percentage:
-                        last_1_month_sales_growth = "growth"
-                    elif second_data.percentage == first_data.percentage:
-                        last_1_month_sales_growth = "stagnant"
-                    elif second_data.percentage < first_data.percentage:
-                        last_1_month_sales_growth = "shrinking"
-                    else:
-                        last_1_month_sales_growth = "shrinking"
-                else:
+            if last_30_days_sales.objects.filter(store=store).exists():
+                if last_30_days_sales.objects.filter(store=store).count() == 2:
+                    first_data = last_30_days_sales.objects.filter(store=store).first()
+                    second_data = last_30_days_sales.objects.filter(store=store).last()
+                    if second_data.percentage != last_1_month_orders_percentage:
+                        first_data.percentage = second_data.percentage
+                        first_data.save()
+                        second_data.percentage = last_1_month_orders_percentage
+                        second_data.save()
+                        if second_data.percentage > first_data.percentage:
+                            last_1_month_sales_growth = "growth"
+                        elif second_data.percentage == first_data.percentage:
+                            last_1_month_sales_growth = "stagnant"
+                        elif second_data.percentage < first_data.percentage:
+                            last_1_month_sales_growth = "shrinking"
+                        else:
+                            last_1_month_sales_growth = "shrinking"
                     if last_1_month_orders_percentage > 0:
                         last_1_month_sales_growth = "growth"
                     else:
                         last_1_month_sales_growth = "shrinking"
-        else:
-            last_30_days_sales.objects.create(
-                store=store, percentage=last_1_month_orders_percentage
-            )
-            if last_1_month_orders_percentage > 0:
-                last_1_month_sales_growth = "growth"
+                elif last_30_days_sales.objects.filter(store=store).count() == 1:
+                    first_data = last_30_days_sales.objects.filter(store=store).first()
+                    if first_data.percentage != last_1_month_orders_percentage:
+                        second_data = last_30_days_sales.objects.create(
+                            store=store, percentage=last_1_month_orders_percentage
+                        )
+                        if second_data.percentage > first_data.percentage:
+                            last_1_month_sales_growth = "growth"
+                        elif second_data.percentage == first_data.percentage:
+                            last_1_month_sales_growth = "stagnant"
+                        elif second_data.percentage < first_data.percentage:
+                            last_1_month_sales_growth = "shrinking"
+                        else:
+                            last_1_month_sales_growth = "shrinking"
+                    else:
+                        if last_1_month_orders_percentage > 0:
+                            last_1_month_sales_growth = "growth"
+                        else:
+                            last_1_month_sales_growth = "shrinking"
             else:
-                last_1_month_sales_growth = "shrinking"
+                last_30_days_sales.objects.create(
+                    store=store, percentage=last_1_month_orders_percentage
+                )
+                if last_1_month_orders_percentage > 0:
+                    last_1_month_sales_growth = "growth"
+                else:
+                    last_1_month_sales_growth = "shrinking"
 
-        if customers_yearly.objects.filter(store=store).exists():
-            if customers_yearly.objects.filter(store=store).count() == 2:
-                first_data = customers_yearly.objects.filter(store=store).first()
-                second_data = customers_yearly.objects.filter(store=store).last()
-                if second_data.percentage != last_1_year_customers_percentage:
-                    first_data.percentage = second_data.percentage
-                    first_data.save()
-                    second_data.percentage = last_1_year_customers_percentage
-                    second_data.save()
-                    if second_data.percentage > first_data.percentage:
-                        customers_growth = "growth"
-                    elif second_data.percentage == first_data.percentage:
-                        customers_growth = "stagnant"
-                    elif second_data.percentage < first_data.percentage:
-                        customers_growth = "shrinking"
-                    else:
-                        customers_growth = "shrinking"
-                if last_1_year_customers_percentage > 0:
-                    customers_growth = "growth"
-                else:
-                    customers_growth = "shrinking"
-            elif customers_yearly.objects.filter(store=store).count() == 1:
-                first_data = customers_yearly.objects.filter(store=store).first()
-                if first_data.percentage != last_1_year_customers_percentage:
-                    second_data = customers_yearly.objects.create(
-                        store=store, percentage=last_1_year_customers_percentage
-                    )
-                    if second_data.percentage > first_data.percentage:
-                        customers_growth = "growth"
-                    elif second_data.percentage == first_data.percentage:
-                        customers_growth = "stagnant"
-                    elif second_data.percentage < first_data.percentage:
-                        customers_growth = "shrinking"
-                    else:
-                        customers_growth = "shrinking"
-                else:
+            if customers_yearly.objects.filter(store=store).exists():
+                if customers_yearly.objects.filter(store=store).count() == 2:
+                    first_data = customers_yearly.objects.filter(store=store).first()
+                    second_data = customers_yearly.objects.filter(store=store).last()
+                    if second_data.percentage != last_1_year_customers_percentage:
+                        first_data.percentage = second_data.percentage
+                        first_data.save()
+                        second_data.percentage = last_1_year_customers_percentage
+                        second_data.save()
+                        if second_data.percentage > first_data.percentage:
+                            customers_growth = "growth"
+                        elif second_data.percentage == first_data.percentage:
+                            customers_growth = "stagnant"
+                        elif second_data.percentage < first_data.percentage:
+                            customers_growth = "shrinking"
+                        else:
+                            customers_growth = "shrinking"
                     if last_1_year_customers_percentage > 0:
                         customers_growth = "growth"
                     else:
                         customers_growth = "shrinking"
-        else:
-            customers_yearly.objects.create(
-                store=store, percentage=last_1_year_customers_percentage
-            )
-            if last_1_year_customers_percentage > 0:
-                customers_growth = "growth"
+                elif customers_yearly.objects.filter(store=store).count() == 1:
+                    first_data = customers_yearly.objects.filter(store=store).first()
+                    if first_data.percentage != last_1_year_customers_percentage:
+                        second_data = customers_yearly.objects.create(
+                            store=store, percentage=last_1_year_customers_percentage
+                        )
+                        if second_data.percentage > first_data.percentage:
+                            customers_growth = "growth"
+                        elif second_data.percentage == first_data.percentage:
+                            customers_growth = "stagnant"
+                        elif second_data.percentage < first_data.percentage:
+                            customers_growth = "shrinking"
+                        else:
+                            customers_growth = "shrinking"
+                    else:
+                        if last_1_year_customers_percentage > 0:
+                            customers_growth = "growth"
+                        else:
+                            customers_growth = "shrinking"
             else:
-                customers_growth = "shrinking"
+                customers_yearly.objects.create(
+                    store=store, percentage=last_1_year_customers_percentage
+                )
+                if last_1_year_customers_percentage > 0:
+                    customers_growth = "growth"
+                else:
+                    customers_growth = "shrinking"
 
-        if customers_monthly.objects.filter(store=store).exists():
-            if customers_monthly.objects.filter(store=store).count() == 2:
-                first_data = customers_monthly.objects.filter(store=store).first()
-                second_data = customers_monthly.objects.filter(store=store).last()
-                if second_data.percentage != last_1_month_customers_percentage:
-                    first_data.percentage = second_data.percentage
-                    first_data.save()
-                    second_data.percentage = last_1_month_customers_percentage
-                    second_data.save()
-                    if second_data.percentage > first_data.percentage:
-                        last_30_customers_growth = "growth"
-                    elif second_data.percentage == first_data.percentage:
-                        last_30_customers_growth = "stagnant"
-                    elif second_data.percentage < first_data.percentage:
-                        last_30_customers_growth = "shrinking"
-                    else:
-                        last_30_customers_growth = "shrinking"
-                if last_1_month_customers_percentage > 0:
-                    last_30_customers_growth = "growth"
-                else:
-                    last_30_customers_growth = "shrinking"
-            elif customers_monthly.objects.filter(store=store).count() == 1:
-                first_data = customers_monthly.objects.filter(store=store).first()
-                if first_data.percentage != last_1_month_customers_percentage:
-                    second_data = customers_monthly.objects.create(
-                        store=store, percentage=last_1_month_customers_percentage
-                    )
-                    if second_data.percentage > first_data.percentage:
-                        last_30_customers_growth = "growth"
-                    elif second_data.percentage == first_data.percentage:
-                        last_30_customers_growth = "stagnant"
-                    elif second_data.percentage < first_data.percentage:
-                        last_30_customers_growth = "shrinking"
-                    else:
-                        last_30_customers_growth = "shrinking"
-                else:
+            if customers_monthly.objects.filter(store=store).exists():
+                if customers_monthly.objects.filter(store=store).count() == 2:
+                    first_data = customers_monthly.objects.filter(store=store).first()
+                    second_data = customers_monthly.objects.filter(store=store).last()
+                    if second_data.percentage != last_1_month_customers_percentage:
+                        first_data.percentage = second_data.percentage
+                        first_data.save()
+                        second_data.percentage = last_1_month_customers_percentage
+                        second_data.save()
+                        if second_data.percentage > first_data.percentage:
+                            last_30_customers_growth = "growth"
+                        elif second_data.percentage == first_data.percentage:
+                            last_30_customers_growth = "stagnant"
+                        elif second_data.percentage < first_data.percentage:
+                            last_30_customers_growth = "shrinking"
+                        else:
+                            last_30_customers_growth = "shrinking"
                     if last_1_month_customers_percentage > 0:
                         last_30_customers_growth = "growth"
                     else:
                         last_30_customers_growth = "shrinking"
-        else:
-            customers_monthly.objects.create(
-                store=store, percentage=last_1_month_customers_percentage
-            )
-            if last_1_month_customers_percentage > 0:
-                last_30_customers_growth = "growth"
+                elif customers_monthly.objects.filter(store=store).count() == 1:
+                    first_data = customers_monthly.objects.filter(store=store).first()
+                    if first_data.percentage != last_1_month_customers_percentage:
+                        second_data = customers_monthly.objects.create(
+                            store=store, percentage=last_1_month_customers_percentage
+                        )
+                        if second_data.percentage > first_data.percentage:
+                            last_30_customers_growth = "growth"
+                        elif second_data.percentage == first_data.percentage:
+                            last_30_customers_growth = "stagnant"
+                        elif second_data.percentage < first_data.percentage:
+                            last_30_customers_growth = "shrinking"
+                        else:
+                            last_30_customers_growth = "shrinking"
+                    else:
+                        if last_1_month_customers_percentage > 0:
+                            last_30_customers_growth = "growth"
+                        else:
+                            last_30_customers_growth = "shrinking"
             else:
-                last_30_customers_growth = "shrinking"
+                customers_monthly.objects.create(
+                    store=store, percentage=last_1_month_customers_percentage
+                )
+                if last_1_month_customers_percentage > 0:
+                    last_30_customers_growth = "growth"
+                else:
+                    last_30_customers_growth = "shrinking"
 
-        return render(
-            request,
-            "store/store-admin.html",
-            {
-                "customer_dict": customer_dict,
-                "product_dict": product_dict,
-                "today_total_amount": today_total_amount,
-                "latest_paid_orders": latest_paid_orders,
-                "latest_orders": latest_orders,
-                "last_24_hours_total_customers": last_24_hours_total_customers,
-                "customers": customers,
-                "store": store,
-                "subscribed": subscribed,
-                "last_24_orders_percentage": int(last_24_orders_percentage),
-                "last_24_customers_percentage": int(last_24_customers_percentage),
-                "last_7_days_orders_percentage": int(last_7_days_orders_percentage),
-                "last_7_days_total_amount": last_7_days_total_amount,
-                "last_7_days_total_customer": last_7_days_total_customer,
-                "last_7_days_customers_percentage": int(
-                    last_7_days_customers_percentage
-                ),
-                "last_1_month_orders_percentage": int(last_1_month_orders_percentage),
-                "last_1_month_total_amount": last_1_month_total_amount,
-                "last_1_year_orders_percentage": int(last_1_year_orders_percentage),
-                "last_1_year_total_amount": last_1_year_total_amount,
-                "last_1_year_customers_percentage": int(
-                    last_1_year_customers_percentage
-                ),
-                "last_1_year_total_customer": last_1_year_total_customer,
-                "last_1_month_customers_percentage": int(
-                    last_1_month_customers_percentage
-                ),
-                "last_1_month_total_customer": last_1_month_total_customer,
-                "last_7_days_sales_total_growth": last_7_days_sales_total_growth,
-                "last_24_hours_sales_total_growth": last_24_hours_sales_total_growth,
-                "last_7_days_customers_growth": last_7_days_customers_growth,
-                "last_24_customers_growth": last_24_customers_growth,
-                "yearly_sales_total_growth": yearly_sales_total_growth,
-                "last_1_month_sales_growth": last_1_month_sales_growth,
-                "customers_growth": customers_growth,
-                "last_30_customers_growth": last_30_customers_growth,
-            },
-        )
+            return render(
+                request,
+                "store/store-admin.html",
+                {
+                    "customer_dict": customer_dict,
+                    "product_dict": product_dict,
+                    "today_total_amount": today_total_amount,
+                    "latest_paid_orders": latest_paid_orders,
+                    "latest_orders": latest_orders,
+                    "last_24_hours_total_customers": last_24_hours_total_customers,
+                    "customers": customers,
+                    "store": store,
+                    "subscribed": subscribed,
+                    "last_24_orders_percentage": int(last_24_orders_percentage),
+                    "last_24_customers_percentage": int(last_24_customers_percentage),
+                    "last_7_days_orders_percentage": int(last_7_days_orders_percentage),
+                    "last_7_days_total_amount": last_7_days_total_amount,
+                    "last_7_days_total_customer": last_7_days_total_customer,
+                    "last_7_days_customers_percentage": int(
+                        last_7_days_customers_percentage
+                    ),
+                    "last_1_month_orders_percentage": int(last_1_month_orders_percentage),
+                    "last_1_month_total_amount": last_1_month_total_amount,
+                    "last_1_year_orders_percentage": int(last_1_year_orders_percentage),
+                    "last_1_year_total_amount": last_1_year_total_amount,
+                    "last_1_year_customers_percentage": int(
+                        last_1_year_customers_percentage
+                    ),
+                    "last_1_year_total_customer": last_1_year_total_customer,
+                    "last_1_month_customers_percentage": int(
+                        last_1_month_customers_percentage
+                    ),
+                    "last_1_month_total_customer": last_1_month_total_customer,
+                    "last_7_days_sales_total_growth": last_7_days_sales_total_growth,
+                    "last_24_hours_sales_total_growth": last_24_hours_sales_total_growth,
+                    "last_7_days_customers_growth": last_7_days_customers_growth,
+                    "last_24_customers_growth": last_24_customers_growth,
+                    "yearly_sales_total_growth": yearly_sales_total_growth,
+                    "last_1_month_sales_growth": last_1_month_sales_growth,
+                    "customers_growth": customers_growth,
+                    "last_30_customers_growth": last_30_customers_growth,
+                },
+            )
+
+        else:
+            subscribed = False
+            return render(request, "store/store-admin.html", {"subscribed": subscribed})
     else:
         subscribed = False
-        messages.error(request, "You need to subscribe view this page.")
         return render(request, "store/store-admin.html", {"subscribed": subscribed})
 
 
@@ -1813,7 +1818,7 @@ def company_review(request):
             to_email = settings.EMAIL_HOST_USER
             subject = "Shopit Review from " + from_email
             message = form.cleaned_data["review"]
-            send_mail(subject, message, from_email, [to_email])
+            send_mail(subject, message, from_email, [to_email], html_message=message)
             return redirect("/")
     return render(request, "company-review.html", {"form": form})
 
@@ -1925,6 +1930,7 @@ def draft_newsletter(request):
                     newsletter = form.save(commit=False)
                     newsletter.store = store_newsletter
                     newsletter.save()
+                    messages.error(request, "Newsletter has been drafted")
                     return redirect("app:newsletter_page")
                 else:
                     if form.errors:
@@ -1959,6 +1965,7 @@ def edit_draft_newsletter(request, pk):
                     newsletter = form.save(commit=False)
                     newsletter.store = store_newsletter
                     newsletter.save()
+                    messages.error(request, "Newsletter draft updated successfully")
                     return redirect("app:newsletter_page")
                 else:
                     if form.errors:
@@ -1994,6 +2001,7 @@ def publish_draft_newsletter(request, pk):
             message = render_to_string("store/newsletter-template.html", {"message": newsletter.body, "store":store, "domain":current_site.domain})
             send_mail(subject, message, store.owner.email, customer_list, html_message=message)
             newsletter.delete()
+            messages.error(request, "Newsletter draft has been sent")
             return redirect("app:newsletter_page")
         else:
             messages.error(request, "You have not generated a newsletter")
@@ -2028,6 +2036,7 @@ def publish_newsletter(request):
                         subject = subject + f' - {store.store_name} Newsletter from Shopit'
                         message = render_to_string("store/newsletter-template.html", {"message": message, "store":store, "domain":current_site.domain})
                         send_mail(subject, message, store.owner.email, customer_list, html_message=message)
+                        messages.error(request, "Newsletter sent successfully")
                         return redirect("app:newsletter_page")
                     else:
                         messages.error(request, "You have not added any subscribed customers")
@@ -2058,6 +2067,7 @@ def delete_draft_newsletter(request, pk):
         store_newsletter = Store_Newsletter.objects.get(store=store)
         newsletter = get_object_or_404(Newsletter, pk=pk, store=store_newsletter)
         newsletter.delete()
+        messages.error(request, "Newsletter draft deleted successfully")
         return redirect("app:newsletter_page")
     else:
         messages.error(request, "You have not generated a newsletter")
@@ -2071,7 +2081,7 @@ def resubscribe_newsletter(request, slugified_store_name):
             store_newsletter = Store_Newsletter.objects.get(store=store)
             if request.user not in store_newsletter.customers.all():
                 store_newsletter.customers.add(request.user)
-                messages.success(request, "You have been subscribed to this newsletter")
+                messages.error(request, "You have been subscribed to this newsletter")
                 return redirect("/")
             else:
                 messages.error(request, "You are already a subscriber")
@@ -2085,7 +2095,7 @@ def unsubscribe_newsletter(request, slugified_store_name):
             store_newsletter = Store_Newsletter.objects.get(store=store)
             if request.user in store_newsletter.customers.all():
                 store_newsletter.customers.remove(request.user)
-                messages.success(request, "You have been unsubscribed from this newsletter")
+                messages.error(request, "You have been unsubscribed from this newsletter")
                 return redirect("/")
             else:
                 messages.error(request, "You are not a subscriber of this newsletter")

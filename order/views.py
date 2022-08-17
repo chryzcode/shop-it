@@ -94,4 +94,4 @@ def unpaid_order_mail_remainder(request):
             )
             from_email = settings.EMAIL_HOST_USER
             to_email = [order.user.email]
-            send_mail(subject, message, from_email, to_email)
+            send_mail(subject, message, from_email, to_email, html_message=message)

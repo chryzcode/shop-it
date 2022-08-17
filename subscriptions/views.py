@@ -127,12 +127,12 @@ def verify_subscription_payment(request: HttpRequest, ref: str) -> HttpResponse:
         )
         from_email = settings.EMAIL_HOST_USER
         to_email = [request.user.email]
-        send_mail(subject, message, from_email, to_email)
+        send_mail(subject, message, from_email, to_email, html_message=message)
         if store_staff.objects.filter(store=store).exists():
             for staff in store_staff.objects.filter(store=store):
                 if staff.user.email:
                     to_email = [staff.user.email]
-                    send_mail(subject, message, from_email, to_email)
+                    send_mail(subject, message, from_email, to_email, html_message=message)
         subscription.verified = False
         subscription.user = None
         subscription.ref = secrets.token_urlsafe(50)
@@ -216,7 +216,7 @@ def paystack_recurring_payment(request: HttpRequest, pk) -> HttpResponse:
                 )
                 from_email = settings.EMAIL_HOST_USER
                 to_email = [request.user.email]
-                send_mail(subject, message, from_email, to_email)
+                send_mail(subject, message, from_email, to_email, html_message=message)
                 if store_staff.objects.filter(
                     store=Store.objects.get(store_name=request.user.store_name)
                 ).exists():
@@ -225,7 +225,7 @@ def paystack_recurring_payment(request: HttpRequest, pk) -> HttpResponse:
                     ):
                         if staff.user.email:
                             to_email = [staff.user.email]
-                            send_mail(subject, message, from_email, to_email)
+                            send_mail(subject, message, from_email, to_email, html_message=message)
 
                 subscription.verified = False
                 subscription.user = None
@@ -264,12 +264,12 @@ def subscription_check_mail_remainder(request):
                     )
                     from_email = settings.EMAIL_HOST_USER
                     to_email = [store_owner.email]
-                    send_mail(subject, message, from_email, to_email)
+                    send_mail(subject, message, from_email, to_email, html_message=message)
                     if store_staff.objects.filter(store=store).exists():
                         for staff in store_staff.objects.filter(store=store):
                             if staff.user.email:
                                 to_email = [staff.user.email]
-                                send_mail(subject, message, from_email, to_email)
+                                send_mail(subject, message, from_email, to_email, html_message=message)
                     subscription_timeline.mail_remainder = True
                     subscription_timeline.save()
 
@@ -288,12 +288,12 @@ def subscription_check_mail_remainder(request):
                     )
                     from_email = settings.EMAIL_HOST_USER
                     to_email = [request.user.email]
-                    send_mail(subject, message, from_email, to_email)
+                    send_mail(subject, message, from_email, to_email, html_message=message)
                     if store_staff.objects.filter(store=store).exists():
                         for staff in store_staff.objects.filter(store=store):
                             if staff.user.email:
                                 to_email = [staff.user.email]
-                                send_mail(subject, message, from_email, to_email)
+                                send_mail(subject, message, from_email, to_email, html_message=message)
                     subscription_timeline.mail_remainder = True
                     subscription_timeline.save()
 

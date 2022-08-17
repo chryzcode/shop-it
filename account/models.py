@@ -36,7 +36,7 @@ class Store(models.Model):
     store_description = models.TextField(max_length=500, blank=True)
     store_image = models.ImageField(upload_to="store-images/", blank=True, null=True)
     currency = models.ForeignKey(
-        Currency, on_delete=models.SET_NULL, null=True, blank=True
+        Currency, on_delete=models.CASCADE
     )
     staffs = models.ManyToManyField(
         settings.AUTH_USER_MODEL, related_name="store_staffs", blank=True
