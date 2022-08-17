@@ -11,6 +11,15 @@ body {
   overflow-x: hidden;
 }
 
+a {
+  color: #6b69f8;
+}
+
+a:hover {
+  color: #3d5170;
+  transition: all 0.3s ease-in-out;
+}
+
 .main-container {
   margin-top: 100px;
 }
@@ -1676,7 +1685,7 @@ small {
 
 .store-socials {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   margin: 0 auto;
   width: 15vw;
@@ -1686,6 +1695,7 @@ small {
 .store-socials > a {
   color: #3d5170;
   text-decoration: none;
+  margin: 0 7px;
 }
 
 .store-socials > a:hover {
