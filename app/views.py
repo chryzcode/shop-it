@@ -1993,6 +1993,7 @@ def publish_draft_newsletter(request, pk):
             subject = newsletter.title + f' - {store.store_name} Newsletter from Shopit'
             message = render_to_string("store/newsletter-template.html", {"message": newsletter.body, "store":store, "domain":current_site.domain})
             send_mail(subject, message, store.owner.email, customer_list, html_message=message)
+            newsletter.delete()
             return redirect("app:newsletter_page")
         else:
             messages.error(request, "You have not generated a newsletter")
