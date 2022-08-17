@@ -156,7 +156,7 @@
   .notification {
     display: inline-block;
     position: absolute;
-    bottom: 1px;
+    bottom: -2px;
     right: 240px;
     transform: translate(-50%, -50%);
   }
