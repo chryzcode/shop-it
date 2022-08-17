@@ -1,24 +1,67 @@
-{% autoescape off %} {% load humanize %}
+{% load humanize %}{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'css/email-template.css'%}" />
+    <link rel="stylesheet" href="/app/static/css/email-template.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+      integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <div class="email-container">
+      <a href="{{domain}}" target="_blank" rel="noopener noreferrer"
+        ><img class="logo" src="{% static 'images/logo/Shopit_Blue_logo.png' %}" alt=""
+      /></a>
+      <p class="introduction">Hi {{store.store_name|capfirst}} and Eldee Logistics,</p>
 
-Hi {{store.store_name|capfirst}} and Eldee Logistics,
+      <div class="body">
+        <p>
+          If 'Efdee Logistics' sounds new to you, Shopit is using this medium you to the company official logistics
+          partner.
+        </p>
+        <p>
+          The Efdee logistics will be coming around to deliver order {{payment.order.id}} to {{payment.address_line}} {%
+          if payment.address_line2 %} or {{payment.address_line2}} {% endif %}, {{payment.city}}, {{payment.state}}
+          State, {{payment.country}}. {% if payment.zipcode%} Order Zipcode - {{payment.zipcode}} {% endif %}.
+        </p>
 
-If 'Efdee Logistics' sounds new to you, Shopit is using this medium you to the company official logistics partner.
+        <p>
+          If you will be willing to use the logistics service, payment and agreement will be made by
+          {{store.store_name|capfirst}} with the Efdee logistics. For communication, kindly click this link to reach out
+          to Eldee logistics.
+        </p>
 
-The Efdee logistics will be coming around to deliver order {{payment.order.id}} to {{payment.address_line}} {% if payment.address_line2 %} or {{payment.address_line2}} {% endif %},
-{{payment.city}}, {{payment.state}} State, {{payment.country}}. {% if payment.zipcode%} Order Zipcode - {{payment.zipcode}} {% endif %}
+        <ul>
+          {% if store.owner.phone_number %}
+          <li>Store Owner Contact - {{store.owner.phone_number}}</li>
+          {% endif %} 
+          {% if store.whatsapp %}
+          <li>Whatsapp - {{store.whatsapp}}</li>
+          {% endif %}
+        </ul>
+      </div>
 
-If you will be willing to use the logistics service, payment and agreement will be made by {{store.store_name|capfirst}} with the Efdee logistics.
-For communication, kindly click this link      to reach out to Eldee logistics.
+      <p class="conclusion">
+        <span>Regards,</span>
+        <span> Shopit </span>
+      </p>
 
-{% if store.owner.phone_number %}
-Store Owner Contact - {{store.owner.phone_number}}
-{% endif %}
-
-{% if store.whatsapp %}
-Whatsapp - {{store.whatsapp}}
-{% endif %}
-
-
-Regards,
-Shopit Team
-{% endautoescape %}
+      <div class="socials">
+        <a href="https://twitter.com/chryz_code" target="_blank" rel="noopener noreferrer"
+          ><i class="fab fa-twitter"></i
+        ></a>
+        <a href="https://github.com/chryz-code/shop-it" target="_blank" rel="noopener noreferrer"
+          ><i class="fab fa-github"></i
+        ></a>
+      </div>
+    </div>
+  </body>
+</html>

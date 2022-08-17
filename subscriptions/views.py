@@ -212,6 +212,7 @@ def paystack_recurring_payment(request: HttpRequest, pk) -> HttpResponse:
                     {
                         "store": Store.objects.get(store_name=request.user.store_name),
                         "subscription": subscription,
+                        "domain": settings.DEFAULT_DOMAIN,
                     },
                 )
                 from_email = settings.EMAIL_HOST_USER
@@ -248,7 +249,6 @@ def subscription_check_mail_remainder(request):
             ).first()
             yearly_duration = Duration.objects.get(name="yearly")
             monthly_duration = Duration.objects.get(name="monthly")
-            current_site = get_current_site(request)
             if subscription_timeline.subscription.duration == monthly_duration:
                 if subscription_timeline.created_at < timezone.now() - timedelta(
                     days=25
@@ -260,6 +260,7 @@ def subscription_check_mail_remainder(request):
                         {
                             "store": store,
                             "duration": "monthly",
+                            "domain": settings.DEFAULT_DOMAIN,
                         },
                     )
                     from_email = settings.EMAIL_HOST_USER
@@ -284,6 +285,7 @@ def subscription_check_mail_remainder(request):
                         {
                             "store": store,
                             "duration": "yearly",
+                            "domain": settings.DEFAULT_DOMAIN,
                         },
                     )
                     from_email = settings.EMAIL_HOST_USER

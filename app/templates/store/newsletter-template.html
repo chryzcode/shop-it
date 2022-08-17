@@ -1,13 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/email-template.css'%}" />
+    <link rel="stylesheet" href="/app/static/css/email-template.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+      integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
+      crossorigin="anonymous"
+    />
+</head>
+<body>
+    
+<div class="email-container">
+    <p class="introduction">Hello,</p>
 
-Hello,
+<div class="body">
+    <p>This is a newsletter from the {{store.store_name|title}} newsletter from Shopit Platform.</p>
+    <p>{{message|safe}}</p>
+</div>
 
-This is a newsletter from the {{store.store_name|title}} newsletter from Shopit Platform.
+<p class="conclusion">
+    <span>Regards,</span>
+    <span>
+        The {{store.store_name|title}} Newsletter
+    </span>
+</p>
 
-{{message|safe}}
 
-Regards,
-The {{store.store_name|title}} Newsletter
+ <div class="socials">
+  {% if store.facebook %}
+  <a href="{{store.facebook}}" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook"></i></a>
+  {% endif %}
+  {% if store.twitter %}
+  <a href="{{store.twitter}}" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
+  {% endif %}
+  {% if store.instagram %}
+  <a href="{{store.instagram}}" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+  {% endif %}
+  {% if store.whatsapp %}
+  <a href="{{store.whatsapp}}" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i></a>
+  {% endif %}
+</div>
 
 <small>
-    Unsubscribe https://{{domain}}/{% url 'app:unsubscribe_newsletter' store.slugified_store_name%}
+    <a href="{% url 'app:unsubscribe_newsletter' store.slugified_store_name%}" target="_blank" rel="noopener noreferrer">Unsubscribe</a>
 </small>
+</div>
+</body>
+</html>

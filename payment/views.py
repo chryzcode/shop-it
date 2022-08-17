@@ -289,13 +289,11 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
             store.owner, recipient=store.owner, verb=message, payment=payment.order.id
         )
         subject = f"{store.store_name} just sold some product on Shopit"
-        current_site = get_current_site(request)
-        path = f"order/{order.id}"
         message = render_to_string(
             "payment/wallet-credit-alert-email.html",
             {
                 "store": store,
-                "domain": current_site.domain + "/" + path,
+                "domain": settings.DEFAULT_DOMAIN,
                 "amount": amount,
                 "currency": order.currency_symbol,
                 "beneficiary_name": payment.full_name,
@@ -314,7 +312,6 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
         subject = (
             f"You just ordered some products on {store.store_name} on Shopit platform"
         )
-        path = f"{store.slugified_store_name}/order/{order.id}"
         if payment.user in store.customers.all():
             customer = True
         else:
@@ -325,7 +322,7 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
                 "store": store,
                 "order": order,
                 "payment": payment,
-                "domain": current_site.domain + "/" + path,
+                "domain": settings.DEFAULT_DOMAIN,
                 "customer": customer,
                 "currency": order.currency_symbol,
             },
@@ -473,12 +470,7 @@ def withdraw_funds(request, currency_code):
                                                                 account_bank=store_bank.bank_name,
                                                             )
 
-                                                            current_site = (
-                                                                get_current_site(
-                                                                    request
-                                                                )
-                                                            )
-                                                            path = "wallet"
+                                                
                                                             subject = f"{store.store_name} just withdrew funds from the {store_wallet.currency.code} wallet on Shopit"
                                                             message = render_to_string(
                                                                 "payment/wallet-debit-alert-email.html",
@@ -488,9 +480,7 @@ def withdraw_funds(request, currency_code):
                                                                     "amount": amount,
                                                                     "currency": currency.symbol,
                                                                     "bank_details": store_bank,
-                                                                    "domain": current_site.domain
-                                                                    + "/"
-                                                                    + path,
+                                                                    "domain": settings.DEFAULT_DOMAIN,
                                                                 },
                                                             )
                                                             

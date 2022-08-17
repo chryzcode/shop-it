@@ -1,21 +1,59 @@
-{% autoescape off %} {% load humanize %}
-Hi,
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/email-template.css'%}" />
+    <link rel="stylesheet" href="/app/static/css/email-template.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+      integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
+      crossorigin="anonymous"
+    />
+</head>
+<body>
+    
+<div class="email-container">
+    <a href="{{domain}}" target="_blank" rel="noopener noreferrer"><img class="logo" src="{% static 'images/logo/Shopit_Blue_logo.png' %}" alt=""></a>
+    <p class="introduction">Hi,</p>
 
-I am {{ user.full_name }} and I request to delete my Shopit account and my account is deactivated presently.
-
-        
+<div class="body">
+<p>Hi, I am {{ user.full_name }} and I request to delete my Shopit account and my account is deactivated presently.</p>
 {% if account_type == Store Creator %}
-This action of mine will also will delete my account after a month, {{user.store_name}} store, {% if store_staffs %} {% for staff in store_staffs %} {{ staff }}, as a staffof {{user.store_name }} store and affect possibly everything related.
-
+<p>
+    This action of mine will also will delete my account after a month, {{user.store_name}} store, 
+    {% if store_staffs %} 
+    {% for staff in store_staffs %} 
+    <ul>
+        <li>{{ staff }}</li>
+    </ul>
+    {% endfor %} 
+    {% endif %}
+     as a staffof {{user.store_name }} store and affect possibly everything related.
+</p>
 {% elif account_type == Store Staff %}
-This action of mine will also delete my account after a month and affect {% for store in staff_stores %} {{store}} store, {% endfor %} been a staff.
-
+<p>This action of mine will also delete my account after a month and affect {% for store in staff_stores %} {{store}} store, {% endfor %} been a staff.</p>
 {% else %}
-This action will delete my account my account after a month and affect possibly everything related.
-
+<p>This action will delete my account my account after a month and affect possibly everything related.</p>
 {% endif %}
+</div>
 
-Regards,
-{{ user.full_name }}
+<p class="conclusion">
+    <span>Regards,</span>
+    <span>
+    {{ user.full_name }}
+    </span>
+</p>
+ 
+ <div class="socials">
+  <a href="https://twitter.com/chryz_code" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
+  <a href="https://github.com/chryz-code/shop-it" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i></a>
+</div>
 
-{% endautoescape %}
+</div>
+</body>
+</html>

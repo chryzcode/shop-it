@@ -1,20 +1,73 @@
-{% autoescape off %}
-{% if existing_user == True %}
-Hi {{user.full_name}},
-{% else %}
-Hi, 
-{% endif %}
+ {% load static %} {% load i18n %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'css/email-template.css'%}" />
+    <link rel="stylesheet" href="/app/static/css/email-template.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+      integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <div class="email-container">
+      <a href="{{domain}}" target="_blank" rel="noopener noreferrer"
+        ><img class="logo" src="{% static 'images/logo/Shopit_Blue_logo.png' %}" alt=""
+      /></a>
+      <p class="introduction">{% if existing_user == True %} Hi {{user.full_name}}, {% else %} Hi, {% endif %}</p>
 
-{{store.store_name}} is inviting you to join the store as a staff.
+      <div class="body">path_url
+        <p>
+         {{store.store_name}} is inviting you to join the store as a staff. To accept the invitation, kindly click the button below.
+        </p>
 
-if you want to accept the invitation, kindly click the link below:
-{% if existing_user == True %}
-{{domain}}
-{% endif %}
-{% if existing_user == False %}
-{{domain}}
-{% endif %}
-and if otherwise, kindly ignore.
+        {% if existing_user == True %}  
+        {% block reset_link %}
+        <a
+          href="{% url 'account:accept_staff_invitation' email=email uidb64=uid token=token slugified_store_name=store.slugified_store_name%}"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="email-btn"
+          >Accept Invitation</a
+        >
+        {% endblock %}
+         {% endif %}
 
-Thanks.
-{% endautoescape %}
+         {% if existing_user == False %}
+         {% block reset_link %} 
+          <a
+          href="{% url 'account:store_staff_register' slugified_store_name=store.slugified_store_name%}"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="email-btn"
+          >Accept Invitation</a>
+          {% endblock %}
+        
+          {% endif %}
+
+
+        <p> If you're not interested, kindly ignore</p>
+      </div>
+
+      <p class="conclusion">
+        <span>Regards,</span>
+        <span> Shopit </span>
+      </p>
+
+      <div class="socials">
+        <a href="https://twitter.com/chryz_code" target="_blank" rel="noopener noreferrer"
+          ><i class="fab fa-twitter"></i
+        ></a>
+        <a href="https://github.com/chryz-code/shop-it" target="_blank" rel="noopener noreferrer"
+          ><i class="fab fa-github"></i
+        ></a>
+      </div>
+    </div>
+  </body>
+</html>

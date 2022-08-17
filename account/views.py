@@ -114,6 +114,7 @@ def account_delete(request):
         {"user": user,
         "account_type":account_type,
         "staff_stores":staff_stores,
+        "domain": settings.DEFAULT_DOMAIN,
         }
     )
     user.is_active = False
@@ -146,13 +147,12 @@ def account_register(request):
                     owner=user,
                     store_name=registerform.cleaned_data["store_name"],
                 )
-                current_site = get_current_site(request)
                 subject = "Activate your Shopit Account"
                 message = render_to_string(
                     "account/registration/account_activation_email.html",
                     {
                         "user": user,
-                        "domain": current_site.domain,
+                        "domain": settings.DEFAULT_DOMAIN,
                         "uid": urlsafe_base64_encode(force_bytes(user.pk)),
                         "token": account_activation_token.make_token(user),
                     },
@@ -376,11 +376,11 @@ def store_staff_register(request, slugified_store_name):
                     "account/registration/account_activation_email.html",
                     {
                         "user": user,
-                        "domain": current_site.domain,
                         "uid": urlsafe_base64_encode(force_bytes(user.pk)),
                         "token": account_activation_token.make_token(user),
                         "staff": True,
                         "store": store,
+                        "domain": settings.DEFAULT_DOMAIN,
                     },
                 )
                 user.email_user(subject=subject, message=message, html_message=message)
@@ -414,20 +414,6 @@ def add_store_staff(request):
                         if user.store_creator == False:
                             if user not in store.staffs.all():
                                 user = User.objects.get(email=email)
-                                domain = settings.DEFAULT_DOMAIN
-                                path = reverse(
-                                    "account:accept_staff_invitation",
-                                    kwargs={
-                                        "email": user.email,
-                                        "slugified_store_name": store.slugified_store_name,
-                                        "uidb64": urlsafe_base64_encode(
-                                            force_bytes(user.pk)
-                                        ),
-                                        "token": account_activation_token.make_token(
-                                            user
-                                        ),
-                                    },
-                                )
                                 subject = (
                                     f"{store.store_name} - Staff Permission Activation"
                                 )
@@ -436,8 +422,17 @@ def add_store_staff(request):
                                     {
                                         "user": user,
                                         "store": store,
-                                        "domain": domain + path,
                                         "existing_user": True,
+                                        "domain": settings.DEFAULT_DOMAIN,
+                                        "email": user.email,
+                                        "slugified_store_name": store.slugified_store_name,
+                                        "uidb64": urlsafe_base64_encode(
+                                            force_bytes(user.pk)
+                                        ),
+                                        "token": account_activation_token.make_token(
+                                            user
+                                        ),
+                                        "domain": settings.DEFAULT_DOMAIN,
                                     },
                                 )
                                 user.email_user(subject=subject, message=message, html_message=message)
@@ -462,17 +457,12 @@ def add_store_staff(request):
 
                     else:
                         subject = f"{store.store_name} - Staff Permission Activation"
-                        domain = settings.DEFAULT_DOMAIN
-                        path = reverse(
-                            "account:store_staff_register",
-                            kwargs={"slugified_store_name": store.slugified_store_name},
-                        )
                         message = render_to_string(
                             "account/registration/store_staff_email.html",
                             {
                                 "store": store,
-                                "domain": domain + path,
                                 "existing_user": False,
+                                "domain": settings.DEFAULT_DOMAIN,
                             },
                         )
                         email = request.POST.get("email")

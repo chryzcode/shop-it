@@ -81,7 +81,6 @@ def unpaid_order_mail_remainder(request):
     for order in Order.objects.filter(billing_status=False, mail_remainder=False):
         if order.user and order.date_created < timezone.now() - timedelta(days=20):
             store = Store.objects.get(store_name=order.store)
-            current_site = get_current_site(request)
             path = f"payment/{order.id}"
             subject = f"You have unpaid order in {store.store_name} store on Shopit"
             message = render_to_string(
@@ -89,7 +88,7 @@ def unpaid_order_mail_remainder(request):
                 {
                     "store": store,
                     "order": order,
-                    "domain": current_site.domain + "/" + path,
+                    "domain": settings.DEFAULT_DOMAIN,
                 },
             )
             from_email = settings.EMAIL_HOST_USER

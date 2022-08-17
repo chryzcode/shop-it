@@ -1,14 +1,55 @@
-{% autoescape off %} {% load humanize %}
-Hello {{ store.store_name|capfirst }},
+{% load humanize %}{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/email-template.css'%}" />
+    <link rel="stylesheet" href="/app/static/css/email-template.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+      integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
+      crossorigin="anonymous"
+    />
+</head>
+<body>
+    
+<div class="email-container">
+    <a href="{{domain}}" target="_blank" rel="noopener noreferrer"><img class="logo" src="{% static 'images/logo/Shopit_Blue_logo.png' %}" alt=""></a>
+    <p class="introduction">Hello {{ store.store_name|capfirst }},</p>
 
-You just withdrew the total sum of {{currency}}{{amount|intcomma}} from the store {{store_wallet.currency.code}} wallet on the Shopit platform.
+<div class="body">
+    <p>You just withdrew the total sum of {{currency}}{{amount|intcomma}} from the store {{store_wallet.currency.code}} wallet on the Shopit platform, your {{payment.order.currency_code}} wallet should have been debited. Check out for a credit alert on your bank account</p>
 
-Your {{payment.order.currency_code}} wallet should have been debited, and check out for a credit alert on your {{bank_details.bank_name}} account - {{bank_details.account_name}} {{bank_details.account_number}}
+    <ul>
+        <li>Bank Name: {{bank_details.bank_name}}</li>
+        <li>Account Name: {{bank_details.account_name}}</li>
+        <li>Account Number: {{bank_details.account_number}}</li>
+    </ul>
 
-For more information and details on the withdrawal, kindly click this link https://{{domain}}
+    <p>For more information and details on the withdrawal, kindly click the button below</p>
 
-Thank you for your continued support.
+    <a href="{% url 'app:store_wallet' %}" target="_blank" rel="noopener noreferrer" class="email-btn">Check Withdrawal</a>
 
-Regards,
-Shopit Team
-{% endautoescape %}
+    
+</div>
+
+<p class="conclusion">
+    <span>Regards,</span>
+    <span>
+        Shopit
+    </span>
+</p>
+
+
+ <div class="socials">
+  <a href="https://twitter.com/chryz_code" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
+  <a href="https://github.com/chryz-code/shop-it" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i></a>
+</div>
+
+</div>
+</body>
+</html>

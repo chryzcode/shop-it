@@ -1,14 +1,51 @@
-{% autoescape off %} {% load humanize %}
-Hello {{payment.full_name|capfirst }} ({{payment.email}}),
+{% load humanize %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/email-template.css'%}" />
+    <link rel="stylesheet" href="/app/static/css/email-template.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+      integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
+      crossorigin="anonymous"
+    />
+</head>
+<body>
+    
+<div class="email-container">
+    <a href="{{domain}}" target="_blank" rel="noopener noreferrer"><img class="logo" src="{% static 'images/logo/Shopit_Blue_logo.png' %}" alt=""></a>
+    <p class="introduction">Hello {{payment.full_name|capfirst }},</p>
 
-You just paid a total amount of {{currency}}{{payment.amount|intcomma}} for an order placed on {{ store.store_name|capfirst }} store, on the Shopit platform.
+<div class="body">
+    <p>You just paid a total amount of {{currency}}{{payment.amount|intcomma}} for an order placed on {{ store.store_name|capfirst }} store, on the Shopit platform.</p>
 
-{% if customer == True %}
-For more information and details on the order, kindly click this link https://{{domain}}
-{% endif %}
+    {% if customer == True %}
+    For more information and details about the order, kindly click the button below
+     <a href="{% url 'customer:customer_order_detail' order.id %}" target="_blank" rel="noopener noreferrer" class="email-btn">Activate Account</a>
+    {% endif %}
 
-Thank you for your continued support.
 
-Regards,
-Shopit Team
-{% endautoescape %}
+</div>
+
+<p class="conclusion">
+    <span>Regards,</span>
+    <span>
+        Shopit
+    </span>
+</p>
+
+
+ <div class="socials">
+  <a href="https://twitter.com/chryz_code" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
+  <a href="https://github.com/chryz-code/shop-it" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i></a>
+</div>
+
+</div>
+</body>
+</html>
