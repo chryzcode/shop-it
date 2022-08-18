@@ -132,10 +132,10 @@ def account_delete(request):
             "domain": settings.DEFAULT_DOMAIN,
             }
         )
+        
     user.is_active = False
     user.save()
     from_email = user.email 
-    
     send_mail(subject, message, from_email, to_email, html_message=message)
     logout(request)
     return redirect("/")
