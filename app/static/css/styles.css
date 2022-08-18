@@ -1966,8 +1966,8 @@ small {
   position: fixed;
   width: 500px;
   z-index: 1207;
-  display: block;
-  top: 20%;
+  display: none;
+  top: 150px;
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: #fff;
