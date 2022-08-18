@@ -205,37 +205,16 @@ function myFunction() {
 const firstInstructionModal = document.getElementById("first-instruction-modal");
 const modalBtn = document.getElementById("form-btn");
 const allPage = document.getElementById("body");
-console.log(allPage)
 
-// if (firstInstructionModal) {
-//    navbar.style.zIndex = "10";
-//    allPage.style.pointerEvents = "none";
-//    modalBtn.style.pointerEvents = "all";
-//   document.onclick = function (e) {
-//     if (e.target.id == "form-btn") {
-//       firstInstructionModal.style.display = "none";
-//       firstInstructionModal.style.backdrop = "static";
-//       firstInstructionModal.style.keyboard = "false";
-//       allPage.style.pointerEvents = "all";
-
-
-//     }
-//   }
-// }
-
-//if you click anything on the page, the modal will open
 if (firstInstructionModal) {
   document.onclick = function (e) {
-    if (e.target.id != "first-instruction-modal") {
-      firstInstructionModal.style.display = "block";
-      allPage.style.pointerEvents = "none";
-      modalBtn.style.pointerEvents = "all";
-    }
 
     if (e.target.id == "form-btn") {
       firstInstructionModal.style.display = "none";
       allPage.style.pointerEvents = "all";
-      
+    } else {
+      allPage.style.pointerEvents = "none";
+      modalBtn.style.pointerEvents = "all";
     }
   }
 }
