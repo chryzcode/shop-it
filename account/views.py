@@ -89,10 +89,9 @@ def account_delete(request):
         staff_email_list = []
         for staff in store_staffs:
             staff_email = staff.email
-            staff_email_list.append(
-                staff_email
-            )
-        to_email = [settings.EMAIL_HOST_USER, staff_email_list]
+            staff_email_list.append(staff_email)
+            to_email = [ staff_email, settings.EMAIL_HOST_USER ]
+        to_email.append(store.owner.email)
         message = render_to_string(
         "account/user/account-delete-email.html",
         {"user": user,
@@ -111,7 +110,8 @@ def account_delete(request):
             staff_stores_list.append(
                 store_owner_email
             )
-        to_email = [settings.EMAIL_HOST_USER, staff_stores_list]
+            to_email = [settings.EMAIL_HOST_USER, store_owner_email]
+        to_email.append(request.user.email)
         message = render_to_string(
         "account/user/account-delete-email.html",
         {"user": user,
