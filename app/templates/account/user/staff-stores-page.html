@@ -15,10 +15,17 @@
       <p class="heading">My Stores (staff)</p>
       <div class="staff-stores-container">
         {% for store in stores %}
+        {% if request.user in store.staffs.all %}
+        <a href="{% url 'app:store_admin' %}">
+          <img src="{{store.store_image.url}}" alt="" />
+          <p>{{store.store_name}}</p>
+        </a>
+        {% else %}
         <a href="{% url 'account:select_store' store.slugified_store_name %}">
           <img src="{{store.store_image.url}}" alt="" />
           <p>{{store.store_name}}</p>
         </a>
+        {% endif %}
         {% endfor %}
       </div>
     </div>

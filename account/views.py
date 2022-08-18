@@ -93,6 +93,14 @@ def account_delete(request):
                 staff_email
             )
         to_email = [settings.EMAIL_HOST_USER, staff_email_list]
+        message = render_to_string(
+        "account/user/account-delete-email.html",
+        {"user": user,
+        "account_type":account_type,
+        "store_staffs":store_staffs,
+        "domain": settings.DEFAULT_DOMAIN,
+        }
+    )
     elif request.user.store_staff == True:
         account_type = 'Store Staff'
         staff_stores = Store.objects.filter(staffs=request.user)
@@ -104,12 +112,7 @@ def account_delete(request):
                 store_owner_email
             )
         to_email = [settings.EMAIL_HOST_USER, staff_stores_list]
-    else:
-        account_type = 'Customer'
-        subject = f"Request for Your Shopit Account to be Deleted - Customer"
-        to_email = [settings.EMAIL_HOST_USER]
-
-    message = render_to_string(
+        message = render_to_string(
         "account/user/account-delete-email.html",
         {"user": user,
         "account_type":account_type,
@@ -117,6 +120,18 @@ def account_delete(request):
         "domain": settings.DEFAULT_DOMAIN,
         }
     )
+    else:
+        account_type = 'Customer'
+        subject = f"Request for Your Shopit Account to be Deleted - Customer"
+        to_email = [settings.EMAIL_HOST_USER]
+
+        message = render_to_string(
+            "account/user/account-delete-email.html",
+            {"user": user,
+            "account_type":account_type,
+            "domain": settings.DEFAULT_DOMAIN,
+            }
+        )
     user.is_active = False
     user.save()
     from_email = user.email 
