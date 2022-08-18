@@ -381,11 +381,11 @@ def store_staff_register(request, slugified_store_name):
                 user.save()
                 uid = urlsafe_base64_encode(force_bytes(user.pk))
                 token = account_activation_token.make_token(user)
-                # try:
-                uid = force_str(urlsafe_base64_decode(uid))
-                user = get_object_or_404(User, pk=uid)
-                # except:
-                #     return render(request, "error-pages/404-page.html")
+                try:
+                    uid = force_str(urlsafe_base64_decode(uid))
+                    user = get_object_or_404(User, pk=uid)
+                except:
+                    return render(request, "error-pages/404-page.html")
 
                 if user is not None and account_activation_token.check_token(user, token):
                     user.is_active = True
@@ -409,27 +409,8 @@ def store_staff_register(request, slugified_store_name):
                             verb="You have been added as a staff member of your store",
                         )
                         return redirect("/")
-                    # else:
-                    #     return render(request, "error-pages/404-page.html")
-
-
-                        # current_site = get_current_site(request)
-                        # subject = "Activate your Shopit Account"
-                        # message = render_to_string(
-                        #     "account/registration/account_activation_email.html",
-                        #     {
-                        #         "user": user,
-                        #         "uid": urlsafe_base64_encode(force_bytes(user.pk)),
-                        #         "token": account_activation_token.make_token(user),
-                        #         "staff": True,
-                        #         "store": store,
-                        #         "domain": settings.DEFAULT_DOMAIN,
-                        #     },
-                        # )
-                        # user.email_user(subject=subject, message=message)
-                         # return render(request, "account/registration/registration-success.html")
-                # else:
-                #     return render(request, "error-pages/404-page.html")
+            else:
+                return render(request, "error-pages/404-page.html")
     else:
         messages.error(request, "Store not found")
     return render(
@@ -595,7 +576,7 @@ def select_store(request, slugified_store_name):
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
     if request.user in store.staffs.all():
         store_staff.objects.filter(email=request.user.email).update(
-            store=store.store_name
+            store=store
         )
         return redirect("/")
 
