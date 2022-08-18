@@ -144,7 +144,7 @@
 
 <div class="body">
 <p>Hi, I am {{ user.full_name }} and I request to delete my Shopit account and my account is deactivated presently.</p>
-{% if account_type == Store Creator %}
+{% if account_type == "Store Creator" %}
 <p>
     This action of mine will also will delete my account after a month, {{user.store_name}} store, 
     {% if store_staffs %} 
@@ -156,7 +156,7 @@
     {% endif %}
      as a staffof {{user.store_name }} store and affect possibly everything related.
 </p>
-{% elif account_type == Store Staff %}
+{% elif account_type == "Store Staff" %}
 <p>
   This action of mine will also delete my account after a month and affect 
   {% for store in staff_stores %} 
