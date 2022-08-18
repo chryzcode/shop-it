@@ -2019,6 +2019,7 @@ def publish_newsletter(request):
             store_name=store_staff.objects.get(email=request.user.email).store
         )
     form = NewsletterForm(request.POST or None)
+    print(store.owner.email)
     if Subscription_Timeline.objects.filter(store=store).exists():
         if Store_Newsletter.objects.filter(store=store).exists():
             store_newsletter = Store_Newsletter.objects.get(store=store)
