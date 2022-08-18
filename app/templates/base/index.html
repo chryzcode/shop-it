@@ -1,5 +1,8 @@
 {% extends 'navs/base.html' %} {% load static %} {% block title %}<title>Shop !t - HomePage</title> {% endblock %} {% block content %}
 <div data-aos="zoom-in" data-aos-duration="1500" class="intro">
+  {% if messages %} {% for message in messages %} {% if message %}
+    <small class="error">{{message}}</small>
+    {% endif %} {% endfor %} {% endif %}
   <p>Run business at your comfort with <br />Shop !t</p>
   <div>
     The platform that equips you with the efficient tools to run your business online(digitally).

@@ -460,6 +460,10 @@
   .wallet-withdrawal-form.active {
     width: 400px;
   }
+
+  .first-instruction-modal {
+     width: 400px;
+  }
 }
 
 @media all and (max-width: 500px) {
@@ -594,6 +598,12 @@
   .wallet-withdrawal-form.active {
     width: 90%;
     margin: 0 auto;
+  }
+
+  .first-instruction-modal {
+    width: 90%;
+    margin: 0 auto;
+    top: 22%;
   }
 
   .notification-list ul > li > a {

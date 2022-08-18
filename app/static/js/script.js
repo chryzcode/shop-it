@@ -200,3 +200,21 @@ function myFunction() {
   ul.style.height = "auto";
 }
 
+
+
+const firstInstructionModal = document.getElementById("first-instruction-modal");
+const modalBtn = document.getElementById("form-btn");
+const allPage = document.getElementById("body");
+console.log(allPage)
+
+if (firstInstructionModal) {
+   navbar.style.zIndex = "10";
+   allPage.style.pointerEvents = "none";
+   modalBtn.style.pointerEvents = "all";
+  document.onclick = function (e) {
+    if (e.target.id == "form-btn") {
+      firstInstructionModal.style.display = "none";
+      allPage.style.pointerEvents = "all";
+    }
+  }
+}

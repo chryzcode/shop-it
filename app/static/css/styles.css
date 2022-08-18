@@ -1962,6 +1962,28 @@ small {
   outline: 1px solid #ccc;
 }
 
+.first-instruction-modal{
+  position: fixed;
+  width: 500px;
+  z-index: 1207;
+  display: block;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 20px 40px;
+  border-radius: 10px;
+  outline: 1px solid #ccc;
+}
+
+.first-instruction-modal ul {
+  margin-top: 10px;
+}
+
+.first-instruction-modal ul li {
+  margin: 5px;
+}
+
 .notifications-container {
   margin: 30px 0;
 }

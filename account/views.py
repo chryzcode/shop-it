@@ -303,60 +303,29 @@ def store_account(
 def accept_staff_invitation(request, slugified_store_name, email, uidb64, token):
     store = Store.objects.get(slugified_store_name=slugified_store_name)
     if store_staff.objects.filter(store=store, email=email).exists():
+        messages.error(request, f"You are already a staff of {store.store_name} store")
         return redirect("/")
     else:
-        if User.objects.filter(email=email).exists():
-            user = User.objects.get(email=email)
-            staff = store_staff.objects.create(
-                store=store,
-                full_name=user.full_name,
-                email=user.email,
-                phone_number=user.phone_number,
-                avatar=user.avatar,
-                password=user.password,
-                is_active=True,
-            )
-            staff.save()
-            store.staffs.add(user)
-            store.save()
-            staffs = store_staff.objects.filter(store=store)
-            for staff in staffs:
-                staff_user = User.objects.get(email=staff.email)
-                notify.send(
-                    store.owner,
-                    recipient=staff_user,
-                    verb="An additional staff has been added to the store",
-                )
-            notify.send(
-                store.owner,
-                recipient=store.owner,
-                verb="You have been added as a staff member of your store",
-            )
-            return redirect("/")
+        try:
+            uid = force_str(urlsafe_base64_decode(uidb64))
+            user = get_object_or_404(User, pk=uid)
+        except:
+            return render(request, "error-pages/404-page.html")
 
-
-def store_staff_register(request, slugified_store_name):
-    if Store.objects.filter(slugified_store_name=slugified_store_name).exists():
-        store = Store.objects.get(slugified_store_name=slugified_store_name)
-        form = StoreStaffForm
-        if request.method == "POST":
-            form = StoreStaffForm(request.POST, request.FILES)
-            if form.is_valid():
-                staff_user = form.save(commit=False)
-                staff_user.store = store
-                user = User.objects.create(
-                    email=form.cleaned_data["email"],
-                    full_name=form.cleaned_data["full_name"],
-                    phone_number=form.cleaned_data["phone_number"],
-                    is_active=False,
-                    is_staff=False,
-                    store_creator=False,
-                    store_staff=True,
+        if user is not None and account_activation_token.check_token(user, token):
+            if User.objects.filter(email=email).exists():
+                user = User.objects.get(email=email)
+                staff = store_staff.objects.create(
+                    store=store,
+                    full_name=user.full_name,
+                    email=user.email,
+                    phone_number=user.phone_number,
+                    avatar=user.avatar,
+                    password=user.password,
                 )
-                user.set_password(form.cleaned_data["password"])
-                user.save()
-                staff_user.save()
+                staff.save()
                 store.staffs.add(user)
+                store.save()
                 staffs = store_staff.objects.filter(store=store)
                 for staff in staffs:
                     staff_user = User.objects.get(email=staff.email)
@@ -370,21 +339,82 @@ def store_staff_register(request, slugified_store_name):
                     recipient=store.owner,
                     verb="You have been added as a staff member of your store",
                 )
-                current_site = get_current_site(request)
-                subject = "Activate your Shopit Account"
-                message = render_to_string(
-                    "account/registration/account_activation_email.html",
-                    {
-                        "user": user,
-                        "uid": urlsafe_base64_encode(force_bytes(user.pk)),
-                        "token": account_activation_token.make_token(user),
-                        "staff": True,
-                        "store": store,
-                        "domain": settings.DEFAULT_DOMAIN,
-                    },
+                return redirect("/")
+            else:
+                return render(request, "error-pages/404-page.html")
+        else:
+            return render(request, "error-pages/404-page.html")
+
+
+def store_staff_register(request, slugified_store_name):
+    if Store.objects.filter(slugified_store_name=slugified_store_name).exists():
+        store = Store.objects.get(slugified_store_name=slugified_store_name)
+        form = StoreStaffForm
+        if request.method == "POST":
+            form = StoreStaffForm(request.POST, request.FILES)
+            if form.is_valid():
+                user = User.objects.create(
+                    email=form.cleaned_data["email"],
+                    full_name=form.cleaned_data["full_name"],
+                    phone_number=form.cleaned_data["phone_number"],
+                    is_active=False,
+                    is_staff=False,
+                    store_creator=False,
+                    store_staff=True,
                 )
-                user.email_user(subject=subject, message=message)
-                return render(request, "account/registration/registration-success.html")
+                user.set_password(form.cleaned_data["password"])
+                user.save()
+                uidb64 = urlsafe_base64_encode(force_bytes(user.pk)),
+                token = account_activation_token.make_token(user),
+                try:
+                    uid = force_str(urlsafe_base64_decode(uidb64))
+                    user = get_object_or_404(User, pk=uid)
+                except:
+                    return render(request, "error-pages/404-page.html")
+
+                if user is not None and account_activation_token.check_token(user, token):
+                    user.is_active = True
+                    user.save()
+                    if user.is_active == True:
+                        staff_user = form.save(commit=False)    
+                        staff_user.store = store
+                        staff_user.save()
+                        store.staffs.add(user)
+                        staffs = store_staff.objects.filter(store=store)
+                        for staff in staffs:
+                            staff_user = User.objects.get(email=staff.email)
+                            notify.send(
+                                store.owner,
+                                recipient=staff_user,
+                                verb="An additional staff has been added to the store",
+                            )
+                        notify.send(
+                            store.owner,
+                            recipient=store.owner,
+                            verb="You have been added as a staff member of your store",
+                        )
+                        return redirect("/")
+                    else:
+                        return render(request, "error-pages/404-page.html")
+
+
+                        # current_site = get_current_site(request)
+                        # subject = "Activate your Shopit Account"
+                        # message = render_to_string(
+                        #     "account/registration/account_activation_email.html",
+                        #     {
+                        #         "user": user,
+                        #         "uid": urlsafe_base64_encode(force_bytes(user.pk)),
+                        #         "token": account_activation_token.make_token(user),
+                        #         "staff": True,
+                        #         "store": store,
+                        #         "domain": settings.DEFAULT_DOMAIN,
+                        #     },
+                        # )
+                        # user.email_user(subject=subject, message=message)
+                         # return render(request, "account/registration/registration-success.html")
+                else:
+                    return render(request, "error-pages/404-page.html")
     else:
         messages.error(request, "Store not found")
     return render(

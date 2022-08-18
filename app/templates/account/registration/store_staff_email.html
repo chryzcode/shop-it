@@ -122,22 +122,34 @@
         text-align: center;
         font-size: 16px;
       }
+
+      @media all and (max-width: 500px) {
+        .email-container {
+          width: 90%;
+        }
+
+        .logo {
+          width: 100px;
+        }
+      }
     </style>
   </head>
   <body>
     <div class="email-container">
-      <a href="{{domain}}" target="_blank" rel="noopener noreferrer"><img class="logo" src="https://shopitapps.herokuapp.com/static/images/logo/Shopit_Blue_logo.png" alt=""></a>
+      <a href="{{domain}}" target="_blank" rel="noopener noreferrer"
+        ><img class="logo" src="{{domain}}static/images/logo/Shopit_Blue_logo.png" alt=""
+      /></a>
       <p class="introduction">{% if existing_user == True %} Hi {{user.full_name}}, {% else %} Hi, {% endif %}</p>
 
       <div class="body">
         <p>
-          {{store.store_name}} is inviting you to join the store as a staff. To accept the invitation, kindly click the
-          button below.
+          {{store.store_name|title}} is inviting you to join the store as a staff. To accept the invitation, kindly
+          click the button below.
         </p>
 
         {% if existing_user == True %} {% block reset_link %}
         <a
-          href="{{domain}}{% url 'account:accept_staff_invitation'  slugified_store_name=store.slugified_store_name email=email uidb64=uidb64 token=token %}"
+          href="{{domain}}{% url 'account:accept_staff_invitation'  slugified_store_name=store.slugified_store_name email=email uidb64=uid token=token %}"
           target="_blank"
           rel="noopener noreferrer"
           class="email-btn"
@@ -145,7 +157,7 @@
         >
         {% endblock %} {% endif %} {% if existing_user == False %}
         <a
-          href="{{domain}}{% url 'account:store_staff_register' slugified_store_name=store.slugified_store_name%}"
+          href="{{domain}}{% url 'account:store_staff_register' slugified_store_name=store.slugified_store_name %}"
           target="_blank"
           rel="noopener noreferrer"
           class="email-btn"
