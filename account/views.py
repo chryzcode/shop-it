@@ -423,6 +423,7 @@ def add_store_staff(request):
                                         "user": user,
                                         "store": store,
                                         "existing_user": True,
+                                        "email": user.email,
                                         "domain": settings.DEFAULT_DOMAIN,
                                         "slugified_store_name": store.slugified_store_name,
                                         "uidb64": urlsafe_base64_encode(
