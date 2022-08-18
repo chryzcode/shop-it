@@ -74,6 +74,7 @@
       .conclusion > * {
         margin: 5px 0;
         display: block;
+        font-size: 16px;
       }
 
       .socials {
@@ -104,6 +105,7 @@
       .text-logo{
         text-decoration: none;
         font-size: 27px;
+        text-align: center;
       }
 
       ul {
@@ -125,14 +127,14 @@
   <body>
     <div class="email-container">
         {% if store.store_image %}
-        <a href="{% url 'app:store' store.slugified_store_name %}" target="_blank" rel="noopener noreferrer"><img class="logo" src="{{store.store_image.url}}" alt=""></a>
+        <a href=f"{{domain}}{% url 'app:store' store.slugified_store_name %}" target="_blank" rel="noopener noreferrer"><img class="logo" src="{{store.store_image.url}}" alt=""></a>
         {% else %}
-        <a href="{% url 'app:store' store.slugified_store_name %}" target="_blank" rel="noopener noreferrer" class="text-logo">{{store.store_name|upper }}</a>
+        <a href=f"{domain}}{% url 'app:store' store.slugified_store_name %}" target="_blank" rel="noopener noreferrer" class="text-logo">{{store.store_name|upper }}</a>
         {% endif %}
       <p class="introduction">Hello,</p>
 
       <div class="body">
-        <p>This is a newsletter from the {{store.store_name|title}} Newsletter powered by Shopit</p>
+        <small>This is a newsletter from the {{store.store_name|title}} Newsletter powered by Shopit</small>
         <p>{{message|safe}}</p>
       </div>
 
@@ -155,7 +157,7 @@
 
       <small>
         <a
-          href="{% url 'app:unsubscribe_newsletter' store.slugified_store_name%}"
+          href=f"{{domain}}{% url 'app:unsubscribe_newsletter' store.slugified_store_name %}"
           target="_blank"
           rel="noopener noreferrer"
           >Unsubscribe</a

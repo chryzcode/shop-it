@@ -1994,12 +1994,11 @@ def publish_draft_newsletter(request, pk):
             store_newsletter = Store_Newsletter.objects.get(store=store)
             newsletter = Newsletter.objects.get(pk=pk, store=store_newsletter)
             customer_list = []
-            current_site = (get_current_site(request))
             customers =  store_newsletter.customers.all()
             for customer in customers:
                 customer_list.append(customer.email)
             subject = newsletter.title + f' - {store.store_name} Newsletter from Shopit'
-            message = render_to_string("store/newsletter-template.html", {"message": newsletter.body, "store":store, "domain":current_site.domain})
+            message = render_to_string("store/newsletter-template.html", {"message": newsletter.body, "store":store, "domain":settings.DEFAULT_DOMAIN})
             send_mail(subject, message, from_email, customer_list, html_message=message)
             newsletter.delete()
             messages.error(request, "Newsletter draft has been sent")
@@ -2030,13 +2029,12 @@ def publish_newsletter(request):
                 if form.is_valid():
                     subject = form.cleaned_data["title"]
                     message = form.cleaned_data["body"]
-                    current_site = (get_current_site(request))
                     customers =  store_newsletter.customers.all()
                     if customers:
                         for customer in customers:
                             customer_list.append(customer.email)
                         subject = subject + f' - {store.store_name} Newsletter from Shopit'
-                        message = render_to_string("store/newsletter-template.html", {"message": message, "store":store, "domain":current_site.domain})
+                        message = render_to_string("store/newsletter-template.html", {"message": message, "store":store, "domain":settings.DEFAULT_DOMAIN})
                         send_mail(subject, message, from_email, customer_list, html_message=message)
                         messages.error(request, "Newsletter sent successfully")
                         return redirect("app:newsletter_page")
