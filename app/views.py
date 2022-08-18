@@ -1988,6 +1988,7 @@ def publish_draft_newsletter(request, pk):
         store = Store.objects.get(
             store_name=store_staff.objects.get(email=request.user.email).store
         )
+    from_email = store.owner.email
     if Subscription_Timeline.objects.filter(store=store).exists():
         if Store_Newsletter.objects.filter(store=store).exists():
             store_newsletter = Store_Newsletter.objects.get(store=store)
@@ -1999,7 +2000,7 @@ def publish_draft_newsletter(request, pk):
                 customer_list.append(customer.email)
             subject = newsletter.title + f' - {store.store_name} Newsletter from Shopit'
             message = render_to_string("store/newsletter-template.html", {"message": newsletter.body, "store":store, "domain":current_site.domain})
-            send_mail(subject, message, store.owner.email, customer_list, html_message=message)
+            send_mail(subject, message, from_email, customer_list, html_message=message)
             newsletter.delete()
             messages.error(request, "Newsletter draft has been sent")
             return redirect("app:newsletter_page")
@@ -2018,8 +2019,8 @@ def publish_newsletter(request):
         store = Store.objects.get(
             store_name=store_staff.objects.get(email=request.user.email).store
         )
+    from_email = store.owner.email
     form = NewsletterForm(request.POST or None)
-    print(store.owner.email)
     if Subscription_Timeline.objects.filter(store=store).exists():
         if Store_Newsletter.objects.filter(store=store).exists():
             store_newsletter = Store_Newsletter.objects.get(store=store)
@@ -2036,7 +2037,7 @@ def publish_newsletter(request):
                             customer_list.append(customer.email)
                         subject = subject + f' - {store.store_name} Newsletter from Shopit'
                         message = render_to_string("store/newsletter-template.html", {"message": message, "store":store, "domain":current_site.domain})
-                        send_mail(subject, message, store.owner.email, customer_list, html_message=message)
+                        send_mail(subject, message, from_email, customer_list, html_message=message)
                         messages.error(request, "Newsletter sent successfully")
                         return redirect("app:newsletter_page")
                     else:
