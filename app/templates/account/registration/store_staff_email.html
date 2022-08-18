@@ -150,7 +150,7 @@
 
         {% if existing_user == True %} {% block reset_link %}
         <a
-          href="{{domain}}{% url 'account:accept_staff_invitation'  slugified_store_name=store.slugified_store_name email=email uidb64=uid token=token %}"
+          href="{{domain}}{% url 'account:accept_staff_invitation'  slugified_store_name=store.slugified_store_name email=email uidb64=uidb64 token=token %}"
           target="_blank"
           rel="noopener noreferrer"
           class="email-btn"
