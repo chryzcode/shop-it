@@ -146,19 +146,16 @@
           class="email-btn"
           >Accept Invitation</a
         >
-        {% endblock %}
+          {% endblock %}
          {% endif %}
 
          {% if existing_user == False %}
-         {% block reset_link %} 
           <a
           href="{{domain}}{% url 'account:store_staff_register' slugified_store_name=store.slugified_store_name%}"
           target="_blank"
           rel="noopener noreferrer"
           class="email-btn"
-          >Accept Invitation</a>
-          {% endblock %}
-        
+          >Accept Invitation</a>      
           {% endif %}
 
 
