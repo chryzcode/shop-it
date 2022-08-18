@@ -54,7 +54,6 @@ INSTALLED_APPS = [
     "payment",
     "subscriptions",
     "notifications",
-    "django_inlinecss"
 ]
 
 MIDDLEWARE = [

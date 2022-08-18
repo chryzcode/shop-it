@@ -1,12 +1,9 @@
-{% load static %}
-{% load inlinecss %}
-{% inlinecss 'css/email-template.css' %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="{% static 'css/email-template.css'%}" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
     <link
@@ -15,44 +12,136 @@
       integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
       crossorigin="anonymous"
     />
-</head>
-<body>
-    
-<div class="email-container">
-    <p class="introduction">Hello,</p>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
 
-<div class="body">
-    <p>This is a newsletter from the {{store.store_name|title}} newsletter from Shopit Platform.</p>
-    <p>{{message|safe}}</p>
-</div>
+      html,
+      body {
+        scroll-behavior: smooth;
+        overflow-x: hidden;
+      }
 
-<p class="conclusion">
-    <span>Regards,</span>
-    <span>
-        The {{store.store_name|title}} Newsletter
-    </span>
-</p>
+      .email-container {
+        width: 50%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
 
+      .email-container > * {
+        margin: 10px 0;
+      }
 
- <div class="socials">
-  {% if store.facebook %}
-  <a href="{{store.facebook}}" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook"></i></a>
-  {% endif %}
-  {% if store.twitter %}
-  <a href="{{store.twitter}}" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
-  {% endif %}
-  {% if store.instagram %}
-  <a href="{{store.instagram}}" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
-  {% endif %}
-  {% if store.whatsapp %}
-  <a href="{{store.whatsapp}}" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i></a>
-  {% endif %}
-</div>
+      .email-btn {
+        display: block;
+        background-color: #3d5170;
+        width: max-content;
+        color: #fff;
+        text-decoration: none;
+        margin: 10px auto !important;
+        padding: 10px 25px;
+        border-radius: 10px;
+      }
 
-<small>
-    <a href="{% url 'app:unsubscribe_newsletter' store.slugified_store_name%}" target="_blank" rel="noopener noreferrer">Unsubscribe</a>
-</small>
-</div>
-</body>
+      .introduction {
+        font-weight: bold;
+        margin: 5px 0;
+        font-size: 20px;
+      }
+
+      .body > * {
+        margin: 20px 0;
+      }
+
+      .conclusion {
+        margin-top: 40px;
+      }
+
+      .conclusion > * {
+        margin: 5px 0;
+        display: block;
+      }
+
+      .socials {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 30px;
+      }
+
+      .socials > a {
+        color: #3d5170;
+        text-decoration: none;
+        margin: 0 10px;
+      }
+
+      .socials > a i {
+        font-size: 25px;
+      }
+
+      .logo {
+        width: 150px;
+        object-fit: cover;
+        display: block;
+        margin: 0 auto 40px auto;
+      }
+
+      ul {
+        list-style: none;
+      }
+
+      small {
+        text-align: center;
+      }
+
+      small a {
+        color: #3d5170;
+        display: block;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="email-container">
+      <p class="introduction">Hello,</p>
+
+      <div class="body">
+        <p>This is a newsletter from the {{store.store_name|title}} newsletter from Shopit Platform.</p>
+        <p>{{message|safe}}</p>
+      </div>
+
+      <p class="conclusion">
+        <span>Regards,</span>
+        <span> The {{store.store_name|title}} Newsletter </span>
+      </p>
+
+      <div class="socials">
+        {% if store.facebook %}
+        <a href="{{store.facebook}}" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook"></i></a>
+        {% endif %} {% if store.twitter %}
+        <a href="{{store.twitter}}" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
+        {% endif %} {% if store.instagram %}
+        <a href="{{store.instagram}}" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+        {% endif %} {% if store.whatsapp %}
+        <a href="{{store.whatsapp}}" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i></a>
+        {% endif %}
+      </div>
+
+      <small>
+        <a
+          href="{% url 'app:unsubscribe_newsletter' store.slugified_store_name%}"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Unsubscribe</a
+        >
+      </small>
+    </div>
+  </body>
 </html>
 {% endinlinecss %}

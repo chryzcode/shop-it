@@ -24,8 +24,6 @@ django-notifications-hq = "*"
 celery = "*"
 redis = "*"
 holidays = "*"
-django-inlinecss = "*"
-cssutils = "*"
 
 [dev-packages]
 
