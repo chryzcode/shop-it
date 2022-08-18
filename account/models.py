@@ -118,6 +118,7 @@ class User(AbstractBaseUser, PermissionsMixin):
             settings.EMAIL_HOST_USER,
             [self.email],
             fail_silently=False,
+            html_message=message
         )
 
     def __str__(self):

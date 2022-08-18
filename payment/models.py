@@ -101,6 +101,7 @@ class Withdrawal_Transanction(models.Model):
             settings.EMAIL_HOST_USER,
             [self.store.owner.email, staff_email_list],
             fail_silently=False,
+            html_message=message
         )
 
     def __str__(self):

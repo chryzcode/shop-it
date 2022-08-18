@@ -157,7 +157,7 @@ def account_register(request):
                         "token": account_activation_token.make_token(user),
                     },
                 )
-                user.email_user(subject=subject, message=message, html_message=message)
+                user.email_user(subject=subject, message=message)
                 notify.send(
                     store.owner,
                     recipient=user,
@@ -383,7 +383,7 @@ def store_staff_register(request, slugified_store_name):
                         "domain": settings.DEFAULT_DOMAIN,
                     },
                 )
-                user.email_user(subject=subject, message=message, html_message=message)
+                user.email_user(subject=subject, message=message)
                 return render(request, "account/registration/registration-success.html")
     else:
         messages.error(request, "Store not found")
@@ -434,7 +434,7 @@ def add_store_staff(request):
                                         "domain": settings.DEFAULT_DOMAIN,
                                     },
                                 )
-                                user.email_user(subject=subject, message=message, html_message=message)
+                                user.email_user(subject=subject, message=message)
                                 staffs = store_staff.objects.filter(store=store)
                                 for staff in staffs:
                                     staff_user = User.objects.get(email=staff.email)

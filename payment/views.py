@@ -508,7 +508,6 @@ def withdraw_funds(request, currency_code):
                                                                 subject=subject,
                                                                 message=message,
                                                                 staff_email_list=staff_email_list,
-                                                                html_message=message
                                                             )
 
                                                             return redirect(
