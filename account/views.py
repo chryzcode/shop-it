@@ -132,7 +132,7 @@ def account_delete(request):
             "domain": settings.DEFAULT_DOMAIN,
             }
         )
-        
+
     user.is_active = False
     user.save()
     from_email = user.email 
