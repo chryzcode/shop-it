@@ -46,7 +46,6 @@ INSTALLED_APPS = [
     "cloudinary_storage",
     "cloudinary",
     "ckeditor",
-    "django_inlinecss",
     "app",
     "cart",
     "account",
@@ -55,6 +54,7 @@ INSTALLED_APPS = [
     "payment",
     "subscriptions",
     "notifications",
+
 ]
 
 MIDDLEWARE = [

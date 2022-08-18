@@ -25,6 +25,7 @@ celery = "*"
 redis = "*"
 holidays = "*"
 django-inlinecss = "*"
+cssutils = "*"
 
 [dev-packages]
 
