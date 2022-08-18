@@ -118,10 +118,14 @@
   </head>
   <body>
     <div class="email-container">
+        {% if store.store_image %}
+        <a href="{% url 'app:store' store.slugified_store_name %}" target="_blank" rel="noopener noreferrer"><img class="logo" src="{{store.store_image.url}}" alt=""></a>
+        {% else %}
+        <a href="{% url 'app:store' store.slugified_store_name %}" target="_blank" rel="noopener noreferrer">{{store.store_name|upper }}</a>
       <p class="introduction">Hello,</p>
 
       <div class="body">
-        <p>This is a newsletter from the {{store.store_name|title}} newsletter from Shopit Platform.</p>
+        <p>This is a newsletter from the {{store.store_name|title}} Newsletter powered by Shopit</p>
         <p>{{message|safe}}</p>
       </div>
 
