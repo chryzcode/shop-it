@@ -1,18 +1,19 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
+
     <link
       rel="stylesheet"
       href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
       integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
       crossorigin="anonymous"
     />
-</head>
-<style>
+    <style>
       * {
         margin: 0;
         padding: 0;
@@ -99,10 +100,9 @@
         object-fit: cover;
         display: block;
         margin: 0 auto 40px auto;
-        
       }
 
-      .text-logo{
+      .text-logo {
         text-decoration: none;
         font-size: 27px;
         text-align: center;
@@ -123,6 +123,7 @@
         text-align: center;
         font-size: 16px;
       }
+
       @media all and (max-width: 500px) {
         .email-container {
           width: 90%;
@@ -133,52 +134,58 @@
         }
       }
     </style>
-<body>
-    
-<div class="email-container">
-    <a href="{{domain}}" target="_blank" rel="noopener noreferrer"><img class="logo" src="https://shopitapps.herokuapp.com/static/images/logo/Shopit_Blue_logo.png" alt=""></a>
-    <p class="introduction">Hi,</p>
+  </head>
+  <body>
+    <div class="email-container">
+      <a href="{{domain}}" target="_blank" rel="noopener noreferrer"
+        ><img class="logo" src="https://shopitapps.herokuapp.com/static/images/logo/Shopit_Blue_logo.png" alt=""
+      /></a>
+      <p class="introduction"><p>Hi, I am {{ user.full_name }} and I request to delete my Shopit account and my account is deactivated presently.</p></p>
 
-<div class="body">
-<p>Hi, I am {{ user.full_name }} and I request to delete my Shopit account and my account is deactivated presently.</p>
-{% if account_type == "Store Creator" %}
-<p>
-    This action of mine will also will delete my account after a month, {{user.store_name}} store, 
+      <div class="body">
+    {% if account_type == "Store Creator" %}
+    <p>
+         This action of mine will also will delete my account after a month, {{user.store_name}} store, and will affect
     {% if store_staffs %} 
     {% for staff in store_staffs %} 
     <ul>
-        <li>{{ staff }}</li>
+        <li>{{ staff|title}}</li>
     </ul>
     {% endfor %} 
     {% endif %}
-     as a staffof {{user.store_name }} store and affect possibly everything related.
-</p>
-{% elif account_type == "Store Staff" %}
-<p>
-  This action of mine will also delete my account after a month and affect 
+    account being a staff of {{user.store_name|title}} store and affect possibly everything related.
+    </p>
+    {% elif account_type == "Store Staff" %}
+  <p>
+  This action of mine will also delete my account after a month and will affect 
   {% for store in staff_stores %} 
-<ul>
-  <li>{{store}} store, </li>
-</ul>
+  <ul>
+    <li>{{store|title}} store</li>
+  </ul>
   {% endfor %} 
-  been a staff.</p>
+  being a staff.</p>
+
 {% else %}
-<p>This action will delete my account my account after a month and affect possibly everything related.</p>
+<p>This action will delete my account after a month and will affect possibly everything related.</p>
 {% endif %}
-</div>
 
-<p class="conclusion">
-    <span>Regards,</span>
-    <span>
-    {{ user.full_name }}
-    </span>
-</p>
- 
- <div class="socials">
-  <a href="https://twitter.com/chryz_code" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
-  <a href="https://github.com/chryz-code/shop-it" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i></a>
-</div>
+      
+      </div>
 
-</div>
-</body>
+      <p class="conclusion">
+        <span>Regards,</span>
+        <span>{{user.full_name}}</span>
+      </p>
+
+      <div class="socials">
+        <a href="https://twitter.com/chryz_code" target="_blank" rel="noopener noreferrer"
+          ><i class="fab fa-twitter"></i
+        ></a>
+        <a href="https://github.com/chryz-code/shop-it" target="_blank" rel="noopener noreferrer"
+          ><i class="fab fa-github"></i
+        ></a>
+      </div>
+    </div>
+  </body>
 </html>
+
