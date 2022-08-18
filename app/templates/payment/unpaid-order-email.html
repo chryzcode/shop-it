@@ -44,7 +44,7 @@
         display: block;
         background-color: #3d5170;
         width: max-content;
-        color: #fff;
+        color: #fff !important;
         text-decoration: none;
         margin: 10px auto !important;
         padding: 10px 25px;
@@ -130,7 +130,7 @@
 <body>
     
 <div class="email-container">
-    <a href="{{domain}}" target="_blank" rel="noopener noreferrer"><img class="logo" src="{% static 'images/logo/Shopit_Blue_logo.png' %}" alt=""></a>
+    <a href="{{domain}}" target="_blank" rel="noopener noreferrer"><img class="logo" src="/app/static/images/logo/Shopit_Blue_logo.png" alt=""></a>
     <p class="introduction">Hello {{order.user.full_name|capfirst }},</p>
 
 <div class="body">
