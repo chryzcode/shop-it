@@ -372,7 +372,7 @@ def store_staff_register(request, slugified_store_name):
                     email=form.cleaned_data["email"],
                     full_name=form.cleaned_data["full_name"],
                     phone_number=form.cleaned_data["phone_number"],
-                    is_active=False,
+                    is_active=True,
                     is_staff=False,
                     store_creator=False,
                     store_staff=True,
@@ -388,8 +388,6 @@ def store_staff_register(request, slugified_store_name):
                 #     return render(request, "error-pages/404-page.html")
 
                 if user is not None and account_activation_token.check_token(user, token):
-                    user.is_active = True
-                    user.save()
                     if user.is_active == True:
                         staff_user = form.save(commit=False)    
                         staff_user.store = store
