@@ -379,15 +379,17 @@ def store_staff_register(request, slugified_store_name):
                 )
                 user.set_password(form.cleaned_data["password"])
                 user.save()
-                uidb64 = urlsafe_base64_encode(force_bytes(user.pk)),
-                token = account_activation_token.make_token(user),
+                uid = urlsafe_base64_encode(force_bytes(user.pk))
+                token = account_activation_token.make_token(user)
                 # try:
-                uid = force_str(urlsafe_base64_decode(uidb64))
+                uid = force_str(urlsafe_base64_decode(uid))
                 user = get_object_or_404(User, pk=uid)
                 # except:
                 #     return render(request, "error-pages/404-page.html")
 
                 if user is not None and account_activation_token.check_token(user, token):
+                    user.is_active = True
+                    user.save()
                     if user.is_active == True:
                         staff_user = form.save(commit=False)    
                         staff_user.store = store
