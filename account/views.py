@@ -381,11 +381,11 @@ def store_staff_register(request, slugified_store_name):
                 user.save()
                 uidb64 = urlsafe_base64_encode(force_bytes(user.pk)),
                 token = account_activation_token.make_token(user),
-                try:
-                    uid = force_str(urlsafe_base64_decode(uidb64))
-                    user = get_object_or_404(User, pk=uid)
-                except:
-                    return render(request, "error-pages/404-page.html")
+                # try:
+                uid = force_str(urlsafe_base64_decode(uidb64))
+                user = get_object_or_404(User, pk=uid)
+                # except:
+                #     return render(request, "error-pages/404-page.html")
 
                 if user is not None and account_activation_token.check_token(user, token):
                     user.is_active = True
