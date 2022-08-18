@@ -409,8 +409,8 @@ def store_staff_register(request, slugified_store_name):
                             verb="You have been added as a staff member of your store",
                         )
                         return redirect("/")
-                    else:
-                        return render(request, "error-pages/404-page.html")
+                    # else:
+                    #     return render(request, "error-pages/404-page.html")
 
 
                         # current_site = get_current_site(request)
@@ -428,8 +428,8 @@ def store_staff_register(request, slugified_store_name):
                         # )
                         # user.email_user(subject=subject, message=message)
                          # return render(request, "account/registration/registration-success.html")
-                else:
-                    return render(request, "error-pages/404-page.html")
+                # else:
+                #     return render(request, "error-pages/404-page.html")
     else:
         messages.error(request, "Store not found")
     return render(
