@@ -127,9 +127,9 @@
   <body>
     <div class="email-container">
         {% if store.store_image %}
-        <a href=f"{{domain}}{% url 'app:store' store.slugified_store_name %}" target="_blank" rel="noopener noreferrer"><img class="logo" src="{{store.store_image.url}}" alt=""></a>
+        {{domain}}<a href="{% url 'app:store' store.slugified_store_name %}" target="_blank" rel="noopener noreferrer"><img class="logo" src="{{store.store_image.url}}" alt=""></a>
         {% else %}
-        <a href=f"{domain}}{% url 'app:store' store.slugified_store_name %}" target="_blank" rel="noopener noreferrer" class="text-logo">{{store.store_name|upper }}</a>
+        {{domain}}<a href="{% url 'app:store' store.slugified_store_name %}" target="_blank" rel="noopener noreferrer" class="text-logo">{{store.store_name|upper }}</a>
         {% endif %}
       <p class="introduction">Hello,</p>
 
@@ -156,8 +156,8 @@
       </div>
 
       <small>
-        <a
-          href=f"{{domain}}{% url 'app:unsubscribe_newsletter' store.slugified_store_name %}"
+        {{domain}}<a
+          href="{% url 'app:unsubscribe_newsletter' store.slugified_store_name %}"
           target="_blank"
           rel="noopener noreferrer"
           >Unsubscribe</a
