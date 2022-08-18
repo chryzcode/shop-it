@@ -124,12 +124,22 @@
         text-align: center;
         font-size: 16px;
       }
+
+      @media all and (max-width: 500px) {
+        .email-container {
+          width: 90%;
+        }
+
+        .logo {
+          width: 100px;
+        }
+      }
     </style>
 </head>
 <body>
     
 <div class="email-container">
-    <a href="{{domain}}" target="_blank" rel="noopener noreferrer"><img class="logo" src="{{domain}}static/images/logo/Shopit_Blue_logo.png" alt=""></a>
+    <a href="{{domain}}" target="_blank" rel="noopener noreferrer"><img class="logo" src="https://shopitapps.herokuapp.com/static/images/logo/Shopit_Blue_logo.png" alt=""></a>
     <p class="introduction">Hello {{ store.store_name|capfirst }},</p>
 
 <div class="body">

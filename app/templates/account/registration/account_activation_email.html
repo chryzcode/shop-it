@@ -1,10 +1,10 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
     <link
       rel="stylesheet"
@@ -99,10 +99,9 @@
         object-fit: cover;
         display: block;
         margin: 0 auto 40px auto;
-        
       }
 
-      .text-logo{
+      .text-logo {
         text-decoration: none;
         font-size: 27px;
         text-align: center;
@@ -123,36 +122,54 @@
         text-align: center;
         font-size: 16px;
       }
+
+      @media all and (max-width: 500px) {
+        .email-container {
+          width: 90%;
+        }
+
+        .logo {
+          width: 100px;
+        }
+      }
     </style>
-</head>
-<body>
-    
-<div class="email-container">
-    <a href="{{domain}}" target="_blank" rel="noopener noreferrer"><img class="logo" src="{{domain}}static/images/logo/Shopit_Blue_logo.png" alt=""
+  </head>
+  <body>
+    <div class="email-container">
+      <a href="{{domain}}" target="_blank" rel="noopener noreferrer"
+        ><img class="logo" src="https://shopitapps.herokuapp.com/static/images/logo/Shopit_Blue_logo.png" alt=""
       /></a>
-    <p class="introduction">Hello {{user.full_name}},</p>
+      <p class="introduction">Hello {{user.full_name}},</p>
 
-<div class="body">
-    <p>Your Shopit account has been successfully created. Kindly click the button below to activate your account.</p>
+      <div class="body">
+        <p>
+          Your Shopit account has been successfully created. Kindly click the button below to activate your account.
+        </p>
 
-    <a href="{{domain}}{% url 'account:activate_account' uidb64=uid token=token %}" target="_blank" rel="noopener noreferrer" class="email-btn">Activate Account</a>
+        <a
+          href="{{domain}}{% url 'account:activate_account' uidb64=uid token=token %}"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="email-btn"
+          >Activate Account</a
+        >
 
-    <p>If you did not register or create an account on the Shopit platform, kindly ignore.</p>
-</div>
+        <p>If you did not register or create an account on the Shopit platform, kindly ignore.</p>
+      </div>
 
-<p class="conclusion">
-    <span>Regards,</span>
-    <span>
-        Shopit
-    </span>
-</p>
+      <p class="conclusion">
+        <span>Regards,</span>
+        <span> Shopit </span>
+      </p>
 
-
- <div class="socials">
-  <a href="https://twitter.com/chryz_code" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
-  <a href="https://github.com/chryz-code/shop-it" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i></a>
-</div>
-
-</div>
-</body>
+      <div class="socials">
+        <a href="https://twitter.com/chryz_code" target="_blank" rel="noopener noreferrer"
+          ><i class="fab fa-twitter"></i
+        ></a>
+        <a href="https://github.com/chryz-code/shop-it" target="_blank" rel="noopener noreferrer"
+          ><i class="fab fa-github"></i
+        ></a>
+      </div>
+    </div>
+  </body>
 </html>
