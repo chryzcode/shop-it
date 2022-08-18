@@ -67,7 +67,7 @@ urlpatterns = [
     path("create-store/", views.create_store, name="create_store"),
     path("bank-details/", views.bank_details, name="bank_details"),
     path(
-        "store/<slug:slugified_store_name>/accept-invitation/<str:email>/<slug:uidb64>/<slug:token>/",
+        "store/<slugified_store_name>/accept-invitation/<str:email>/<slug:uidb64>/<slug:token>/",
         views.accept_staff_invitation,
         name="accept_staff_invitation",
     ),
