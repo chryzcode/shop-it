@@ -152,19 +152,16 @@
           if payment.address_line2 %} or {{payment.address_line2}} {% endif %}, {{payment.city}}, {{payment.state}}
           State, {{payment.country}}. {% if payment.zipcode%} Order Zipcode - {{payment.zipcode}} {% endif %}.
         </p>
-
-        <p>
-          If you will be willing to use the logistics service, payment and agreement will be made by
-          {{store.store_name|capfirst}} with the Efdee logistics. For communication, kindly click this link to reach out
-          to Eldee logistics.
-        </p>
-
+      
         <ul>
           {% if store.owner.phone_number %}
           <li>Store Owner Contact - {{store.owner.phone_number}}</li>
           {% endif %} 
           {% if store.whatsapp %}
           <li>Whatsapp - {{store.whatsapp}}</li>
+          {% endif %}
+          {% if store.address %}
+          <li>Address - {{store.address}}</li>
           {% endif %}
         </ul>
       </div>

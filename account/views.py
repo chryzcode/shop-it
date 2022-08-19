@@ -87,10 +87,11 @@ def account_delete(request):
         subject = f"Request for Your Shopit Account to be Deleted - {store.store_name}"
         store_staffs = store_staff.objects.filter(store=store)
         staff_email_list = []
+        to_email = []
         for staff in store_staffs:
             staff_email = staff.email
             staff_email_list.append(staff_email)
-            to_email = [ staff_email, settings.EMAIL_HOST_USER ]
+            to_email.append(staff_email, settings.EMAIL_HOST_USER)
         to_email.append(store.owner.email)
         message = render_to_string(
         "account/user/account-delete-email.html",
@@ -101,6 +102,7 @@ def account_delete(request):
         }
     )
     elif request.user.store_staff == True:
+        to_email = []
         account_type = 'Store Staff'
         staff_stores = Store.objects.filter(staffs=request.user)
         subject = f"Request for Your Shopit Account to be Deleted - Store Staff"
@@ -110,7 +112,7 @@ def account_delete(request):
             staff_stores_list.append(
                 store_owner_email
             )
-            to_email = [settings.EMAIL_HOST_USER, store_owner_email]
+            to_email.append(settings.EMAIL_HOST_USER, store_owner_email)
         to_email.append(request.user.email)
         message = render_to_string(
         "account/user/account-delete-email.html",

@@ -62,6 +62,7 @@ class StoreForm(ModelForm):
             "twitter",
             "facebook",
             "whatsapp",
+            "address",
         ]
 
         widgets = {
@@ -78,6 +79,9 @@ class StoreForm(ModelForm):
             "currency": forms.Select(attrs={"class": "form-control"}),
             "country": forms.Select(attrs={"class": "form-control"}),
             "state": forms.Select(attrs={"class": "form-control"}),
+            "address": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "Home Address"}
+            ),
             "instagram": forms.TextInput(
                 attrs={
                     "class": "form-control",
@@ -103,6 +107,32 @@ class StoreForm(ModelForm):
                 }
             ),
         }
+
+    def clean_address(self):
+        address = self.cleaned_data["address"]
+        if address == None:
+            raise forms.ValidationError("Field is required")
+        if len(address) <= 10:
+            raise forms.ValidationError("Address must be more than ten characters")
+        return address
+
+    def clean_currency(self):
+        currency = self.cleaned_data["currency"]
+        if currency == None:
+            raise forms.ValidationError("Field is required")
+        return currency
+
+    def clean_country(self):
+        country = self.cleaned_data["country"]
+        if country == None:
+            raise forms.ValidationError("Field is required")
+        return country
+
+    def clean_state(self):
+        state = self.cleaned_data["state"]
+        if state == None:
+            raise forms.ValidationError("Field is required")
+        return state
 
     def __init__(self, *args, **kwargs):
         super(StoreForm, self).__init__(*args, **kwargs)

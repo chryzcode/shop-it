@@ -70,6 +70,12 @@
           {% endif %}
         </select>
       </div>
+
+      <div class="input-container">
+          <label for="store_name">Address<span class="form-required">*</span></label>
+          <p>{{ storeform.address.errors }}</p>
+          <div>{{ storeform.address }}</div>
+        </div>
       </div>
 
         <div class="acc-form-seg">

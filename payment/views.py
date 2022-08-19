@@ -219,13 +219,13 @@ def initiate_transfer(
         "Authorization": "Bearer " + settings.FLUTTERWAVE_SECRET_KEY,
     }
     data = {
-        "account_name": account_name,
-        "account_number": account_number,
-        "amount": amount,
-        "currency": currency,
-        "beneficiary_name": beneficiary_name,
-        "narration": narration,
-        "account_bank": account_bank,
+        "account_name": str(account_name),
+        "account_number": str(account_number),
+        "amount": int(amount),
+        "currency": str(currency),
+        "beneficiary_name": str(beneficiary_name),
+        "narration": str(narration),
+        "account_bank": str(account_bank),
     }
     response = requests.request("POST", url, headers=headers, json=data)
     if response.status_code == 200:
@@ -274,6 +274,36 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
                 )
         messages.success(request, "Verification Successful")
         cart.clear()
+        payment.amount =  payment.amount - payment.shipping_method.price
+        payment.save()
+        beneficiary_name = "FAST AND RELIABLE EXPRESS SERVICES LIMITED ACCOUNT 2"
+        narration = f"{{payment.full_name}} just paid {{order.currency_symbol}}{{shipping_method.price}} for the logistics of order {{order.id}} in {{payment.store.store_name}} on Shopit"
+        transfer = initiate_transfer(request, "FAST AND RELIABLE EXPRESS SERVICES LIMITED ACCOUNT 2", "1455908789", int(payment.shipping_method.price) - int(500), order.currency_code, beneficiary_name, narration, "044")
+        from_email = settings.EMAIL_HOST_USER
+        if (transfer["status"] == "success"):
+            subject = f"{store.store_name} have a pickup delivery for you - Farex Logistics"
+            message = render_to_string(
+                "payment/pickup-email.html",
+                {
+                    "store": store,
+                    "payment": payment,
+                    "currency": order.currency_symbol,
+                },
+            )
+            to_email = [settings.LOGISTICS_EMAIL, store.owner.email]
+            send_mail(subject, message, from_email, to_email, html_message=message)
+        else:
+            subject = "Logisitics fund not paid have a pickup delivery for you - Farex Logistics"
+            message = f"""
+            Logisitics funds {order.currency_symbol}{payment.shipping_method.price} made for order {order.id} on {store.store_name} has not been paid to Farex Logistics bank account.
+            Pay them to deliver the {payment.address_line} {payment.address_line2}, {payment.state} State, {payment.country} Order Zipcode - {payment.zipcode}.
+            Store Owner Contact - {store.owner.phone_number}
+            Store Owner Whatsapp - {store.whatsapp}
+            Store Owner Address - {store.address}
+            """
+            to_email = [settings.LOGISTICS_EMAIL, "alabaolanrewaju13@gmail.com"]
+            send_mail(subject, message, from_email, to_email, html_message=message)
+            
         if Subscription_Timeline.objects.filter(store=store).exists():
             store_subscription = Subscription_Timeline.objects.get(store=store)
             if store_subscription.subscription.name == "Professional":
@@ -367,22 +397,6 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
         )
         to_email = [payment.email]
         send_mail(subject, message, from_email, to_email, html_message=message)
-
-        if Subscription_Timeline.objects.filter(store=store).exists():
-            store_timeline = Subscription_Timeline.objects.get(store=store)
-            if store_timeline:
-                if store.country == "Nigeria" and store.state == "Lagos":
-                    subject = f"{store.store_name} have a pickup delivery for you - Efdee Logistics"
-                    message = render_to_string(
-                        "payment/pickup-email.html",
-                        {
-                            "store": store,
-                            "payment": payment,
-                            "currency": order.currency_symbol,
-                        },
-                    )
-                    to_email = [settings.LOGISTICS_EMAIL, store.owner.email]
-                    send_mail(subject, message, from_email, to_email, html_message=message)
 
         if Customer.objects.filter(email=request.user.email, store=store).exists():
             return redirect("customer:customer_orders", store.slugified_store_name)
@@ -481,13 +495,13 @@ def withdraw_funds(request, currency_code):
 
                                                         transfer = initiate_transfer(
                                                             request,
-                                                            store_bank.account_name,
-                                                            store_bank.account_number,
-                                                            amount,
-                                                            store_wallet.currency.code,
-                                                            store_bank.account_name,
-                                                            narration,
-                                                            store_bank.bank_code,
+                                                            str(store_bank.account_name),
+                                                            str(store_bank.account_number),
+                                                            int(amount),
+                                                            str(store_wallet.currency.code),
+                                                            str(store_bank.account_name),
+                                                            str(narration),
+                                                            str(store_bank.bank_code),
                                                         )
 
                                                         if (
@@ -496,7 +510,7 @@ def withdraw_funds(request, currency_code):
                                                         ):
                                                             
                                                             store_wallet.amount -= (
-                                                                amount + 30
+                                                                amount 
                                                             )
                                                             store_wallet.save()
                                                             withdrawal_transanction = Withdrawal_Transanction.objects.create(

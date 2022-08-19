@@ -36,7 +36,7 @@ class Store(models.Model):
     store_description = models.TextField(max_length=500, blank=True)
     store_image = models.ImageField(upload_to="store-images/", blank=True, null=True)
     currency = models.ForeignKey(
-        Currency, on_delete=models.CASCADE
+        Currency, on_delete=models.SET_NULL, null=True, blank=True
     )
     staffs = models.ManyToManyField(
         settings.AUTH_USER_MODEL, related_name="store_staffs", blank=True
@@ -50,6 +50,7 @@ class Store(models.Model):
     whatsapp = models.CharField(max_length=100, blank=True)
     country = models.CharField(max_length=200, blank=True)
     state = models.CharField(max_length=200, blank=True)
+    address = models.CharField(max_length=300, blank=True, null=True)
 
     class Meta:
         verbose_name = "Store"
