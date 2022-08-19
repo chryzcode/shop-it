@@ -50,13 +50,27 @@ def shipping_payment(request, pk):
     order = Order.objects.get(id=pk)
     payment = Payment.objects.get(order=order)
     shipping_methods = Shipping_Method.objects.filter(country=payment.country, state=payment.state)
+    if payment.shipping_method:
+        return render(
+                request,
+                "payment/make-payment.html",
+                {
+                    "payment": payment,
+                    "currency_symbol": order.currency_symbol,
+                    "currency_code": order.currency_code,
+                    "paystack_public_key": settings.PAYSTACK_PUBLIC_KEY,
+                    "store": order.store,
+                },
+            )
     if request.method == "POST":
         form = ShippingPaymentForm(request.POST)
         shipping_method = request.POST.get("shipping_method")
         shipping_method = Shipping_Method.objects.get(id=shipping_method)
         if form.is_valid():
-            order.shipping_method = form.cleaned_data.get("shipping_method")
-            order.save()
+            payment.shipping_method = shipping_method
+            payment.amount = shipping_method.price + order.amount
+            payment.save()
+
             return render(
                 request,
                 "payment/make-payment.html",
