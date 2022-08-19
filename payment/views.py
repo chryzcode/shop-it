@@ -458,7 +458,7 @@ def withdraw_funds(request, currency_code):
                                                             == "success"
                                                         ):
                                                             if Subscription_Timeline.objects.filter(
-                                                                store=store).exists():
+                                                                store=store, name="Professional").exists():
                                                                  store_wallet.amount -= (
                                                                     amount
                                                                 )

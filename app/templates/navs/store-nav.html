@@ -26,6 +26,9 @@
     {% block title %}
     <title>{{a_staff_store_store}}</title>
     {% endblock %}
+    {% if SEO == True %}
+    {% include 'navs/SEO.html' %}
+    {% endif %}
   </head>
   <body id="body">
     <nav class="store-nav" id="nav">

@@ -183,12 +183,13 @@ def create_product(request):
         if Product.objects.filter(
             name=product_name, store=store, slug=slugify(product_name)
         ).exists():
-            error = "Product already exists"
-            return render(
-                request,
-                "store/create-product.html",
-                {"form": form, "error": error, "product_units": product_units},
-            )
+            messages.error(request, "Product already exists")
+            return redirect("app:create_product")
+        store_products = Product.objects.filter(store=store)
+        if not Subscription_Timeline.objects.filter(store=store).exists():
+            if store_products.count() > 10:
+                messages.error(request, "Subscribe to create more products")
+                return redirect("app:create_product")
         if form.is_valid():
             product = form.save(commit=False)
             product.store = Store.objects.get(store_name=store)
@@ -934,6 +935,10 @@ def store_admin(request):
 
 def store(request, slugified_store_name):
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
+    if Subscription_Timeline.objects.filter(store=store, name="Professional").exists():
+        SEO = True
+    else:
+        SEO = False
     if Store_Newsletter.objects.filter(store=store).exists():
         store_newsletter = Store_Newsletter.objects.get(store=store)
     else:
@@ -947,6 +952,7 @@ def store(request, slugified_store_name):
             "products": products,
             "slugified_store_name": slugified_store_name,
             "store_newsletter": store_newsletter,
+            "SEO":SEO, 
         },
     )
 
@@ -1099,7 +1105,7 @@ def all_category(request):
 
 def store_category_products(request, slugified_store_name, slug):
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
-    if Subscription_Timeline.objects.filter(store=store).exists():
+    if Subscription_Timeline.objects.filter(store=store, name="Professional").exists():
         SEO = True
     else:
         SEO = False
@@ -1123,7 +1129,7 @@ def store_category_products(request, slugified_store_name, slug):
 
 def all_store_products(request, slugified_store_name):
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
-    if Subscription_Timeline.objects.filter(store=store).exists():
+    if Subscription_Timeline.objects.filter(store=store, name="Professional").exists():
         SEO = True
     else:
         SEO = False
@@ -1989,7 +1995,7 @@ def publish_draft_newsletter(request, pk):
             store_name=store_staff.objects.get(email=request.user.email).store
         )
     from_email = store.owner.email
-    if Subscription_Timeline.objects.filter(store=store).exists():
+    if Subscription_Timeline.objects.filter(store=store, name="Professional").exists():
         if Store_Newsletter.objects.filter(store=store).exists():
             store_newsletter = Store_Newsletter.objects.get(store=store)
             newsletter = Newsletter.objects.get(pk=pk, store=store_newsletter)
@@ -2007,7 +2013,7 @@ def publish_draft_newsletter(request, pk):
             messages.error(request, "You have not generated a newsletter")
             return redirect("app:newsletter_page")
     else:
-        messages.error(request, "You have subscribe to a plan")
+        messages.error(request, "You have subscribe be on Professional plan")
         return redirect("app:newsletter_page")
 
 @login_required(login_url="/account/login/")
