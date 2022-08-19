@@ -255,9 +255,9 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
             if store_subscription.subscription.name == "Professional":
                 amount = payment.amount
             elif store_subscription.subscription.name == "Standard":
-                amount = int(payment.amount - (payment.amount * 0.01))
+                amount = int(payment.amount - (payment.amount * 0.02))
         else:
-            amount = int(payment.amount - (payment.amount * 0.02))
+            amount = int(payment.amount - (payment.amount * 0.04))
         currency = Currency.objects.get(code=payment.order.currency_code)
         if not Wallet.objects.filter(store=store, currency=currency).exists():
             generate_wallet(request, payment.order.currency_code)
