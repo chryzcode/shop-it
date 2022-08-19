@@ -255,9 +255,23 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
             if store_subscription.subscription.name == "Professional":
                 amount = payment.amount
             elif store_subscription.subscription.name == "Standard":
-                amount = int(payment.amount - (payment.amount * 0.02))
+                if payment.amount > int(2500):
+                    amount = int(1 * int(payment.amount))
+                    amount = amount + int(50)
+                else:
+                    amount = int(1 * int(payment.amount))
         else:
-            amount = int(payment.amount - (payment.amount * 0.04))
+            if payment.amount > int(2500):
+                amount = int(1.5 * int(payment.amount))
+                amount = amount + int(50)
+            else:
+                amount = int(1.5 * int(payment.amount))
+        if amount > int(2500):
+            paystack_percentage = (1.5 * int(amount)) / 100
+            paystack_percentage = paystack_percentage + int(100)
+        else:
+            paystack_percentage = (1.5 * int(amount)) / 100
+        amount = amount - paystack_percentage
         currency = Currency.objects.get(code=payment.order.currency_code)
         if not Wallet.objects.filter(store=store, currency=currency).exists():
             generate_wallet(request, payment.order.currency_code)
@@ -334,18 +348,17 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
             store_timeline = Subscription_Timeline.objects.get(store=store)
             if store_timeline:
                 if store.country == "Nigeria" and store.state == "Lagos":
-                    if payment.country == "Nigeria" and payment.state == "Lagos":
-                        subject = f"{store.store_name} have a pickup delivery for you - Efdee Logistics"
-                        message = render_to_string(
-                            "payment/pickup-email.html",
-                            {
-                                "store": store,
-                                "payment": payment,
-                                "currency": order.currency_symbol,
-                            },
-                        )
-                        to_email = [settings.LOGISTICS_EMAIL, store.owner.email]
-                        send_mail(subject, message, from_email, to_email, html_message=message)
+                    subject = f"{store.store_name} have a pickup delivery for you - Efdee Logistics"
+                    message = render_to_string(
+                        "payment/pickup-email.html",
+                        {
+                            "store": store,
+                            "payment": payment,
+                            "currency": order.currency_symbol,
+                        },
+                    )
+                    to_email = [settings.LOGISTICS_EMAIL, store.owner.email]
+                    send_mail(subject, message, from_email, to_email, html_message=message)
 
         if Customer.objects.filter(email=request.user.email, store=store).exists():
             return redirect("customer:customer_orders", store.slugified_store_name)
