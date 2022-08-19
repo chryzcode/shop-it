@@ -151,6 +151,7 @@ class Shipping_Method(models.Model):
     country = models.CharField(max_length=200)
     state = models.CharField(max_length=200)
     price = models.PositiveIntegerField(default=0)
+    location = models.CharField(max_length=200)
 
     def __str__(self):
         return self.country + " " + self.state 

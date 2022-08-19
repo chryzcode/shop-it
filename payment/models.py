@@ -1,6 +1,4 @@
 import secrets
-from ast import Or
-
 from django.conf import settings
 from django.db import models
 
@@ -31,7 +29,7 @@ class Payment(models.Model):
     use_address = models.ForeignKey(Address, on_delete=models.CASCADE, null=True)
     default_address = models.BooleanField(default=False, null=True, blank=True)
     order = models.ForeignKey(Order, on_delete=models.SET_NULL, blank=True, null=True)
-    shipping_method = models.ForeignKey(Shipping_Method, on_delete=models.CASCADE)
+    shipping_method = models.ForeignKey(Shipping_Method, blank=True, null=True, on_delete=models.SET_NULL)
     store = models.ForeignKey(Store, on_delete=models.CASCADE)
     payment_method = models.CharField(max_length=20, blank=True, null=True)
 
