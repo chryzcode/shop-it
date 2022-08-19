@@ -457,9 +457,15 @@ def withdraw_funds(request, currency_code):
                                                             transfer["status"]
                                                             == "success"
                                                         ):
-                                                            store_wallet.amount -= (
-                                                                amount + 100
-                                                            )
+                                                            if Subscription_Timeline.objects.filter(
+                                                                store=store).exists():
+                                                                 store_wallet.amount -= (
+                                                                    amount
+                                                                )
+                                                            else:
+                                                                store_wallet.amount -= (
+                                                                    amount + 100
+                                                                )
                                                             store_wallet.save()
                                                             withdrawal_transanction = Withdrawal_Transanction.objects.create(
                                                                 wallet=store_wallet,
