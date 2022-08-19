@@ -70,20 +70,7 @@ urlpatterns = [
         "transanction-history/", views.transanction_history, name="transanction_history"
     ),
     path("store-staff/", views.store_staff_page, name="store_staff_page"),
-    path("shipping-method/", views.shipping_method_list, name="shipping_method_list"),
-    path(
-        "create/shipping-method/", views.add_shipping_method, name="add_shipping_method"
-    ),
-    path(
-        "edit/shipping-method/<str:pk>",
-        views.edit_shipping_method,
-        name="edit_shipping_method",
-    ),
-    path(
-        "delete/shipping-method/<str:pk>",
-        views.delete_shipping_method,
-        name="delete_shipping_method",
-    ),
+    # path("shipping-method/", views.shipping_method_list, name="shipping_method_list"),
     path(
         "notification/mark-as-read/<str:id>/",
         views.mark_notification_read,

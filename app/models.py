@@ -148,14 +148,12 @@ class Review(models.Model):
 
 
 class Shipping_Method(models.Model):
-    store = models.ForeignKey(
-        Store, on_delete=models.CASCADE, related_name="shipping_method"
-    )
-    location = models.CharField(max_length=250)
+    country = models.CharField(max_length=200)
+    state = models.CharField(max_length=200)
     price = models.PositiveIntegerField(default=0)
 
     def __str__(self):
-        return self.location + " " + self.store.store_name
+        return self.country + " " + self.state 
 
 
 class last_7_days_sales(models.Model):

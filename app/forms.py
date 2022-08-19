@@ -255,24 +255,6 @@ class authProductReviewForm(ModelForm):
         self.fields["comment"].label = "Comment"
 
 
-class ShippingMethodForm(ModelForm):
-    class Meta:
-        model = Shipping_Method
-        fields = ["location", "price"]
-
-        widgets = {
-            "location": forms.TextInput(
-                attrs={"class": "form-control", "placeholder": "Location Coverage"}
-            ),
-            "price": forms.NumberInput(
-                attrs={"class": "form-control", "placeholder": "Price"}
-            ),
-        }
-
-    def __init__(self, *args, **kwargs):
-        super(ShippingMethodForm, self).__init__(*args, **kwargs)
-
-
 class CompanyAuthReviewForm(forms.Form):
     title = forms.CharField(
         widget=forms.TextInput(attrs={"class": "form-control", "placeholder": "Title"})

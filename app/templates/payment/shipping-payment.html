@@ -1,0 +1,78 @@
+{% extends 'navs/base.html' %} {% load humanize %} {% block title %}<title>Shipping Payment</title>{% endblock %} {% block content %}
+<div class="auth-form-container">
+  <form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="above-create-form">
+      <p>Shipping Payment</p>
+      <p id="result">{{currency_symbol}}{{order.amount|intcomma}}</p>
+    </div>
+    <div class="acc-form-seg">
+      <p>Shipping Details</p>
+
+      <div class="input-container">
+        <label for="shipping_method">Shipping method<span class="form-required">*</span></label>
+        <p id="shipping-method-error" class="error">{{ payment_form.shipping_method.errors }}</p>
+        {% if shipping_methods %}
+        {% for shipping_method in shipping_methods %}
+        <div class="radio-form">
+          <input
+            type="radio"
+            name="shipping_method"
+            id="{{shipping_method.id}}"
+            value="{{shipping_method.id}}"
+            class="{{shipping_method.price}}"
+          />
+          <label for="{{shipping_method}}"
+            ><span>{{shipping_method.location}}</span>
+            <span
+              >{{store.currency.symbol}}<span class="shipping_method_price" id="{{shipping_method.id}}"
+                >{{shipping_method.price|intcomma}}</span
+              ></span
+            ></label
+          >
+        </div>
+        {% endfor %}
+        {% else %}
+        <p>Orders can't be made to this location as at now.</p>
+        {% endif %}
+      </div>
+    </div>
+    {% endif %}
+
+    <div class="form-btn-container">
+      <button class="form-btn" type="submit">
+        Init <span id="total">{{currency_symbol}}{{order.amount|intcomma}}</span>
+      </button>
+    </div>
+  </form>
+</div>
+<script>
+  const formButton = document.querySelector(".form-btn");
+
+  $(document).ready(function () {
+    if ($("input[name=shipping_method]:checked").length == 0) {
+      $("button.form-btn").addClass("disable");
+    }
+
+    $("input[name=shipping_method]").change(function () {
+      if ($("input[name=shipping_method]:checked").length > 0) {
+        $("button.form-btn").removeClass("disable");
+      }
+
+      $("input[name='shipping_method']").on("change", function (event) {
+        var shipping_method_price = $(this).attr("class");
+        var order_amount = "{{order.amount}}";
+        var currency_symbol = "{{currency_symbol}}";
+        var total = parseInt(order_amount) + parseInt(shipping_method_price);
+        var total = currency_symbol + total.toLocaleString("en-US");
+        $("#result").html(total);
+        document.getElementById("total").innerHTML = total;
+      });
+    });
+
+
+});
+
+</script>
+
+{% endblock %}

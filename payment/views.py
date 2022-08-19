@@ -47,13 +47,45 @@ def generate_wallet(request, currency_code):
         return redirect("app:store_wallet")
 
 
+
+
+def shipping_payment(request, pk, country, state):
+    order = Order.objects.get(id=pk)
+    payment = Payment.objects.get(order=order)
+    shipping_methods = Shipping_Method.objects.filter(country=country, state=state)
+    if request.method == "POST":
+        form = ShippingPaymentForm(request.POST)
+        shipping_method = request.POST.get("shipping_method")
+        shipping_method = Shipping_Method.objects.get(id=shipping_method)
+        if form.is_valid():
+            order.shipping_method = form.cleaned_data.get("shipping_method")
+            order.save()
+            return render(
+                request,
+                "payment/make-payment.html",
+                {
+                    "payment": payment,
+                    "store": payment.store,
+                    "paystack_public_key": settings.PAYSTACK_PUBLIC_KEY,
+                    "currency_symbol": payment.order.currency_symbol,
+                    "currency_code": payment.order.currency_code,
+                },
+            )
+    else:
+        form = ShippingPaymentForm()
+    return render(request, "payment/shipping_payment.html", {"form": form, "order": order, "shipping_methods": shipping_methods})
+
+
 def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
+    
     cart = Cart(request)
     addresses = ""
+   
     order = Order.objects.get(pk=pk)
     store = Store.objects.get(pk=order.store.pk)
     currency_symbol = order.currency_symbol
     currency_code = order.currency_code
+   
     url = "https://api.countrystatecity.in/v1/countries"
 
     headers = {"X-CSCAPI-KEY": settings.COUNTRY_STATE_CITY_API_KEY}
@@ -64,10 +96,13 @@ def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
     for country in data:
         country_names[country["name"]] = country["iso2"]
     country_names = sorted(country_names.items(), key=lambda x: x[0])
-
+    print(Payment.objects.filter(order=order))
     if Payment.objects.filter(order=order).exists():
+        print("payment exists")
         payment = Payment.objects.get(order=order)
-        if payment.verified:
+        if payment.verified and payment.shipping_method:
+            return redirect("payment:shipping_payment", order_id=order.id)
+        else:
             return render(
                 request,
                 "payment/make-payment.html",
@@ -78,105 +113,98 @@ def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
                     "paystack_public_key": settings.PAYSTACK_PUBLIC_KEY,
                     "country_names": country_names,
                 },
-            )
-    shipping_methods = Shipping_Method.objects.filter(store=store)
-    if request.user.is_authenticated:
-        if Customer.objects.filter(email=request.user.email):
-            customer = Customer.objects.get(email=request.user.email)
-            addresses = Address.objects.filter(customer=customer)
-            if addresses:
-                PaymentForm = CustomerPaymentForm
+                )
+        
+    
+    else:
+        if request.user.is_authenticated:
+            if Customer.objects.filter(email=request.user.email):
+                customer = Customer.objects.get(email=request.user.email)
+                addresses = Address.objects.filter(customer=customer)
+                if addresses:
+                    PaymentForm = CustomerPaymentForm
+                else:
+                    PaymentForm = NonCustomerPaymentForm
             else:
                 PaymentForm = NonCustomerPaymentForm
         else:
             PaymentForm = NonCustomerPaymentForm
-    else:
-        PaymentForm = NonCustomerPaymentForm
-    if request.method == "POST":
-        payment_form = PaymentForm(request.POST)
+        if request.method == "POST":
+            payment_form = PaymentForm(request.POST)
 
-        if payment_form.is_valid():
-            payment = payment_form.save(commit=False)
-            if request.user.is_authenticated:
-                payment.user = request.user
-            else:
-                payment.user = None
-            use_address = payment_form.cleaned_data.get("use_address")
-            if addresses and use_address:
-                address = Address.objects.get(pk=use_address.id)
-                if address:
-                    payment.address_line = address.address_line
-                    payment.address_line2 = address.address_line2
-                    payment.postcode = address.postcode
-                    payment.state = address.state
-                    payment.country = address.country
+            if payment_form.is_valid():
+                payment = payment_form.save(commit=False)
+                if request.user.is_authenticated:
+                    payment.user = request.user
+                else:
+                    payment.user = None
+                use_address = payment_form.cleaned_data.get("use_address")
+                if addresses and use_address:
+                    address = Address.objects.get(pk=use_address.id)
+                    if address:
+                        payment.address_line = address.address_line
+                        payment.address_line2 = address.address_line2
+                        payment.postcode = address.postcode
+                        payment.state = address.state
+                        payment.country = address.country
 
-            if payment.country == None:
-                return render(
-                    request,
-                    "payment/initiate-payment.html",
-                    {
-                        "payment_form": payment_form,
-                        "order": order,
-                        "shipping_methods": shipping_methods,
-                        "country_error": "Field is required",
-                    },
+                if payment.country == None:
+                    return render(
+                        request,
+                        "payment/initiate-payment.html",
+                        {
+                            "payment_form": payment_form,
+                            "order": order,
+                            "country_error": "Field is required",
+                        },
+                    )
+
+                if payment.state == None:
+                    return render(
+                        request,
+                        "payment/initiate-payment.html",
+                        {
+                            "payment_form": payment_form,
+                            "order": order,
+                            "state_error": "Field is required",
+                        },
+                    )
+                country_code = payment_form.cleaned_data["country"]
+                state_code = payment_form.cleaned_data["state"]
+                country = country_details(request, country_code)
+                state = state_details(request, country_code, state_code)
+                payment.order = order
+                payment.store = store
+                payment.country = country
+                payment.state = state
+                payment.save()
+                return render (
+                    request, "payment/shipping-payment.html", {
+                        "payment": payment,
+                        "store": store,
+                        "paystack_public_key": settings.PAYSTACK_PUBLIC_KEY,
+                        "currency_symbol": currency_symbol,
+                        "currency_code": currency_code,
+                    }
                 )
-
-            if payment.state == None:
-                return render(
-                    request,
-                    "payment/initiate-payment.html",
-                    {
-                        "payment_form": payment_form,
-                        "order": order,
-                        "shipping_methods": shipping_methods,
-                        "state_error": "Field is required",
-                    },
-                )
-            shipping_method = request.POST.get("shipping_method")
-            shipping_method = Shipping_Method.objects.get(id=shipping_method)
-            shipping_price = shipping_method.price
-            country_code = payment_form.cleaned_data["country"]
-            state_code = payment_form.cleaned_data["state"]
-            country = country_details(request, country_code)
-            state = state_details(request, country_code, state_code)
-            payment.order = order
-            payment.amount = order.amount + shipping_price
-            payment.store = store
-            payment.country = country
-            payment.state = state
-            payment.save()
-
+        else:
+            payment_form = PaymentForm()
+            order = Order.objects.get(pk=pk)
             return render(
                 request,
-                "payment/make-payment.html",
+                "payment/initiate-payment.html",
                 {
-                    "payment": payment,
+                    "payment_form": payment_form,
+                    "addresses": addresses,
                     "store": store,
-                    "paystack_public_key": settings.PAYSTACK_PUBLIC_KEY,
+                    "order": order,
                     "currency_symbol": currency_symbol,
                     "currency_code": currency_code,
                     "country_names": country_names,
                 },
             )
-    else:
-        payment_form = PaymentForm()
-        order = Order.objects.get(pk=pk)
-        return render(
-            request,
-            "payment/initiate-payment.html",
-            {
-                "payment_form": payment_form,
-                "addresses": addresses,
-                "shipping_methods": shipping_methods,
-                "store": store,
-                "order": order,
-                "currency_symbol": currency_symbol,
-                "currency_code": currency_code,
-                "country_names": country_names,
-            },
-        )
+    
+  
 
 
 def initiate_transfer(

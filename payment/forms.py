@@ -68,7 +68,6 @@ class CustomerPaymentForm(ModelForm):
             "address_line2",
             "state",
             "country",
-            "shipping_method",
         )
 
         widgets = {
@@ -86,6 +85,20 @@ class CustomerPaymentForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(CustomerPaymentForm, self).__init__(*args, **kwargs)
+
+
+class ShippingPaymentForm(ModelForm):
+    class Meta:
+        model = Payment
+        fields = (
+            "shipping_method",
+        )
+
+    def __init__(self, *args, **kwargs):
+        super(ShippingPaymentForm, self).__init__(*args, **kwargs)
+        
+
+    
 
 
 class WalletForm(ModelForm):

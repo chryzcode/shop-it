@@ -935,7 +935,8 @@ def store_admin(request):
 
 def store(request, slugified_store_name):
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
-    if Subscription_Timeline.objects.filter(store=store, name="Professional").exists():
+    #filter by subscription.name
+    if Subscription_Timeline.objects.filter(store=store, subscription__name="Professional").exists():
         SEO = True
     else:
         SEO = False
@@ -1105,7 +1106,7 @@ def all_category(request):
 
 def store_category_products(request, slugified_store_name, slug):
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
-    if Subscription_Timeline.objects.filter(store=store, name="Professional").exists():
+    if Subscription_Timeline.objects.filter(store=store, subscription__name="Professional").exists():
         SEO = True
     else:
         SEO = False
@@ -1129,7 +1130,7 @@ def store_category_products(request, slugified_store_name, slug):
 
 def all_store_products(request, slugified_store_name):
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
-    if Subscription_Timeline.objects.filter(store=store, name="Professional").exists():
+    if Subscription_Timeline.objects.filter(store=store, subscription__name="Professional").exists():
         SEO = True
     else:
         SEO = False
@@ -1583,108 +1584,29 @@ def store_staff_page(request):
     )
 
 
-@login_required(login_url="/account/login/")
-def shipping_method_list(request):
-    if request.user.store_creator == True:
-        store = Store.objects.get(owner=request.user)
-    else:
-        store = Store.objects.get(
-            store_name=store_staff.objects.get(email=request.user.email).store
-        )
-    shipping_methods = Shipping_Method.objects.filter(store=store)
-    page = request.GET.get("page", 1)
-    paginator = Paginator(shipping_methods, 10)
-    try:
-        shipping_methods = paginator.page(page)
-    except PageNotAnInteger:
-        shipping_methods = paginator.page(1)
-    except EmptyPage:
-        shipping_methods = paginator.page(paginator.num_pages)
-    return render(
-        request,
-        "store/all-shipping-method.html",
-        {"shipping_methods": shipping_methods, "store": store},
-    )
+# @login_required(login_url="/account/login/")
+# def shipping_method_list(request):
+#     if request.user.store_creator == True:
+#         store = Store.objects.get(owner=request.user)
+#     else:
+#         store = Store.objects.get(
+#             store_name=store_staff.objects.get(email=request.user.email).store
+#         )
+#     shipping_methods = Shipping_Method.objects.filter(store=store)
+#     page = request.GET.get("page", 1)
+#     paginator = Paginator(shipping_methods, 10)
+#     try:
+#         shipping_methods = paginator.page(page)
+#     except PageNotAnInteger:
+#         shipping_methods = paginator.page(1)
+#     except EmptyPage:
+#         shipping_methods = paginator.page(paginator.num_pages)
+#     return render(
+#         request,
+#         "store/all-shipping-method.html",
+#         {"shipping_methods": shipping_methods, "store": store},
+#     )
 
-
-@login_required(login_url="/account/login/")
-def add_shipping_method(request):
-    if request.user.store_creator == True:
-        store = Store.objects.get(owner=request.user)
-        form = ShippingMethodForm
-        if request.method == "POST":
-            form = ShippingMethodForm(request.POST)
-            if form.is_valid():
-                location = form.cleaned_data["location"]
-                shipping_method = form.save(commit=False)
-                shipping_method.store = store
-                if Shipping_Method.objects.filter(
-                    location=location, store=store
-                ).exists():
-                    error = "Shipping Method already exists"
-                    return render(
-                        request,
-                        "store/shipping-method.html",
-                        {"form": form, "error": error},
-                    )
-                if not store.currency:
-                    error = "Please select a currency in your store settings"
-                    return render(
-                        request,
-                        "store/shipping-method.html",
-                        {"form": form, "error": error},
-                    )
-                shipping_method.save()
-                return redirect("app:shipping_method_list")
-        return render(request, "store/shipping-method.html", {"form": form})
-    else:
-        error = "You are not authorized"
-        return render(
-            request, "store/shipping-method.html", {"error": error, "form": form}
-        )
-
-
-@login_required(login_url="/account/login/")
-def edit_shipping_method(request, pk):
-    if request.user.store_creator == True:
-        store = Store.objects.get(owner=request.user)
-        shipping_method = get_object_or_404(Shipping_Method, pk=pk)
-        form = ShippingMethodForm(instance=shipping_method)
-        if request.method == "POST":
-            form = ShippingMethodForm(request.POST, instance=shipping_method)
-            if form.is_valid():
-                shipping_method = form.save(commit=False)
-                shipping_method.store = store
-                if Shipping_Method.objects.filter(
-                    location=shipping_method.location, store=store
-                ).exists():
-                    error = "Shipping Method already exists"
-                    return render(
-                        request,
-                        "store/shipping-method.html",
-                        {"form": form, "error": error},
-                    )
-                shipping_method.save()
-                return redirect("app:shipping_method_list")
-        return render(request, "store/shipping-method.html", {"form": form})
-    else:
-        error = "You are not authorized"
-        return render(
-            request, "store/shipping-method.html", {"error": error, "form": form}
-        )
-
-
-@login_required(login_url="/account/login/")
-def delete_shipping_method(request, pk):
-    if request.user.store_creator == True:
-        store = Store.objects.get(owner=request.user)
-        shipping_method = get_object_or_404(Shipping_Method, pk=pk)
-        if shipping_method:
-            shipping_method.delete()
-            return redirect("app:shipping_method_list")
-    else:
-        error = "You are not authorized"
-        return render(request, "store/shipping-method.html", {"error": error})
 
 
 @login_required(login_url="/account/login/")
@@ -1995,7 +1917,7 @@ def publish_draft_newsletter(request, pk):
             store_name=store_staff.objects.get(email=request.user.email).store
         )
     from_email = store.owner.email
-    if Subscription_Timeline.objects.filter(store=store, name="Professional").exists():
+    if Subscription_Timeline.objects.filter(store=store, subscription__name="Professional").exists():
         if Store_Newsletter.objects.filter(store=store).exists():
             store_newsletter = Store_Newsletter.objects.get(store=store)
             newsletter = Newsletter.objects.get(pk=pk, store=store_newsletter)
