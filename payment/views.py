@@ -458,7 +458,7 @@ def withdraw_funds(request, currency_code):
                                                             == "success"
                                                         ):
                                                             store_wallet.amount -= (
-                                                                amount
+                                                                amount + 100
                                                             )
                                                             store_wallet.save()
                                                             withdrawal_transanction = Withdrawal_Transanction.objects.create(
