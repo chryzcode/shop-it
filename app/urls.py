@@ -70,7 +70,7 @@ urlpatterns = [
         "transanction-history/", views.transanction_history, name="transanction_history"
     ),
     path("store-staff/", views.store_staff_page, name="store_staff_page"),
-    # path("shipping-method/", views.shipping_method_list, name="shipping_method_list"),
+    path("shipping/", views.shipping_method_list, name="shipping_method_list"),
     path(
         "notification/mark-as-read/<str:id>/",
         views.mark_notification_read,

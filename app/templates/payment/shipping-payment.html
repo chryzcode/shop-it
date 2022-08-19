@@ -7,9 +7,8 @@
       <p id="result">{{order.currency_symbol}}{{order.amount|intcomma}}</p>
     </div>
     <div class="acc-form-seg">
-      <p>Shipping Details</p>
+      <p>{{payment.state}}, {{payment.country}}</p>
       <div class="input-container">
-        <label for="shipping_method">Shipping method<span class="form-required">*</span></label>
         <p id="shipping-method-error" class="error">{{ payment_form.shipping_method.errors }}</p>
         {% if shipping_methods %}
         {% for shipping_method in shipping_methods %}
@@ -23,6 +22,9 @@
           />
           <label for="{{shipping_method}}"
             >
+            <span>
+              {{shipping_method.location}}
+            </span>
             <span
               >{{order.currency_symbol}}<span class="{{shipping_method.price}}" id="{{shipping_method.id}}"
                 >{{shipping_method.price|intcomma}}</span
@@ -70,7 +72,7 @@
         $("#result").html(total);
         document.getElementById("total").innerHTML = total;
       });
-      
+
 </script>
 
 {% endblock %}

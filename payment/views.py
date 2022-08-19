@@ -46,13 +46,10 @@ def generate_wallet(request, currency_code):
         messages.error(request, "You are not authorized")
         return redirect("app:store_wallet")
 
-
-
-
-def shipping_payment(request, pk, country, state):
+def shipping_payment(request, pk):
     order = Order.objects.get(id=pk)
     payment = Payment.objects.get(order=order)
-    shipping_methods = Shipping_Method.objects.filter(country=country, state=state)
+    shipping_methods = Shipping_Method.objects.filter(country=payment.country, state=payment.state)
     if request.method == "POST":
         form = ShippingPaymentForm(request.POST)
         shipping_method = request.POST.get("shipping_method")
@@ -73,7 +70,7 @@ def shipping_payment(request, pk, country, state):
             )
     else:
         form = ShippingPaymentForm()
-    return render(request, "payment/shipping-payment.html", {"form": form, "order": order, "shipping_methods": shipping_methods})
+    return render(request, "payment/shipping-payment.html", {"form": form, "order": order, "shipping_methods": shipping_methods, "payment":payment})
 
 
 def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
@@ -110,11 +107,7 @@ def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
                 },
             )
         else:
-            return redirect("payment:shipping-payment", pk=order.id, country=payment.country, state=payment.state)
-            
-      
-            
-    
+            return redirect("payment:shipping_payment", pk=order.id)
     if request.user.is_authenticated:
         if Customer.objects.filter(email=request.user.email):
             customer = Customer.objects.get(email=request.user.email)
@@ -177,7 +170,7 @@ def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
             payment.state = state
             payment.amount = order.amount
             payment.save()
-            return redirect("payment:shipping_payment", pk=order.id, country=payment.country, state=payment.state)
+            return redirect("payment:shipping_payment", pk=order.id)
     else:
         payment_form = PaymentForm()
         order = Order.objects.get(pk=pk)

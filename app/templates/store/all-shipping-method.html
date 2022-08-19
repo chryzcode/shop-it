@@ -6,33 +6,22 @@
   {% include 'navs/store-side-nav.html' %}
   <div class="store-content-container">
     <span class="store-products-container">
-      <p>{{store |capfirst}} Shipping Method</p>
-      <span ><a href="{% url 'app:add_shipping_method' %}">Add Shipping Method</a></span>
+      <p>Shipping Details</p>
       <div class="table-container">
         <table class="store-products-table">
         <tr class="table-rows">
           <th>Location</th>
           <th>Price</th>
-          {% if request.user.store_creator == True %}
-          <th>Edit</th>
-          <th>Delete</th>
-          {% endif %}
+          <th>State</th>
+          <th>Country</th>
         </tr>
         {% for shipping_method in shipping_methods %}
         <tr class="table-rows">
           <td>{{ shipping_method.location }}</td>
           <td>{{store.currency.symbol}}{{ shipping_method.price|intcomma }}</td>
           {% if request.user.store_creator == True %}
-          <td>
-            <button type="button" class="update-btn">
-              <a href="{% url 'app:edit_shipping_method' shipping_method.pk  %}"><i class="far fa-edit"></i>Update</a>
-            </button>
-          </td>
-          <td>
-            <button type="button" class="delete-btn">
-              <a href="{% url 'app:delete_shipping_method' shipping_method.pk %}"><i class="fas fa-trash-alt"></i>Delete</a>
-            </button>
-          </td>
+          <td>{{shipping_method.state}}</td>
+           <td>{{shipping_method.country}}</td>
           {% endif %}
         </tr>
         {% endfor %}

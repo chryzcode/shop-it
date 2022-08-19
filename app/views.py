@@ -1584,28 +1584,28 @@ def store_staff_page(request):
     )
 
 
-# @login_required(login_url="/account/login/")
-# def shipping_method_list(request):
-#     if request.user.store_creator == True:
-#         store = Store.objects.get(owner=request.user)
-#     else:
-#         store = Store.objects.get(
-#             store_name=store_staff.objects.get(email=request.user.email).store
-#         )
-#     shipping_methods = Shipping_Method.objects.filter(store=store)
-#     page = request.GET.get("page", 1)
-#     paginator = Paginator(shipping_methods, 10)
-#     try:
-#         shipping_methods = paginator.page(page)
-#     except PageNotAnInteger:
-#         shipping_methods = paginator.page(1)
-#     except EmptyPage:
-#         shipping_methods = paginator.page(paginator.num_pages)
-#     return render(
-#         request,
-#         "store/all-shipping-method.html",
-#         {"shipping_methods": shipping_methods, "store": store},
-#     )
+@login_required(login_url="/account/login/")
+def shipping_method_list(request):
+    if request.user.store_creator == True:
+        store = Store.objects.get(owner=request.user)
+    else:
+        store = Store.objects.get(
+            store_name=store_staff.objects.get(email=request.user.email).store
+        )
+    shipping_methods = Shipping_Method.objects.all()
+    page = request.GET.get("page", 1)
+    paginator = Paginator(shipping_methods, 10)
+    try:
+        shipping_methods = paginator.page(page)
+    except PageNotAnInteger:
+        shipping_methods = paginator.page(1)
+    except EmptyPage:
+        shipping_methods = paginator.page(paginator.num_pages)
+    return render(
+        request,
+        "store/all-shipping-method.html",
+        {"shipping_methods": shipping_methods, "store": store},
+    )
 
 
 
