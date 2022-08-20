@@ -278,7 +278,10 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
         payment.save()
         beneficiary_name = "FAST AND RELIABLE EXPRESS SERVICES LIMITED ACCOUNT 2"
         narration = f"{{payment.full_name}} just paid {{order.currency_symbol}}{{shipping_method.price}} for the logistics of order {{order.id}} in {{payment.store.store_name}} on Shopit"
-        transfer = initiate_transfer(request, "FAST AND RELIABLE EXPRESS SERVICES LIMITED ACCOUNT 2", "1455908789", int(payment.shipping_method.price) - int(500), order.currency_code, beneficiary_name, narration, "044")
+        #real -----------------------
+        # transfer = initiate_transfer(request, "FAST AND RELIABLE EXPRESS SERVICES LIMITED ACCOUNT 2", "1455908789", int(payment.shipping_method.price) - int(500), order.currency_code, beneficiary_name, narration, "044")
+        #testing --------------------
+        transfer = initiate_transfer(request, "FAST AND RELIABLE EXPRESS SERVICES LIMITED ACCOUNT 2", "1455908789", int(payment.shipping_method.price), order.currency_code, beneficiary_name, narration, "044")
         from_email = settings.EMAIL_HOST_USER
         if (transfer["status"] == "success"):
             subject = f"{store.store_name} have a pickup delivery for you - Farex Logistics"

@@ -463,7 +463,7 @@
 
   .first-instruction-modal {
      width: 400px;
-     top: 190px;
+     top: 210px;
   }
 }
 
@@ -604,7 +604,7 @@
   .first-instruction-modal {
     width: 90%;
     margin: 0 auto;
-    top: 200px;
+    top: 230px;
   }
 
   .notification-list ul > li > a {

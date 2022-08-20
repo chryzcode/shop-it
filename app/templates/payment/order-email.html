@@ -1,13 +1,10 @@
-{% load humanize %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/email-template.css'%}" />
-    <link rel="stylesheet" href="/app/static/css/email-template.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
     <link
       rel="stylesheet"
@@ -15,158 +12,164 @@
       integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
       crossorigin="anonymous"
     />
-</head>
-<style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: "Poppins", sans-serif;
-      }
+  </head>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
 
-      html,
-      body {
-        scroll-behavior: smooth;
-        overflow-x: hidden;
-      }
+    html,
+    body {
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
 
+    .email-container {
+      width: 60%;
+      display: block;
+      margin: 0 auto;
+      color: #000000;
+    }
+
+    .email-container > * {
+      margin: 10px 0;
+    }
+
+    .email-btn {
+      display: block;
+      background-color: #3d5170;
+      width: max-content;
+      color: #fff !important;
+      text-decoration: none;
+      margin: 10px auto !important;
+      padding: 10px 25px;
+      border-radius: 10px;
+    }
+
+    .introduction {
+      margin: 20px 0;
+      font-style: normal;
+      font-weight: bold;
+      line-height: 150%;
+      letter-spacing: normal;
+      font-size: 14px;
+      text-align: left;
+    }
+
+    .body > * {
+      margin: 20px 0;
+      font-size: 20px;
+      text-align: justify;
+      font-size: 16px;
+      line-height: 150%;
+      text-align: left;
+    }
+
+    .conclusion {
+      margin-top: 40px;
+    }
+
+    .conclusion > * {
+      margin: 5px 0;
+      display: block;
+      font-size: 16px;
+    }
+
+    .socials {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 30px;
+    }
+
+    .socials > a {
+      color: #3d5170;
+      text-decoration: none;
+      margin: 0 10px;
+    }
+
+    .socials > a i {
+      font-size: 25px;
+    }
+
+    .logo {
+      width: 200px;
+      object-fit: cover;
+      display: block;
+      margin: 0 auto 40px auto;
+    }
+
+    .text-logo {
+      text-decoration: none;
+      font-size: 27px;
+      text-align: center;
+      display: block;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    small {
+      text-align: center;
+    }
+
+    small a {
+      color: #3d5170;
+      display: block;
+      text-align: center;
+      font-size: 16px;
+    }
+    @media all and (max-width: 500px) {
       .email-container {
-        width: 60%;
-        display: block;
-        margin: 0 auto;
-        color: #000000;
-      }
-
-      .email-container > * {
-        margin: 10px 0;
-      }
-
-      .email-btn {
-        display: block;
-        background-color: #3d5170;
-        width: max-content;
-        color: #fff !important;
-        text-decoration: none;
-        margin: 10px auto !important;
-        padding: 10px 25px;
-        border-radius: 10px;
-      }
-
-      .introduction {
-        margin: 20px 0;
-        font-style: normal;
-        font-weight: bold;
-        line-height: 150%;
-        letter-spacing: normal;
-        font-size: 14px;
-        text-align: left;
-      }
-
-      .body > * {
-        margin: 20px 0;
-        font-size: 20px;
-        text-align: justify;
-        font-size: 16px;
-        line-height: 150%;
-        text-align: left;
-      }
-
-      .conclusion {
-        margin-top: 40px;
-      }
-
-      .conclusion > * {
-        margin: 5px 0;
-        display: block;
-        font-size: 16px;
-      }
-
-      .socials {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-top: 30px;
-      }
-
-      .socials > a {
-        color: #3d5170;
-        text-decoration: none;
-        margin: 0 10px;
-      }
-
-      .socials > a i {
-        font-size: 25px;
+        width: 90%;
       }
 
       .logo {
-        width: 200px;
-        object-fit: cover;
-        display: block;
-        margin: 0 auto 40px auto;
-        
+        width: 100px;
       }
+    }
+  </style>
+  <body>
+    <div class="email-container">
+      <a href="{{domain}}" target="_blank" rel="noopener noreferrer"
+        ><img class="logo" src="https://shopitapps.herokuapp.com/static/images/logo/Shopit_Blue_logo.png" alt=""
+      /></a>
+      <p class="introduction">Hello {{payment.full_name|capfirst }},</p>
 
-      .text-logo{
-        text-decoration: none;
-        font-size: 27px;
-        text-align: center;
-        display: block;
-      }
+      <div class="body">
+        <p>
+          You just paid a total amount of {{currency}}{{payment.amount|intcomma}} for an order placed on {{
+          store.store_name|capfirst }} store, on the Shopit platform.
+        </p>
 
-      ul {
-        list-style: none;
-      }
+        {% if customer == True %} For more information and details about the order, kindly click the button below
+        <a
+          href="{{domain}}{% url 'customer:customer_order_detail' order.id %}"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="email-btn"
+          >Activate Account</a
+        >
+        {% endif %}
+      </div>
 
-      small {
-        text-align: center;
-      }
+      <p class="conclusion">
+        <span>Regards,</span>
+        <span> Shopit </span>
+      </p>
 
-      small a {
-        color: #3d5170;
-        display: block;
-        text-align: center;
-        font-size: 16px;
-      }
-      @media all and (max-width: 500px) {
-        .email-container {
-          width: 90%;
-        }
-
-        .logo {
-          width: 100px;
-        }
-      }
-    </style>
-<body>
-    
-<div class="email-container">
-<a href="{{domain}}" target="_blank" rel="noopener noreferrer"><img class="logo" src="https://shopitapps.herokuapp.com/static/images/logo/Shopit_Blue_logo.png" alt=""></a>    
-<p class="introduction">Hello {{payment.full_name|capfirst }},</p>
-
-<div class="body">
-    <p>You just paid a total amount of {{currency}}{{payment.amount|intcomma}} for an order placed on {{ store.store_name|capfirst }} store, on the Shopit platform.</p>
-
-    {% if customer == True %}
-    For more information and details about the order, kindly click the button below
-     <a href="{{domain}}{% url 'customer:customer_order_detail' order.id %}" target="_blank" rel="noopener noreferrer" class="email-btn">Activate Account</a>
-    {% endif %}
-
-
-</div>
-
-<p class="conclusion">
-    <span>Regards,</span>
-    <span>
-        Shopit
-    </span>
-</p>
-
-
- <div class="socials">
-  <a href="https://twitter.com/chryz_code" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
-  <a href="https://github.com/chryz-code/shop-it" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i></a>
-</div>
-
-</div>
-</body>
+      <div class="socials">
+        <a href="https://twitter.com/chryz_code" target="_blank" rel="noopener noreferrer"
+          ><i class="fab fa-twitter"></i
+        ></a>
+        <a href="https://github.com/chryz-code/shop-it" target="_blank" rel="noopener noreferrer"
+          ><i class="fab fa-github"></i
+        ></a>
+      </div>
+    </div>
+  </body>
 </html>

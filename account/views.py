@@ -358,8 +358,10 @@ def accept_staff_invitation(request, slugified_store_name, email, uidb64, token)
                 )
                 return redirect("/")
             else:
+                messages.error(request, "User does not exist")
                 return render(request, "error-pages/404-page.html")
         else:
+            messages.error(request, "Incorrect user data or Users does not exist")
             return render(request, "error-pages/404-page.html")
 
 
@@ -387,6 +389,7 @@ def store_staff_register(request, slugified_store_name):
                     uid = force_str(urlsafe_base64_decode(uid))
                     user = get_object_or_404(User, pk=uid)
                 except:
+                    messages.error(request, "Inavlid user data or User does not exist")
                     return render(request, "error-pages/404-page.html")
 
                 if user is not None and account_activation_token.check_token(user, token):
@@ -408,11 +411,17 @@ def store_staff_register(request, slugified_store_name):
                         notify.send(
                             store.owner,
                             recipient=store.owner,
-                            verb="You have been added as a staff member of your store",
+                            verb="A staff has added to your store",
                         )
                         return redirect("/")
-            else:
-                return render(request, "error-pages/404-page.html")
+                    else:
+                        messages.error(request, "User is inactive or account is deactivated")
+                        return render(request, "error-pages/404-page.html")
+                        
+                else:
+                    messages.error(request, "Inavlid user data or User does not exist")
+                    return render(request, "error-pages/404-page.html")
+            
     else:
         messages.error(request, "Store not found")
     return render(
@@ -443,7 +452,7 @@ def add_store_staff(request):
                             if user not in store.staffs.all():
                                 user = User.objects.get(email=email)
                                 subject = (
-                                    f"{store.store_name} - Staff Permission Activation"
+                                    f"{store.store_name} - Staff Permission Invitation"
                                 )
                                 message = render_to_string(
                                     "account/registration/store_staff_email.html",
@@ -470,13 +479,14 @@ def add_store_staff(request):
                                     notify.send(
                                         store.owner,
                                         recipient=staff_user,
-                                        verb="Permission to add a staff member sent",
+                                        verb="Invitation to add staff to store sent",
                                     )
                                 notify.send(
                                     store.owner,
                                     recipient=store.owner,
-                                    verb="Permission to add a staff member sent",
+                                    verb="Invitation to add staff to store sent",
                                 )
+                                messages.error(request, "Staff Invitation Mail Sent")
                                 return redirect("app:store_staff_page")
                             else:
                                 messages.error(request, "User is already a staff")
@@ -484,7 +494,7 @@ def add_store_staff(request):
                             messages.error(request, "Store creator can't be a staff")
 
                     else:
-                        subject = f"{store.store_name} - Staff Permission Activation"
+                        subject = f"{store.store_name} - Staff Permission Invitation"
                         message = render_to_string(
                             "account/registration/store_staff_email.html",
                             {
@@ -504,12 +514,12 @@ def add_store_staff(request):
                                 notify.send(
                                     store.owner,
                                     recipient=staff_user,
-                                    verb="Permission to add a staff member sent",
+                                    verb="Invitation to add staff to store sent",
                                 )
                             notify.send(
                                 store.owner,
                                 recipient=store.owner,
-                                verb="Permission to add a staff member sent",
+                                verb="Invitation to add staff to store sent",
                             )
                             return redirect("app:store_staff_page")
                         else:

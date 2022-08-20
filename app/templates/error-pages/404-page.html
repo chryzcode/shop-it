@@ -14,6 +14,9 @@
 <body>  
 <div class="error-page-container">
   <div class="error-page-content-container">
+    {% if messages %} {% for message in messages %} {% if message %}
+      <small class="error">{{message}}</small>
+      {% endif %} {% endfor %} {% endif %}
     <p>404</p>
     <div class="error-image-container">
       <img class="error-image" src="{% static 'images/error-images/404.jpg' %}" alt="" />
