@@ -71,6 +71,9 @@ def mark_notification_read(request, id):
             if "withdrawal_detail_url" in key:
                 notification.save()
                 return redirect(values)
+            if "staff_invitation_url" in key:
+                notification.save()
+                return redirect(values)
 
 def custom_error_404(request, exception):
     return render(request, "error-pages/404-page.html")
