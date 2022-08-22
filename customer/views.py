@@ -348,6 +348,8 @@ def create_address(request, slugified_store_name):
                 address_form.country = country
                 address_form.state = state
                 address_form.customer = customer
+                address_form.country_code = country_code
+                address_form.state_code = state_code
                 if default_address:
                     address_form.default = False
 
@@ -399,6 +401,8 @@ def edit_address(request, slugified_store_name, id):
                 address_form = address_form.save(commit=False)
                 address_form.country = country
                 address_form.state = state
+                address_form.country_code = country_code
+                address_form.state_code = state_code
                 address_form.save()
                 return redirect(
                     "customer:address_list", slugified_store_name=slugified_store_name

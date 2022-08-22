@@ -285,11 +285,12 @@ def store_account(
                 state_code = storeform.cleaned_data["state"]
                 country = country_details(request, country_code)
                 state = state_details(request, country_code, state_code)
-
                 form = storeform.save(commit=False)
                 form.owner = request.user
                 form.country = country
                 form.state = state
+                form.country_code = country_code
+                form.state_code = state_code
                 form.slugified_store_name = slugify(store_name)
                 form.save()
                 currency = Currency.objects.get(name=currency)

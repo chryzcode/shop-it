@@ -25,8 +25,6 @@ class NonCustomerPaymentForm(ModelForm):
             "postcode": forms.TextInput(attrs={"class": "form-control"}),
             "address_line": forms.TextInput(attrs={"class": "form-control"}),
             "address_line2": forms.TextInput(attrs={"class": "form-control"}),
-            "state": forms.Select(attrs={"class": "form-control"}),
-            "country": forms.Select(attrs={"class": "form-control"}),
         }
 
         def clean_postcode(self):

@@ -7,6 +7,9 @@
   <div class="store-content-container">
     <span class="store-products-container">
       <p>Shipping Details</p>
+      {% if request.user.is_superuser %}
+       <span ><a href="{% url 'app:add_shipping_method' %}">Add Shipping Method</a></span>
+      {% endif %}
       <div class="table-container">
         <table class="store-products-table">
         <tr class="table-rows">
@@ -14,14 +17,28 @@
           <th>Price</th>
           <th>State</th>
           <th>Country</th>
+          {% if request.user.is_superuser %}
+          <th>Delete</th>
+          {% endif %}
         </tr>
         {% for shipping_method in shipping_methods %}
         <tr class="table-rows">
-          <td>{{ shipping_method.location }}</td>
+          <td>
+            {% if request.user.is_superuser %}
+            <a href="{% url 'app:edit_shipping_method' shipping_method.pk  %}"> {{ shipping_method.location }}</a>
+            {% else %}
+            {{ shipping_method.location }}
+            {% endif %}
+          </td>
           <td>{{store.currency.symbol}}{{ shipping_method.total_funds|intcomma }}</td>
-          {% if request.user.store_creator == True %}
           <td>{{shipping_method.state}}</td>
-           <td>{{shipping_method.country}}</td>
+          <td>{{shipping_method.country}}</td>
+          {% if request.user.is_superuser %}
+          <td>
+             <button type="button" class="delete-btn">
+              <a href="{% url 'app:delete_shipping_method' shipping_method.pk %}"><i class="fas fa-trash-alt"></i>Delete</a>
+            </button>
+          </td>
           {% endif %}
         </tr>
         {% endfor %}
@@ -52,5 +69,6 @@
 
     </span>
   </div>
-  {% endblock %}
+ 
 </div>
+ {% endblock %}

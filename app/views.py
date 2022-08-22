@@ -14,6 +14,7 @@ from django.contrib.sites.shortcuts import get_current_site
 
 from account.context_processors import *
 from account.models import *
+from account.views import state_details, country_details
 from cart.cart import *
 from customer.models import *
 from order.models import *
@@ -2020,6 +2021,109 @@ def unsubscribe_newsletter(request, slugified_store_name):
             else:
                 messages.error(request, "You are not a subscriber of this newsletter")
                 return redirect("/")
+
+
+@login_required(login_url="/account/login/")
+def add_shipping_method(request):
+    if request.user.is_superuser:
+        form = ShippingMethodForm
+        url = "https://api.countrystatecity.in/v1/countries"
+        headers = {"X-CSCAPI-KEY": settings.COUNTRY_STATE_CITY_API_KEY}
+        response = requests.request("GET", url, headers=headers)
+        data = response.json()
+        country_names = {}
+        for country in data:
+            country_names[country["name"]] = country["iso2"]
+        country_names = sorted(country_names.items(), key=lambda x: x[0])
+        if request.method == "POST":
+            form = ShippingMethodForm(request.POST)
+            if form.is_valid():
+                state = form.cleaned_data["state"]
+                country = form.cleaned_data["country"]
+                country_code = form.cleaned_data["country"]
+                state_code = form.cleaned_data["state"]
+                country = country_details(request, country_code)
+                state = state_details(request, country_code, state_code)
+                shipping_method = form.save(commit=False)
+                if Shipping_Method.objects.filter(
+                    state=state, country=country
+                ).exists():
+                    error = "Shipping Method already exists"
+                    return render(
+                        request,
+                        "store/shipping-method.html",
+                        {"form": form, "error": error, "country_names": country_names},
+                    )
+                shipping_method.state = state
+                shipping_method.country = country
+                shipping_method.country_code = country_code
+                shipping_method.state_code = state_code
+                shipping_method.save()
+                return redirect("app:shipping_method_list")
+        return render(request, "store/shipping-method.html", {"form": form, "country_names":country_names})
+    else:
+        error = "You are not authorized"
+        return render(
+            request, "store/shipping-method.html", {"error": error, "form": form}
+        )
+
+
+@login_required(login_url="/account/login/")
+def edit_shipping_method(request, pk):
+    if request.user.is_superuser:
+        shipping_method = get_object_or_404(Shipping_Method, pk=pk)
+        form = ShippingMethodForm(instance=shipping_method)
+        url = "https://api.countrystatecity.in/v1/countries"
+        headers = {"X-CSCAPI-KEY": settings.COUNTRY_STATE_CITY_API_KEY}
+        response = requests.request("GET", url, headers=headers)
+        data = response.json()
+        country_names = {}
+        for country in data:
+            country_names[country["name"]] = country["iso2"]
+        country_names = sorted(country_names.items(), key=lambda x: x[0])
+        if request.method == "POST":
+            form = ShippingMethodForm(request.POST, instance=shipping_method)
+            if form.is_valid():
+                state = form.cleaned_data["state"]
+                country = form.cleaned_data["country"]
+                country_code = form.cleaned_data["country"]
+                state_code = form.cleaned_data["state"]
+                country = country_details(request, country_code)
+                state = state_details(request, country_code, state_code)
+                shipping_method = form.save(commit=False)
+                if Shipping_Method.objects.filter(
+                    state=shipping_method.state, country=shipping_method.country
+                ).exists():
+                    error = "Shipping Method already exists"
+                    return render(
+                        request,
+                        "store/shipping-method.html",
+                        {"form": form, "error": error, "country_names": country_names},
+                    )
+                shipping_method.state = state
+                shipping_method.country = country
+                shipping_method.country_code = country_code
+                shipping_method.state_code = state_code
+                shipping_method.save()
+                return redirect("app:shipping_method_list")
+        return render(request, "store/shipping-method.html", {"form": form, "country_names":country_names, "shipping_method":shipping_method})
+    else:
+        error = "You are not authorized"
+        return render(
+            request, "store/shipping-method.html", {"error": error, "form": form}
+        )
+
+
+@login_required(login_url="/account/login/")
+def delete_shipping_method(request, pk):
+    if request.user.is_superuser:
+        shipping_method = get_object_or_404(Shipping_Method, pk=pk)
+        if shipping_method:
+            shipping_method.delete()
+            return redirect("app:shipping_method_list")
+    else:
+        error = "You are not authorized"
+        return render(request, "store/shipping-method.html", {"error": error})
 
 
                 

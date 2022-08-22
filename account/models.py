@@ -50,6 +50,8 @@ class Store(models.Model):
     whatsapp = models.CharField(max_length=100, blank=True)
     country = models.CharField(max_length=200, blank=True)
     state = models.CharField(max_length=200, blank=True)
+    country_code = models.CharField(max_length=10, blank=True)
+    state_code = models.CharField(max_length=10, blank=True)
     address = models.CharField(max_length=300, blank=True, null=True)
 
     class Meta:

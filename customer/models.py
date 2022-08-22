@@ -38,6 +38,8 @@ class Address(models.Model):
     country = models.CharField(_("Country"), max_length=200)
     state = models.CharField(_("State"), max_length=200)
     default = models.BooleanField(_("Default"), default=False)
+    country_code = models.CharField(max_length=10, blank=True, null=True)  
+    state_code = models.CharField(max_length=20, blank=True, null=True)
 
     def __str__(self):
         return self.address_line

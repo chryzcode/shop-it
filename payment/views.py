@@ -311,16 +311,16 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
                 amount = payment.amount
             elif store_subscription.subscription.name == "Standard":
                 if payment.amount > int(2500):
-                    amount = int(1 * int(payment.amount))
+                    amount = int(1.5/100 * payment.amount)
                     amount = amount + int(50)
                 else:
-                    amount = int(1 * int(payment.amount))
+                    amount = int(1.5/100 * payment.amount)
         else:
             if payment.amount > int(2500):
-                amount = int(1.5 * int(payment.amount))
+                amount = int(2/100 * payment.amount)
                 amount = amount + int(50)
             else:
-                amount = int(1.5 * int(payment.amount))
+                amount = int(2/100 * payment.amount)
         if amount > int(2500):
             paystack_percentage = (1.5 * int(amount)) / 100
             paystack_percentage = paystack_percentage + int(100)

@@ -100,4 +100,17 @@ urlpatterns = [
     path("edit/draft/newsletter/<str:pk>/", views.edit_draft_newsletter, name="edit_draft_newsletter"),
     path("unsubscribe-newsletter/<slugified_store_name>/", views.unsubscribe_newsletter, name="unsubscribe_newsletter"),
     path("resubscribe-newsletter/<slugified_store_name>/", views.resubscribe_newsletter, name="resubscribe_newsletter"),
+    path(
+        "create/shipping-method/", views.add_shipping_method, name="add_shipping_method"
+    ),
+    path(
+        "edit/shipping-method/<str:pk>",
+        views.edit_shipping_method,
+        name="edit_shipping_method",
+    ),
+    path(
+        "delete/shipping-method/<str:pk>",
+        views.delete_shipping_method,
+        name="delete_shipping_method",
+    ),
 ]

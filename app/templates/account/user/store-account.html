@@ -50,7 +50,7 @@
         <label for="country">Country</label>
         <select name="country" class="countries form-control" id="country">
           {% if store.country %}
-          <option value="{{store.country}}">{{store.country}}</option>
+          <option value="{{store.country_code}}">{{store.country}}</option>
           {% else %}
           <option value="">Select Country</option>
           {% endif %}
@@ -64,7 +64,7 @@
         <label for="state">State</label>
         <select name="state" class="states form-control" id="state">
           {% if store.state %}
-          <option value="{{store.state}}">{{store.state}}</option>
+          <option value="{{store.state_code}}">{{store.state}}</option>
           {% else %}
           <option value="">Select State</option>
           {% endif %}

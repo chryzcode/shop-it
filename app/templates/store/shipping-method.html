@@ -19,6 +19,35 @@
         {% endif %}
       </div>
       {% csrf_token %}
+
+      <div class="input-container">
+        <label for="country">Country<span class="form-required">*</span></label>
+        <p class="error">{{ country_error }}</p>
+        <select name="country" class="form-control" id="country">
+          {% if 'create' in request.get_full_path %}
+          <option value="">Select Country</option>
+          {% else %}
+          <option value="{{ shipping_method.country_code }}">{{ shipping_method.country }}</option>
+          {% endif %}
+          {% for key, value in country_names %}
+          <option value="{{ value }}">{{ key }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="input-container">
+        <label for="state">State<span class="form-required">*</span></label>
+        <p class="error">{{ state_error }}</p>
+        <select name="state" id="state" class="states form-control">
+          {% if 'create' in request.get_full_path %}
+          <option value="">Select State</option>
+          {% else %}
+          <option value="{{ shipping_method.state_code }}">{{ shipping_method.state }}</option>
+          {% endif %}
+        </select>
+      </div>
+   
+
       <div class="input-container">       
         <label for="location">Location<span class="form-required">*</span></label>
         <p class="error"> {{error}}</p>
@@ -41,9 +70,30 @@
           Update
           {% endif %}
         </button>
-      </div>     
+      </div> 
+         </form>    
       </div>      
-    </form>
   </div>
-</div>
+<script>
+   $(document).ready(function () {
+      $("#country").change(function () {
+        var country = $(this).val();
+        $.ajax({
+          type: "POST",
+          url: "{% url 'app:get_state' 'country' %}".replace("country", country),
+
+          data: {
+            country: country,
+            csrfmiddlewaretoken: "{{ csrf_token }}",
+          },
+          success: function (data) {
+            $("#state").empty();
+            $.each(data.states, function (key, value) {
+              $("#state").append($("<option>", { value: value[1], text: value[0] }));
+            });
+          },
+        });
+      });
+    });
+</script>
 {% endblock %}
