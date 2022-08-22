@@ -66,19 +66,8 @@
 
         <div class="order-detail-products-block">
           <div class="order-payments-amount-seg">
-          <span><span>Order: </span> <span>{{order.currency_symbol}}{{order.amount|intcomma}}</span></span>
-          <span><span>Logistics: </span>
-              <span>
-                {% if payment %}
-              {{order.currency_symbol}}{{payment.shipping_method.price|intcomma}}
-              {% else %}
-              Not paid yet
-              {% endif %}
-              </span>
-            </span>
-
           <span>
-              <span>Total: </span><span>{{order.currency_symbol}}{% if payment %}{{ payment.amount|intcomma}}{% else %}{{order.amount|intcomma}}{% endif %}
+              <span>Amount: </span><span>{{order.currency_symbol}}{% if payment %}{{ payment.amount|intcomma}}{% else %}{{order.amount|intcomma}}{% endif %}
             </span>
           </span>
 
