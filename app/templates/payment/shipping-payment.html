@@ -18,7 +18,7 @@
             name="shipping_method"
             id="{{shipping_method.id}}"
             value="{{shipping_method.id}}"
-            class="{{shipping_method.price}}"
+            class="{{shipping_method.total_funds}}"
           />
           <label for="{{shipping_method}}"
             >
@@ -26,8 +26,8 @@
               {{shipping_method.location}}
             </span>
             <span
-              >{{order.currency_symbol}}<span class="{{shipping_method.price}}" id="{{shipping_method.id}}"
-                >{{shipping_method.price|intcomma}}</span
+              >{{order.currency_symbol}}<span class="{{shipping_method.total_funds}}" id="{{shipping_method.id}}"
+                >{{shipping_method.total_funds|intcomma}}</span
               ></span
             ></label
           >

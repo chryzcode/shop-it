@@ -18,7 +18,7 @@
         {% for shipping_method in shipping_methods %}
         <tr class="table-rows">
           <td>{{ shipping_method.location }}</td>
-          <td>{{store.currency.symbol}}{{ shipping_method.price|intcomma }}</td>
+          <td>{{store.currency.symbol}}{{ shipping_method.total_funds|intcomma }}</td>
           {% if request.user.store_creator == True %}
           <td>{{shipping_method.state}}</td>
            <td>{{shipping_method.country}}</td>

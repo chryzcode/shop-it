@@ -68,7 +68,7 @@ def shipping_payment(request, pk):
         shipping_method = Shipping_Method.objects.get(id=shipping_method)
         if form.is_valid():
             payment.shipping_method = shipping_method
-            payment.amount = shipping_method.price + order.amount
+            payment.amount = shipping_method.total_funds + order.amount
             payment.save()
 
             return render(
@@ -279,9 +279,6 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
         payment.save()
         beneficiary_name = "FAST AND RELIABLE EXPRESS SERVICES LIMITED ACCOUNT 2"
         narration = f"{{payment.full_name}} just paid {{order.currency_symbol}}{{shipping_method.price}} for the logistics of order {{order.id}} in {{payment.store.store_name}} on Shopit"
-        #real -----------------------
-        # transfer = initiate_transfer(request, "FAST AND RELIABLE EXPRESS SERVICES LIMITED ACCOUNT 2", "1455908789", int(payment.shipping_method.price) - int(500), order.currency_code, beneficiary_name, narration, "044")
-        #testing --------------------
         transfer = initiate_transfer(request, "FAST AND RELIABLE EXPRESS SERVICES LIMITED ACCOUNT 2", "1455908789", int(payment.shipping_method.price), order.currency_code, beneficiary_name, narration, "044")
         from_email = settings.EMAIL_HOST_USER
         if (transfer["status"] == "success"):
@@ -501,7 +498,7 @@ def withdraw_funds(request, currency_code):
                                                             request,
                                                             str(store_bank.account_name),
                                                             str(store_bank.account_number),
-                                                            int(amount),
+                                                            int(amount) - int(amount - (amount * 1.40)),
                                                             str(store_wallet.currency.code),
                                                             str(store_bank.account_name),
                                                             str(narration),

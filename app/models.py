@@ -152,6 +152,23 @@ class Shipping_Method(models.Model):
     state = models.CharField(max_length=200)
     price = models.PositiveIntegerField(default=0)
     location = models.CharField(max_length=200)
+    flutterwave_fund = models.PositiveIntegerField(default=0)
+    shopit_fund = models.PositiveIntegerField(default=0)
+    total_funds = models.PositiveIntegerField(default=0)
+
+    def save(self):
+        self.price = self.price
+        flutterwave_fee = (self.price * 1.40)
+        if flutterwave_fee > 2500:
+            flutterwave_fee = 2500
+        self.flutterwave_fund = flutterwave_fee
+        shopit_fee = (self.price * 1.30)
+        if shopit_fee > 2300:
+            shopit_fee = 2300
+        self.shopit_fund = shopit_fee
+        self.total_funds = self.flutterwave_fund + self.shopit_fund + self.price
+        return super(Shipping_Method, self).save()
+
 
     def __str__(self):
         return self.country + " " + self.state 
