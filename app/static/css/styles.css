@@ -1244,6 +1244,10 @@ button {
   text-align: center;
 }
 
+.table-rows {
+  color: #202124;
+}
+
 .store-image-banner {
   width: 100%;
   filter: blur(3px);
@@ -1966,7 +1970,7 @@ small {
   position: fixed;
   width: 500px;
   z-index: 1207;
-  display: block;
+  display: none;
   top: 180px;
   left: 50%;
   transform: translate(-50%, -50%);

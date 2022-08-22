@@ -1275,9 +1275,8 @@ def store_orders(request):
     if orders:
         for order in orders:
             if Payment.objects.filter(order=order).exists():
-                payment = Payment.objects.get(order=order)
-            else:
-                payment = None
+                #get the latest
+                payment = Payment.objects.filter(order=order).last()
     page = request.GET.get("page", 1)
     paginator = Paginator(orders, 10)
     try:
@@ -1309,7 +1308,7 @@ def unpaid_store_orders(request):
             if order.date_created < timezone.now() - timedelta(days=30):
                 order.delete()
             if Payment.objects.filter(order=order).exists():
-                payment = Payment.objects.get(order=order)
+                payment = Payment.objects.filter(order=order).last()
             else:
                 payment = None
     page = request.GET.get("page", 1)

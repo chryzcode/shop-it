@@ -522,7 +522,7 @@ def customer_orders(request, slugified_store_name):
                 if Payment.objects.filter(user=request.user, store=store, order=order):
                     payment = Payment.objects.filter(
                         user=request.user, store=store, order=order
-                    )
+                    ).last()
                 else:
                     payment = None
         page = request.GET.get("page", 1)
@@ -564,7 +564,7 @@ def unpaid_customer_orders(request, slugified_store_name):
                 if Payment.objects.filter(user=request.user, store=store, order=order):
                     payment = Payment.objects.filter(
                         user=request.user, store=store, order=order
-                    )
+                    ).last()
                 else:
                     payment = None
         page = request.GET.get("page", 1)

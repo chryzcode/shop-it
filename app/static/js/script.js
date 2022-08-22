@@ -31,6 +31,7 @@ const notificationCount = document.getElementById("notification-count");
 // }
 
 
+
 if (notificationCount) {
   if (notificationCount.innerHTML >= 9) {
     notificationCount.innerHTML = "9+";
@@ -207,14 +208,25 @@ const modalBtn = document.getElementById("form-btn");
 const allPage = document.getElementById("body");
 
 
+if (localStorage.getItem("firstTimeUser") === null) {
+  localStorage.setItem("firstTimeUser", "true");
+}
+
+if (localStorage.getItem("firstTimeUser") === "true") {
 if (firstInstructionModal) {
    navbar.style.zIndex = "10";
    allPage.style.pointerEvents = "none";
-   modalBtn.style.pointerEvents = "all";
+    modalBtn.style.pointerEvents = "all";
+   firstInstructionModal.style.display = "block";
   document.onclick = function (e) {
     if (e.target.id == "form-btn") {
       firstInstructionModal.style.display = "none";
       allPage.style.pointerEvents = "all";
+      localStorage.setItem("firstTimeUser", "false");
     }
   }
+  }
+} else {
+  firstInstructionModal.style.display = "none";
+  allPage.style.pointerEvents = "all";
 }

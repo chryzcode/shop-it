@@ -107,7 +107,7 @@ def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
 
     if Payment.objects.filter(order=order).exists():
         payment = Payment.objects.get(order=order)
-        if payment.verified and payment.shipping_method:
+        if payment.shipping_method:
             return render(
                 request,
                 "payment/make-payment.html",
@@ -184,6 +184,7 @@ def initiate_payment(request: HttpRequest, pk) -> HttpResponse:
             payment.state = state
             payment.amount = order.amount
             payment.save()
+            Payment.objects.filter(order=order).exclude(id=payment.id).delete()
             return redirect("payment:shipping_payment", pk=order.id)
     else:
         payment_form = PaymentForm()
