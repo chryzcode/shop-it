@@ -2040,13 +2040,14 @@ def add_shipping_method(request):
             if form.is_valid():
                 state = form.cleaned_data["state"]
                 country = form.cleaned_data["country"]
+                location = form.cleaned_data["location"]
                 country_code = form.cleaned_data["country"]
                 state_code = form.cleaned_data["state"]
                 country = country_details(request, country_code)
                 state = state_details(request, country_code, state_code)
                 shipping_method = form.save(commit=False)
                 if Shipping_Method.objects.filter(
-                    state=state, country=country
+                    state=state, country=country, location = location
                 ).exists():
                     error = "Shipping Method already exists"
                     return render(
@@ -2092,7 +2093,7 @@ def edit_shipping_method(request, pk):
                 state = state_details(request, country_code, state_code)
                 shipping_method = form.save(commit=False)
                 if Shipping_Method.objects.filter(
-                    state=shipping_method.state, country=shipping_method.country
+                    state=shipping_method.state, country=shipping_method.country, location= shipping_method.location
                 ).exists():
                     error = "Shipping Method already exists"
                     return render(
