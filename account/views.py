@@ -327,6 +327,7 @@ def accept_staff_invitation(request, slugified_store_name, email, uidb64, token)
             uid = force_str(urlsafe_base64_decode(uidb64))
             user = get_object_or_404(User, pk=uid)
         except:
+            messages.error(request, "Invalid Url/ Timeout or User does not exist")
             return render(request, "error-pages/404-page.html")
 
         if user is not None and account_activation_token.check_token(user, token):
@@ -361,7 +362,7 @@ def accept_staff_invitation(request, slugified_store_name, email, uidb64, token)
                 messages.error(request, "User does not exist")
                 return render(request, "error-pages/404-page.html")
         else:
-            messages.error(request, "Incorrect user data or Users does not exist")
+            messages.error(request, "Invalid Url/ Timeout or User does not exist")
             return render(request, "error-pages/404-page.html")
 
 
@@ -389,7 +390,7 @@ def store_staff_register(request, slugified_store_name):
                     uid = force_str(urlsafe_base64_decode(uid))
                     user = get_object_or_404(User, pk=uid)
                 except:
-                    messages.error(request, "Inavlid user data or User does not exist")
+                    messages.error(request, "Invalid Url/ Timeout or User does not exist")
                     return render(request, "error-pages/404-page.html")
 
                 if user is not None and account_activation_token.check_token(user, token):
@@ -419,7 +420,7 @@ def store_staff_register(request, slugified_store_name):
                         return render(request, "error-pages/404-page.html")
                         
                 else:
-                    messages.error(request, "Inavlid user data or User does not exist")
+                    messages.error(request, "Invalid Url/ Timeout or User does not exist")
                     return render(request, "error-pages/404-page.html")
             
     else:
@@ -559,6 +560,7 @@ def delete_store_staff(request, pk):
                 recipient=store.owner,
                 verb=f"{staff_user.full_name} has been removed from the {store.store_name} store",
             )
+            messages.error(request, "Staff deleted")
             return redirect("app:store_staff_page")
         else:
             messages.error(request, "staff not found")

@@ -77,11 +77,6 @@ urlpatterns = [
         name="mark_notification_read",
     ),
     path(
-        "notification/mark-all-as-read/",
-        views.mark_all_notification_read,
-        name="mark_all_notification_read",
-    ),
-    path(
         "customer/detail/<str:pk>/",
         views.store_customers_details,
         name="store_customers_details",

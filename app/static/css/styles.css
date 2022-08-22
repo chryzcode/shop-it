@@ -2038,6 +2038,12 @@ small {
 .store-content-container {
   padding-bottom: 30px;
 }
+
 .errorlist {
   text-transform: capitalize !important;
+}
+
+.notification-list > p {
+    text-align: center;
+    font-size: 19px
 }

@@ -10,7 +10,6 @@
 
       <div class="notification-list">
         {% if user.notifications.unread %}
-        <p><a href="{% url 'app:mark_all_notification_read' %}">Mark all as read</a></p>
         <div class="notifications-container">
           {% for notification in user.notifications.unread %}
           <ul>

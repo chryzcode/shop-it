@@ -72,17 +72,6 @@ def mark_notification_read(request, id):
                 notification.save()
                 return redirect(values)
 
-
-@login_required(login_url="account:login")
-def mark_all_notification_read(request):
-    current_path = request.META.get("HTTP_REFERER")
-    notifications = Notification.objects.filter(recipient=request.user, unread=True)
-    for notification in notifications:
-        notification.unread = False
-        notification.save()
-    return redirect(current_path)
-
-
 def custom_error_404(request, exception):
     return render(request, "error-pages/404-page.html")
 

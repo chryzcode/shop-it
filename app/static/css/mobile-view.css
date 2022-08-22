@@ -111,7 +111,8 @@
   #store-sidenav.active {
     margin-left: 0;
     transition: all 1.5s ease-in-out;
-    position: absolute;
+    overflow-y: scroll;
+    height: 85%;
   }
 
   .store-nav {
@@ -173,7 +174,6 @@
     text-align: center;
     width: 100%;
   }
-  
 
   .store-nav > span:nth-child(3) {
     position: absolute;
@@ -323,7 +323,6 @@
     margin: 15px auto;
   }
 
-
   nav > ul > li > a,
   nav ul span li a {
     font-size: 16px;
@@ -462,8 +461,8 @@
   }
 
   .first-instruction-modal {
-     width: 400px;
-     top: 210px;
+    width: 400px;
+    top: 210px;
   }
 }
 
@@ -551,7 +550,6 @@
   .store-front-btn > span {
     display: none;
   }
-
 
   nav > ul > li > a,
   nav ul span li a {
