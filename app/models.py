@@ -172,7 +172,7 @@ class Shipping_Method(models.Model):
 
 
     def __str__(self):
-        return self.country + " " + self.state 
+        return self.location + " " + self.country + " " + self.state 
 
 
 class last_7_days_sales(models.Model):
