@@ -159,7 +159,7 @@
 
   footer > div {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr;
+    grid-template-columns: 2fr 1fr 1fr;
     grid-gap: 30px;
     padding: 100px 50px;
   }

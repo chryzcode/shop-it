@@ -18,14 +18,14 @@
         <p>Introduction</p>
         <div>
           <div class="faqs-content">
-            <p class="faq-content-head" data-index="1" ><span>What is Shopit?</span> <span class="material-icons"> add </span></p>
+            <p class="faq-content-head" data-index="1" ><span>What is Shopit?</span> <span class="material-icons" id="faqicon1"> add </span></p>
             <div id="faq-content-body1" class="faq-content-body">
               Shopit platform that equips you with the efficient tools to run your business online(digitally) at your
               comfort.
             </div>
           </div>
           <div class="faqs-content">
-            <p class="faq-content-head" data-index="2"><span>Tell me more.</span> <span class="material-icons"> add </span></p>
+            <p class="faq-content-head" data-index="2"><span>Tell me more.</span> <span class="material-icons" id="faqicon2"> add </span></p>
             <div id="faq-content-body2" class="faq-content-body">
               Shopit serves more than just an e-commerce platform, it also run as an inventory management system for
               your goods, growth of sales, orders, customers and may more. It gives full data on all transactions made
@@ -34,7 +34,7 @@
             </div>
           </div>
           <div class="faqs-content">
-            <p class="faq-content-head" data-index="3"><span>What can I do on Shopit?</span> <span class="material-icons"> add </span></p>
+            <p class="faq-content-head" data-index="3"><span>What can I do on Shopit?</span> <span class="material-icons" id="faqicon3"> add </span></p>
             <div class="faq-content-body" id="faq-content-body3">
               With Shopit you can get a personalised online store for your business, with a virtual wallet for incoming
               funds. You get to track how well the business is growing(analytics) and also run sales at anytime with the
@@ -48,7 +48,7 @@
       <div class="faqs-section">
         <p>Getting Started</p>
         <div class="faqs-content">
-          <p class="faq-content-head" data-index="4"><span>How do I register?</span> <span class="material-icons"> add </span></p>
+          <p class="faq-content-head" data-index="4"><span>How do I register?</span> <span class="material-icons" id="faqicon4"> add </span></p>
           <div class="faq-content-body" id="faq-content-body4">
             Visit the Shopit official website and navigate to the registeration page which takes you less than a minute
             to create an account. For security and validation reasons, you will have to activate and authenticate(log
@@ -71,10 +71,15 @@
         e.preventDefault();
         contentId = $(this).data("index")
         body = $("#faq-content-body"+contentId)
+        icon = $("#faqicon"+contentId)
+        
         if ($(this).hasClass("active")) {
             $(".faq-content-body").removeClass("active");
             $(".faq-content-head").removeClass("active");
             body.removeClass("active")
+       
+            icon.text("add");
+            $(".material-icons").text("add");
             body.slideUp(); 
         } else {   
         $(".faq-content-body").css("display", "none") 
@@ -82,6 +87,8 @@
         $(".faq-content-head").removeClass("active");
         $(this).addClass("active");
         body.addClass("active")
+         $(".material-icons").text("add");
+        icon.text("remove");
         body.slideDown(); 
         }
      });

@@ -402,12 +402,7 @@
     margin: 0 auto;
   }
 
-  footer > div {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    grid-gap: 30px;
-    padding: 50px;
-  }
+ 
 }
 
 @media all and (max-width: 850px) {
@@ -477,16 +472,18 @@
     width: 400px;
     top: 210px;
   }
-}
 
-@media all and (max-width: 500px) {
-
-    footer > div {
+  footer > div {
     display: grid;
     grid-template-columns: 2fr ;
     grid-gap: 30px;
     padding: 50px;
   }
+}
+
+@media all and (max-width: 500px) {
+
+    
   .intro > p {
     font-size: 30px;
     font-weight: 500;

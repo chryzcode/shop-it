@@ -2055,7 +2055,7 @@ small {
   justify-content: space-between;
   flex-wrap: nowrap;
   margin: 70px auto 100px auto;
-  width: 95%;
+  width: 80%;
 }
 
 .faqs-grid > div:nth-child(1) {
