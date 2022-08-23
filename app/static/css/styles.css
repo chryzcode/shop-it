@@ -900,8 +900,6 @@ input[type="file" i] {
   cursor: pointer;
 }
 
-
-
 button {
   outline: 0;
   border: 0;
@@ -1915,7 +1913,7 @@ small {
   display: flex;
   font-size: 20px;
   color: #3d5170;
-  overflow: scroll;
+  overflow-y: scroll;
   height: 80px;
   align-items: center;
   justify-content: center;
@@ -1966,7 +1964,7 @@ small {
   outline: 1px solid #ccc;
 }
 
-.first-instruction-modal{
+.first-instruction-modal {
   position: fixed;
   width: 500px;
   z-index: 1207;
@@ -2048,6 +2046,72 @@ small {
 }
 
 .notification-list > p {
-    text-align: center;
-    font-size: 19px
+  text-align: center;
+  font-size: 19px;
+}
+
+.faqs-grid {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  margin: 70px auto 100px auto;
+  width: 95%;
+}
+
+.faqs-grid > div:nth-child(1) {
+  width: 300px;
+}
+
+.faqs-grid > div:nth-child(2) {
+  width: 70%;
+}
+
+.faqs-navigation {
+  margin-top: 70px;
+}
+
+.faqs-navigation > p {
+  font-size: 23px;
+  color: #3d5170;
+}
+
+.faqs-navigation ul li {
+  list-style: none;
+  margin: 10px 0;
+}
+
+.faqs-navigation ul li a {
+  color: #6b69f8;
+  text-decoration: none;
+  font-size: 18px;
+}
+
+.faqs-section > p {
+  color: #3d5170;
+  font-size: 23px;
+  margin: 10px 0;
+}
+
+.faqs-section {
+  margin: 70px 0;
+}
+
+.faqs-section > div {
+  margin: 30px 0;
+}
+
+.faqs-content > p {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 80px;
+  margin: 30px 0;
+  font-size: 20px;
+  color: #6b69f8;
+  border-bottom: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.faq-content-body {
+  display: none;
 }

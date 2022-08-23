@@ -392,6 +392,15 @@
     position: absolute;
     top: 70px;
   }
+
+  .faqs-grid {
+    flex-wrap: wrap;
+  }
+
+  .faqs-grid> div:nth-child(2) {
+    width: 80%;
+    margin: 0 auto;
+  }
 }
 
 @media all and (max-width: 850px) {
@@ -613,5 +622,10 @@
 
   #view-more-notification {
     font-size: 19px;
+  }
+
+  .faqs-grid> div:nth-child(2) {
+    width: 100%;
+    margin: 0 auto;
   }
 }

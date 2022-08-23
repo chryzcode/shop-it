@@ -1,4 +1,5 @@
 from django.urls import path
+from django.views.generic import TemplateView
 
 from . import views
 
@@ -113,4 +114,5 @@ urlpatterns = [
         views.delete_shipping_method,
         name="delete_shipping_method",
     ),
+    path("faqs/", TemplateView.as_view(template_name='faqs.html'), name="faqs" )
 ]
