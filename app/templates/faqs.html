@@ -6,15 +6,15 @@
     <div class="faqs-navigation">
       <p>Quick Navigation</p>
       <ul>
-        <li><a href="{% url 'app:faqs' %}#introduction">Introduction</a></li>
-        <li><a href="{% url 'app:faqs' %}#sales">Product, Sales, Orders</a></li>
-        <li><a href="{% url 'app:faqs' %}#store">Your Online Store</a></li>
-        <li><a href="{% url 'app:faqs' %}#charges">Transanction Charges</a></li>
+        <li><a href="{% url 'app:faqs' %}#introduction" id="introduction" class="faqs-nav">Introduction</a></li>
+        <li><a href="{% url 'app:faqs' %}#sales" class="faqs-nav">Product, Sales, Orders</a></li>
+        <li><a href="{% url 'app:faqs' %}#store" class="faqs-nav">Your Online Store</a></li>
+        <li><a href="{% url 'app:faqs' %}#charges" class="faqs-nav">Transanction Charges</a></li>
       </ul>
     </div>
 
-    <div>
-      <div id="introduction" class="faqs-section">
+    <div id="introduction-content">
+      <div class="faqs-section">
         <p>Introduction</p>
         <div>
           <div class="faqs-content">
@@ -58,21 +58,33 @@
         </div>
       </div>
     </div>
+
+    <div id="sales-content">
+
+    </div>
   </div>
  
 </div>
  {% include 'navs/footer.html' %}
  <script>
-    const faqContentHead = document.getElementById("faq-content-head");
-    const faqContentBody= document.getElementById("faq-content-body");
 
+    $(".faqs-nav").click(function (e) {
+        e.preventDefault();
+        navId = ($(this).attr('id'))
+        if ($("#"+navId+"-content")) {
+        // $(".faqs-nav").fadeOut('slow');
+        $("#"+navId+"-content").fadeIn("slow");
+        }
+    })
+
+    
     
      $(".faq-content-head").click(function (e) {
         e.preventDefault();
         contentId = $(this).data("index")
         body = $("#faq-content-body"+contentId)
         icon = $("#faqicon"+contentId)
-        
+        body.css("color", "#677294")
         if ($(this).hasClass("active")) {
             $(".faq-content-body").removeClass("active");
             $(".faq-content-head").removeClass("active");
