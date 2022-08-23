@@ -401,6 +401,13 @@
     width: 80%;
     margin: 0 auto;
   }
+
+  footer > div {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-gap: 30px;
+    padding: 50px;
+  }
 }
 
 @media all and (max-width: 850px) {
@@ -418,6 +425,8 @@
     margin: 0 auto;
   }
 
+
+
   .payment-illustration-sec {
     display: flex;
     justify-content: center;
@@ -434,12 +443,7 @@
     transform: scale(1.05);
   }
 
-  footer > div {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-gap: 30px;
-    padding: 50px;
-  }
+  
 
   .illustration-image {
     display: block;
@@ -476,6 +480,13 @@
 }
 
 @media all and (max-width: 500px) {
+
+    footer > div {
+    display: grid;
+    grid-template-columns: 2fr ;
+    grid-gap: 30px;
+    padding: 50px;
+  }
   .intro > p {
     font-size: 30px;
     font-weight: 500;
