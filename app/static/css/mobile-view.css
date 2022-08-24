@@ -397,12 +397,10 @@
     flex-wrap: wrap;
   }
 
-  .faqs-page.active{
+  .faqs-page.active {
     width: 80%;
     margin: 0 auto;
   }
-
- 
 }
 
 @media all and (max-width: 850px) {
@@ -420,8 +418,6 @@
     margin: 0 auto;
   }
 
-
-
   .payment-illustration-sec {
     display: flex;
     justify-content: center;
@@ -437,8 +433,6 @@
   .an-illustration-grid:hover {
     transform: scale(1.05);
   }
-
-  
 
   .illustration-image {
     display: block;
@@ -475,15 +469,21 @@
 
   footer > div {
     display: grid;
-    grid-template-columns: 2fr ;
+    grid-template-columns: 2fr;
     grid-gap: 30px;
     padding: 50px;
+  }
+
+  .docs-content {
+    width: 90%;
+  }
+
+  .docs-content ul {
+    padding-left: 35px;
   }
 }
 
 @media all and (max-width: 500px) {
-
-    
   .intro > p {
     font-size: 30px;
     font-weight: 500;
@@ -635,5 +635,13 @@
   .faqs-page.active {
     width: 100%;
     margin: 0 auto;
+  }
+
+  .docs-content {
+    width: 100%;
+  }
+
+  .docs-content ul {
+    padding-left: 20px;
   }
 }

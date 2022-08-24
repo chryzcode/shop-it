@@ -2142,14 +2142,12 @@ small {
 
 .docs-content > div {
   color: rgb(103, 114, 148);
-
-  font-size: 19px;
 }
 
 .docs-content ul {
   padding-left: 50px;
 }
 
-.docs-content ul li {
+.docs-content ul li, .docs-content > div > p {
   margin: 7px 0;
 }
