@@ -2110,7 +2110,10 @@ small {
 
 .faq-content-body {
   display: none;
-  /* color: rgb(103, 114, 148); */
+}
+
+.faq-content-body ul {
+  padding-left: 30px;
 }
 
 .faqs-page {
