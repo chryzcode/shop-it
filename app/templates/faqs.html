@@ -7,25 +7,29 @@
       <p>Quick Navigation</p>
       <ul>
         <li><a href="{% url 'app:faqs' %}#introduction" id="introduction" class="faqs-nav">Introduction</a></li>
-        <li><a href="{% url 'app:faqs' %}#sales" class="faqs-nav">Product, Sales, Orders</a></li>
-        <li><a href="{% url 'app:faqs' %}#store" class="faqs-nav">Your Online Store</a></li>
-        <li><a href="{% url 'app:faqs' %}#charges" class="faqs-nav">Transanction Charges</a></li>
+        <li><a href="{% url 'app:faqs' %}#sales" id="sales" class="faqs-nav">Product, Sales, Orders</a></li>
+        <li><a href="{% url 'app:faqs' %}#store" id="store" class="faqs-nav">Your Online Store</a></li>
+        <li><a href="{% url 'app:faqs' %}#charges" id="charges" class="faqs-nav">Transanction Charges</a></li>
       </ul>
     </div>
 
-    <div id="introduction-content">
+    <div id="introduction-content" class="faqs-page active">
       <div class="faqs-section">
         <p>Introduction</p>
         <div>
           <div class="faqs-content">
-            <p class="faq-content-head" data-index="1" ><span>What is Shopit?</span> <span class="material-icons" id="faqicon1"> add </span></p>
+            <p class="faq-content-head" data-index="1">
+              <span>What is Shopit?</span> <span class="material-icons" id="faqicon1"> add </span>
+            </p>
             <div id="faq-content-body1" class="faq-content-body">
               Shopit platform that equips you with the efficient tools to run your business online(digitally) at your
               comfort.
             </div>
           </div>
           <div class="faqs-content">
-            <p class="faq-content-head" data-index="2"><span>Tell me more.</span> <span class="material-icons" id="faqicon2"> add </span></p>
+            <p class="faq-content-head" data-index="2">
+              <span>Tell me more.</span> <span class="material-icons" id="faqicon2"> add </span>
+            </p>
             <div id="faq-content-body2" class="faq-content-body">
               Shopit serves more than just an e-commerce platform, it also run as an inventory management system for
               your goods, growth of sales, orders, customers and may more. It gives full data on all transactions made
@@ -34,7 +38,9 @@
             </div>
           </div>
           <div class="faqs-content">
-            <p class="faq-content-head" data-index="3"><span>What can I do on Shopit?</span> <span class="material-icons" id="faqicon3"> add </span></p>
+            <p class="faq-content-head" data-index="3">
+              <span>What can I do on Shopit?</span> <span class="material-icons" id="faqicon3"> add </span>
+            </p>
             <div class="faq-content-body" id="faq-content-body3">
               With Shopit you can get a personalised online store for your business, with a virtual wallet for incoming
               funds. You get to track how well the business is growing(analytics) and also run sales at anytime with the
@@ -48,7 +54,9 @@
       <div class="faqs-section">
         <p>Getting Started</p>
         <div class="faqs-content">
-          <p class="faq-content-head" data-index="4"><span>How do I register?</span> <span class="material-icons" id="faqicon4"> add </span></p>
+          <p class="faq-content-head" data-index="4">
+            <span>How do I register?</span> <span class="material-icons" id="faqicon4"> add </span>
+          </p>
           <div class="faq-content-body" id="faq-content-body4">
             Visit the Shopit official website and navigate to the registeration page which takes you less than a minute
             to create an account. For security and validation reasons, you will have to activate and authenticate(log
@@ -59,51 +67,183 @@
       </div>
     </div>
 
-    <div id="sales-content">
-
+    <div id="sales-content" class="faqs-page">
+      <div class="faqs-section">
+        <p>Product, Sales, Order</p>
+        <div>
+          <div class="faqs-content">
+            <p class="faq-content-head" data-index="5">
+              <span>How do I add product to my store on Shopit?</span>
+              <span class="material-icons" id="faqicon5"> add </span>
+            </p>
+            <div id="faq-content-body5" class="faq-content-body">
+              This is a very simple process where you have fill form on the details of a product. The are prerequsites
+              before adding a product, like adding product category, adding your bank details etc. AS a firstimer on
+              Shopit, those prerequsites will be shown to you after logging in.
+            </div>
+          </div>
+          <div class="faqs-content">
+            <p class="faq-content-head" data-index="6">
+              <span>Can I record orders on Shopit?</span> <span class="material-icons" id="faqicon6"> add </span>
+            </p>
+            <div id="faq-content-body6" class="faq-content-body">
+              Yes, you can. You will get details on all orders made both paid and unpaid. You also have the privilege to
+              know if the order owner is a customer of the store, a mail after a paid order and many more.
+            </div>
+          </div>
+          <div class="faqs-content">
+            <p class="faq-content-head" data-index="7">
+              <span>How do I set up logisitics on Shopit?</span> <span class="material-icons" id="faqicon7"> add </span>
+            </p>
+            <div class="faq-content-body" id="faq-content-body7">
+              This is a burden off store owners, Shopit has a logistics integration to it's official partenered
+              logistics services company for pickup and delivery of parcels and goods all over the nation.
+            </div>
+          </div>
+          <div class="faqs-content">
+            <p class="faq-content-head" data-index="8">
+              <span>How do I know a product has been purchased?</span>
+              <span class="material-icons" id="faqicon8"> add </span>
+            </p>
+            <div class="faq-content-body" id="faq-content-body8">
+              You will get a notifications of the order and it's details (eg. the products purchased), a mail. You also
+              verify through transactions made to your virtual wallet or the store analytics.
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <div id="store-content" class="faqs-page">
+      <div class="faqs-section">
+        <p>Your online store</p>
+        <div>
+          <div class="faqs-content">
+            <p class="faq-content-head" data-index="9">
+              <span>Can I reset my password</span>
+              <span class="material-icons" id="faqicon9"> add </span>
+            </p>
+            <div id="faq-content-body9" class="faq-content-body">
+              Yes with ease, visit this
+              <a href="{% url 'account:password_reset' %}" target="_blank" rel="noopener noreferrer">page</a>, for
+              security reason, you will recieve a mail which has an expirable link that can be used to reset passwords.
+            </div>
+          </div>
+          <div class="faqs-content">
+            <p class="faq-content-head" data-index="10">
+              <span>How can I get customers to my store?</span> <span class="material-icons" id="faqicon10"> add </span>
+            </p>
+            <div id="faq-content-body10" class="faq-content-body">
+              This is mostly about awareness and publicity. All stores and products have dynamic and unique links(url),
+              sharing anyone of these on social media platforms will attract perfect customers. For premimum stores,
+              Sesrch Engine Optmisation(SEO) is granted, where people can reach out to your store via surfing the
+              internet.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="faqs-section">
+        <p>Premium Store</p>
+        <div class="faqs-content">
+          <p class="faq-content-head" data-index="11">
+            <span>What are the benefits of a premium store?</span> <span class="material-icons" id="faqicon11"> add </span>
+          </p>
+          <div class="faq-content-body" id="faq-content-body11">
+            The premuim service is for those ready to run and scale up their with little investments. With premuim plan, you have access to eveything on free plan:
+            <ul>
+                <li></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="faqs-content">
+          <p class="faq-content-head" data-index="12">
+            <span>How do upgrade to premium?</span> <span class="material-icons" id="faqicon12"> add </span>
+          </p>
+          <div class="faq-content-body" id="faq-content-body12">
+            Visit this <a href="" target="_blank" rel="noopener noreferrer">page</a> and check any of the premium plan that suits your business and pay for the service. Imediately the payment is verified, you premuim service is on the go.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="charges-content" class="faqs-page">
+      <div class="faqs-section">
+        <p>Transanction Charges</p>
+        <div>
+          <div class="faqs-content">
+            <p class="faq-content-head" data-index="13">
+              <span>Does Shopit take payment charges from the merchents?</span>
+              <span class="material-icons" id="faqicon13"> add </span>
+            </p>
+            <div id="faq-content-body13" class="faq-content-body">
+              Yes, Shopit charges a specific percentage of the transactions made by merchants based on the subscription plan of the store and the charges can not be more than ₦2500.
+              <ul>
+                <li>Free Plan: 2%</li>
+                <li>Standard Plan: 1.5%</li>
+                <li>Professional Plan: 0%</li>
+              </ul>
+              The transanction charges of the payments gateway(api) user will be automatically added to products prices.
+            </div>
+          </div>
+          <div class="faqs-content">
+            <p class="faq-content-head" data-index="14">
+              <span>How do I get payment made on the store?</span> <span class="material-icons" id="faqicon14"> add </span>
+            </p>
+            <div id="faq-content-body14" class="faq-content-body">
+              A store on shopit is entitled to a virtual wallet, either you generate it or it genrates while payment is been made to the store. This wallet runs mainly with the Paystack payout system/policy, only that you have to withdraw it yourself. After every verified payment, the wallet will be funded automatically but here is the wallet payout policy
+              <ul>
+                <li>Withdrawal can not be made on weekends smd public holidays</li>
+                <li>Only funds recieved 24 hours earlier can be withdrawn</li>
+                <li>You can't withdraw any amount less than ₦1000</li>
+              </ul>
+              More importantly, you'll need to put your bank account details in the store account settings where the funds transferred in less than an hour.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
- 
 </div>
- {% include 'navs/footer.html' %}
- <script>
+{% include 'navs/footer.html' %}
+<script>
+  $(".faqs-nav").click(function (e) {
+    e.preventDefault();
+    navId = $(this).attr("id");
+    if ($("#" + navId + "-content")) {
+      $(".faqs-page").hide();
+      $(".faqs-page").removeClass("active");
+      $("#" + navId + "-content").fadeIn("slow");
+      $("#" + navId + "-content").addClass("active")
+    }
+  });
 
-    $(".faqs-nav").click(function (e) {
-        e.preventDefault();
-        navId = ($(this).attr('id'))
-        if ($("#"+navId+"-content")) {
-        // $(".faqs-nav").fadeOut('slow');
-        $("#"+navId+"-content").fadeIn("slow");
-        }
-    })
+  $(".faq-content-head").click(function (e) {
+    e.preventDefault();
+    contentId = $(this).data("index");
+    body = $("#faq-content-body" + contentId);
+    icon = $("#faqicon" + contentId);
+    body.css("color", "rgb(103, 114, 148)");
+    if ($(this).hasClass("active")) {
+      $(".faq-content-body").removeClass("active");
+      $(".faq-content-head").removeClass("active");
+      body.removeClass("active");
 
-    
-    
-     $(".faq-content-head").click(function (e) {
-        e.preventDefault();
-        contentId = $(this).data("index")
-        body = $("#faq-content-body"+contentId)
-        icon = $("#faqicon"+contentId)
-        body.css("color", "#677294")
-        if ($(this).hasClass("active")) {
-            $(".faq-content-body").removeClass("active");
-            $(".faq-content-head").removeClass("active");
-            body.removeClass("active")
-       
-            icon.text("add");
-            $(".material-icons").text("add");
-            body.slideUp(); 
-        } else {   
-        $(".faq-content-body").css("display", "none") 
-         $(".faq-content-body").removeClass("active");
-        $(".faq-content-head").removeClass("active");
-        $(this).addClass("active");
-        body.addClass("active")
-         $(".material-icons").text("add");
-        icon.text("remove");
-        body.slideDown(); 
-        }
-     });
-
- </script>
+      icon.text("add");
+      $(".material-icons").text("add");
+      body.slideUp();
+    } else {
+      $(".faq-content-body").css("display", "none");
+      $(".faq-content-body").removeClass("active");
+      $(".faq-content-head").removeClass("active");
+      $(this).addClass("active");
+      body.addClass("active");
+      $(".material-icons").text("add");
+      icon.text("remove");
+      body.slideDown();
+    }
+  });
+</script>
 {% endblock %}

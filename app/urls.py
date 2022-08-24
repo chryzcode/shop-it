@@ -114,5 +114,6 @@ urlpatterns = [
         views.delete_shipping_method,
         name="delete_shipping_method",
     ),
-    path("faqs/", TemplateView.as_view(template_name='faqs.html'), name="faqs" )
+    path("faqs/", TemplateView.as_view(template_name='faqs.html'), name="faqs" ),
+    path("terms/", TemplateView.as_view(template_name='terms.html'), name="terms" ),
 ]

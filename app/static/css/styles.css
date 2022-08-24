@@ -2062,10 +2062,6 @@ small {
   width: 300px;
 }
 
-.faqs-grid > div:nth-child(2) {
-  width: 70%;
-}
-
 .faqs-navigation {
   margin-top: 70px;
 }
@@ -2114,4 +2110,43 @@ small {
 
 .faq-content-body {
   display: none;
+  /* color: rgb(103, 114, 148); */
+}
+
+.faqs-page {
+  display: none;
+}
+
+.faqs-page.active {
+  display: block;
+  width: 70%;
+}
+
+.docs-container {
+  margin: 90px 50px;
+}
+
+.docs-content {
+  margin: 50px 0;
+  width: 80%;
+}
+
+.docs-content > p {
+  font-size: 25px;
+  color: #3d5170;
+  margin: 10px 0;
+}
+
+.docs-content > div {
+  color: rgb(103, 114, 148);
+
+  font-size: 19px;
+}
+
+.docs-content ul {
+  padding-left: 50px;
+}
+
+.docs-content ul li {
+  margin: 7px 0;
 }

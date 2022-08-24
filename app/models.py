@@ -106,6 +106,12 @@ class Product(models.Model):
             self.in_stock = False
         if self.availability > 0:
             self.in_stock = True
+        if self.price > int(2500):
+            paystack_percentage = (1.5 * int(self.price)) / 100
+            paystack_percentage = paystack_percentage + int(100)
+        else:
+            paystack_percentage = (1.5 * int(self.price)) / 100
+        self.price = self.price + paystack_percentage
         return super(Product, self).save(*args, **kwargs)
 
     def discount_price(self):

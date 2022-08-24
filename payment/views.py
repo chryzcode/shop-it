@@ -321,12 +321,12 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
                 amount = amount + int(50)
             else:
                 amount = int(2/100 * payment.amount)
-        if amount > int(2500):
-            paystack_percentage = (1.5 * int(amount)) / 100
-            paystack_percentage = paystack_percentage + int(100)
-        else:
-            paystack_percentage = (1.5 * int(amount)) / 100
-        amount = amount - paystack_percentage
+        # if amount > int(2500):
+        #     paystack_percentage = (1.5 * int(amount)) / 100
+        #     paystack_percentage = paystack_percentage + int(100)
+        # else:
+        #     paystack_percentage = (1.5 * int(amount)) / 100
+        # amount = amount - paystack_percentage
         currency = Currency.objects.get(code=payment.order.currency_code)
         if not Wallet.objects.filter(store=store, currency=currency).exists():
             generate_wallet(request, payment.order.currency_code)
