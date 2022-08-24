@@ -116,4 +116,5 @@ urlpatterns = [
     ),
     path("faqs/", TemplateView.as_view(template_name='faqs.html'), name="faqs" ),
     path("terms/", TemplateView.as_view(template_name='terms.html'), name="terms" ),
+    path("privacy-policy/", TemplateView.as_view(template_name='privacy-policy.html'), name="privacy_policy" ),
 ]
