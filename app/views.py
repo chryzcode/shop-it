@@ -2188,7 +2188,7 @@ def add_shipping_company(request):
                     account_name = response.get("data").get("account_name")
                     shipping_company.account_name = account_name
                     shipping_company.save()
-                    return redirect("app:shipping_companies")
+                    return redirect("app:shipping_company_list")
             else:
                 error = "Account details are invalid"
                 return render(
@@ -2200,6 +2200,66 @@ def add_shipping_company(request):
                     request,
                     "store/shipping-company.html",
                     {"form": form, "all_banks": all_banks},)
+    else:
+        messages.error(request, "You are not authorized")
+        return redirect("account:store_account")
+
+@login_required(login_url="/account/login/")
+def edit_shipping_company(request, pk):
+    if request.user.is_superuser == True:
+        form = ShippingCompanyForm
+        url = f"https://api.flutterwave.com/v3/banks/NG"
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + settings.FLUTTERWAVE_SECRET_KEY,
+        }
+        response = requests.get(url, headers=headers)
+        result = response.json().get("data")
+        all_banks = {}
+        for bank in result:
+            all_banks[bank.get("name")] = bank.get("code")
+        shipping_company = Shipping_Company.objects.get(pk=pk)
+        form = ShippingCompanyForm(instance=shipping_company)
+        if request.method == "POST":
+            form = ShippingCompanyForm(request.POST, instance=shipping_company)
+            shipping_company_bank_name = request.POST.get("bank_name")
+            if form.is_valid():
+                shipping_company = form.save(commit=False)
+                shipping_company.bank_name = form.cleaned_data["bank_name"]
+                shipping_company.bank_code = all_banks[shipping_company_bank_name]
+                shipping_company.account_number = form.cleaned_data["account_number"]
+                if resolve_account_details(
+                    request, shipping_company.account_number, shipping_company.bank_code
+                ):
+                    response = resolve_account_details(
+                        request, shipping_company.account_number, shipping_company.bank_code
+                    )
+                    account_name = response.get("data").get("account_name")
+                    shipping_company.account_name = account_name
+                    shipping_company.save()
+                    return redirect("app:shipping_company_list")
+            else:
+                error = "Account details are invalid"
+                return render(
+                    request,
+                    "store/shipping-company.html",
+                    {"error": error, "form": form, "all_banks": all_banks},
+                    )
+        
+            
+        return render(
+                    request,
+                    "store/shipping-company.html",
+                    {"form": form, "all_banks": all_banks, "shipping_company":shipping_company},)
+    else:
+        messages.error(request, "You are not authorized")
+        return redirect("account:store_account")
+
+
+def delete_shipping_company(request, pk):
+    if request.user.is_superuser:
+        Shipping_Company.objects.get(pk=pk).delete()
+        return redirect("app:shipping_company_list")
     else:
         messages.error(request, "You are not authorized")
         return redirect("account:store_account")

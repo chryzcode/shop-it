@@ -27,7 +27,7 @@
         {% for company in shipping_companies %}
         <tr class="table-rows">
           <td>
-            <a href="">{{company.name}}</a>
+            <a href="{% url 'app:edit_shipping_company' company.pk %}">{{company.name}}</a>
           </td>
           <td>{{company.email}}</td>
           <td>{{company.account_number}}</td>
@@ -36,7 +36,7 @@
           <td>{{company.bank_code}}</td>
           <td>
              <button type="button" class="delete-btn">
-              <a href=""><i class="fas fa-trash-alt"></i>Delete</a>
+              <a href="{% url 'app:delete_shipping_company' company.pk %}"><i class="fas fa-trash-alt"></i>Delete</a>
             </button>
           </td>
         </tr>

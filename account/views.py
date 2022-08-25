@@ -676,7 +676,7 @@ def bank_details(request):
             else:
                 form = BankForm()
             if request.method == "POST":
-                form = BankForm(request.POST)
+                form = BankForm(request.POST, instance=bank_info)
                 bank_name = request.POST.get("bank_name")
                 if form.is_valid():
                     bank_info = form.save(commit=False)

@@ -116,6 +116,8 @@ urlpatterns = [
     ),
     path("shipping-company/", views.shipping_company_list, name="shipping_company_list"),
     path("add/shipping-company/", views.add_shipping_company, name="add_shipping_company"),
+    path("edit/shipping-company/<str:pk>", views.edit_shipping_company, name="edit_shipping_company"),
+    path("delete/shipping-company/<str:pk>", views.delete_shipping_company, name="delete_shipping_company"),
     path("faqs/", TemplateView.as_view(template_name='faqs.html'), name="faqs" ),
     path("terms/", TemplateView.as_view(template_name='terms.html'), name="terms" ),
     path("privacy-policy/", TemplateView.as_view(template_name='privacy-policy.html'), name="privacy_policy" ),
