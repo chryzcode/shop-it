@@ -6,7 +6,14 @@
   {% include 'navs/store-side-nav.html' %}
   <div class="store-content-container">
     <span class="store-products-container">
+      {% if store.shipping_company %}
+      <p>{{store.shipping_company|title}} Shipping Details</p>
+      {% else %}
       <p>Shipping Details</p>
+      {% endif %}
+      {% if messages %} {% for message in messages %} {% if message %}
+    <small class="error">{{message}}</small>
+    {% endif %} {% endfor %} {% endif %}
       {% if request.user.is_superuser %}
        <span ><a href="{% url 'app:add_shipping_method' %}">Add Shipping Method</a></span>
       {% endif %}

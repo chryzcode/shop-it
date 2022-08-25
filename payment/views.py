@@ -49,7 +49,7 @@ def generate_wallet(request, currency_code):
 def shipping_payment(request, pk):
     order = Order.objects.get(id=pk)
     payment = Payment.objects.get(order=order)
-    shipping_methods = Shipping_Method.objects.filter(country=payment.country, state=payment.state)
+    shipping_methods = Shipping_Method.objects.filter(country=payment.country, state=payment.state, shipping_company=payment.store.shipping_company)
     if payment.shipping_method:
         return render(
                 request,

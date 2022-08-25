@@ -167,7 +167,6 @@ def create_product(request):
             store_name=store_staff.objects.get(email=request.user.email).store
         )
     product_units = ProductUnit.objects.all()
-    shipping_methods = Shipping_Method.objects.filter(store=store)
     bank_info = Bank_Info.objects.filter(store=store)
     categories = Category.objects.filter(created_by=store)
     if request.method == "POST":
@@ -212,8 +211,8 @@ def create_product(request):
                         "categories": categories,
                     },
                 )
-            if not shipping_methods:
-                error = "Please set your store shipping methods"
+            if not store.shipping_company:
+                error = "Please set a logistics service in store settings"
                 return render(
                     request,
                     "store/create-product.html",
@@ -1584,20 +1583,29 @@ def shipping_method_list(request):
         store = Store.objects.get(
             store_name=store_staff.objects.get(email=request.user.email).store
         )
-    shipping_methods = Shipping_Method.objects.all()
-    page = request.GET.get("page", 1)
-    paginator = Paginator(shipping_methods, 10)
-    try:
-        shipping_methods = paginator.page(page)
-    except PageNotAnInteger:
-        shipping_methods = paginator.page(1)
-    except EmptyPage:
-        shipping_methods = paginator.page(paginator.num_pages)
-    return render(
-        request,
-        "store/all-shipping-method.html",
-        {"shipping_methods": shipping_methods, "store": store},
-    )
+    if store.shipping_company:
+        shipping_company = store.shipping_company
+        shipping_methods = Shipping_Method.objects.filter(shipping_company=shipping_company)
+        page = request.GET.get("page", 1)
+        paginator = Paginator(shipping_methods, 10)
+        try:
+            shipping_methods = paginator.page(page)
+        except PageNotAnInteger:
+            shipping_methods = paginator.page(1)
+        except EmptyPage:
+            shipping_methods = paginator.page(paginator.num_pages)
+        return render(
+            request,
+            "store/all-shipping-method.html",
+            {"shipping_methods": shipping_methods, "store": store},
+        )
+    else:
+        messages.error(request, "Set a logistics company in your store settings")
+        return render(
+            request,
+            "store/all-shipping-method.html",
+            {"store": store},
+        )
 
 
 
