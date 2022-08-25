@@ -306,3 +306,36 @@ class BankForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(BankForm, self).__init__(*args, **kwargs)
+
+
+
+class ShippingCompanyForm(ModelForm):
+    class Meta:
+        model = Shipping_Company
+        fields = ["name", "bank_name", "account_number", "account_name", "email"]
+
+        widgets = {
+            "name": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "Name"}
+            ),
+            "bank_name": forms.Select(
+                attrs={"class": "form-control", "placeholder": "Bank Name"}
+            ),
+            "account_number": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "Account Number"}
+            ),
+            "account_name": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "Account Name"}
+            ),
+            "email": forms.EmailInput(  attrs={"class": "form-control", "placeholder": "Email"
+            }),
+        }
+
+    def clean_account_number(self):
+        account_number = self.cleaned_data["account_number"]
+        if len(account_number) < 10:
+            raise forms.ValidationError("Account number must be 10 digits")
+        return account_number
+
+    def __init__(self, *args, **kwargs):
+        super(ShippingCompanyForm, self).__init__(*args, **kwargs)

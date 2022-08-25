@@ -8,13 +8,14 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.text import slugify
+from account.forms import ShippingCompanyForm
 from notifications.models import Notification
 from notifications.signals import notify
 from django.contrib.sites.shortcuts import get_current_site
 
 from account.context_processors import *
 from account.models import *
-from account.views import state_details, country_details
+from account.views import state_details, country_details, resolve_account_details
 from cart.cart import *
 from customer.models import *
 from order.models import *
@@ -2135,5 +2136,70 @@ def delete_shipping_method(request, pk):
         return render(request, "store/shipping-method.html", {"error": error})
 
 
-                
-            
+@login_required(login_url="/account/login/")
+def shipping_company_list(request):
+    if request.user.is_superuser:
+        shipping_companies = Shipping_Company.objects.all()
+        page = request.GET.get("page", 1)
+        paginator = Paginator(shipping_companies, 10)
+        try:
+            shipping_companies = paginator.page(page)
+        except PageNotAnInteger:
+            shipping_companies = paginator.page(1)
+        except EmptyPage:
+            shipping_companies = paginator.page(paginator.num_pages)
+        return render(
+            request,
+            "store/all-shipping-company.html",
+            {"shipping_companies": shipping_companies, "store": store},
+        )
+    else:
+        messages.error(request, "You are not authorized")
+        return redirect("/")
+
+@login_required(login_url="/account/login/")
+def add_shipping_company(request):
+    if request.user.is_superuser == True:
+        form = ShippingCompanyForm
+        url = f"https://api.flutterwave.com/v3/banks/NG"
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + settings.FLUTTERWAVE_SECRET_KEY,
+        }
+        response = requests.get(url, headers=headers)
+        result = response.json().get("data")
+        all_banks = {}
+        for bank in result:
+            all_banks[bank.get("name")] = bank.get("code")
+        if request.method == "POST":
+            form = ShippingCompanyForm(request.POST)
+            shipping_company_bank_name = request.POST.get("bank_name")
+            if form.is_valid():
+                shipping_company = form.save(commit=False)
+                shipping_company_bank_name = form.cleaned_data["bank_name"]
+                shipping_company.bank_code = all_banks[shipping_company_bank_name]
+                shipping_company.account_number = form.cleaned_data["account_number"]
+                if resolve_account_details(
+                    request, shipping_company.account_number, shipping_company.bank_code
+                ):
+                    response = resolve_account_details(
+                        request, shipping_company.account_number, shipping_company.bank_code
+                    )
+                    account_name = response.get("data").get("account_name")
+                    shipping_company.account_name = account_name
+                    shipping_company.save()
+                    return redirect("app:shipping_companies")
+            else:
+                error = "Account details are invalid"
+                return render(
+                    request,
+                    "store/shipping-company.html",
+                    {"error": error, "form": form, "all_banks": all_banks},
+                    )
+        return render(
+                    request,
+                    "store/shipping-company.html",
+                    {"form": form, "all_banks": all_banks},)
+    else:
+        messages.error(request, "You are not authorized")
+        return redirect("account:store_account")

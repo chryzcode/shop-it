@@ -114,7 +114,10 @@ urlpatterns = [
         views.delete_shipping_method,
         name="delete_shipping_method",
     ),
+    path("shipping-company/", views.shipping_company_list, name="shipping_company_list"),
+    path("add/shipping-company/", views.add_shipping_company, name="add_shipping_company"),
     path("faqs/", TemplateView.as_view(template_name='faqs.html'), name="faqs" ),
     path("terms/", TemplateView.as_view(template_name='terms.html'), name="terms" ),
     path("privacy-policy/", TemplateView.as_view(template_name='privacy-policy.html'), name="privacy_policy" ),
+    
 ]

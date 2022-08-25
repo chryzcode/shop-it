@@ -1,0 +1,73 @@
+{% extends 'navs/store-nav.html' %} {% load static %}{% load humanize %}{% block title %}<title>
+  Shop !t - {{store }} Logistics Company
+</title>
+{% endblock %} {% block content %}
+<div class="store-page-container">
+  {% include 'navs/store-side-nav.html' %}
+  <div class="store-content-container">
+    <span class="store-products-container">
+      <p>Logistics Company</p>
+  
+    {% if messages %} {% for message in messages %} {% if message %}
+    <small class="error">{{message}}</small>
+    {% endif %} {% endfor %} {% endif %}
+      {% if request.user.is_superuser %}
+      <span ><a href="{% url 'app:add_shipping_company' %}">Add Logistics Company</a></span>
+      <div class="table-container">
+        <table class="store-products-table">
+        <tr class="table-rows">
+          <th>Name</th>
+          <th>Email</th>
+          <th>Account Number</th>
+          <th>Account Name</th>
+          <th>Account Bank</th>
+          <th>Bank Code</th>
+          <th>Delete</th>
+        </tr>
+        {% for company in shipping_companies %}
+        <tr class="table-rows">
+          <td>
+            <a href="">{{company.name}}</a>
+          </td>
+          <td>{{company.email}}</td>
+          <td>{{company.account_number}}</td>
+          <td>{{company.account_name}}</td>
+          <td>{{company.bank_name}}</td>
+          <td>{{company.bank_code}}</td>
+          <td>
+             <button type="button" class="delete-btn">
+              <a href=""><i class="fas fa-trash-alt"></i>Delete</a>
+            </button>
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+      </div>
+
+      {% if shipping_companies.has_other_pages %}
+      <span class="pagination">
+        <span>
+          {% for i in shipping_companies.paginator.page_range %} {% if shipping_companies.number == i %} Showing
+          {{shipping_companies.start_index }} of {{ shipping_companies.end_index }} of {{ shipping_companies.paginator.count }} 
+          entries {% endif %} {% endfor %}
+        </span>
+
+        <span>
+          {% if reviews.has_previous %}
+          <a href="?page={{ shipping_companies.previous_page_number }}"><i class="fas fa-arrow-left"></i></a>
+          {% else %}
+          <span><i class="fas fa-arrow-left disable"></i></span>
+          {% endif %} {% if shipping_companies.has_next %}
+          <a href="?page={{ shipping_companies.next_page_number }}"><i class="fas fa-arrow-right"></i></a>
+          {% else %}
+          <span><i class="fas fa-arrow-right disable"></i></span>
+          {% endif %}
+        </span>
+      </span>
+      {% endif %}
+      {% endif %}
+    </span>
+  </div>
+ 
+</div>
+ {% endblock %}

@@ -57,6 +57,9 @@
         {% endif %}
         {% endif %}
         <li><a href="{% url 'app:shipping_method_list' %}">Logistics Price</a></li>
+        {% if request.user.is_superuser %}
+        <li><a href="{% url 'app:shipping_company_list' %}">Logistics Company</a></li>
+        {% endif %}
       </ul>
     </span>
   </div>

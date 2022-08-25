@@ -1,0 +1,63 @@
+{% extends 'navs/store-nav.html' %} {% load static %} {% block title %}
+<title>
+  Shopit - {% if 'add' in request.get_full_path %} Add Shipping company{% else %}Edit Shipping company {% endif %}
+</title>
+{% endblock %} {% block content %}
+<div class="store-page-container">
+  {% include 'navs/store-side-nav.html' %}
+  <div class="store-content-container">
+    <form action="" method="post" enctype="multipart/form-data" class="create-product-form">
+      <div class="above-create-form">
+        {% if 'add' in request.get_full_path %}
+        <p>Add Shipping Company</p>
+        {% else %}
+        <p>Edit Shipping Company</p>
+        {% endif %}
+      </div>
+      {% csrf_token %}
+      <p class="error">{{error}}</p>
+
+      <div class="input-container">       
+        <label for="name">Name<span class="form-required">*</span></label>
+        <p class="error">{{error}}</p>
+        <p>{{ form.name.errors }}</p>
+        {{form.name}}
+      </div>
+
+      <div class="input-container">       
+        <label for="email">Email<span class="form-required">*</span></label>
+        <p class="error"> {{error}}</p>
+        <p>{{ form.email.errors }}</p>
+        {{form.email}}
+      </div>
+
+      <div class="input-container">
+        <label for="bank_name">Bank Name<span class="form-required">*</span></label>
+        <p>{{ form.bank_name.errors }}</p>
+        <select class="form-control" name="bank_name" id="bank_name">
+          {% if bank_info %}
+          <option value="{{bank_info.bank_name}}" selected>{{bank_info.bank_name}}</option>
+          {% endif %} {% for bank, code in all_banks.items %}
+          <option value="{{bank}}">{{bank}}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="input-container">
+        <label for="account_name">Account Name<span class="form-required">*</span></label>
+        <p>{{ form.account_name.errors }}</p>
+        {{form.account_name}}
+      </div>
+
+      <div class="input-container">
+        <label for="account_number">Account Number<span class="form-required">*</span></label>
+        <p>{{ form.account_number.errors }}</p>
+        {{form.account_number}}
+      </div>
+      <div class="form-btn-container">
+        <button class="form-btn" type="submit">Submit</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
