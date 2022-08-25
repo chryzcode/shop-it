@@ -58,7 +58,7 @@
             <span>How do I register?</span> <span class="material-icons" id="faqicon4"> add </span>
           </p>
           <div class="faq-content-body" id="faq-content-body4">
-            Visit the Shopit official website and navigate to the registeration page which takes you less than a minute
+            Visit the Shopit official website and navigate to the <a href="{% url 'account:register' %}">registeration page</a> which takes you less than a minute
             to create an account. For security and validation reasons, you will have to activate and authenticate(log
             in) your account through a mail that will be sent to the registered email address immediately after signing
             up.
@@ -166,7 +166,7 @@
             <span>How do upgrade to premium?</span> <span class="material-icons" id="faqicon12"> add </span>
           </p>
           <div class="faq-content-body" id="faq-content-body12">
-            Visit this <a href="" target="_blank" rel="noopener noreferrer">page</a> and check any of the premium plan that suits your business and pay for the service. Imediately the payment is verified, you premuim service is on the go.
+            Visit this <a href="{% url 'app:yearly_subscription_plans' %}" target="_blank" rel="noopener noreferrer">page</a>(Shopit users) and check any of the premium plan that suits your business and pay for the service. Imediately the payment is verified, you premuim service is on the go.
           </div>
         </div>
       </div>

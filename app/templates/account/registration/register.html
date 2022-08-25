@@ -39,7 +39,7 @@
     </div>
 
     <div class="input-container">
-      <label for="check">Terms & Condition<span class="form-required">*</span></label>
+      <label for="check"><a href="{% url 'app:terms' %}" target="_blank" rel="noopener noreferrer">Terms & Condition</a><span class="form-required">*</span></label>
       <p>{{ form.check.errors }}</p>
       <input type="checkbox" name="check" id="check" />
     </div>
