@@ -10,7 +10,6 @@ from django.core.mail import send_mail
 from django.db import models
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
-from pyexpat import model
 
 
 class Currency(models.Model):
@@ -22,6 +21,18 @@ class Currency(models.Model):
     class Meta:
         verbose_name = "Currency"
         verbose_name_plural = "Currencies"
+
+    def __str__(self):
+        return self.name
+
+
+class Shipping_Company(models.Model):
+    name = models.CharField(max_length=300)
+    account_name = models.CharField(max_length=300)
+    bank_code = models.CharField(max_length=10)
+    bank_name = models.CharField(max_length=100)
+    account_number = models.CharField(max_length=50)
+
 
     def __str__(self):
         return self.name
@@ -53,6 +64,7 @@ class Store(models.Model):
     country_code = models.CharField(max_length=10, blank=True)
     state_code = models.CharField(max_length=10, blank=True)
     address = models.CharField(max_length=300, blank=True, null=True)
+    shipping_company = models.ForeignKey(Shipping_Company, on_delete=models.SET_NULL, null=True, blank=True)
 
     class Meta:
         verbose_name = "Store"

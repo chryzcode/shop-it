@@ -44,4 +44,4 @@ admin.site.register(customers_yearly)
 admin.site.register(customers_monthly)
 admin.site.register(Store_Newsletter)
 admin.site.register(Newsletter)
-admin.site.register(Shipping_Company)
+
