@@ -185,7 +185,7 @@ def account_register(request):
                     store.owner,
                     recipient=user,
                     verb=f"Set at least a shipping method for logistics funds",
-                    shipping_method_url=reverse("app:add_shipping_method"),
+                    shipping_method_url=reverse("account:store_account"),
                     
                 )
                 notify.send(
@@ -302,6 +302,7 @@ def store_account(
                     )
                 request.user.store_name = store_name
                 request.user.save()
+                messages.error(request, "Check for logistics price in the side nav")
                 return redirect("account:store_account")
 
         return render(
@@ -609,8 +610,8 @@ def create_store(request):
                 notify.send(
                     store.owner,
                     recipient=user,
-                    verb=f"Set at least a shipping method for logistics funds",
-                    shipping_method_url=reverse("app:add_shipping_method"),
+                    verb=f"Set a logistics company for customer deliveries",
+                    shipping_method_url=reverse("account:add_shipping_method"),
                 )
                 notify.send(
                     store.owner,

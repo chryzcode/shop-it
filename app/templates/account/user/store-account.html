@@ -15,7 +15,7 @@
         </span>
       </div>
       {% if messages %} {% for message in messages %}
-    <p class="error">{{message}}</p>
+      <p class="success">{{message}}</p>
     {% endfor %} {% endif %}
       <div class="acc-form-seg">
         <p>Store Info</p>
@@ -40,13 +40,13 @@
           {{storeform.store_description}}
         </div>
 
-        <div>
+        <div class="input-container">
           <label for="currency">Currency<span class="form-required">*</span></label>
           <p>{{ storeform.currency.errors }}</p>
           {{storeform.currency}}
         </div>
 
-        <div>
+        <div class="input-container">
           <label for="shipping_company">Logistics Company<span class="form-required">*</span></label>
           <p>{{ storeform.shipping_company.errors }}</p>
           {{storeform.shipping_company}}

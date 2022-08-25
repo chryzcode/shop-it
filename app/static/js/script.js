@@ -207,31 +207,27 @@ const firstInstructionModal = document.getElementById("first-instruction-modal")
 const modalBtn = document.getElementById("form-btn");
 const allPage = document.getElementById("body");
 
-if (firstInstructionModal) {
-  firstInstructionModal.style.display = "block";
-   firstInstructionModal.style.color = "rgb(103, 114, 148)";
+  if (firstInstructionModal) {
+    if (localStorage.getItem("firstTimeUser") === null) {
+      localStorage.setItem("firstTimeUser", "true");
+    }
+    if (localStorage.getItem("firstTimeUser") === "true") {
+      if (firstInstructionModal) {
+        navbar.style.zIndex = "10";
+        allPage.style.pointerEvents = "none";
+        modalBtn.style.pointerEvents = "all";
+        firstInstructionModal.style.display = "block";
+        firstInstructionModal.style.color = "rgb(103, 114, 148)";
+        document.onclick = function (e) {
+          if (e.target.id == "form-btn") {
+            firstInstructionModal.style.display = "none";
+            allPage.style.pointerEvents = "all";
+            localStorage.setItem("firstTimeUser", "false");
+          }
+        }
+      }
+    } else {
+      firstInstructionModal.style.display = "none";
+      allPage.style.pointerEvents = "all";
+    }
 }
-
-  // if (firstInstructionModal) {
-  //   if (localStorage.getItem("firstTimeUser") === null) {
-  //     localStorage.setItem("firstTimeUser", "true");
-  //   }
-  //   if (localStorage.getItem("firstTimeUser") === "true") {
-  //     if (firstInstructionModal) {
-  //       navbar.style.zIndex = "10";
-  //       allPage.style.pointerEvents = "none";
-  //       modalBtn.style.pointerEvents = "all";
-  //       firstInstructionModal.style.display = "block";
-  //       document.onclick = function (e) {
-  //         if (e.target.id == "form-btn") {
-  //           firstInstructionModal.style.display = "none";
-  //           allPage.style.pointerEvents = "all";
-  //           localStorage.setItem("firstTimeUser", "false");
-  //         }
-  //       }
-  //     }
-  //   } else {
-  //     firstInstructionModal.style.display = "none";
-  //     allPage.style.pointerEvents = "all";
-  //   }
-// }

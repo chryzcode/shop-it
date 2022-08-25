@@ -2147,3 +2147,9 @@ small {
 .docs-content ul li, .docs-content > div > p {
   margin: 7px 0;
 }
+
+.success {
+  color: #81c995 !important;
+  text-align: center;
+  font-size:  13px !important;
+}
