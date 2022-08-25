@@ -266,6 +266,7 @@ def store_account(
         account = request.user
         store = Store.objects.get(owner=account)
         storeform = StoreForm(instance=store)
+        shipping_companies = Shipping_Company.objects.all()
         url = "https://api.countrystatecity.in/v1/countries"
 
         headers = {"X-CSCAPI-KEY": settings.COUNTRY_STATE_CITY_API_KEY}
@@ -312,6 +313,7 @@ def store_account(
                 "store": store,
                 "currencies": currencies,
                 "country_names": country_names,
+                "shipping_companies": shipping_companies,
             },
         )
     else:

@@ -277,32 +277,35 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
         cart.clear()
         payment.amount =  payment.amount - payment.shipping_method.price
         payment.save()
-        beneficiary_name = "FAST AND RELIABLE EXPRESS SERVICES LIMITED ACCOUNT 2"
+        logistics_company = store.shipping_company
+        beneficiary_name = logistics_company.account_name
         narration = f"{{payment.full_name}} just paid {{order.currency_symbol}}{{shipping_method.price}} for the logistics of order {{order.id}} in {{payment.store.store_name}} on Shopit"
-        transfer = initiate_transfer(request, "FAST AND RELIABLE EXPRESS SERVICES LIMITED ACCOUNT 2", "1455908789", int(payment.shipping_method.price), order.currency_code, beneficiary_name, narration, "044")
+        transfer = initiate_transfer(request, logistics_company.account_name, logistics_company.account_number, int(payment.shipping_method.price), order.currency_code, beneficiary_name, narration, "044")
         from_email = settings.EMAIL_HOST_USER
         if (transfer["status"] == "success"):
-            subject = f"{store.store_name} have a pickup delivery for you - Farex Logistics"
+            subject = f"{store.store_name} have a pickup delivery for you - {logistics_company.name}"
             message = render_to_string(
                 "payment/pickup-email.html",
                 {
                     "store": store,
                     "payment": payment,
                     "currency": order.currency_symbol,
+                    "logistics_company": logistics_company,
                 },
             )
-            to_email = [settings.LOGISTICS_EMAIL, store.owner.email]
+            to_email = [logistics_company.email, store.owner.email]
             send_mail(subject, message, from_email, to_email, html_message=message)
         else:
-            subject = "Logisitics fund not paid have a pickup delivery for you - Farex Logistics"
+            subject = f"Logisitics fund not paid have a pickup delivery for you - {logistics_company.name}"
             message = f"""
-            Logisitics funds {order.currency_symbol}{payment.shipping_method.price} made for order {order.id} on {store.store_name} has not been paid to Farex Logistics bank account.
+            Logisitics funds {order.currency_symbol}{payment.shipping_method.price} made for order {order.id} on {store.store_name} has not been paid to {logistics_company.name} bank account.
+            Account Number - {logistics_company.account_name}, Account Name - {logistics_company.account_name}, Account Bank - {logistics_company.bank_name}
             Pay them to deliver the {payment.address_line} {payment.address_line2}, {payment.state} State, {payment.country} Order Zipcode - {payment.zipcode}.
             Store Owner Contact - {store.owner.phone_number}
             Store Owner Whatsapp - {store.whatsapp}
             Store Owner Address - {store.address}
             """
-            to_email = [settings.LOGISTICS_EMAIL, "alabaolanrewaju13@gmail.com"]
+            to_email = ["alabaolanrewaju13@gmail.com"]
             send_mail(subject, message, from_email, to_email, html_message=message)
             
         if Subscription_Timeline.objects.filter(store=store).exists():

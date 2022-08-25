@@ -63,6 +63,7 @@ class StoreForm(ModelForm):
             "facebook",
             "whatsapp",
             "address",
+            "shipping_company",
         ]
 
         widgets = {
@@ -106,6 +107,7 @@ class StoreForm(ModelForm):
                     "placeholder": "https://wa.me/message/KLHFKHFKHL",
                 }
             ),
+            "shipping_company": forms.Select(attrs={"class": "form-control"}),
         }
 
     def clean_address(self):
@@ -133,6 +135,12 @@ class StoreForm(ModelForm):
         if state == None:
             raise forms.ValidationError("Field is required")
         return state
+
+    def clean_shipping_company(self):
+        shipping_company = self.cleaned_data["shipping_company"]
+        if shipping_company == None:
+            raise forms.ValidationError("Field is required")
+        return shipping_company
 
     def __init__(self, *args, **kwargs):
         super(StoreForm, self).__init__(*args, **kwargs)

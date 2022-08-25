@@ -46,6 +46,12 @@
           {{storeform.currency}}
         </div>
 
+        <div>
+          <label for="shipping_company">Logistics Company<span class="form-required">*</span></label>
+          <p>{{ storeform.shipping_company.errors }}</p>
+          {{storeform.shipping_company}}
+        </div>
+
         <div class="input-container">
         <label for="country">Country</label>
         <select name="country" class="countries form-control" id="country">

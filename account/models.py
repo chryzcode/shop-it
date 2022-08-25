@@ -32,6 +32,7 @@ class Shipping_Company(models.Model):
     bank_code = models.CharField(max_length=10)
     bank_name = models.CharField(max_length=100)
     account_number = models.CharField(max_length=50)
+    email = models.EmailField()
 
 
     def __str__(self):
