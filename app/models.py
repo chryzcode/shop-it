@@ -153,7 +153,21 @@ class Review(models.Model):
         return self.title + " " + self.full_name + " " + self.store.store_name
 
 
+
+class Shipping_Company(models.Model):
+    name = models.CharField(max_length=300)
+    account_name = models.CharField(max_length=300)
+    bank_code = models.CharField(max_length=10)
+    bank_name = models.CharField(max_length=100)
+    account_number = models.CharField(max_length=50)
+
+
+    def __str__(self):
+        return self.name
+
+
 class Shipping_Method(models.Model):
+    shipping_company = models.ForeignKey(Shipping_Company, on_delete=models.CASCADE, default=1)
     country = models.CharField(max_length=200)
     state = models.CharField(max_length=200)
     price = models.PositiveIntegerField(default=0)
