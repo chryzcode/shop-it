@@ -167,7 +167,7 @@ class Shipping_Company(models.Model):
 
 
 class Shipping_Method(models.Model):
-    shipping_company = models.ForeignKey(Shipping_Company, on_delete=models.CASCADE, default=1)
+    
     country = models.CharField(max_length=200)
     state = models.CharField(max_length=200)
     price = models.PositiveIntegerField(default=0)
