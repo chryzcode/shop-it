@@ -20,6 +20,9 @@
       <div class="table-container">
         <table class="store-products-table">
         <tr class="table-rows">
+          {% if request.user.is_superuser %}
+          <th>Company</th>
+          {% endif %}
           <th>Location</th>
           <th>Price</th>
           <th>State</th>
@@ -30,6 +33,11 @@
         </tr>
         {% for shipping_method in shipping_methods %}
         <tr class="table-rows">
+          {% if request.user.is_superuser %}
+          <td>
+            {{shipping_method.shipping_company}}
+          </td>
+          {% endif %}
           <td>
             {% if request.user.is_superuser %}
             <a href="{% url 'app:edit_shipping_method' shipping_method.pk  %}"> {{ shipping_method.location }}</a>

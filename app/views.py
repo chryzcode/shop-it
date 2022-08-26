@@ -1584,9 +1584,13 @@ def shipping_method_list(request):
         store = Store.objects.get(
             store_name=store_staff.objects.get(email=request.user.email).store
         )
+    
     if store.shipping_company:
         shipping_company = store.shipping_company
-        shipping_methods = Shipping_Method.objects.filter(shipping_company=shipping_company)
+        if request.user.is_superuser:
+            shipping_methods = Shipping_Method.objects.all()
+        else:
+            shipping_methods = Shipping_Method.objects.filter(shipping_company=shipping_company)
         page = request.GET.get("page", 1)
         paginator = Paginator(shipping_methods, 10)
         try:
