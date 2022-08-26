@@ -34,7 +34,8 @@
         </div>
         {% endfor %}
         {% else %}
-        <p>Orders can't be made to this location as at now.</p>
+        <p>Either {{payment.store.store_name|title}} has set a delivery service or Orders can't be made to this location as at now.</p>
+        <a href="{% url 'app:store_review' payment.store.slugified_store_name %}">Send a store review</a>
         {% endif %}
       </div>
     </div>

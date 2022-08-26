@@ -20,6 +20,13 @@
       </div>
       {% csrf_token %}
 
+      <div class="input-container">       
+        <label for="shipping_company">Company<span class="form-required">*</span></label>
+        <p class="error"> {{error}}</p>
+        <p>{{ form.shipping_company.errors }}</p>
+        {{form.shipping_company}}
+      </div>
+
       <div class="input-container">
         <label for="country">Country<span class="form-required">*</span></label>
         <p class="error">{{ country_error }}</p>
@@ -47,7 +54,6 @@
         </select>
       </div>
    
-
       <div class="input-container">       
         <label for="location">Location<span class="form-required">*</span></label>
         <p class="error"> {{error}}</p>

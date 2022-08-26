@@ -348,7 +348,7 @@ class NewsletterForm(ModelForm):
 class ShippingMethodForm(ModelForm):
     class Meta:
         model = Shipping_Method
-        fields = ["location", "price", "state" ,"country"]
+        fields = ["location", "price", "state" ,"country", "shipping_company"]
 
         widgets = {
             "location": forms.TextInput(
@@ -357,6 +357,7 @@ class ShippingMethodForm(ModelForm):
             "price": forms.NumberInput(
                 attrs={"class": "form-control", "placeholder": "Price"}
             ),
+            "shipping_company": forms.Select(attrs={"class": "form-control"}),
         }
 
     def __init__(self, *args, **kwargs):

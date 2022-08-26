@@ -154,7 +154,7 @@ class Review(models.Model):
 
 
 class Shipping_Method(models.Model):
-    shipping_company = models.ForeignKey(Shipping_Company, on_delete=models.CASCADE, default=1)
+    shipping_company = models.ForeignKey(Shipping_Company, on_delete=models.CASCADE)
     country = models.CharField(max_length=200)
     state = models.CharField(max_length=200)
     price = models.PositiveIntegerField(default=0)

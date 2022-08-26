@@ -2,13 +2,14 @@
 {% block title %}<title>Make Payment</title>{% endblock %} {% block content %}
 <div class="auth-form-container position-absolute-center">
       <div class="above-create-form">
-          <p>Make Payment</p> 
+          <p>Make Payment - {{currency_symbol}}{{payment.amount|intcomma}}</p> 
       </div>
       <script src="https://js.paystack.co/v1/inline.js"></script> 
       <div class="form-contents">
           <p>
-              You are paying {{currency_symbol}}{{payment.amount|intcomma}} to {{store.store_name|capfirst}}
+              You are paying {{currency_symbol}}{{payment.order.amount|intcomma}} to {{store.store_name|capfirst}} and {{currency_symbol}}{{payment.shipping_method.total_funds|intcomma}} to {{payment.shipping_method.shipping_company}} for logostics service.
           </p>
+        
       </div>  
       <div class="form-btn-container">
           <button class="form-btn" onclick="payWithPayStack()" id="django-paystack-button">Pay</button> 
