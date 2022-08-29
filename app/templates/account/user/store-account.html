@@ -53,7 +53,7 @@
         </div>
 
         <div class="input-container">
-        <label for="country">Country</label>
+        <label for="country">Country<span class="form-required">*</span></label>
         <select name="country" class="countries form-control" id="country">
           {% if store.country %}
           <option value="{{store.country_code}}">{{store.country}}</option>
@@ -67,7 +67,7 @@
       </div>
 
       <div class="input-container">
-        <label for="state">State</label>
+        <label for="state">State<span class="form-required">*</span></label>
         <select name="state" class="states form-control" id="state">
           {% if store.state %}
           <option value="{{store.state_code}}">{{store.state}}</option>
