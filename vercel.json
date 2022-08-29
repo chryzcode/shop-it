@@ -21,7 +21,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "shop-it/wsgi.py"
+      "dest": "core/wsgi.py"
     }
   ]
 }
