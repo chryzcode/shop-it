@@ -6,7 +6,6 @@ name = "pypi"
 [packages]
 django = "*"
 python-decouple = "*"
-psycopg2 = "*"
 pillow = "*"
 cloudinary = "*"
 whitenoise = "*"
@@ -24,6 +23,7 @@ django-notifications-hq = "*"
 celery = "*"
 redis = "*"
 holidays = "*"
+psycopg2-binary = "*"
 
 [dev-packages]
 
