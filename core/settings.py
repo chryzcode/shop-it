@@ -30,8 +30,9 @@ SECRET_KEY = str(os.getenv("SECRET_KEY"))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", default=False, cast=bool)
 
-ALLOWED_HOSTS = ["shopitapps.herokuapp.com", "127.0.0.1", "localhost"]
+# ALLOWED_HOSTS = ["shopitapps.herokuapp.com", "127.0.0.1", "localhost"]
 
+ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
@@ -183,11 +184,6 @@ CLOUDINARY_STORAGE = {
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-
-import django_heroku
-
-django_heroku.settings(locals())
 
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
