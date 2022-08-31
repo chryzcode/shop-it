@@ -14,6 +14,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 import os
 from pathlib import Path
 from unittest.mock import DEFAULT
+import dj_database_url
 
 from decouple import config
 
@@ -109,18 +110,13 @@ AUTH_USER_MODEL = "account.User"
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
+DATABASE_URL = config("DATABASE_URL")
+
+DATABASES = {
+    "default": dj_database_url.config(default=DATABASE_URL, conn_max_age=1800),
+}
 
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql_psycopg2",
-#         "NAME": config("DB_NAME"),
-#         "USER": config("DB_USER"),
-#         "PASSWORD": config("DB_PASSWORD"),
-#         "HOST": "localhost",
-#         "PORT": "5432",
-#     }
-# }
 
 
 # Password validation
@@ -223,10 +219,4 @@ CELERY_TIMEZONE = "Africa/Lagos"
 BETA_TESTERS = config("BETA_TESTERS")
 
 
-import dj_database_url
 
-DATABASE_URL = config("DATABASE_URL")
-
-DATABASES = {
-    "default": dj_database_url.config(default=DATABASE_URL, conn_max_age=1800),
-}
