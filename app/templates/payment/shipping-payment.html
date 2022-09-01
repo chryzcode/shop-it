@@ -10,6 +10,10 @@
       <p>{{payment.state}}, {{payment.country}}</p>
       <div class="input-container">
         <p id="shipping-method-error" class="error">{{ payment_form.shipping_method.errors }}</p>
+        
+        {% if payment.store.shipping_company %}
+        {% if payment.store.country == 'Nigeria' and payment.store.state == 'Lagos' %}
+        {% if payment.country == 'Nigeria' and payment.state == 'Lagos' %}
         {% if shipping_methods %}
         {% for shipping_method in shipping_methods %}
         <div class="radio-form">
@@ -33,10 +37,27 @@
           >
         </div>
         {% endfor %}
+        {% endif %}
+
         {% else %}
-        <p>Either {{payment.store.store_name|title}} has set a delivery service or Orders can't be made to this location as at now.</p>
+        <p>Shipment of parcel to this location is not generally active now. For an alternative;</p>
+          <a href="mailto:shopitapps@gmail.com">Send a proposal</a>
+        {% endif %}
+      
+
+        {% else %}
+        <p>Picking up orders from {{payment.store.store_name|title}} location is not within our reach for now, but if you insist;</p>
+         <a href="mailto:shopitapps@gmail.com">Send a proposal</a>
+        {% endif %}
+
+       
+
+
+        {% else %}
+        <p>{{payment.store.store_name|title}} store has not set a delivery service</p>
         <a href="{% url 'app:store_review' payment.store.slugified_store_name %}">Send a store review</a>
         {% endif %}
+
       </div>
     </div>
 

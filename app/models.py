@@ -129,6 +129,15 @@ class Product(models.Model):
             },
         )
 
+    def get_customer_url(self):
+        return reverse(
+            "customer:customer_product_detail", 
+            kwargs={
+                "slugified_store_name": slugify(self.store.store_name),
+                "slug": self.slug,
+            },
+        )
+
     def __str__(self):
         return self.name
 

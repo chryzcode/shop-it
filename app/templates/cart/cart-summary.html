@@ -26,7 +26,7 @@
     
   <div data-index="{{product.id}}" class="product-item" id="{{product.availability}}">
     <img class="product-image" src="{{ product.image_1.url }}" alt="" />
-    <span><a href="{{product.get_absolute_url}}">{{ product.name }}</a></span>
+    <span><a href="{{product.get_customer_url}}">{{ product.name }}</a></span>
     <span>
       {% if product.discount_percentage %}
       <span>{{product.currency.symbol}}{{product.discount_price|intcomma}}</span>

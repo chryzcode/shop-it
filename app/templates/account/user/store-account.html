@@ -123,6 +123,7 @@
     $("#country").change(function(){
         var country = $(this).val();
         console.log(country);
+
         $.ajax({
           type: "POST",
           url : "{% url 'app:get_state' 'country' %}".replace('country', country),

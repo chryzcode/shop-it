@@ -17,13 +17,22 @@ class Cart:
         if product_id in self.cart:
             self.cart[product_id]["qty"] = qty
         else:
-            self.cart[product_id] = {
-                "price": str(
-                    product.price - (product.price * product.discount_percentage / 100)
-                ),
-                "qty": int(qty),
-                "currency": str(product.currency.symbol),
-            }
+            if product.discount_percentage:
+                self.cart[product_id] = {
+                    "price": str(
+                        product.price - (product.price * product.discount_percentage / 100)
+                    ),
+                    "qty": int(qty),
+                    "currency": str(product.currency.symbol),
+                }
+            else:
+                self.cart[product_id] = {
+                    "price": str(
+                        product.price
+                    ),
+                    "qty": int(qty),
+                    "currency": str(product.currency.symbol),
+                }
         self.save()
 
     def __iter__(self):
