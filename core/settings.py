@@ -31,9 +31,9 @@ SECRET_KEY = str(os.getenv("SECRET_KEY"))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", default=False, cast=bool)
 
-# ALLOWED_HOSTS = ["shopitapps.herokuapp.com", "127.0.0.1", "localhost"]
+ALLOWED_HOSTS = ["shopit.onrender.com", "127.0.0.1", "localhost"]
 
-ALLOWED_HOSTS = ["*"]
+
 
 # Application definition
 
@@ -111,7 +111,6 @@ AUTH_USER_MODEL = "account.User"
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-DATABASE_URL = config("DATABASE_URL")
 
 
 
