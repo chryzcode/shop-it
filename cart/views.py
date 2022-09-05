@@ -148,7 +148,8 @@ def update_cart(request, slugified_store_name):
         product_id = int(request.POST.get("productid"))
         product_qty = int(request.POST.get("productqty"))
         item_qty = int(request.POST.get("productqty"))
-        cart.update(product=product_id, qty=product_qty, cartitemqty=item_qty)
+        price = Product.objects.get(id=product_id).price
+        cart.update(product=product_id, qty=product_qty, cartitemqty=item_qty, price=price)
         cartqty = cart.__len__()
         carttotal = cart.get_total_price()
         a_product_price = get_object_or_404(Product, id=product_id).price
@@ -165,6 +166,7 @@ def update_cart(request, slugified_store_name):
                 "subtotal": f"{carttotal:,}",
                 "cartproqty": (f"{cartproductqty:,}"),
                 "currency": currency,
+                "price":f"{price:,}",
             }
         )
         return response

@@ -28,11 +28,11 @@
     <img class="product-image" src="{{ product.image_1.url }}" alt="" />
     <span><a href="{{product.get_customer_url}}">{{ product.name }}</a></span>
     <span>
-      {% if product.discount_percentage %}
+      <!-- {% if product.discount_percentage %}
       <span>{{product.currency.symbol}}{{product.discount_price|intcomma}}</span>
-      {% else %}
-      <span>{{product.currency.symbol}}{{product.price|intcomma}}</span>
-      {% endif %}
+      {% else %} -->
+      <span id="a_price">{{product.currency.symbol}}{{item.price|intcomma}}</span>
+      <!-- {% endif %} -->
     </span>
 
     <span>
@@ -147,7 +147,7 @@
         document.getElementById("subtotal").innerHTML = json.subtotal;
         document.getElementById("product-cart-qty").innerHTML = json.qty;
         document.getElementById("grand_total").innerHTML = json.qty;
-       
+       document.getElementById("a_price").innerHTML = json.price;
       },
       error: function (xhr, errmsg, err) {},
     });
@@ -173,6 +173,7 @@
         document.getElementById("item_total_price" + prodid).innerHTML = json.currency + json.cartproqty;
         document.getElementById("grand_total").innerHTML = json.currency + json.subtotal;
         document.getElementById("product-cart-qty").innerHTML = json.qty;
+        document.getElementById("a_price").innerHTML = json.currency + json.price;
       },
       error: function (xhr, errmsg, err) {},
     });

@@ -78,12 +78,13 @@ class Cart:
             del self.cart[product_id]
             self.save()
 
-    def update(self, product, qty, cartitemqty):
+    def update(self, product, qty, cartitemqty, price):
         product_id = str(product)
 
         if product_id in self.cart:
             self.cart[product_id]["qty"] = qty
             self.cart[product_id]["cartitemqty"] = cartitemqty
+            self.cart[product_id]["price"] = price
         self.save()
 
     def save(self):
