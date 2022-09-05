@@ -2056,11 +2056,12 @@ def add_shipping_method(request):
                 location = form.cleaned_data["location"]
                 country_code = form.cleaned_data["country"]
                 state_code = form.cleaned_data["state"]
+                company = form.cleaned_data["shipping_company"]
                 country = country_details(request, country_code)
                 state = state_details(request, country_code, state_code)
                 shipping_method = form.save(commit=False)
                 if Shipping_Method.objects.filter(
-                    state=state, country=country, location = location
+                    state=state, country=country, location=location, company=company
                 ).exists():
                     error = "Shipping Method already exists"
                     return render(

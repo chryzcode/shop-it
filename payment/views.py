@@ -1,6 +1,3 @@
-import datetime
-from os import times_result
-
 import holidays
 import requests
 from django.conf import settings
@@ -11,6 +8,7 @@ from django.shortcuts import get_object_or_404, render
 from django.template.loader import render_to_string
 from django.utils import timezone
 from notifications.signals import notify
+from django.utils.text import slugify
 
 from account.models import *
 from account.views import *
@@ -617,3 +615,46 @@ def withdraw_funds(request, currency_code):
     else:
         messages.error(request, "You are not authorized")
         return redirect("app:store_wallet")
+
+
+def logistics_proposal_email(request, order_id):
+    url = request.path
+    order = Order.objects.get(id=order_id)
+    store = Store.objects.get(slugified_store_name=slugify(order.store.store_name))
+    logistics = Shipping_Company.objects.get(name=store.shipping_company.name)
+    order_items = OrderItem.objects.filter(order=order)
+    payment =  Payment.objects.filter(order=order).last()
+    Payment.objects.filter(order=order).exclude(payment).delete()
+    subject = "Proposal for Parcel delivery to Unavailable Location"
+    to = "Shopit"
+    message = render_to_string(
+            "payment/logistics-proposal-email.html",
+            {
+                "store": store,
+                "domain": settings.DEFAULT_DOMAIN,
+                "logistics": logistics,
+                "order":order,
+                "payment":payment,
+                "order_items":order_items,
+                "to": to
+            },
+        )
+    to_email = [settings.EMAIL_HOST_USER]
+    from_email = [payment.email]
+    to = "Order Owner"
+    message = render_to_string(
+            "payment/logistics-proposal-email.html",
+            {
+                "store": store,
+                "domain": settings.DEFAULT_DOMAIN,
+                "logistics": logistics,
+                "order":order,
+                "payment":payment,
+                "order_items":order_items,
+                "to": to
+            },
+        )
+    to_email = [payment.email]
+    from_email = [settings.EMAIL_HOST_USER]
+    send_mail(subject, message, from_email, to_email, html_message=message)
+    return redirect(url)

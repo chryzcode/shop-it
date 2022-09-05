@@ -1,0 +1,191 @@
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+      integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
+      crossorigin="anonymous"
+    />
+</head>
+<style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
+
+      html,
+      body {
+        scroll-behavior: smooth;
+        overflow-x: hidden;
+      }
+
+      .email-container {
+        width: 60%;
+        display: block;
+        margin: 0 auto;
+        color: #000000;
+      }
+
+      .email-container > * {
+        margin: 10px 0;
+      }
+
+      .email-btn {
+        display: block;
+        background-color: #3d5170;
+        width: max-content;
+        color: #fff !important;
+        text-decoration: none;
+        margin: 10px auto !important;
+        padding: 10px 25px;
+        border-radius: 10px;
+      }
+
+      .introduction {
+        margin: 20px 0;
+        font-style: normal;
+        font-weight: bold;
+        line-height: 150%;
+        letter-spacing: normal;
+        font-size: 14px;
+        text-align: left;
+      }
+
+      .body > * {
+        margin: 20px 0;
+        font-size: 20px;
+        text-align: justify;
+        font-size: 16px;
+        line-height: 150%;
+        text-align: left;
+      }
+
+      .conclusion {
+        margin-top: 40px;
+      }
+
+      .conclusion > * {
+        margin: 5px 0;
+        display: block;
+        font-size: 16px;
+      }
+
+      .socials {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 30px;
+      }
+
+      .socials > a {
+        color: #3d5170;
+        text-decoration: none;
+        margin: 0 10px;
+      }
+
+      .socials > a i {
+        font-size: 25px;
+      }
+
+      .logo {
+        width: 200px;
+        object-fit: cover;
+        display: block;
+        margin: 0 auto 40px auto;
+        
+      }
+
+      .text-logo{
+        text-decoration: none;
+        font-size: 27px;
+        text-align: center;
+        display: block;
+      }
+
+      ul {
+        list-style: none;
+      }
+
+      small {
+        text-align: center;
+      }
+
+      small a {
+        color: #3d5170;
+        display: block;
+        text-align: center;
+        font-size: 16px;
+      }
+
+      @media all and (max-width: 500px) {
+        .email-container {
+          width: 90%;
+        }
+
+        .logo {
+          width: 100px;
+        }
+      }
+    </style>
+<body>
+    
+<div class="email-container">
+    <a href="{{domain}}" target="_blank" rel="noopener noreferrer"><img class="logo" src="https://shopitapps.herokuapp.com/static/images/logo/Shopit_Blue_logo.png" alt=""></a>
+    {% if to == "Shopit" %}
+    <p class="introduction">Hello I'm {{ payment.full_name|capfirst }},</p>
+    {% else %}
+    <p class="introduction">Hi,</p>
+    {% endif %}
+
+<div class="body">
+     {% if to == "Shopit" %}
+    <p>I've decided to further on the propsal for the delivery of order - {{order.id}} from {{store.store_name}} store using the delivery service of {{logistics.name}} logistics.</p>
+    {% else %}
+    <p>We have recieved your proposal for the delivery of order - {{order.id}} from {{store.store_name}} store.</p>
+    {% endif %}
+    <p>More information and details about the order.</p>
+    <ul>
+        <li>Address: {{payment.address_line}} {% if payment.address_line2 %} or {{payment.address_line2}} {% endif %}.</li>
+        <li>State: {{payment.state}}</li>
+        <li>Country: {{payment.country}}</li>
+        {% if payment.postcode %}<li>{{payment.postcode}}</li>{% endif %}
+        <li>Mobile Number: {{payment.phone}}</li>
+        <li>Email Address: {{payment.email}}</li>
+        <li>
+            Order Items 
+            {% for item in order_items %}
+            <ul>
+                <li>{{item.product}} - Quantity: {{item.quantity}}</li>
+            </ul>
+            {% emdfor %}
+        </li>
+    </ul>
+    {% if to != "Shopit"}
+    <p>Here is where your order process came to halt, after a concluded and positive feedback, you can proceed.</p>
+     <a
+          href="{{domain}}{% url 'payment:shipping_payment' order.id %}"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="email-btn"
+          >Continur Order</a
+        >
+        {% endif %}
+</div>
+
+<p class="conclusion">
+    <span>Regards</span>
+    {% if to == "Shopit" %}
+    <span>Shopit</span>
+    {% endif %}
+</p>
+</div>
+</body>
+</html>

@@ -4,7 +4,7 @@
     {% csrf_token %}
     <div class="above-create-form">
       <p>Shipping Payment</p>
-      <p id="result">{{order.currency_symbol}}{{order.amount|intcomma}}</p>
+      <p id="result"></p>
     </div>
     <div class="acc-form-seg">
       <p>{{payment.state}}, {{payment.country}}</p>
@@ -41,13 +41,13 @@
 
         {% else %}
         <p>Shipment of parcel to this location is not generally active now. For an alternative;</p>
-          <a href="mailto:shopitapps@gmail.com">Send a proposal</a>
+          <a href="{% url 'payment:logistics_proposal_email' order.id %}">Send a proposal</a>
         {% endif %}
       
 
         {% else %}
         <p>Picking up orders from {{payment.store.store_name|title}} location is not within our reach for now, but if you insist;</p>
-         <a href="mailto:shopitapps@gmail.com">Send a proposal</a>
+         <a href="{% url 'payment:logistics_proposal_email' order.id %}">Send a proposal</a>
         {% endif %}
 
        
@@ -64,7 +64,7 @@
 
     <div class="form-btn-container">
       <button class="form-btn" type="submit">
-        Init <span id="total">{{currency_symbol}}{{order.amount|intcomma}}</span>
+        Init <span id="total"></span>
       </button>
     </div>
   </form>
@@ -87,9 +87,8 @@
 
  $("input[name='shipping_method']").on("click", function (event) {
         var shipping_method_price = $(this).attr("class");
-        var order_amount = "{{order.amount}}";
         var currency_symbol = "{{order.currency_symbol}}";
-        var total = parseInt(order_amount) + parseInt(shipping_method_price);
+        var total = parseInt(shipping_method_price);
         var total = currency_symbol + total.toLocaleString("en-US");
         $("#result").html(total);
         document.getElementById("total").innerHTML = total;
