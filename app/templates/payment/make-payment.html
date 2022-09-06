@@ -12,7 +12,7 @@
         
       </div>  
       <div class="form-btn-container">
-          <button class="form-btn" onclick="payWithPayStack()" id="django-paystack-button">Pay</button> 
+          <button class="form-btn" onclick="payWithPayStack()" id="django-paystack-button">Pay {{currency_symbol}}{{payment.amount|intcomma}}</button> 
       </div> 
 </div>
 <script>

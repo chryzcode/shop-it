@@ -142,8 +142,8 @@
 
       <div class="body">
         <p>
-          The {{logistics_company.name}} will be coming around to deliver order {{payment.order.id}} to {{payment.address_line}} {%
-          if payment.address_line2 %} or {{payment.address_line2}} {% endif %}, {{payment.city}}, {{payment.state}}
+          The {{logistics_company.name}} will be coming around to deliver order {{payment.order.id}} to {{payment.address_line}} 
+          {% if payment.address_line2 %} or {{payment.address_line2}} {% endif %}, {{payment.city}}, {{payment.state}}
           State, {{payment.country}}. {% if payment.zipcode%} Order Zipcode - {{payment.zipcode}} {% endif %}.
         </p>
       
