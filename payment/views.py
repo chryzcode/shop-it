@@ -1,3 +1,4 @@
+from imp import PKG_DIRECTORY
 import holidays
 import requests
 from django.conf import settings
@@ -298,7 +299,7 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
             message = f"""
             Logisitics funds {order.currency_symbol}{payment.shipping_method.price} made for order {order.id} on {store.store_name} has not been paid to {logistics_company.name} bank account.
             Account Number - {logistics_company.account_name}, Account Name - {logistics_company.account_name}, Account Bank - {logistics_company.bank_name}
-            Pay them to deliver the {payment.address_line} {payment.address_line2}, {payment.state} State, {payment.country} Order Zipcode - {payment.zipcode}.
+            Pay them to deliver the {payment.address_line} {payment.address_line2}, {payment.state} State, {payment.country} Order PostCode - {payment.postcode}.
             Store Owner Contact - {store.owner.phone_number}
             Store Owner Whatsapp - {store.whatsapp}
             Store Owner Address - {store.address}
@@ -617,14 +618,14 @@ def withdraw_funds(request, currency_code):
         return redirect("app:store_wallet")
 
 
-def logistics_proposal_email(request, order_id):
+def logistics_proposal_email(request, pk):
     url = request.path
-    order = Order.objects.get(id=order_id)
+    order = Order.objects.get(id=pk)
     store = Store.objects.get(slugified_store_name=slugify(order.store.store_name))
     logistics = Shipping_Company.objects.get(name=store.shipping_company.name)
     order_items = OrderItem.objects.filter(order=order)
     payment =  Payment.objects.filter(order=order).last()
-    Payment.objects.filter(order=order).exclude(payment).delete()
+    Payment.objects.filter(order=order).exclude(id=payment.id).delete()
     subject = "Proposal for Parcel delivery to Unavailable Location"
     to = "Shopit"
     message = render_to_string(

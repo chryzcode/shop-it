@@ -165,10 +165,10 @@
             <ul>
                 <li>{{item.product}} - Quantity: {{item.quantity}}</li>
             </ul>
-            {% emdfor %}
+            {% endfor %}
         </li>
     </ul>
-    {% if to != "Shopit"}
+    {% if to != "Shopit" %}
     <p>Here is where your order process came to halt, after a concluded and positive feedback, you can proceed.</p>
      <a
           href="{{domain}}{% url 'payment:shipping_payment' order.id %}"
