@@ -641,7 +641,7 @@ def logistics_proposal_email(request, pk):
             },
         )
     to_email = [settings.EMAIL_HOST_USER]
-    from_email = [payment.email]
+    from_email = payment.email
     to = "Order Owner"
     message = render_to_string(
             "payment/logistics-proposal-email.html",
@@ -656,6 +656,6 @@ def logistics_proposal_email(request, pk):
             },
         )
     to_email = [payment.email]
-    from_email = [settings.EMAIL_HOST_USER]
+    from_email = settings.EMAIL_HOST_USER
     send_mail(subject, message, from_email, to_email, html_message=message)
     return redirect(url)
