@@ -657,4 +657,4 @@ def logistics_proposal_email(request, pk):
     to_email = [payment.email]
     from_email = settings.EMAIL_HOST_USER
     send_mail(subject, message, from_email, to_email, html_message=message)
-    return redirect("payment:shipping_payment", pk=order.id)
+    return redirect("payment:shipping_payment", order.id)
