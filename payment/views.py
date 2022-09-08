@@ -619,7 +619,6 @@ def withdraw_funds(request, currency_code):
 
 
 def logistics_proposal_email(request, pk):
-    url = request.path
     order = Order.objects.get(id=pk)
     store = Store.objects.get(slugified_store_name=slugify(order.store.store_name))
     logistics = Shipping_Company.objects.get(name=store.shipping_company.name)
@@ -658,4 +657,4 @@ def logistics_proposal_email(request, pk):
     to_email = [payment.email]
     from_email = settings.EMAIL_HOST_USER
     send_mail(subject, message, from_email, to_email, html_message=message)
-    return redirect(url)
+    return redirect("payment:shipping_payment", pk=order.id)
