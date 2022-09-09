@@ -424,12 +424,12 @@ def withdraw_funds(request, currency_code):
                     if amount is None:
                         messages.error(request, "Please enter an amount")
                         return redirect("app:store_wallet")
-                    # if len(str(amount)) <= 3:
-                    #     messages.error(
-                    #         request,
-                    #         "Amount for withdrawal should be more than 3 figures",
-                    #     )
-                    #     return redirect("app:store_wallet")
+                    if len(str(amount)) <= 3:
+                        messages.error(
+                            request,
+                            "Amount for withdrawal should be more than 3 figures",
+                        )
+                        return redirect("app:store_wallet")
                     if str(amount).startswith(str(0)):
                         messages.error(request, "Invalid amount")
                         return redirect("app:store_wallet")
@@ -461,8 +461,7 @@ def withdraw_funds(request, currency_code):
                                     else:
                                         all_holidays = holidays.country_holidays("NG")
                                         if store_wallet.currency.code == "NGN":
-                                            # days_timeline = 24
-                                            days_timeline = 0
+                                            days_timeline = 24
                                         elif store_wallet.currency.code == "USD":
                                             days_timeline = 168
 
@@ -470,8 +469,7 @@ def withdraw_funds(request, currency_code):
                                             if (
                                                 transanction.created
                                                 < timezone.now()
-                                                # - timedelta(hours=days_timeline)
-                                                - timedelta(minutes=days_timeline)
+                                                - timedelta(hours=days_timeline)
                                             ):
                                                 payout_amount = transanction.amount
                                                 withdrawable_amount += payout_amount
