@@ -73,6 +73,10 @@ class Wallet_Transanction(models.Model):
     wallet = models.ForeignKey(Wallet, on_delete=models.CASCADE)
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
 
+
+    class Meta:
+        ordering = ('-created',)
+
     def __str__(self):
         return (
             str(self.store.store_name)
@@ -91,6 +95,10 @@ class Withdrawal_Transanction(models.Model):
     account_name = models.CharField(max_length=200)
     account_bank = models.CharField(max_length=200)
     wallet = models.ForeignKey(Wallet, on_delete=models.CASCADE)
+
+
+    class Meta:
+        ordering = ('-created',)
 
     def email_user(self, subject, message, staff_email_list):
         send_mail(

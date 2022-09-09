@@ -61,6 +61,9 @@ class Coupon(models.Model):
 
     users = models.ManyToManyField(User, blank=True)
 
+    class Meta:
+        ordering = ('-created_at',)
+
     def __str__(self):
         return "coupon" + " " + self.code[:5] + "..."
 
@@ -300,3 +303,4 @@ class Newsletter(models.Model):
 
     class Meta:
         verbose_name_plural = "A Store newsletters"
+        ordering = ('-created',)
