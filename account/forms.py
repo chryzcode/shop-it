@@ -165,6 +165,12 @@ class UserProfileForm(ModelForm):
             ),
         }
 
+    def clean_phone_number(self):
+        phone_number = self.cleaned_data["phone_number"]
+        if phone_number == None:
+            raise forms.ValidationError("Field is required")
+        return phone_number
+
     def __init__(self, *args, **kwargs):
         super(UserProfileForm, self).__init__(*args, **kwargs)
 
