@@ -10,7 +10,9 @@
       <p>{{payment.state}}, {{payment.country}}</p>
       <div class="input-container">
         <p id="shipping-method-error" class="error">{{ payment_form.shipping_method.errors }}</p>
-        
+        {% if messages %} {% for message in messages %} {% if message %}
+      <small class="error">{{message}}</small>
+      {% endif %} {% endfor %} {% endif %}
         {% if payment.store.shipping_company %}
         {% if payment.store.country == 'Nigeria' and payment.store.state == 'Lagos' %}
         {% if payment.country == 'Nigeria' and payment.state == 'Lagos' %}

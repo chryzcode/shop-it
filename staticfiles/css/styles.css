@@ -45,7 +45,7 @@ a:hover {
   height: 30px;
 }
 
-.store-nav-logo > span:nth-child(1) > img {
+.store-nav-logo > span:nth-child(1)  img {
   width: 100%;
   object-fit: cover;
   height: 100%;
@@ -832,14 +832,14 @@ div.product-info > a {
 
 .price-section {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: 1fr 1fr;
   grid-column-gap: 50px;
   grid-row-gap: 10px;
 }
 
 .quantity-section {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: 1fr 1fr;
   grid-column-gap: 50px;
   grid-row-gap: 10px;
 }

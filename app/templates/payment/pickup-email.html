@@ -144,10 +144,13 @@
         <p>
           The {{logistics_company.name}} will be coming around to deliver order {{payment.order.id}} to {{payment.address_line}} 
           {% if payment.address_line2 %} or {{payment.address_line2}} {% endif %}, {{payment.city}}, {{payment.state}}
-          State, {{payment.country}}. {% if payment.zipcode%} Order Zipcode - {{payment.zipcode}} {% endif %}.
+          State, {{payment.country}}.
         </p>
       
         <ul>
+          {% if payment.postcode %}
+            <li>Order Postcode - {{payment.postcode}}</li>
+           {% endif %}
           {% if store.owner.phone_number %}
           <li>Store Owner Contact - {{store.owner.phone_number}}</li>
           {% endif %} 
