@@ -19,7 +19,7 @@
         <div>
           <p>Sales last 7 days</p>
           <div>
-            {% if store.currency.symbol %} {% if subscribed == True %}
+            {% if store.currency %} {% if subscribed == True %}
             <span>{{store.currency.symbol}}{{last_7_days_total_amount|intcomma}}</span>
             <span>
               {% if last_7_days_sales_total_growth == 'growth' %}
@@ -40,7 +40,7 @@
         <div>
           <p>Sales last 24 hours</p>
           <div>
-            {% if store.currency.symbol %} {% if subscribed == True %}
+            {% if store.currency %} {% if subscribed == True %}
             <span>{{store.currency.symbol}}{{today_total_amount|intcomma}}</span>
             <span>
               {% if last_24_hours_sales_total_growth == 'growth' %}
@@ -98,7 +98,7 @@
         <div>
           <p>Sales this year</p>
           <div>
-            {% if store.currency.symbol %} {% if subscribed == True %}
+            {% if store.currency %} {% if subscribed == True %}
             <span>{{store.currency.symbol}}{{last_1_year_total_amount|intcomma}}</span>
             <span>
               {% if yearly_sales_total_growth == 'growth' %}
@@ -119,7 +119,7 @@
         <div>
           <p>Sales Last 30 days</p>
           <div>
-            {% if store.currency.symbol %} {% if subscribed == True %}
+            {% if store.currency %} {% if subscribed == True %}
             <span>{{store.currency.symbol}}{{last_1_month_total_amount|intcomma}}</span>
             <span>
               {% if last_1_month_sales_growth == 'growth' %}

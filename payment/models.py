@@ -26,7 +26,7 @@ class Payment(models.Model):
     country = models.CharField(max_length=200, blank=True, null=True)
     state = models.CharField(max_length=200, blank=True, null=True)
     postcode = models.CharField(max_length=50, blank=True, null=True)
-    use_address = models.ForeignKey(Address, on_delete=models.CASCADE, null=True)
+    use_address = models.ForeignKey(Address, on_delete=models.SET_NULL, null=True, blank=True)
     default_address = models.BooleanField(default=False, null=True, blank=True)
     order = models.ForeignKey(Order, on_delete=models.SET_NULL, blank=True, null=True)
     shipping_method = models.ForeignKey(Shipping_Method, blank=True, null=True, on_delete=models.SET_NULL)
