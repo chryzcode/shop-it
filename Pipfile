@@ -23,6 +23,9 @@ redis = "*"
 holidays = "*"
 psycopg2-binary = "*"
 django-heroku = "*"
+django-inlinecss = "*"
+cssutils = "*"
+beautifulsoup4 = "*"
 
 [dev-packages]
 
