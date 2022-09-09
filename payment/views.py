@@ -424,12 +424,12 @@ def withdraw_funds(request, currency_code):
                     if amount is None:
                         messages.error(request, "Please enter an amount")
                         return redirect("app:store_wallet")
-                    if len(str(amount)) <= 3:
-                        messages.error(
-                            request,
-                            "Amount for withdrawal should be more than 3 figures",
-                        )
-                        return redirect("app:store_wallet")
+                    # if len(str(amount)) <= 3:
+                    #     messages.error(
+                    #         request,
+                    #         "Amount for withdrawal should be more than 3 figures",
+                    #     )
+                    #     return redirect("app:store_wallet")
                     if str(amount).startswith(str(0)):
                         messages.error(request, "Invalid amount")
                         return redirect("app:store_wallet")
@@ -506,7 +506,7 @@ def withdraw_funds(request, currency_code):
                                                             str(narration),
                                                             str(store_bank.bank_code),
                                                         )
-
+                                                        print(transfer)
                                                         if (
                                                             transfer["status"]
                                                             == "success"
