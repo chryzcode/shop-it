@@ -451,8 +451,8 @@ def withdraw_funds(request, currency_code):
                                     str_timeline = str(transanction.created).rsplit(
                                         " "
                                     )[0]
-
-                                    if transanction.created.weekday() > 4:
+                                    # if transanction.created.weekday() > 4:
+                                    if transanction.created.weekday() > 6:
                                         messages.error(
                                             request,
                                             "You can not withdraw funds on weekends",
@@ -461,7 +461,8 @@ def withdraw_funds(request, currency_code):
                                     else:
                                         all_holidays = holidays.country_holidays("NG")
                                         if store_wallet.currency.code == "NGN":
-                                            days_timeline = 24
+                                            # days_timeline = 24
+                                            days_timeline = 1
 
                                         elif store_wallet.currency.code == "USD":
                                             days_timeline = 168
@@ -470,7 +471,8 @@ def withdraw_funds(request, currency_code):
                                             if (
                                                 transanction.created
                                                 < timezone.now()
-                                                - timedelta(hours=days_timeline)
+                                                # - timedelta(hours=days_timeline)
+                                                 - timedelta(minutes=days_timeline)
                                             ):
                                                 payout_amount = transanction.amount
                                                 withdrawable_amount += payout_amount
