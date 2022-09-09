@@ -506,7 +506,6 @@ def withdraw_funds(request, currency_code):
                                                             str(narration),
                                                             str(store_bank.bank_code),
                                                         )
-                                                        print(transfer)
                                                         if (
                                                             transfer["status"]
                                                             == "success"
