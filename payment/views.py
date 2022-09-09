@@ -369,6 +369,7 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
                 "currency": order.currency_symbol,
                 "beneficiary_name": payment.full_name,
                 "payment": payment,
+                "order": order,
             },
         )
         from_email = settings.EMAIL_HOST_USER
