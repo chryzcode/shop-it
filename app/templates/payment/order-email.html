@@ -147,6 +147,10 @@
           You just paid a total amount of {{currency}}{{payment.amount|intcomma}} for an order placed on {{store.store_name|capfirst}} store, on the Shopit platform.
         </p>
 
+        <p>
+          You should get your order delivered in three to seven days and if this plays out otherwise, kindly reach out. More information will passed across, if any.
+        </p>
+
         {% if customer == True %} For more information and details about the order, kindly click the button below
         <a
           href="{{domain}}{% url 'customer:customer_order_detail' order.id %}"
