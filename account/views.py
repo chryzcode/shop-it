@@ -1,15 +1,12 @@
-from xml import dom
-
 import requests
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.sites.shortcuts import get_current_site
+from django.utils.text import slugify
 from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
-from django.utils import timezone
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from notifications.signals import notify
@@ -17,7 +14,6 @@ from notifications.signals import notify
 from app.forms import *
 from app.models import *
 from app.views import *
-from customer.models import Customer
 from payment.models import *
 from subscriptions.models import Subscription_Timeline
 
@@ -77,7 +73,6 @@ def account_logout(request):
     return redirect("/")
 
 
-# delete user after 50 days using real time
 @login_required(login_url="/account/login/")
 def account_delete(request):
     user = User.objects.get(email=request.user.email)
@@ -653,6 +648,33 @@ def resolve_account_details(request, account_number, account_bank):
         return False
 
 
+def bank_auth(request, uidb64, token, account_number, account_name, bank_name, bank_code):
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = get_object_or_404(User, pk=uid)
+    except:
+        messages.error(request, "Invalid Url/ Timeout or User does not exist")
+        return render(request, "error-pages/404-page.html")
+
+    if user is not None and account_activation_token.check_token(user, token):
+        if user.store_creator == True:
+            store = Store.objects.get(owner=user)
+            bank_info = Bank_Info.objects.get(store=store)
+            bank_info.account_number = account_number
+            bank_info.account_name = account_name
+            bank_info.bank_name = bank_name
+            bank_info.store = store
+            bank_info.bank_code = bank_code
+            bank_info.save()
+            messages.error(request, "Bank account updated successfully")
+            return redirect("account:bank_details")
+        else:
+            messages.error(request, "Store does not exists")
+            return render(request, "error-pages/404-page.html")
+    else:
+        messages.error(request, "Invalid Url/ Timeout or User does not exist")
+        return render(request, "error-pages/404-page.html")
+
 @login_required(login_url="/account/login/")
 def bank_details(request):
     if request.user.store_creator == True:
@@ -696,11 +718,43 @@ def bank_details(request):
                             )
                             account_name = response.get("data").get("account_name")
                             bank_info.account_name = account_name
-                            bank_info.save()
-                            Bank_Info.objects.exclude(pk=bank_info.pk).filter(
-                                store=store
-                            ).delete()
-                            return redirect("account:bank_details")
+                            if Bank_Info.objects.filter(store=store).exists():
+                                user = User.objects.get(email=request.user.email)
+                                subject = (
+                                    f"{store.store_name} - Bank Account Update Verfication/Authorization"
+                                )
+                                message = render_to_string(
+                                    "account/user/bank_account_auth_email.html",
+                                    {
+                                        "user": user,
+                                        "store": store,
+                                        "email": user.email,
+                                        "domain": settings.DEFAULT_DOMAIN, 
+                                        "uidb64": urlsafe_base64_encode(
+                                            force_bytes(user.pk)
+                                        ),
+                                        "token": account_activation_token.make_token(
+                                            user
+                                        ),
+                                        "domain": settings.DEFAULT_DOMAIN,
+                                        "account_number": bank_info.account_number,
+                                        "slugified_account_name": slugify(account_name),
+                                        "account_name": account_name,
+                                        "slugified_bank_name": slugify(bank_name),
+                                        "bank_name": bank_name,
+                                        "bank_code": bank_info.bank_code,
+                                    },
+                                )
+                                user.email_user(subject=subject, message=message)
+                                messages.error(request, "Auth: Check your email address to update bank info")
+                                return redirect("account:bank_details")
+                            else:
+                                bank_info.save()
+                                Bank_Info.objects.exclude(pk=bank_info.pk).filter(
+                                    store=store
+                                ).delete()
+                                messages.error(request, "Bank account details updated successfully")
+                                return redirect("account:bank_details")
                         else:
                             error = "Account details are invalid"
                             return render(

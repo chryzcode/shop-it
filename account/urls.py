@@ -71,4 +71,5 @@ urlpatterns = [
         views.accept_staff_invitation,
         name="accept_staff_invitation",
     ),
+    path("bank-auth/<slug:uidb64>/<slug:token>/<account_number>/<slug:account_name>/<slug:bank_name>/<bank_code>/", views.bank_auth, name="bank_auth"),
 ]

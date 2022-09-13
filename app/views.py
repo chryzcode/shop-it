@@ -928,7 +928,6 @@ def store_admin(request):
 
 def store(request, slugified_store_name):
     store = get_object_or_404(Store, slugified_store_name=slugified_store_name)
-    #filter by subscription.name
     if Subscription_Timeline.objects.filter(store=store, subscription__name="Professional").exists():
         SEO = True
     else:

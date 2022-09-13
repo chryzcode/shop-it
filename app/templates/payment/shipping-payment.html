@@ -4,7 +4,7 @@
     {% csrf_token %}
     <div class="above-create-form">
       <p>Shipping Payment</p>
-      <p id="result"></p>
+      <p id="result">{% if not shipping_methods %} Price Unknown {% endif %}</p>
     </div>
     <div class="acc-form-seg">
       <p>{{payment.state}}, {{payment.country}}</p>
