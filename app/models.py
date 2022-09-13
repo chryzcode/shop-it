@@ -79,6 +79,7 @@ class Product(models.Model):
     image_4 = models.ImageField(upload_to="product-images/", null=True, blank=True)
     slug = models.SlugField(max_length=255, unique=True)
     price = models.PositiveIntegerField(default=1)
+    normal_price = models.PositiveIntegerField(default=1)
     in_stock = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -110,6 +111,7 @@ class Product(models.Model):
             self.in_stock = False
         if self.availability > 0:
             self.in_stock = True
+        self.normal_price = self.price
         if self.price > int(2500):
             paystack_percentage = (1.5 * int(self.price)) / 100
             paystack_percentage = paystack_percentage + int(100)
