@@ -13,6 +13,7 @@ from requests import request
 
 from account.models import *
 from customer.models import Customer
+from subscriptions.models import *
 
 
 class Category(models.Model):
@@ -115,6 +116,26 @@ class Product(models.Model):
         else:
             paystack_percentage = (1.5 * int(self.price)) / 100
         self.price = self.price + paystack_percentage
+
+        if Subscription_Timeline.objects.filter(store=self.store).exists():
+            store_subscription = Subscription_Timeline.objects.get(store=self.store)
+            if store_subscription.subscription.name == "Professional":
+                self.price = self.price
+            elif store_subscription.subscription.name == "Standard":
+                if self.price > int(2500):
+                    shopit_precentage = int(1/100 * self.price) + int(50)
+                    self.price = self.price + shopit_precentage
+                else:
+                    shopit_precentage = int(1/100 * self.price)
+                    self.price = self.price + shopit_precentage
+        else:
+            if self.price > int(2500):
+                shopit_precentage = int(2/100 * self.price)  + int(50)
+                self.price = self.price + shopit_precentage
+            else:
+                shopit_precentage = int(2/100 * self.price)
+                self.price = self.price + shopit_precentage
+
         return super(Product, self).save(*args, **kwargs)
 
     def discount_price(self):
