@@ -308,26 +308,24 @@ def verify_payment(request: HttpRequest, ref: str) -> HttpResponse:
             to_email = ["alabaolanrewaju13@gmail.com"]
             send_mail(subject, message, from_email, to_email, html_message=message)
             
-        # if Subscription_Timeline.objects.filter(store=store).exists():
-        #     store_subscription = Subscription_Timeline.objects.get(store=store)
-        #     if store_subscription.subscription.name == "Professional":
-        #         amount = payment.amount
-        #     elif store_subscription.subscription.name == "Standard":
-        #         if payment.amount > int(2500):
-        #             amount = int(1/100 * payment.amount)
-        #             amount = amount + int(50)
-        #             amount = payment.amount - amount
-        #         else:
-        #             amount = int(1/100 * payment.amount)
-        #             amount = payment.amount - amount
-        # else:
-        #     if payment.amount > int(2500):
-        #         amount = int(2/100 * payment.amount)
-        #         amount = amount + int(50)
-        #         amount = payment.amount - amount
-        #     else:
-        #         amount = int(2/100 * payment.amount)
-        #         amount = payment.amount - amount
+        if Subscription_Timeline.objects.filter(store=store).exists():
+            store_subscription = Subscription_Timeline.objects.get(store=store)
+            if store_subscription.subscription.name == "Professional":
+                amount = payment.amount
+            elif store_subscription.subscription.name == "Standard":
+                if payment.amount > int(2500):
+                    amount = int(1/100 * payment.amount) + int(50)
+                    amount = payment.amount - amount
+                else:
+                    amount = int(1/100 * payment.amount)
+                    amount = payment.amount - amount
+        else:
+            if payment.amount > int(2500):
+                amount = int(2/100 * payment.amount) + int(50)
+                amount = payment.amount - amount
+            else:
+                amount = int(2/100 * payment.amount)
+                amount = payment.amount - amount
 
 
 
