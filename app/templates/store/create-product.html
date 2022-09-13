@@ -59,7 +59,11 @@
             <span class="input-container">
               <label for="price">Price<span class="form-required">*</span></label>
               <p>{{ form.price.errors }}</p>
+              {% if product.price %}
+              <input type="number" name="price" id="price" value="{{product.normal_price}}" class="form-control">
+              {% else %}
               {{form.price}}
+              {% endif %}
             </span>
 
             <span class="input-container">
