@@ -140,14 +140,14 @@
       <a href="{{domain}}" target="_blank" rel="noopener noreferrer"
         ><img class="logo" src="https://shopitapps.herokuapp.com/static/images/logo/Shopit_Blue_logo.png" alt=""
       /></a>
-      <p class="introduction">Hello {{user.full_name}} from the {{store.store_name|capfirst}} store,</p>
+      <p class="introduction">Hello {{user.full_name}},</p>
 
       <div class="body">
         <p>
-          We realized you want to change the {{store.store_name|capfirst}} store withdrawal(payout) bank account details.
+          We got to know you want to change the {{store.store_name|capfirst}} store withdrawal(payout) bank account details.
         </p>
 
-        <p>This is for verification ad authenticity, kindly click the button below to effect the change.</p>
+        <p>This is for verification and authenticity, kindly click the button below to effect the change.</p>
 
         <a href="{{domain}}{% url 'account:bank_auth'  uidb64=uidb64 token=token account_number=account_number account_name=account_name bank_name=bank_name bank_code=bank_code %}" target="_blank" rel="noopener noreferrer" class="email-btn"
           >Verify/Authenticate</a
