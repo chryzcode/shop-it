@@ -49,6 +49,14 @@ def shipping_payment(request, pk):
     order = Order.objects.get(id=pk)
     payment = Payment.objects.get(order=order)
     shipping_methods = Shipping_Method.objects.filter(country=payment.country, state=payment.state, shipping_company=payment.store.shipping_company)
+    page = request.GET.get("page", 1)
+    paginator = Paginator(shipping_methods, 10)
+    try:
+        shipping_methods = paginator.page(page)
+    except PageNotAnInteger:
+        shipping_methods = paginator.page(1)
+    except EmptyPage:
+        shipping_methods = paginator.page(paginator.num_pages)
     if payment.shipping_method:
         return render(
                 request,
