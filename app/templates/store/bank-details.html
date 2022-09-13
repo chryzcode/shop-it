@@ -10,6 +10,9 @@
       </div>
       {% csrf_token %}
       <p class="error">{{error}}</p>
+      {% if messages %} {% for message in messages %} {% if message %}
+    <small class="error">{{message}}</small>
+    {% endif %} {% endfor %} {% endif %}
       <div class="input-container">
         <label for="bank_name">Bank Name<span class="form-required">*</span></label>
         <p>{{ form.bank_name.errors }}</p>

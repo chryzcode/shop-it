@@ -149,7 +149,7 @@
 
         <p>This is for verification ad authenticity, kindly click the button below to effect the change.</p>
 
-        <a href="{{domain}}{% url 'account:bank_auth'  uidb64=uidb64 token=token account_number=account_number account_name=slugified_account_name bank_name=slugified_bank_name bank_code=bank_code %}" target="_blank" rel="noopener noreferrer" class="email-btn"
+        <a href="{{domain}}{% url 'account:bank_auth'  uidb64=uidb64 token=token account_number=account_number account_name=account_name bank_name=bank_name bank_code=bank_code %}" target="_blank" rel="noopener noreferrer" class="email-btn"
           >Verify/Authenticate</a
         >
       </div>
