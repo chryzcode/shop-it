@@ -201,7 +201,6 @@ class Shipping_Method(models.Model):
     state_code = models.CharField(max_length=10, blank=True, null=True)
 
     def save(self):
-        self.price = self.price + self.price
         flutterwave_fee = int(1.40/100 * self.price)
         if flutterwave_fee > 2500:
             flutterwave_fee = 2500
@@ -210,7 +209,7 @@ class Shipping_Method(models.Model):
         if shopit_fee > 2300:
             shopit_fee = 2300
         self.shopit_fund = shopit_fee
-        self.total_funds =  flutterwave_fee + shopit_fee + self.price
+        self.total_funds =  flutterwave_fee + shopit_fee + self.price + self.price
         return super(Shipping_Method, self).save()
 
 
