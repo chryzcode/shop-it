@@ -218,8 +218,6 @@ CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
 CELERY_TIMEZONE = "Africa/Lagos"
 
-BETA_TESTERS = config("BETA_TESTERS")
-
 django_heroku.settings(locals())
 
 
