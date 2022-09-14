@@ -195,6 +195,8 @@ def account_activate(request, uidb64, token):
         login(request, user)
         return redirect("/")
     else:
+        if user:
+            user.delete()
         return render(request, "error-pages/404-page.html")
 
 
