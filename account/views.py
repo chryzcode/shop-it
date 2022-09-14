@@ -37,7 +37,6 @@ def account_login(request):
     if request.method == "POST":
         email = request.POST.get("email")
         password = request.POST.get("password")
-        
         try:
             user = get_object_or_404(User, email=email)
             if user:
@@ -59,7 +58,7 @@ def account_login(request):
             else:
                 messages.error(request, "Email is incorrect")
         except:
-            đmessages.error(request, "Email is incorrect")
+            messages.error(request, "Email is incorrect")
         
 
     return render(request, "account/registration/login.html", context)
