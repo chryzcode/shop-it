@@ -37,32 +37,30 @@ def account_login(request):
     if request.method == "POST":
         email = request.POST.get("email")
         password = request.POST.get("password")
-        if beta_tester_verification(request, email) == True:
-            try:
-                user = get_object_or_404(User, email=email)
+        
+        try:
+            user = get_object_or_404(User, email=email)
+            if user:
+                user = authenticate(request, email=email, password=password)
                 if user:
-                    user = authenticate(request, email=email, password=password)
-                    if user:
-                        if user.store_creator == True:
-                            login(request, user)
-                            return redirect("/")
+                    if user.store_creator == True:
+                        login(request, user)
+                        return redirect("/")
 
-                        if user.store_staff == True:
-                            login(request, user)
-                            return redirect("account:staff_stores")
+                    if user.store_staff == True:
+                        login(request, user)
+                        return redirect("account:staff_stores")
 
-                        if user.store_creator == False and user.store_staff == False:
-                            login(request, user)
-                            return redirect("/")
-                    else:
-                        messages.error(request, "Password is incorrect")
+                    if user.store_creator == False and user.store_staff == False:
+                        login(request, user)
+                        return redirect("/")
                 else:
-                    messages.error(request, "Email is incorrect")
-            except:
+                    messages.error(request, "Password is incorrect")
+            else:
                 messages.error(request, "Email is incorrect")
-        else:
-            messages.error(request, "You are not a beta tester")
-            return redirect("account:login")
+        except:
+            đmessages.error(request, "Email is incorrect")
+        
 
     return render(request, "account/registration/login.html", context)
 
