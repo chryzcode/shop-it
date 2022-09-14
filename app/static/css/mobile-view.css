@@ -295,7 +295,7 @@
 
   .account-form-container,
   .auth-form-container {
-    width: 70%;
+    width: 80%;
     margin: 0 auto;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     padding: 25px;
@@ -531,8 +531,8 @@
   }
 
   .auth-form-container {
-    width: 80%;
-    margin: 30px auto;
+    width: 95%;
+    margin: 15px auto;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     padding: 30px;
     border-radius: 10px;
@@ -549,8 +549,7 @@
     width: 80%;
   }
 
-  .payment-illustration-sec,
-  .auth-form-container {
+  .payment-illustration-sec {
     width: 80%;
   }
 
