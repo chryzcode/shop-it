@@ -148,7 +148,11 @@ def update_cart(request, slugified_store_name):
         product_id = int(request.POST.get("productid"))
         product_qty = int(request.POST.get("productqty"))
         item_qty = int(request.POST.get("productqty"))
-        price = Product.objects.get(id=product_id).price
+        product = Product.objects.get(id=product_id)
+        if product.discount_percentage:
+            price = product.price - (product.price * product.discount_percentage / 100)
+        else:
+            price = Product.objects.get(id=product_id).price
         cart.update(product=product_id, qty=product_qty, cartitemqty=item_qty, price=price)
         cartqty = cart.__len__()
         carttotal = cart.get_total_price()
@@ -166,7 +170,7 @@ def update_cart(request, slugified_store_name):
                 "subtotal": f"{carttotal:,}",
                 "cartproqty": (f"{cartproductqty:,}"),
                 "currency": currency,
-                "price":f"{price:,}",
+                "price":f"{int(price):,}",
             }
         )
         return response

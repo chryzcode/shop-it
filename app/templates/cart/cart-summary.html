@@ -28,11 +28,9 @@
     <img class="product-image" src="{{ product.image_1.url }}" alt="" />
     <span><a href="{{product.get_customer_url}}">{{ product.name }}</a></span>
     <span>
-      <!-- {% if product.discount_percentage %}
-      <span>{{product.currency.symbol}}{{product.discount_price|intcomma}}</span>
-      {% else %} -->
+     
       <span id="a_price">{{product.currency.symbol}}{{item.price|intcomma}}</span>
-      <!-- {% endif %} -->
+ 
     </span>
 
     <span>

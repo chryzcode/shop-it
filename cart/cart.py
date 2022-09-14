@@ -19,7 +19,7 @@ class Cart:
         else:
             if product.discount_percentage:
                 self.cart[product_id] = {
-                    "price": str(
+                    "price": int(
                         product.price - (product.price * product.discount_percentage / 100)
                     ),
                     "qty": int(qty),
@@ -27,7 +27,7 @@ class Cart:
                 }
             else:
                 self.cart[product_id] = {
-                    "price": str(
+                    "price": int(
                         product.price
                     ),
                     "qty": int(qty),
@@ -84,7 +84,7 @@ class Cart:
         if product_id in self.cart:
             self.cart[product_id]["qty"] = qty
             self.cart[product_id]["cartitemqty"] = cartitemqty
-            self.cart[product_id]["price"] = price
+            self.cart[product_id]["price"] = int(price)
         self.save()
 
     def save(self):
