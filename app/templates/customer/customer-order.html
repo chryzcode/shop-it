@@ -1,5 +1,5 @@
 {% extends 'navs/customer-nav.html' %} {% load static %}{% load humanize %}{% block title %}<title>
-  Shop !t - {{request.user.full_name }} - {% if 'unpaid' in request.get_full_path %}Unpaid{% endif %} Order
+ Shopit - {{request.user.full_name }} - {% if 'unpaid' in request.get_full_path %}Unpaid{% endif %} Order
 </title>
 {% endblock %} {% block content %}
 <div class="store-page-container">
