@@ -22,13 +22,6 @@ from .models import *
 from .tokens import account_activation_token
 
 
-def beta_tester_verification(request, email):
-    if email in settings.BETA_TESTERS:
-        return True
-    else:
-        return False
-
-
 def account_login(request):
     context = {}
     if request.user.is_authenticated:
