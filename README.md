@@ -1,3 +1,1 @@
-# shop-it
-
-Beta Test
+# shopit
