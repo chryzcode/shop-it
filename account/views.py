@@ -197,6 +197,9 @@ def account_activate(request, uidb64, token):
     else:
         if user:
             user.delete()
+            messages.error(request, "Verification Authentication Timeout")
+        else:
+            messages.messages.error(request, "User/Account does not exist")
         return render(request, "error-pages/404-page.html")
 
 
