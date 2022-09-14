@@ -144,6 +144,16 @@
         <p>
           Your Shopit account has been successfully created. Kindly click the button below to activate your account.
         </p>
+        <p>
+         After verifying your account, it is important you do all these stated below;
+        <\p>
+         <ul> 
+            <li>Set your default currency in settings</li> 
+            <li>Add you bank account details for payout in settingd</li> 
+            <li>Create a category before adding a product</li> 
+            <li>Add a valid address for order pick up in settings</li> 
+            <li>Set a logistics company for deliveries in settings</li> 
+         </ul>
 
         <a
           href="{{domain}}{% url 'account:activate_account' uidb64=uid token=token %}"
