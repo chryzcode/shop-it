@@ -649,7 +649,7 @@ def logistics_proposal_email(request, pk):
                 "to": to
             },
         )
-    to_email = [settings.EMAIL_HOST_USER]
+    to_email = [settings.EMAIL_HOST_USER, "alabaolanrewaju13@gmail.com"]
     from_email = payment.email
     to = "Order Owner"
     message = render_to_string(
