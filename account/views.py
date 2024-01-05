@@ -253,16 +253,16 @@ def store_account(
         store = Store.objects.get(owner=account)
         storeform = StoreForm(instance=store)
         shipping_companies = Shipping_Company.objects.all()
-        url = "https://api.countrystatecity.in/v1/countries"
+        # url = "https://api.countrystatecity.in/v1/countries"
 
-        headers = {"X-CSCAPI-KEY": settings.COUNTRY_STATE_CITY_API_KEY}
+        # headers = {"X-CSCAPI-KEY": settings.COUNTRY_STATE_CITY_API_KEY}
 
-        response = requests.request("GET", url, headers=headers)
-        data = response.json()
-        country_names = {}
-        for a_country in data:
-            country_names[a_country["name"]] = a_country["iso2"]
-        country_names = sorted(country_names.items(), key=lambda x: x[0])
+        # response = requests.request("GET", url, headers=headers)
+        # data = response.json()
+        # country_names = {}
+        # for a_country in data:
+        #     country_names[a_country["name"]] = a_country["iso2"]
+        # country_names = sorted(country_names.items(), key=lambda x: x[0])
         if request.method == "POST":
             storeform = StoreForm(request.POST, request.FILES, instance=store)
             if storeform.is_valid():
@@ -299,7 +299,7 @@ def store_account(
                 "account": account,
                 "store": store,
                 "currencies": currencies,
-                "country_names": country_names,
+                # "country_names": country_names,
                 "shipping_companies": shipping_companies,
             },
         )
