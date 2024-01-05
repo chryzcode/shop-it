@@ -10,3 +10,5 @@ admin.site.register(Store)
 admin.site.register(Currency)
 admin.site.register(Bank_Info)
 admin.site.register(Shipping_Company)
+admin.site.register(Shipping_Method)
+

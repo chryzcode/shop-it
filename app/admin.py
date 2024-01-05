@@ -33,7 +33,6 @@ class ProductAdmin(admin.ModelAdmin):
 admin.site.register(ProductUnit)
 admin.site.register(Coupon)
 admin.site.register(Review)
-admin.site.register(Shipping_Method)
 admin.site.register(last_7_days_sales)
 admin.site.register(last_24_hours_sales)
 admin.site.register(last_7_days_customers)

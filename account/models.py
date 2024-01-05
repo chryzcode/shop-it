@@ -12,20 +12,6 @@ from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 
 
-class Currency(models.Model):
-    name = models.CharField(max_length=50)
-    code = models.CharField(max_length=10)
-    symbol = models.CharField(max_length=10)
-    flutterwave_code = models.CharField(max_length=10)
-
-    class Meta:
-        verbose_name = "Currency"
-        verbose_name_plural = "Currencies"
-
-    def __str__(self):
-        return self.name
-
-
 class Shipping_Company(models.Model):
     name = models.CharField(max_length=300)
     account_name = models.CharField(max_length=300)
@@ -37,6 +23,52 @@ class Shipping_Company(models.Model):
 
     def __str__(self):
         return self.name
+
+
+
+
+class Shipping_Method(models.Model):
+    shipping_company = models.ForeignKey(Shipping_Company, on_delete=models.CASCADE)
+    country = models.CharField(max_length=200)
+    state = models.CharField(max_length=200)
+    price = models.PositiveIntegerField(default=0)
+    location = models.CharField(max_length=200)
+    flutterwave_fund = models.PositiveIntegerField(default=0)
+    shopit_fund = models.PositiveIntegerField(default=0)
+    total_funds = models.PositiveIntegerField(default=0)
+    country_code = models.CharField(max_length=10, blank=True, null=True)
+    state_code = models.CharField(max_length=10, blank=True, null=True)
+
+    # def save(self):
+    #     flutterwave_fee = int(1.40/100 * self.price)
+    #     if flutterwave_fee > 2500:
+    #         flutterwave_fee = 2500
+    #     self.flutterwave_fund = flutterwave_fee 
+    #     shopit_fee =  int(2/100 * self.price)
+    #     if shopit_fee > 2300:
+    #         shopit_fee = 2300
+    #     self.shopit_fund = shopit_fee
+    #     self.total_funds =  flutterwave_fee + shopit_fee + self.price 
+    #     return super(Shipping_Method, self).save()
+
+
+    def __str__(self):
+        return self.location + " " + self.country + " " + self.state 
+
+
+class Currency(models.Model):
+    name = models.CharField(max_length=50, default="Nigerian Naira")
+    code = models.CharField(max_length=10, default="NGN")
+    symbol = models.CharField(max_length=10, default="₦")
+    flutterwave_code = models.CharField(max_length=10, default="NG")
+
+    class Meta:
+        verbose_name = "Currency"
+        verbose_name_plural = "Currencies"
+
+    def __str__(self):
+        return self.name
+
 
 
 class Store(models.Model):
@@ -105,6 +137,33 @@ class CustomAccountManager(BaseUserManager):
         store = Store.objects.create(
             owner=user, store_name=store_name, slugified_store_name=slugify(store_name)
         )
+
+    
+        if Shipping_Company.objects.all().count() == 0:
+            company = Shipping_Company.objects.create(
+                name= "Olanrewaju Alaba",
+                account_name="Olanrewaju Alaba",
+                bank_code="058",
+                bank_name="GTBank Plc",
+                account_number="0844412860",
+                email="alabaolanrewaju13@gmail.com",
+            )
+
+            Currency.objects.create()
+        
+
+        if Shipping_Method.objects.all().count() == 0:
+            company = Shipping_Company.objects.get(email="alabaolanrewaju13@gmail.com")
+            shipping_method =  Shipping_Method.objects.create(
+                    shipping_company = company,
+                    country = "Nigeria",
+                    state="Lagos",
+                    price= int(2000),
+                    location="Lagos Island",
+                    flutterwave_fund =  0,
+                    shopit_fund =0,
+                    total_funds = 0
+                )
         return user
 
 

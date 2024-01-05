@@ -345,22 +345,6 @@ class NewsletterForm(ModelForm):
         super(NewsletterForm, self).__init__(*args, **kwargs)
 
 
-class ShippingMethodForm(ModelForm):
-    class Meta:
-        model = Shipping_Method
-        fields = ["location", "price", "state" ,"country", "shipping_company"]
 
-        widgets = {
-            "location": forms.TextInput(
-                attrs={"class": "form-control", "placeholder": "Location Coverage"}
-            ),
-            "price": forms.NumberInput(
-                attrs={"class": "form-control", "placeholder": "Price"}
-            ),
-            "shipping_company": forms.Select(attrs={"class": "form-control"}),
-        }
-
-    def __init__(self, *args, **kwargs):
-        super(ShippingMethodForm, self).__init__(*args, **kwargs)
 
     

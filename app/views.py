@@ -15,6 +15,7 @@ from django.contrib.sites.shortcuts import get_current_site
 
 from account.context_processors import *
 from account.models import *
+from account.forms import *
 from account.views import state_details, country_details, resolve_account_details
 from cart.cart import *
 from customer.models import *

@@ -188,33 +188,7 @@ class Review(models.Model):
         return self.title + " " + self.full_name + " " + self.store.store_name
 
 
-class Shipping_Method(models.Model):
-    shipping_company = models.ForeignKey(Shipping_Company, on_delete=models.CASCADE)
-    country = models.CharField(max_length=200)
-    state = models.CharField(max_length=200)
-    price = models.PositiveIntegerField(default=0)
-    location = models.CharField(max_length=200)
-    flutterwave_fund = models.PositiveIntegerField(default=0)
-    shopit_fund = models.PositiveIntegerField(default=0)
-    total_funds = models.PositiveIntegerField(default=0)
-    country_code = models.CharField(max_length=10, blank=True, null=True)
-    state_code = models.CharField(max_length=10, blank=True, null=True)
 
-    def save(self):
-        flutterwave_fee = int(1.40/100 * self.price)
-        if flutterwave_fee > 2500:
-            flutterwave_fee = 2500
-        self.flutterwave_fund = flutterwave_fee 
-        shopit_fee =  int(2/100 * self.price)
-        if shopit_fee > 2300:
-            shopit_fee = 2300
-        self.shopit_fund = shopit_fee
-        self.total_funds =  flutterwave_fee + shopit_fee + self.price + self.price
-        return super(Shipping_Method, self).save()
-
-
-    def __str__(self):
-        return self.location + " " + self.country + " " + self.state 
 
 
 class last_7_days_sales(models.Model):
